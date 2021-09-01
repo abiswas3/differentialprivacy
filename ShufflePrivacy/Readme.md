@@ -1,3 +1,3 @@
 # Shuffle Privacy
 
-$$ x = y $$
+x = y
