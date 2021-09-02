@@ -64,11 +64,55 @@ dd p {
     margin-top: 0;
 }
 
+.bar{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.barli {
+  float: left;
+}
+
+.barli a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.barli a:hover {
+  background-color: #111;
+}
+
 .navbar {
     background-color: #dddddd;
     border:1px solid black;
     border-bottom: 3px solid black;
+    list-style-type: none;
+    /* margin: 0; */
+    /* padding: 0; */
+    /* overflow: hidden; */
       
+}
+.navbar-list-item {
+    float: left;
+    fontsize: 22px;
+    border-right:2px solid #bbb;
+    padding-right:10px;
+    display: block;
+    fontsize: 22px;
+    text-align: center;
+
+}
+
+.navbar-list-item:last-child {
+    border-right: none;
+    padding-left: 20px;
+    float: left;
 }
 
 #footer {
