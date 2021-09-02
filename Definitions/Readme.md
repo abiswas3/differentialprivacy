@@ -1,3 +1,13 @@
+\newcommand{\P}[3]{\mathbb{P}_{#2 \sim #3}\Big[#1\Big]}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\RBinHist}{\textit{R}_{\epsilon, \delta}^{zsum}}
+\newcommand{\ABinHist}{\textit{A}_{\epsilon, \delta}^{zsum}}
+\newcommand{\PBinHist}{\textit{P}_{\epsilon, \delta}^{zsum}}
+\newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
+\newcommand{\epsDelta}{(\epsilon, \delta)}
+
 <div class=container>
 # Privacy definitions cheat sheet
 
