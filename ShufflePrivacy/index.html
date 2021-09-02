@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>main</title>
+  <title>Readme</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -111,40 +111,6 @@ Proof
 <div id="histProof" class="collapse">
 <p>We are ready to show things</p>
 </div>
-<h1 id="privacy-definitions-cheat-sheet">Privacy definitions cheat sheet</h1>
-<h2 id="definition-centralDP">Central Differential Privacy</h2>
-<p>An algorithm <span class="math inline">\(M : X^n \rightarrow Z\)</span> satisfies <span class="math inline">\((\epsilon,\delta)\)</span>-differential privacy if</p>
-<p><span class="math display">\[ \mathbb{P}_{x \sim X^n}\Big[M(x) \in T\Big] \leq e^{\epsilon}\mathbb{P}_{x&#39; \sim X^n}\Big[M(x&#39;) \in T\Big] + \delta\]</span></p>
-<p><span class="math inline">\(\forall x \sim x&#39;\)</span> and <span class="math inline">\(\forall T \subseteq Z\)</span>. Two datasets are <span class="math inline">\(x \sim x&#39;\)</span> if they differ by one row or record. Note: For DP to apply, the above in equality must hold for <strong>all</strong> subsets of the range of the alorithm. Another way of viewing the above inequality is in terms of concentration measures:</p>
-<p>With probablity 1 - <span class="math inline">\(\delta\)</span>.</p>
-<p><span class="math display">\[ \frac{ \mathbb{P}_{x \sim X^n}\Big[M(x) \in T\Big]}{ \mathbb{P}_{x&#39; \sim X^n}\Big[M(x&#39;) \in T\Big]} \leq e^{\epsilon}\]</span></p>
-<p>Usually <span class="math inline">\(\delta = o(1/n)\)</span> is accepted as workable or efficient. This is saying if datasets are neighbouring, central DP gurantees that the algorithm outputs are concentrated near each other with high probability.</p>
-<h2 id="definition-localModel">Local Models</h2>
-<p>First introduced in [<a href="https://arxiv.org/pdf/0803.0924.pdf" title="What can we learn privately">2</a>]</p>
-<p>A protocol P in the (non-interactive) local model consists of two randomized algorithms:</p>
-<ul>
-<li>A randomiser <span class="math inline">\(\textit{R}: X \rightarrow Y\)</span> that takes as input a single user’s data and outputs a message.</li>
-<li>An analyser <span class="math inline">\(\textit{A}: Y^* \rightarrow Z\)</span> that takes as input all user messages and computes the output of the protocol.</li>
-</ul>
-<p>We denote the protocol <span class="math inline">\(\textit{P} = (\textit{R}, \textit{A})\)</span>. We assume that the number of users n is public and available to both <span class="math inline">\(\textit{R}\)</span> and <span class="math inline">\(\textit{A}\)</span>. <span class="math inline">\(Let ⃗x \in X^n\)</span>. The evaluation of the protocol  on input ⃗x is</p>
-<p><span class="math display">\[P(x) = (A \circ R)(x) = A\Big(R(x_1), \dots, R(x_n)\Big)\]</span></p>
-<h2 id="definition-localDP">Local Differential Privacy</h2>
-<p>A local protocol <span class="math inline">\(\textit{P} = (\textit{R}, \textit{A})\)</span> satisfies <span class="math inline">\((\epsilon, \delta)\)</span>-differential privacy for n users if its randomizer <span class="math inline">\(R : X \rightarrow Y\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private (for datasets of size one). In other words, the output of the randomiser for any two inputs must be concentrated with high probability 1 - <span class="math inline">\(\delta\)</span></p>
-<p><span class="math display">\[ \frac{ \mathbb{P}_{x \sim X}\Big[R(x) \in T\Big]}{ \mathbb{P}_{x&#39; \sim X}\Big[R(x&#39;) \in T\Big]} \leq
-e^{\epsilon}\]</span> for all subsets <span class="math inline">\(T \subseteq Y\)</span></p>
-<h2 id="definition-shuffleModel">Shuffled Model</h2>
-<p>A protocol <span class="math inline">\(P\)</span> in the shuffled model consists of three randomized algorithms. The first and last algorithm is identical to the local model. There is a middle shuffle phase. Formally,</p>
-<ul>
-<li>A randomiser <span class="math inline">\(\textit{R}: X \rightarrow Y\)</span> that takes as input a single user’s data and outputs a message.</li>
-<li>A shuffler <span class="math inline">\(S : Y^* \rightarrow Y^*\)</span>. that concatenates all message vectors and then applies a uniformly random permutation to (the order of) the concatenated vector. For example, when there are three users each sending two messages, there are 6! permutations and all are equally likely to be the output of the shuffler.<strong>NOTE: There is no special shuffling algorithm. It’s always uniformly random on all permutations</strong></li>
-<li>An analyser <span class="math inline">\(\textit{A}: Y^* \rightarrow Z\)</span> that takes as input the shuffled messages and computes the output of the protocol.</li>
-</ul>
-<p>The evaluation of the protocol <span class="math inline">\(P=(R,A)\)</span> on input <span class="math inline">\(x\)</span> is</p>
-<p><span class="math display">\[P(x) = (A \circ S \circ R)(x) = A\Big(S\big[R(x_1), \dots, R(x_n)\big]\Big)\]</span></p>
-<h2 id="definition-shuffleDP">Shuffle Privacy</h2>
-<p>A shuffled protocol <span class="math inline">\(P = (R,A)\)</span> satisfies <span class="math inline">\((\epsilon, \delta)\)</span>-differential privacy for <span class="math inline">\(n\)</span> users if the algorithm <span class="math inline">\((S \circ R) : X^n \rightarrow Y^∗\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private.</p>
-<p>This is saying, for two neighbouring datasets <span class="math inline">\(x \sim x&#39;\)</span>, the probability of seeing the same permutation after shuffling the outputs of all the local randomisers is concentrated with high probability 1 - <span class="math inline">\(\delta\)</span>.</p>
-<p>The hope is the following: Because we have this shuffle phase, perhaps we can add a little less noise to the local randomisers thereby getting a little bit more accuracy.</p>
 <h2 id="important-papers">Important Papers</h2>
 <ol type="1">
 <li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of multiple anonymous messages</a></li>

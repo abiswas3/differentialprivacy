@@ -7,7 +7,7 @@ This is material that is usually common across a subset of
 papers. Some of it has been repeated enough number of times to be
 included in textbooks.
 
-* [Differential Privacy Cheat sheet]()
+* [Differential Privacy Cheat sheet](Definitions/)
 * [Concentration Inequalities: building blocks to understanding proofs]()
 * [Exponential Mechanism]()
 
