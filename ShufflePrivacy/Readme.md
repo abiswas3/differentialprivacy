@@ -8,6 +8,9 @@
 \newcommand{\RBinHist}{\textit{R}_{\epsilon, \delta}^{zsum}}
 \newcommand{\ABinHist}{\textit{A}_{\epsilon, \delta}^{zsum}}
 \newcommand{\PBinHist}{\textit{P}_{\epsilon, \delta}^{zsum}}
+\newcommand{\RHist}{\textit{R}_{\epsilon, \delta}^{hist}}
+\newcommand{\AHist}{\textit{A}_{\epsilon, \delta}^{hist}}
+\newcommand{\PHist}{\textit{P}_{\epsilon, \delta}^{hist}}
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 
@@ -109,7 +112,7 @@ major findings:
    constraints of pure differential privacy and single-message
    randomizers.
 
-## A simplified histogram
+## The binary histogram
 
 Before estimating all histograms, the authors look at the binary
 histogram or binary sums where the cells of the histogram are
@@ -137,7 +140,7 @@ Output:
 
 3. Output x+z copies of 1s (At the most 2 bits)
 
-**ANANLYSER: **$\RBinHist$
+**ANANLYSER: **$\ABinHist$
 
 Input: 
 
@@ -147,7 +150,7 @@ Input:
 Method: 
 
 1. $1 - p = \frac{50}{\epsilon^2 n}\log(\frac{2}{\delta})$
-2. $c* = \frac{1}{n}|y|$ where |.| is the length of a stream
+2. $c^* = \frac{1}{n}|y|$ where |.| is the length of a stream
 
 Output:
 
@@ -177,7 +180,9 @@ class="btn btn-info"
 data-toggle="collapse" 
 data-target="#binHistProof">Proof</button>
 
-<div class=collapse1 id=binHistProof>
+<div class=collapse id=binHistProof>
+
+### Part I : Proving DP 
 
 Part I of this proof comes from background material section. The first
 question of concern is under what conditions, is sampling from a
@@ -220,7 +225,7 @@ bound.</div>
 </div>
 
 \begin{align}
-2exp(-\frac{\alpha^2\gamma n}{10}) &\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1}\ \\
+2exp(-\frac{\alpha^2\gamma n}{10}) &\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1}0C\ \\
 	&= \delta \\
 \frac{\gamma\epsilon^2n}{50} &= \log(\frac{2}{\delta}) \label{eq2}\tag{2}\\
 \gamma &= \frac{50}{\epsilon^2n}\log(\frac{2}{\delta})
@@ -287,31 +292,191 @@ $(\epsilon, \delta, 1)$ smooth binomial distrubution to a 1-sensitive
 function. Thus the output of the shuffler $(S \circ R)(X)$ is DP
 making the algorithm shuffle DP.
 
-### The accuracy of the protocol
+### The accuracy of the protocol (part II)
 
 Now onto part ii of the theorem. We have shown it is private but how
 much information do we lose? <div class=question>This section in the
 paper has many typos. I am going to try and re-derive them
 myself.</div>
 
+
+
+
+### No error guarantee (part III)
+
+If $X = (0,...,0)$, then $|y|$ is drawn from $0+ Binomial(n,p)$, which
+implies $c^* \leq 1$ with probability 1. Hence, $\PBinHist(⃗X) = 0$
+
 </div>
 
 ## Histogram summing the full version
 
+The full version of the histogram just uses $\PBinHist$ for each
+coordinate $j \in [d]$ where $d$ is the dimension of the histogram.
+
+### An algorithm for binary sums that satisfies shuffle privacy
+
+<div class="algorithm">
+
+**RANDOMISER:** $\RHist(x \in [d])$
+
+Input: 
+
+* $x \in [d]$
+* $(\epsilon, \delta) \in [0,1]$
+
+Method: 
+
+1. For each $j \in [d]$, $b_j = \mathbb{1}(x=j)$ and compute the
+   scalar product $m_j=j.\RBinHist(b_j)$
+
+Output: 
+
+2. Output the concatenation of the $m_j$'s
+
+**ANANLYSER: **$\AHist$
+
+Input: 
+
+* $y \in [d]^*$
+* $(\epsilon, \delta) \in [0,1]$
+
+Method: 
+
+1. For each $j \in [d]$, let $y_j$ be all the 1 bits from the
+   randomiser with value $j$. $\tilde{c_j}=\ABinHist(y_j)$
+2. Output $(\tilde{c_1}, \tilde{c_2}, \dots, \tilde{c_d})$
+
+Output:
+
+3. if c* > 1 : return (c* - p) else: return 0
+   
+
+</div>
+
 ### Theorem: The above proptocol is DP for the shuffled model {#theorem-HistDP}
 
-<button type="button" 
-class="btn btn-info" 
-data-toggle="collapse" 
+For any $\epsilon, \delta \in [0,1]$ and any $n \in \N$ such that $n
+\geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})$, the protocol
+$(\PHist = \RHist, \AHist)$ has the following properties: 
+
+1. $\PHist$ is $2\epsDelta$-differentially private in the shuffled
+   model.
+   
+2. For $\beta > \delta^{25}$, $\PHist$ has $(\alpha, \beta)$ accuracy
+   for $\alpha = O(\frac{1}{\epsilon^2n}\ln(\frac{1}{\delta}))$
+
+3. For $\beta > \delta^{25}$, $\PHist$ has $(\alpha, \beta)$
+   simultaneous accuracy for $\alpha =
+   O(\frac{1}{\epsilon^2n}\ln(\frac{1}{\delta}))$
+   
+4. Each user sends at most d+1 messages.
+
+
+<button type="button" class="btn btn-info" data-toggle="collapse"
 data-target="#histProof">Proof</button>
 
 <div class=collapse id=histProof>
 
-We are ready to show things
+#### Part (i)
+
+Consider two neighbouring datasets $X \sim X'$ i.e. they differ by one
+record only. So one person in $X$ has value $j$ and one person in $X'$
+has $j'$.
+
+Let $y \sim (S \circ \RHist)(X)$ and $y \sim (S \circ
+\RHist)(X')$. For any $j \neq j'$, the count of $j$ in the shuffler is
+independent of $j'$ as they run in independent trials of
+$\RBinHist$. Let $y_j$ be all the 1 bits from the randomiser with
+value $j$ like in part 1 of $\AHist(X)$ and $y_j'$ be the same for
+$\AHist(X')$. For any $j \in [d]$, if $c_j(X) = c_j(X')$ then $y_j$
+and $y_j'$ are identically distributed so they trivially satisfy
+DP. When $c_j(X) \neq c_j(X')$ we can show that are still close in
+likelihood. Let $r, r' \in \{ 0, 1\}^n$ such that $r_i =
+\mathbb{1}(x_i=j)$
+
+By defintion:
+
+$y_j \sim (S \circ \RBinHist)(r)$ and $y_j' \sim (S \circ
+\RBinHist)(r')$. Thus we know, from the binary histogram protocol part
+(i) that
+
+$$\P{y_j \in T}{y_j}{(S \circ \RBinHist)(r)} \leq e^{\epsilon}\P{y_j'
+\in T}{y_j'}{(S \circ \RBinHist)(r')} + \delta$$
+
+Since the two datasets differ at two indices, by the composition
+theorem we get $(2\epsilon, 2\delta)$ for the full protocol.
+
+
+#### Part (ii)
+
+This comes for free from $\PBinHist$ part (ii) accuracy bound. Note
+each $\tilde{c_j} = \PBinHist(\{b_{ij}\}_{i \in [n]})$. We know
+$\PBinHist$ gives us $(\alpha, \beta)$ accuracy.
+
+
+#### Part (iii)
+
+To bound simultaneous error, we leverage the property that when
+\tilde{c(x)} = 0, the counting protocol will report a nonzero value
+with probability 0. Let Q be the set of non zero indices in the
+dataset such that $Q = \{ j \in [d] | c_j(x) > 0\}$
+
+From part (ii) we have with probability $\beta/n$ there exists an
+index $j$ st $(\tilde{c_j(x)} - c(x)) \leq \alpha$ with $\alpha$ as
+defined in the binary histogram protocol.
+
+\begin{align*}
+\mathbb{P}\Big( \exists j \in [d] \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) 
+&\leq \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) + \mathbb{P}\Big( \exists j \notin Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha \Big) \\
+&= \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq4}\tag{4} \\
+&\leq \sum_{j \in Q} \mathbb{P}\Big( \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq5}\tag{5} \\
+&\leq \beta/n \label{eq6}\tag{6} \\
+&= \beta
+\end{align*}
+
+
+$\ref{eq4}$ : comes from $\PBinHist$ part (iii) for all 0 input.
+
+$\ref{eq5}$ : Union bound
+
+$\ref{eq6}$ : comes from $\PBinHist$ part (ii) accuracy bound.
+
+#### Part (iv)
+
+For the j'th index which is 1 there can be at the most 2 bits. One
+from the bernoulli and one from the input. All other indices can have
+at the most 1 bit from the bernoulli. So There are $d$ indices, thus
+d + 1 messages/bits/1's maximum.
 
 </div>
 
+## Pure Shuffle Privacy
+
+It can be shown that if we restricted to pure differential privacy
+i.e. a deterministic concentration inequality Shuffle privcacy gives
+us the same guarantees as local privacy. Verbatim:
+
+The authors claim that any single-message shuffled protocol that
+satisfies $\epsilon$-differential privacy can be simulated by a local
+protocol under the same privacy constraint.
+
+### Single Message Shuffle => There exists equivalent local
+
+### Single Message Shuffle => It's randomiser is central DP. 
+
+## Multi Message Shuffle Privacy does not play so well
+
+### Shuffle ==> but not local
+
+There exists a multi-message shuffled protocol that is
+$\epsilon$-differentially private for all ε ≥ 0 but its randomizer is
+not $\epsilon$-differentially private for any finite ε.
+
+### Shuffle ==> Randomiser not DP
+
 ## Important Papers
+
 
 [1]: https://arxiv.org/pdf/1908.11358.pdf  "On the power of multiple anonymous messages"
 1. [On the power of multiple anonymous messages](https://arxiv.org/pdf/1908.11358.pdf)
