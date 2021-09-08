@@ -146,7 +146,7 @@ h3[id^="lemma"] {
     border:1px solid black;
 }
 .intuition{
-    color: #218001;
+    color: purple;
 }
 .question{
     color: red;

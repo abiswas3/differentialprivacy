@@ -23,41 +23,53 @@
   
   <ul class="bar">
     <li class="barli"><a class="active" href="https://abiswas3.github.io/">Home</a></li>
-    <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io/index.html">Notes on Differential Privacy</a></li>
+    <li class="barli"><a href="/index.html">Notes on Differential Privacy</a></li>
   </ul>
-  
-  
-  <!-- <ul class="navbar"> -->
-  <!--   <li class="navbar-list-item"><h1><a class="active" href="/index.html">Home</a></h1></li> -->
-  <!--   <li><h3><a class="active" href="">Notes on Differential Privacy</a></h3></li> -->
-  
-  <!-- </ul>   -->
 </head>
 <body>
 <div class="container">
 <h1 id="separting-local-and-shuffle-privacy">Separting local and Shuffle Privacy</h1>
 <h2 id="background-material">Background Material</h2>
-<p>This is material that we need to be able to derive the proofs in the paper. <a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a> Identify a class of distributions and argue that, if <span class="math inline">\(\eta\)</span> is sampled from such a distribution, adding η to a 1-sensitive sum ensures differential privacy of that sum.</p>
-<p>1-sensitive sums show up with computing sums on histograms with elements 1 or 0 on two datasets that differ by one record only.</p>
+<p>This is material that we need to be able to derive the proofs in the paper. Researchers in [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>] identified a class of distributions and argue that, if <span class="math inline">\(\eta\)</span> is sampled from such a distribution, adding <span class="math inline">\(\eta\)</span> to any output of a 1-sensitive function ensures differential privacy of that sum. Histogram sums where records differ by one count are 1-sensitive functions; thus adding a noise drawn from such a distribution will get you diffential privacy.</p>
 <h3 id="definition-smooth">Smooth Distributions</h3>
+<p>Source: [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>]</p>
 <p>A distribution <span class="math inline">\(\mathbb{D}\)</span> is smooth over <span class="math inline">\(\mathbb{Z}\)</span> is <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth, if <span class="math inline">\(\forall k&#39; \in [-k, k]\)</span> if the event E</p>
 <p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E \geq e^{|k&#39;|\epsilon}\Big] \leq \delta\]</span> or</p>
 <p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E &lt; e^{|k&#39;|\epsilon}\Big] &gt; 1 - \delta\]</span></p>
+<div class="intuition">
 <p>The second equation looks a lot like a concentration inequality i.e. it is saying that the value of the event being concentrated within the window is quite high.</p>
-<p>This already looks a lot like Differential Privacy, which says, for DP to hold the ratio of the probabilities of a function outputting the same value on neigbhouring datasets is bounded by an exponential function as shown above with probability 1 - <span class="math inline">\(\delta\)</span></p>
+This already looks a lot like Differential Privacy, which says, for DP to hold the ratio of the probabilities of a function outputting the same value on neigbhouring datasets is bounded by an exponential function as shown above with probability 1 - <span class="math inline">\(\delta\)</span>
+</div>
 <p>The Event <span class="math inline">\(E\)</span> is defined as the following</p>
 <p><span class="math display">\[E=\frac{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y+k&#39;\Big]}\]</span></p>
 <p>It’s saying if I draw a random variable from <span class="math inline">\(Y \sim \mathbb{D}\)</span>; the probability of drawing another variable <span class="math inline">\(Y&#39; \sim \mathbb{D}\)</span> within a window of [Y, Y+k’] is quite close to the original probability of drawing <span class="math inline">\(Y\)</span> to begin with.</p>
 <!-- [Heading IDs](#custom-id)
 -->
-<h3 id="lemma-smooth">Lemma: Adding Noise from smooth distributions is a DP mechanism</h3>
-<p>Let <span class="math inline">\(f: \mathbb{Z}^n \rightarrow \mathbb{Z}\)</span> be a function such that it is 1 sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq 1\)</span> ffor all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a (, , 1) smooth distribution. Then the algorithm that takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is DP.</p>
-<h3 id="lemma-the-binomial-distribution-is-smooth">Lemma: The binomial distribution is smooth</h3>
-<p>To show in a minute</p>
+<h3 id="lemma-smooth">Lemma 2: Adding Noise from smooth distributions is a DP mechanism</h3>
+<p>Let <span class="math inline">\(f: \mathbb{Z}^n \rightarrow \mathbb{Z}\)</span> be a function such that it is 1 sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq 1\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth distribution. Then the algorithm that takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is DP.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#smmothNoiseIsDp">
+Proof
+</button>
+<div id="smmothNoiseIsDp" class="collapse">
+<p>Need to read original paper in detail</p>
+</div>
+<h3 id="lemma-3-the-binomial-distribution-is-smooth">Lemma 3: The binomial distribution is smooth</h3>
+<p>For any positive integer n, and <span class="math inline">\(\gamma \in [0,1/2], \alpha \in [0,1]\)</span> and any <span class="math inline">\(k \leq \alpha\gamma/2\)</span>, <span class="math inline">\(Binomian(n, \gamma)\)</span> is <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth with</p>
+<p><span class="math display">\[\epsilon = \log\big( \frac{1 + \alpha}{1 - \alpha}\big)\]</span> and</p>
+<p><span class="math display">\[\delta= exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha})\]</span></p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#binIsSmooth">
+Proof
+</button>
+<div id="binIsSmooth" class="collapse">
+<p>Need to read original paper in detail</p>
+</div>
 <h2 id="introduction">Introduction</h2>
 <p>There has been a lot of work on local privacy. See here <strong>TODO</strong>. A new paradigm of privacy is shuffle privacy. In this paper, the authors try and understand the guarantees of shuffle privacy with respect to local privacy for the histogram sum estimation problem. There are two major findings:</p>
 <ol type="1">
-<li>The authors present a protocol in the shuffled model that estimates histograms with error independent of the domain size. This implies an arbitrarily large gap in sample complexity between the shuffled and local models. <strong>So all known local models depend on domain size</strong></li>
+<li>The authors present a protocol in the shuffled model that estimates histograms with error independent of the domain size. This implies an arbitrarily large gap in sample complexity between the shuffled and local models.
+<div class="question">
+I have not verified myself what the accuracy guarantees of known local models are. Perhaps this is something I should do.
+</div></li>
 <li>Local and shuffle privacy are equivalent when we impose the constraints of pure differential privacy and single-message randomizers.</li>
 </ol>
 <h2 id="a-simplified-histogram">A simplified histogram</h2>
@@ -100,8 +112,8 @@
 <p>For any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span>, the protocol <span class="math inline">\((\textit{P}_{\epsilon, \delta}^{zsum}= \textit{R}_{\epsilon, \delta}^{zsum}, \textit{A}_{\epsilon, \delta}^{zsum})\)</span> has the following properties:</p>
 <ol type="1">
 <li><p><span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private in the shuffled model.</p></li>
-<li><p>For <span class="math inline">\(\beta &gt; \delta^25\)</span>, the error <span class="math inline">\(|\textit{P}_{\epsilon, \delta}^{zsum}(X) - \frac{1}{n}\sum_{i=1}^n x_i| \leq \alpha\)</span> with probability <span class="math inline">\(1 - \beta\)</span></p></li>
-<li>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(PBinHist(X)=0\)</span> i.e. we have 0 error.
+<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>, the error <span class="math inline">\(|\textit{P}_{\epsilon, \delta}^{zsum}(X) - \frac{1}{n}\sum_{i=1}^n x_i| \leq \alpha\)</span> with probability <span class="math inline">\(1 - \beta\)</span></p></li>
+<li>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span> i.e. we have 0 error.
 <div class="question">
 
 </div></li>
@@ -109,8 +121,65 @@
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#binHistProof">
 Proof
 </button>
-<div id="binHistProof" class="collapse">
-<p>We are ready to show things</p>
+<div id="binHistProof" class="collapse1">
+<p>Part I of this proof comes from background material section. The first question of concern is under what conditions, is sampling from a binomial distribution <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth. Then all that remains to be shown is that, the above algorithm is basically adding noise drawn from a binomial to the exact binary sum, which by Lemma 2 is DP.</p>
+<h4 id="under-what-conditions-is-the-binomial-1-smooth">Under what conditions is the Binomial 1-smooth</h4>
+<p>By Lemma 3, We know a binomial is k-smooth if <span class="math inline">\(\epsilon = \log\big( \frac{1 + \alpha}{1 - \alpha}\big)\)</span> and <span class="math inline">\(\delta= exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha})\)</span> for any <span class="math inline">\(\alpha \in [0,1]\)</span></p>
+<p>Note that for <span class="math inline">\(\alpha &lt; 1\)</span>, we have <span class="math inline">\(exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha}) &lt; exp(-\frac{\alpha^2\gamma n}{10}) + exp(-\frac{\alpha^2\gamma n}{10}) = 2exp(-\frac{\alpha^2\gamma n}{10})\)</span></p>
+Now if we restrict <span class="math inline">\(\alpha \in [\epsilon/\sqrt{5}, 1)\)</span> and set <span class="math inline">\(\alpha = \frac{e^\epsilon - 1}{e^\epsilon + 1}\)</span>, then we get the following bound from <span class="math inline">\(\delta\)</span>
+<div class="question">
+It is not immediately clear why they picked square root of 5: but here is my understanding
+</div>
+<div class="intuition">
+Given <span class="math inline">\(\alpha\)</span> is already defined in terms of <span class="math inline">\(\epsilon\)</span>. The authors want to find a simpler lower bound for <span class="math inline">\(\alpha^2\)</span> in temrs of <span class="math inline">\(\epsilon\)</span>. As there is a squared, they picked the smallest integer such that <span class="math inline">\(\alpha &gt; 0\)</span> for all values of <span class="math inline">\(\epsilon \in [0,1]\)</span> Shown below are plots for <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{5}}\)</span> and <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{4}}\)</span>. Clearly, <span class="math inline">\(\frac{\epsilon}{\sqrt{5}} \geq \alpha\)</span> <span class="math inline">\(\forall \epsilon \in [0,1]\)</span>. Now that they have lower bounded <span class="math inline">\(\alpha\)</span> by a simple <span class="math inline">\(\epsilon\)</span> we can just use it in the <span class="math inline">\(\delta\)</span> bound.
+</div>
+<div class="row">
+<div class="col-md-6">
+<img src=pngs/5.png></img>
+</div>
+<div class="col-md-6">
+<img src=pngs/4.png></img>
+</div>
+<div class="col-md-6">
+
+</div>
+</div>
+<span class="math display">\[\begin{align}
+2exp(-\frac{\alpha^2\gamma n}{10}) &amp;\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1}\ \\
+    &amp;= \delta \\
+\frac{\gamma\epsilon^2n}{50} &amp;= \log(\frac{2}{\delta}) \label{eq2}\tag{2}\\
+\gamma &amp;= \frac{50}{\epsilon^2n}\log(\frac{2}{\delta})
+\end{align}\]</span>
+<p><span class="math inline">\(\ref{eq1}\)</span> Substituiting the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span></p>
+<p><span class="math inline">\(\ref{eq2}\)</span> Re-arranging terms to get a value for <span class="math inline">\(\gamma\)</span></p>
+<p>But we really need is 1-smooth, so we need</p>
+<p><span class="math display">\[ n\alpha\gamma \geq 2 \]</span></p>
+<p>We are interested in the smallest value of <span class="math inline">\(n\alpha\gamma\)</span>, which we get trivially by plugging it the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span>, the theorem definition states <span class="math inline">\(n= \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> and from the above derivation we get <span class="math inline">\(\gamma =\frac{50}{\epsilon^2n}\log(\frac{2}{\delta})\)</span></p>
+<span class="math display">\[\begin{align}
+n\alpha \gamma &amp;= \frac{50}{\epsilon^2}\log(\frac{2}{\delta})\frac{\epsilon}{\sqrt{5}} \\
+&amp;=\frac{10\sqrt{5}}{\epsilon}\log(\frac{2}{\delta}) \\
+&amp;\geq \frac{10\sqrt{5}}{1}\log(\frac{2}{1}) \label{eq3}\tag{3} \\
+&amp;\geq 2
+\end{align}\]</span>
+<p><span class="math inline">\(\ref{eq3}\)</span> by plugging in the largest values for <span class="math inline">\(\epsilon, \delta = 1, 1\)</span></p>
+<p>In conclusion – the conditions of seting any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> makes sampling from the <span class="math inline">\(Binmonial(n, \gamma)\)</span> 1-smmoth. Now all that remains is to show is that the algorithm described above just adds binomial noise to a 1-sensitive function.</p>
+<h4 id="the-above-algorithm-just-adds-noise-drawn-from-a-binomial-distribution-to-the-true-sum">The above algorithm just adds noise drawn from a binomial distribution to the true sum</h4>
+<p>If we let <span class="math inline">\(z_i \sim Bernoulli(1 - \gamma)\)</span> be the random bit (heads or tails) generated by the i-th user, the total number of messages is <span class="math inline">\(|y| = \sum_{i=1}^n x_i + z_i\)</span>. Here <span class="math inline">\(\gamma=1-p\)</span> as defined in the algorithm above and re-derived in the proof above. Observe that learning <span class="math inline">\(|y|\)</span> is sufficient to represent the output of shuffler since all messages have the same value i.e. they are all 1s. We can say the above algorithm is equivalent to the following</p>
+<span class="math display">\[\begin{align*}
+|y| &amp;= \sum_{i=1}^n x_i + z_i \\
+    &amp;= \sum_{i=1}^n x_i + \sum_{i=1}^n z_i \\
+    &amp;= \sum_{i=1}^n x_i + Binomial(n, 1 - \gamma) \\
+    &amp;= \sum_{i=1}^n x_i + n - Binomial(n, \gamma) \\
+    &amp;= -\Big (-\sum_{i=1}^n x_i  + Binomial(n, \gamma) \Big) + n \\
+    &amp;= -\Big (M_{neg}(X) \Big) + n \\   
+\end{align*}\]</span>
+<p>If show the output of <span class="math inline">\(M_{neg}(X)\)</span> is DP, then it follows by the deterministic post processing rule of DP that the full algorithmis DP.</p>
+<p>For neighbouring detasets <span class="math inline">\(X \sim X&#39;\)</span>, <span class="math inline">\(\sum_{i=1}^n x_i\)</span> is a 1-sensitive function. Thus we are adding noise drawn from a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth binomial distrubution to a 1-sensitive function. Thus the output of the shuffler <span class="math inline">\((S \circ R)(X)\)</span> is DP making the algorithm shuffle DP.</p>
+<h3 id="the-accuracy-of-the-protocol">The accuracy of the protocol</h3>
+Now onto part ii of the theorem. We have shown it is private but how much information do we lose?
+<div class="question">
+This section in the paper has many typos. I am going to try and re-derive them myself.
+</div>
 </div>
 <h2 id="histogram-summing-the-full-version">Histogram summing the full version</h2>
 <h3 id="theorem-HistDP">Theorem: The above proptocol is DP for the shuffled model</h3>
@@ -129,7 +198,7 @@ Proof
 </ol>
 </div>
 <div id="footer">
-   Copyright something something - what people usually right
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
 </div>
 </body>
 </html>
