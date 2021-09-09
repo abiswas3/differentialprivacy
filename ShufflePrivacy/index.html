@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style>
+  <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css" />
+  <link rel="stylesheet" href="../blog.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -27,8 +27,13 @@
   </ul>
 </head>
 <body>
-<div class="container">
+
+<div class=container>
 <h1 id="separting-local-and-shuffle-privacy">Separting local and Shuffle Privacy</h1>
+<h2 id="main-takeaways">Main Takeaways</h2>
+<p>The authors propose a protocol for computing sums for histograms with error independent of the domain size/number of bins <span class="math inline">\(d\)</span> given a fixed privacy budget. This implies an arbitrarily large gap in sample complexity between the shuffled and local models. The problem was motivated by the following observation:</p>
+<p>`<code>a locally private d-bin histogram has, on some bin, error scaling with √log d. But when users trust the analyzer with their raw data (the central model), there is an algorithm that achieves error independent of d on every bin.</code></p>
+<p>The best known sample complexity for the local model can be found in [<a href="https://arxiv.org/pdf/1504.04686.pdf" title="Local, Private, Efficient Protocols for Succinct Histograms">3</a>] and for the central model in [<a href="https://arxiv.org/pdf/1511.08552.pdf" title="Simultaneous Private Learning of Multiple Concepts">4</a>].</p>
 <h2 id="background-material">Background Material</h2>
 <p>This is material that we need to be able to derive the proofs in the paper. Researchers in [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>] identified a class of distributions and argue that, if <span class="math inline">\(\eta\)</span> is sampled from such a distribution, adding <span class="math inline">\(\eta\)</span> to any output of a 1-sensitive function ensures differential privacy of that sum. Histogram sums where records differ by one count are 1-sensitive functions; thus adding a noise drawn from such a distribution will get you diffential privacy.</p>
 <h3 id="definition-smooth">Smooth Distributions</h3>
@@ -46,7 +51,7 @@ This already looks a lot like Differential Privacy, which says, for DP to hold t
 <!-- [Heading IDs](#custom-id)
 -->
 <h3 id="lemma-smooth">Lemma 2: Adding Noise from smooth distributions is a DP mechanism</h3>
-<p>Let <span class="math inline">\(f: \mathbb{Z}^n \rightarrow \mathbb{Z}\)</span> be a function such that it is 1 sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq 1\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth distribution. Then the algorithm that takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is DP.</p>
+<p>Let <span class="math inline">\(f: \mathbb{Z}^n \rightarrow \mathbb{Z}\)</span> be a function such that it is 1 sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq 1\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth distribution. Then the algorithm that takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is DP.</p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#smmothNoiseIsDp">
 Proof
 </button>
@@ -113,7 +118,7 @@ I have not verified myself what the accuracy guarantees of known local models ar
 <ol type="1">
 <li><p><span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private in the shuffled model.</p></li>
 <li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>, the error <span class="math inline">\(|\textit{P}_{\epsilon, \delta}^{zsum}(X) - \frac{1}{n}\sum_{i=1}^n x_i| \leq \alpha\)</span> with probability <span class="math inline">\(1 - \beta\)</span></p></li>
-<li><p>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span> i.e. we have 0 error.</p>
+<li>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span> i.e. we have 0 error.
 <div class="question">
 
 </div></li>
@@ -145,35 +150,35 @@ Given <span class="math inline">\(\alpha\)</span> is already defined in terms of
 
 </div>
 </div>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 2exp(-\frac{\alpha^2\gamma n}{10}) &amp;\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1}0C\ \\
     &amp;= \delta \\
 \frac{\gamma\epsilon^2n}{50} &amp;= \log(\frac{2}{\delta}) \label{eq2}\tag{2}\\
 \gamma &amp;= \frac{50}{\epsilon^2n}\log(\frac{2}{\delta})
-\end{align}\]</span></p>
+\end{align}\]</span>
 <p><span class="math inline">\(\ref{eq1}\)</span> Substituiting the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span></p>
 <p><span class="math inline">\(\ref{eq2}\)</span> Re-arranging terms to get a value for <span class="math inline">\(\gamma\)</span></p>
 <p>But we really need is 1-smooth, so we need</p>
 <p><span class="math display">\[ n\alpha\gamma \geq 2 \]</span></p>
 <p>We are interested in the smallest value of <span class="math inline">\(n\alpha\gamma\)</span>, which we get trivially by plugging it the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span>, the theorem definition states <span class="math inline">\(n= \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> and from the above derivation we get <span class="math inline">\(\gamma =\frac{50}{\epsilon^2n}\log(\frac{2}{\delta})\)</span></p>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 n\alpha \gamma &amp;= \frac{50}{\epsilon^2}\log(\frac{2}{\delta})\frac{\epsilon}{\sqrt{5}} \\
 &amp;=\frac{10\sqrt{5}}{\epsilon}\log(\frac{2}{\delta}) \\
 &amp;\geq \frac{10\sqrt{5}}{1}\log(\frac{2}{1}) \label{eq3}\tag{3} \\
 &amp;\geq 2
-\end{align}\]</span></p>
+\end{align}\]</span>
 <p><span class="math inline">\(\ref{eq3}\)</span> by plugging in the largest values for <span class="math inline">\(\epsilon, \delta = 1, 1\)</span></p>
 <p>In conclusion – the conditions of seting any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> makes sampling from the <span class="math inline">\(Binmonial(n, \gamma)\)</span> 1-smmoth. Now all that remains is to show is that the algorithm described above just adds binomial noise to a 1-sensitive function.</p>
 <h4 id="the-above-algorithm-just-adds-noise-drawn-from-a-binomial-distribution-to-the-true-sum">The above algorithm just adds noise drawn from a binomial distribution to the true sum</h4>
 <p>If we let <span class="math inline">\(z_i \sim Bernoulli(1 - \gamma)\)</span> be the random bit (heads or tails) generated by the i-th user, the total number of messages is <span class="math inline">\(|y| = \sum_{i=1}^n x_i + z_i\)</span>. Here <span class="math inline">\(\gamma=1-p\)</span> as defined in the algorithm above and re-derived in the proof above. Observe that learning <span class="math inline">\(|y|\)</span> is sufficient to represent the output of shuffler since all messages have the same value i.e. they are all 1s. We can say the above algorithm is equivalent to the following</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 |y| &amp;= \sum_{i=1}^n x_i + z_i \\
     &amp;= \sum_{i=1}^n x_i + \sum_{i=1}^n z_i \\
     &amp;= \sum_{i=1}^n x_i + Binomial(n, 1 - \gamma) \\
     &amp;= \sum_{i=1}^n x_i + n - Binomial(n, \gamma) \\
     &amp;= -\Big (-\sum_{i=1}^n x_i  + Binomial(n, \gamma) \Big) + n \\
     &amp;= -\Big (M_{neg}(X) \Big) + n \\   
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>If show the output of <span class="math inline">\(M_{neg}(X)\)</span> is DP, then it follows by the deterministic post processing rule of DP that the full algorithmis DP.</p>
 <p>For neighbouring detasets <span class="math inline">\(X \sim X&#39;\)</span>, <span class="math inline">\(\sum_{i=1}^n x_i\)</span> is a 1-sensitive function. Thus we are adding noise drawn from a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth binomial distrubution to a 1-sensitive function. Thus the output of the shuffler <span class="math inline">\((S \circ R)(X)\)</span> is DP making the algorithm shuffle DP.</p>
 <h3 id="the-accuracy-of-the-protocol-part-ii">The accuracy of the protocol (part II)</h3>
@@ -243,14 +248,14 @@ Proof
 <h4 id="part-iii">Part (iii)</h4>
 <p>To bound simultaneous error, we leverage the property that when  = 0, the counting protocol will report a nonzero value with probability 0. Let Q be the set of non zero indices in the dataset such that <span class="math inline">\(Q = \{ j \in [d] | c_j(x) &gt; 0\}\)</span></p>
 <p>From part (ii) we have with probability <span class="math inline">\(\beta/n\)</span> there exists an index <span class="math inline">\(j\)</span> st <span class="math inline">\((\tilde{c_j(x)} - c(x)) \leq \alpha\)</span> with <span class="math inline">\(\alpha\)</span> as defined in the binary histogram protocol.</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}\Big( \exists j \in [d] \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) 
 &amp;\leq \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) + \mathbb{P}\Big( \exists j \notin Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha \Big) \\
 &amp;= \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq4}\tag{4} \\
 &amp;\leq \sum_{j \in Q} \mathbb{P}\Big( \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq5}\tag{5} \\
 &amp;\leq \beta/n \label{eq6}\tag{6} \\
 &amp;= \beta
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{eq4}\)</span> : comes from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (iii) for all 0 input.</p>
 <p><span class="math inline">\(\ref{eq5}\)</span> : Union bound</p>
 <p><span class="math inline">\(\ref{eq6}\)</span> : comes from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (ii) accuracy bound.</p>
@@ -273,12 +278,12 @@ Proof
 <p>By our assumption, there exists <span class="math inline">\(x \sim x&#39;\)</span> and a <span class="math inline">\(Y \in \mathbb{Y}\)</span> such that</p>
 <p><span class="math display">\[ \mathbb{P}( R(x) \in Y) &gt; e^{\epsilon} \mathbb{P}( R(x&#39;) \in Y)\]</span></p>
 <p>Assume datasets X and X’ such that, <span class="math inline">\(X = (x, ..., x)\)</span> contains <span class="math inline">\(n\)</span> copies of <span class="math inline">\(x\)</span> and <span class="math inline">\(X&#39; = (x&#39;, x, ..., x)\)</span>, contains <span class="math inline">\(n-1\)</span> copies of <span class="math inline">\(x\)</span> and <span class="math inline">\(x&#39;\)</span>.</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}[(S \circ R)(X) \in Y^n] &amp;= \mathbb{P}[(R)(X) \in Y^n] \label{eq7}\tag{7}\\
 &amp;= \mathbb{P}[(R)(X) \in Y]^n \label{eq8}\tag{8}\\
 &amp;&gt; e^{\epsilon} \mathbb{P}[ R(x&#39;) \in Y]\mathbb{P}[ R(x&#39;) \in Y]^{n-1} \label{eq9}\tag{9}\\
 &amp;= e^{\epsilon} \mathbb{P}[ (S \circ R)(X&#39;) \in Y^n]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{eq7}\)</span> : The shuffle is uniformly random, so no shuffle has equal probability as any other permutation.</p>
 <p><span class="math inline">\(\ref{eq8}\)</span> : Each local randomiser is independent of other inputs</p>
 <p><span class="math inline">\(\ref{eq9}\)</span> : By assumption</p>
@@ -314,9 +319,9 @@ There exists a multi-message shuffled protocol that is <span class="math inline"
 Proof
 </button>
 <div id="multishuffleLocalBreaks2" class="collapse">
-<p>Consider the randomiser <span class="math inline">\(R^{gap}\)</span> which takes in input <span class="math inline">\(x \in \{0 , 1 \}\)</span> and outputs 4 binary messages/bits. If the input is 0 all 16 values are possible. If the input is 1, then the output cannot have 2 1’s in the output. Note that if we saw output (0,1,1,0) we would know the input value. Thus <span class="math inline">\(R^{gap}\)</span> cannot be DP. However for <span class="math inline">\(n \geq 2\)</span>, the shuffle output <span class="math inline">\((S \circ R)(x)\)</span> can generate all possible values in <span class="math inline">\(\{0,1 \}^4n\)</span>, thereby giving us perfect shuffle privacy.</p>
+<p>Consider the randomiser <span class="math inline">\(R^{gap}\)</span> which takes in input <span class="math inline">\(x \in \{0 , 1 \}\)</span> and outputs 4 binary messages/bits. If the input is 0 all 16 values are possible. If the input is 1, then the output cannot have 2 1’s in the output. Note that if we saw output (0,1,1,0) we would know the input value. Thus <span class="math inline">\(R^{gap}\)</span> cannot be DP. However for <span class="math inline">\(n \geq 2\)</span>, the shuffle output <span class="math inline">\((S \circ R)(x)\)</span> can generate all possible values in <span class="math inline">\(\{0,1 \}^4n\)</span>, thereby giving us perfect shuffle privacy for some <span class="math inline">\(\epsilon &gt; 0\)</span>.</p>
 <div class="question">
-<p>I do not fully understand why yet – but they did give a reason.</p>
+<p>I do not fully understand why yet – but they did give a reason. On the train I can work it out.</p>
 </div>
 </div>
 <h2 id="important-papers">Important Papers</h2>
@@ -326,7 +331,11 @@ Proof
 <ol start="2" type="1">
 <li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn privately</a></li>
 </ol>
-</div>
+<ol start="3" type="1">
+<li><a href="https://arxiv.org/pdf/1504.04686.pdf">Local, Private, Efficient Protocols for Succinct Histograms</a>
+</div></li>
+</ol>
+<p><a href="https://arxiv.org/pdf/1511.08552.pdf">Simultaneous Private Learning of Multiple Concepts</a></p>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
 </div>

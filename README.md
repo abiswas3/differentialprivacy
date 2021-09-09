@@ -18,6 +18,14 @@ included in textbooks.
 
 ## Specific Research Papers
 
+### Central Privacy
+
+* [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
+
+### Local Privacy 
+
+* [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html)
+
 ### Shuffle Privacy 
 * [Separating Shuffle and Local Privacy: Alber Cheu](ShufflePrivacy/index.html)
 
