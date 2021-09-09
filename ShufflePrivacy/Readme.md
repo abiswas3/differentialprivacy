@@ -454,26 +454,137 @@ d + 1 messages/bits/1's maximum.
 ## Pure Shuffle Privacy
 
 It can be shown that if we restricted to pure differential privacy
-i.e. a deterministic concentration inequality Shuffle privcacy gives
-us the same guarantees as local privacy. Verbatim:
+i.e. a deterministic concentration inequality Shuffle privacygives us
+the same guarantees as local privacy for single message
+communicatiom. 
 
 The authors claim that any single-message shuffled protocol that
 satisfies $\epsilon$-differential privacy can be simulated by a local
 protocol under the same privacy constraint.
 
-### Single Message Shuffle => There exists equivalent local
 
-### Single Message Shuffle => It's randomiser is central DP. 
 
-## Multi Message Shuffle Privacy does not play so well
+### Single Message Shuffle => It's randomiser is central DP.
 
-### Shuffle ==> but not local
+<div class=lemma> Let $P = (R,A)$ be any single-message shuffled
+protocol that satisfies $\epsilon$-differential privacy. Then $R$ is
+an $\epsilon$-differentially private algorithm.
+</div>
+
 
 There exists a multi-message shuffled protocol that is
 $\epsilon$-differentially private for all ε ≥ 0 but its randomizer is
 not $\epsilon$-differentially private for any finite ε.
 
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#shuffleRisDP">Proof</button>
+<div class=collapse id=shuffleRisDP>
+
+Proof the contrapositive. Assume $R$ is not $\epsilon$ DP. If we show
+$(S \circ R)(X)$ is also not DP, then we are done.
+
+By our assumption, there exists $x \sim x'$ and a $Y \in \mathbb{Y}$
+such that
+
+$$ \mathbb{P}( R(x) \in Y) > e^{\epsilon} \mathbb{P}( R(x') \in Y)$$
+
+Assume datasets X and X' such that, $X = (x, ..., x)$ contains $n$
+copies of $x$ and $X' = (x', x, ..., x)$, contains $n-1$ copies of $x$
+and $x'$.
+
+
+\begin{align*}
+\mathbb{P}[(S \circ R)(X) \in Y^n] &= \mathbb{P}[(R)(X) \in Y^n] \label{eq7}\tag{7}\\
+&= \mathbb{P}[(R)(X) \in Y]^n \label{eq8}\tag{8}\\
+&> e^{\epsilon} \mathbb{P}[ R(x') \in Y]\mathbb{P}[ R(x') \in Y]^{n-1} \label{eq9}\tag{9}\\
+&= e^{\epsilon} \mathbb{P}[ (S \circ R)(X') \in Y^n]
+\end{align*}
+
+
+$\ref{eq7}$ : The shuffle is uniformly random, so no shuffle has equal
+probability as any other permutation. 
+
+$\ref{eq8}$ : Each local randomiser is independent of other inputs
+
+$\ref{eq9}$ : By assumption
+
+</div>
+
+### Single Message Shuffle => There exists equivalent local
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#shuffleHasLocalCounterpart">Proof</button>
+<div class=collapse id=shuffleHasLocalCounterpart>
+
+Assume there is an Aggregator $A_L$ that takes the output of the local
+randomisers and applies a uniform shuffling and then executes $A$ from
+the Shuffle model. <div class=intuition> Note this only works because
+they are single bit messages. As to why see roadblocks section</div>In
+this case $P_L =( R, A_L)$ has the same distribution as the shuffle
+model $P$ for all $x$ i.e $P(X) \approx P_L(X)$ $\forall X \in
+X^n$. By the previous lemma $R$ is differentially private -- which is
+what I needed for local DP.
+
+</div>
+
+## Multi Message Shuffle Privacy does not play so well
+
+### Shuffle ==> but not local
+
+<div class=lemma> There exists a multi-message shuffled protocol that
+is $\epsilon$-differentially private for all $\epsilon \geq 0$ but its
+randomiser is not DP for any $\epsilon$.  </div>
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#multishuffleLocalBreaks">Proof</button>
+<div class=collapse id=multishuffleLocalBreaks>
+
+Consider $R$ on input $x \in \{0, 1\}$ such that it outputs two
+messages x and 1-x. The Shuffle output $(S \circ R)(X)$ consists of n
+0's and n 1's in any possible order. So for two $X$ and $X'$ the
+ouputs are indistinguishable. However R(x) reveals the input value and
+is not local DP at all.  </div>
+
+
 ### Shuffle ==> Randomiser not DP
+
+
+We note that it is without loss of accuracy or privacy to suppose that
+a randomizer shuffles its messages prior to sending them to the
+shuffler. We call these pre-shuffle randomizers. Observe that the
+pre-shuffle version of R defined above, satisfied $0-DP$. One might
+conjecture Claim 4.2 holds for pre-shuffle randomizers and thus
+generalize Theorem 4.1. But that too is not the case
+
+<div class=lemma> There exists a multi-message shuffled protocol that
+is $\epsilon$-differentially private for some finite $\epsilon$ but
+its pre-shuffle randomizer is not $\epsilon$-differentially private
+for any finite $\epsilon$.  </div>
+
+<button type="button" class="btn btn-info" data-toggle="collapse"
+data-target="#multishuffleLocalBreaks2">Proof</button> <div
+class=collapse id=multishuffleLocalBreaks2>
+
+Consider the randomiser $R^{gap}$ which takes in input $x \in \{0 , 1
+\}$ and outputs 4 binary messages/bits. If the input is 0 all 16
+values are possible. If the input is 1, then the output cannot have 2
+1's in the output. Note that if we saw output (0,1,1,0) we would know
+the input value. Thus $R^{gap}$ cannot be DP. However for $n \geq 2$,
+the shuffle output $(S \circ R)(x)$ can generate all possible values
+in $\{0,1 \}^4n$, thereby giving us perfect shuffle privacy for some
+$\epsilon > 0$.
+
+<div class=question>I do not fully understand why yet -- but they did
+give a reason. On the train I can work it out.
+
+</div>
+</div>
 
 ## Important Papers
 

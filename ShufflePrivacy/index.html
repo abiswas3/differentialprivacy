@@ -258,14 +258,67 @@ Proof
 <p>For the j’th index which is 1 there can be at the most 2 bits. One from the bernoulli and one from the input. All other indices can have at the most 1 bit from the bernoulli. So There are <span class="math inline">\(d\)</span> indices, thus d + 1 messages/bits/1’s maximum.</p>
 </div>
 <h2 id="pure-shuffle-privacy">Pure Shuffle Privacy</h2>
-<p>It can be shown that if we restricted to pure differential privacy i.e. a deterministic concentration inequality Shuffle privcacy gives us the same guarantees as local privacy. Verbatim:</p>
+<p>It can be shown that if we restricted to pure differential privacy i.e. a deterministic concentration inequality Shuffle privacygives us the same guarantees as local privacy for single message communicatiom.</p>
 <p>The authors claim that any single-message shuffled protocol that satisfies <span class="math inline">\(\epsilon\)</span>-differential privacy can be simulated by a local protocol under the same privacy constraint.</p>
-<h3 id="single-message-shuffle-there-exists-equivalent-local">Single Message Shuffle =&gt; There exists equivalent local</h3>
 <h3 id="single-message-shuffle-its-randomiser-is-central-dp.">Single Message Shuffle =&gt; It’s randomiser is central DP.</h3>
+<div class="lemma">
+<p>Let <span class="math inline">\(P = (R,A)\)</span> be any single-message shuffled protocol that satisfies <span class="math inline">\(\epsilon\)</span>-differential privacy. Then <span class="math inline">\(R\)</span> is an <span class="math inline">\(\epsilon\)</span>-differentially private algorithm.</p>
+</div>
+<p>There exists a multi-message shuffled protocol that is <span class="math inline">\(\epsilon\)</span>-differentially private for all ε ≥ 0 but its randomizer is not <span class="math inline">\(\epsilon\)</span>-differentially private for any finite ε.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#shuffleRisDP">
+Proof
+</button>
+<div id="shuffleRisDP" class="collapse">
+<p>Proof the contrapositive. Assume <span class="math inline">\(R\)</span> is not <span class="math inline">\(\epsilon\)</span> DP. If we show <span class="math inline">\((S \circ R)(X)\)</span> is also not DP, then we are done.</p>
+<p>By our assumption, there exists <span class="math inline">\(x \sim x&#39;\)</span> and a <span class="math inline">\(Y \in \mathbb{Y}\)</span> such that</p>
+<p><span class="math display">\[ \mathbb{P}( R(x) \in Y) &gt; e^{\epsilon} \mathbb{P}( R(x&#39;) \in Y)\]</span></p>
+<p>Assume datasets X and X’ such that, <span class="math inline">\(X = (x, ..., x)\)</span> contains <span class="math inline">\(n\)</span> copies of <span class="math inline">\(x\)</span> and <span class="math inline">\(X&#39; = (x&#39;, x, ..., x)\)</span>, contains <span class="math inline">\(n-1\)</span> copies of <span class="math inline">\(x\)</span> and <span class="math inline">\(x&#39;\)</span>.</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}[(S \circ R)(X) \in Y^n] &amp;= \mathbb{P}[(R)(X) \in Y^n] \label{eq7}\tag{7}\\
+&amp;= \mathbb{P}[(R)(X) \in Y]^n \label{eq8}\tag{8}\\
+&amp;&gt; e^{\epsilon} \mathbb{P}[ R(x&#39;) \in Y]\mathbb{P}[ R(x&#39;) \in Y]^{n-1} \label{eq9}\tag{9}\\
+&amp;= e^{\epsilon} \mathbb{P}[ (S \circ R)(X&#39;) \in Y^n]
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{eq7}\)</span> : The shuffle is uniformly random, so no shuffle has equal probability as any other permutation.</p>
+<p><span class="math inline">\(\ref{eq8}\)</span> : Each local randomiser is independent of other inputs</p>
+<p><span class="math inline">\(\ref{eq9}\)</span> : By assumption</p>
+</div>
+<h3 id="single-message-shuffle-there-exists-equivalent-local">Single Message Shuffle =&gt; There exists equivalent local</h3>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#shuffleHasLocalCounterpart">
+Proof
+</button>
+<div id="shuffleHasLocalCounterpart" class="collapse">
+Assume there is an Aggregator <span class="math inline">\(A_L\)</span> that takes the output of the local randomisers and applies a uniform shuffling and then executes <span class="math inline">\(A\)</span> from the Shuffle model.
+<div class="intuition">
+Note this only works because they are single bit messages. As to why see roadblocks section
+</div>
+<p>In this case <span class="math inline">\(P_L =( R, A_L)\)</span> has the same distribution as the shuffle model <span class="math inline">\(P\)</span> for all <span class="math inline">\(x\)</span> i.e <span class="math inline">\(P(X) \approx P_L(X)\)</span> <span class="math inline">\(\forall X \in X^n\)</span>. By the previous lemma <span class="math inline">\(R\)</span> is differentially private – which is what I needed for local DP.</p>
+</div>
 <h2 id="multi-message-shuffle-privacy-does-not-play-so-well">Multi Message Shuffle Privacy does not play so well</h2>
 <h3 id="shuffle-but-not-local">Shuffle ==&gt; but not local</h3>
-<p>There exists a multi-message shuffled protocol that is <span class="math inline">\(\epsilon\)</span>-differentially private for all ε ≥ 0 but its randomizer is not <span class="math inline">\(\epsilon\)</span>-differentially private for any finite ε.</p>
+<div class="lemma">
+There exists a multi-message shuffled protocol that is <span class="math inline">\(\epsilon\)</span>-differentially private for all <span class="math inline">\(\epsilon \geq 0\)</span> but its randomiser is not DP for any <span class="math inline">\(\epsilon\)</span>.
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#multishuffleLocalBreaks">
+Proof
+</button>
+<div id="multishuffleLocalBreaks" class="collapse">
+Consider <span class="math inline">\(R\)</span> on input <span class="math inline">\(x \in \{0, 1\}\)</span> such that it outputs two messages x and 1-x. The Shuffle output <span class="math inline">\((S \circ R)(X)\)</span> consists of n 0’s and n 1’s in any possible order. So for two <span class="math inline">\(X\)</span> and <span class="math inline">\(X&#39;\)</span> the ouputs are indistinguishable. However R(x) reveals the input value and is not local DP at all.
+</div>
 <h3 id="shuffle-randomiser-not-dp">Shuffle ==&gt; Randomiser not DP</h3>
+<p>We note that it is without loss of accuracy or privacy to suppose that a randomizer shuffles its messages prior to sending them to the shuffler. We call these pre-shuffle randomizers. Observe that the pre-shuffle version of R defined above, satisfied <span class="math inline">\(0-DP\)</span>. One might conjecture Claim 4.2 holds for pre-shuffle randomizers and thus generalize Theorem 4.1. But that too is not the case</p>
+<div class="lemma">
+There exists a multi-message shuffled protocol that is <span class="math inline">\(\epsilon\)</span>-differentially private for some finite <span class="math inline">\(\epsilon\)</span> but its pre-shuffle randomizer is not <span class="math inline">\(\epsilon\)</span>-differentially private for any finite <span class="math inline">\(\epsilon\)</span>.
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#multishuffleLocalBreaks2">
+Proof
+</button>
+<div id="multishuffleLocalBreaks2" class="collapse">
+<p>Consider the randomiser <span class="math inline">\(R^{gap}\)</span> which takes in input <span class="math inline">\(x \in \{0 , 1 \}\)</span> and outputs 4 binary messages/bits. If the input is 0 all 16 values are possible. If the input is 1, then the output cannot have 2 1’s in the output. Note that if we saw output (0,1,1,0) we would know the input value. Thus <span class="math inline">\(R^{gap}\)</span> cannot be DP. However for <span class="math inline">\(n \geq 2\)</span>, the shuffle output <span class="math inline">\((S \circ R)(x)\)</span> can generate all possible values in <span class="math inline">\(\{0,1 \}^4n\)</span>, thereby giving us perfect shuffle privacy.</p>
+<div class="question">
+<p>I do not fully understand why yet – but they did give a reason.</p>
+</div>
+</div>
 <h2 id="important-papers">Important Papers</h2>
 <ol type="1">
 <li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of multiple anonymous messages</a></li>

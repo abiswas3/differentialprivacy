@@ -142,19 +142,28 @@ h3[id^="lemma"] {
     color: orange;
 }
 
+.lemma{
+    color: orange;
+}
+
+.theorem{
+    color:  #218001;    
+}
+
 .algorithm{
     border:1px solid black;
 }
 .intuition{
     color: purple;
 }
+
 .question{
     color: red;
 }
+
 .collapse{
     background-color: #ABBAEA;
     border:1px solid black;
-    /* color: red; */
 }
-}
+
     	
