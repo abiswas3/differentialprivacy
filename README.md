@@ -24,6 +24,7 @@ included in textbooks.
 
 ### Local Privacy 
 
+* [Frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
 * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html)
 
 ### Shuffle Privacy 
