@@ -12,6 +12,7 @@
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
   <link rel="stylesheet" href="../blog.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -28,6 +29,32 @@
 </head>
 <body>
 <h1 id="concentration-inequalities">Concentration Inequalities</h1>
+<h2 id="some-basic-definitions">Some basic definitions</h2>
+<p>It is useful to take p-th root of the moments, which leads to the notion of the <span class="math inline">\(L^p\)</span> norm of a random variable:</p>
+<h2 id="sub-gaussian-distributions">Sub-gaussian distributions</h2>
+<p>A random variable <span class="math inline">\(X\)</span> is sub-gaussian if it has one of the following properties. It can be shown that all the properties are equivalent.</p>
+<ul>
+<li><p>Tail bound: The probability that the variable is far off from its mean shrinks exponentially. (Note if doesn’t happen, means can’t be used. If we can’t use means then the algorithm is pretty useless)</p></li>
+<li><p>Moments</p></li>
+<li><p>Moment Generating function:</p></li>
+</ul>
+<h3 id="mini-exercise">Mini-exercise</h3>
+<p>Show that the normal distribution and the bernoulli random variables are sub-gaussian, Show that the poisson and exponential distribution are not.</p>
+<p>Show that any bounded random variable is sub gaussian.</p>
+<h3 id="proposition-1.1-tail-bound">Proposition 1.1 (Tail bound)</h3>
+<p>Let X be a Gaussian random variable with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span> then for any <span class="math inline">\(t &gt; 0\)</span>, it holds</p>
+<span class="math display">\[\begin{align*}
+\end{align*}\]</span>
+<h2 id="jensens-inequality">Jensen’s Inequality</h2>
+<h2 id="minkowskis-inequality">Minkowski’s Inequality</h2>
+<h2 id="cauchy-schwarz">Cauchy-Schwarz</h2>
+<h2 id="holders-inequality">Holder’s inequality</h2>
+<h2 id="integral-identity">Integral identity</h2>
+<h2 id="appendix">Appendix</h2>
+<ul>
+<li><a href="https://towardsdatascience.com/moment-generating-function-explained-27821a739035">How are moment Generating functions used</a></li>
+<li><a href=""></a></li>
+</ul>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
 </div>

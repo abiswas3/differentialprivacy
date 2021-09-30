@@ -11,7 +11,7 @@
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="blog.css">
+  <link rel="stylesheet" href="main.css">
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -28,35 +28,27 @@
 </head>
 <body>
 <div class=container>
-<h1 id="table-of-contents">Table of Contents</h1>
-<p>As a general guide for these notes: Definitions are always in blue, lemmas are written in orange and theorems are written in Green. Excerpts that provide intuition are displayed in purple and open questions and confusions are listed in red.</p>
-<h2 id="general-material-that-is-well-understood">General Material that is well understood</h2>
-<p>This is material that is usually common across a subset of papers. Some of it has been repeated enough number of times to be included in textbooks.</p>
+<h1 id="statistical-privacy">Statistical privacy</h1>
+<p>These are my notes of various textbook chapters and research papers in differential privacy. These notes reflect my attempts to understand the directions of research in statistical privacy. As a general guide for these notes: Definitions are always in blue , lemmas are written in orange and theorems are written in Green. Excerpts that provide intuition are displayed in purple and open questions and confusions are listed in red. The notes are divided into multiple views:</p>
+<h2 id="individual-research-papersmathematical-tools-to-understand-privacy">Individual research papers/mathematical tools to understand privacy</h2>
+<p>Sometimes I study a research paper or textbook chapter in isolation to understand its contents. Usually this is done to understand background material that will help me tackle a problem I care about. There is little big qpicture in those notes. In this notes I cannot always explain why someone not interested in differential privacy should care about these results.</p>
 <ul>
-<li><a href="Definitions/">Differential Privacy Cheat sheet</a></li>
-<li><a href="ConcentrationInequalities/">Concentration Inequalities: building blocks to understanding proofs</a></li>
-<li><a href="ExponentialMechanism/">Exponential Mechanism</a></li>
-</ul>
-<h2 id="specific-research-papers">Specific Research Papers</h2>
-<h3 id="central-privacy">Central Privacy</h3>
-<ul>
+<li><a href="Definitions/">Differential Privacy Cheat sheet</a>: I define central differential privacy, local differential privacy and shuffle privacy. Introduce well the laplace mechanism - what it is and why it works. Simulation code to understand <span class="math inline">(<em>α</em>, <em>β</em>)</span> accuracy guarantees for the laplace mehanism is provided.</li>
+<li><a href="ConcentrationInequalities/">Concentration Inequalities: building blocks to understanding proofs</a>: A lot of the alogirithms in this area try to approximate the expected value of random variables. Knowing when sample means are a good representation of expected mean seems to be a building block for this area and machine learning theory.</li>
+<li><a href="ExponentialMechanism/">Exponential Mechanism</a>: A theoretical technique developed for when the utility of outputs being considered are very sensitive to perturbation. Examples include auction prices or voting counts. A little bit of noise could alter the final outcome drastically. I describe the theoretical framework with a few simple non practical examples.</li>
+<li><a href="ShufflePrivacy/index.html">Separating Shuffle and Local Privacy: Albert Cheu</a>: A research paper that attempts to understand how shuffle privacy and local privacy are different in theoretical guarantees for the simple mean estimation problem. I go through the paper and re-derive the proofs and try to build some intution as to why the algorithms work.</li>
 <li><a href="LearningMultiConcepts/">Simultaneous Private Learning of Multiple Concepts</a></li>
-</ul>
-<h3 id="local-privacy">Local Privacy</h3>
-<ul>
 <li><a href="FrequencyEstimationSurvey/index.html">Frequency Estimation with local privacy: A survey</a></li>
 <li><a href="SuccintHist-Bassily/index.html">Succint Histogram Problem – local privacy</a></li>
 </ul>
-<h3 id="shuffle-privacy">Shuffle Privacy</h3>
+<h2 id="specific-problems-and-how-a-series-a-research-papers-connect-them">Specific problems and how a series a research papers connect them</h2>
+<p>Sometimes I care about a general problem or application like centrally private mean estimation will go through material related to the problem and analyse the solutions to get an idea of the contributions with regard to that problem only. In these notes I should be able to explain to a non technical person, why the results are important. Additionally, I write code to simulate the alogorithms and check for gaps in practical deployement.</p>
 <ul>
-<li><a href="ShufflePrivacy/index.html">Separating Shuffle and Local Privacy: Alber Cheu</a></li>
+<li><a href="">Private binary Mean Estimation</a></li>
+<li><a href="">Private Password Lists</a></li>
 </ul>
-<h3 id="frquency-lists">Frquency Lists</h3>
-<ul>
-<li><a href="">Password Frequency List</a></li>
-<li><a href="">Private Anonymised histograms</a></li>
-</ul>
-<h2 id="work-with-graham">Work with Graham</h2>
+<h2 id="my-own-work">My own work</h2>
+<p>In this seciton I describe original work that I am thinking of. Most of this work is done under the suprvision of <a href="https://warwick.ac.uk/fac/sci/dcs/people/graham_cormode/">Graham Cormode</a></p>
 <ul>
 <li><a href="">Re-deriving and extending Trie heavy hitters</a></li>
 </ul>

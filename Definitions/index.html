@@ -64,6 +64,67 @@ e^{\epsilon}\]</span> for all subsets <span class="math inline">\(T \subseteq Y\
 <p>A shuffled protocol <span class="math inline">\(P = (R,A)\)</span> satisfies <span class="math inline">\((\epsilon, \delta)\)</span>-differential privacy for <span class="math inline">\(n\)</span> users if the algorithm <span class="math inline">\((S \circ R) : X^n \rightarrow Y^∗\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private.</p>
 <p>This is saying, for two neighbouring datasets <span class="math inline">\(x \sim x&#39;\)</span>, the probability of seeing the same permutation after shuffling the outputs of all the local randomisers is concentrated with high probability 1 - <span class="math inline">\(\delta\)</span>.</p>
 <p>The hope is the following: Because we have this shuffle phase, perhaps we can add a little less noise to the local randomisers thereby getting a little bit more accuracy.</p>
+<h2 id="definition-shuffleDP">L1 Sensitivity</h2>
+<p>The <span class="math inline">\(l_1\)</span>-sensitivity of a function <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow \mathbb{R}^k\)</span> is defined as</p>
+<p><span class="math display">\[\Delta f = \text{max}_{|| x - x&#39; ||_1 \leq 1} || f(x) - f(x&#39;)||_1\]</span> for any <span class="math inline">\(x, x&#39; \in \mathbb{N}^{|X|}\)</span>. Simply put, for neighbouring datasets <span class="math inline">\(x, x&#39;\)</span>, what is the maximum this function can differ by. High sensitive functions are not good differential privacy, as by changing just one input we see big differences in outputs – thereby providing information about the unique input to the function.</p>
+<h2 id="theorem-lapIsPrivate">Laplace Mechanism</h2>
+<p>Given <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow \mathbb{R}^k\)</span>, then the laplace mechanism is defined as</p>
+<p><span class="math display">\[M_L\Big(x, f(.), \epsilon \Big) = f(x) + (Y_1, \dots, Y_k)\]</span> where <span class="math inline">\(Y_i \sim Lap(\frac{\Delta(f)}{\epsilon})\)</span>. <strong>The laplace mechanism preserves pure differential privacy</strong></p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#laplaceMech">
+Proof
+</button>
+<div id="laplaceMech" class="collapse">
+<p>Let <span class="math inline">\(f_x(z)\)</span> be the density function for <span class="math inline">\(M_L\Big(x, f(.), \epsilon \Big)\)</span>. We want to show that <span class="math inline">\(\frac{f_x(z)}{f_x&#39;(z)} \leq e^{\epsilon}\)</span> where <span class="math inline">\(x, x&#39;\)</span> differ by one element only.</p>
+<p>We have <span class="math inline">\(z_i= f_i(x) + Y_i\)</span>, the only randomness is from <span class="math inline">\(Y_i\)</span>, thus we have just scaled the noise <span class="math inline">\(Y_i\)</span> by a constant. Thus <span class="math inline">\(f_x(z)\)</span> is just a laplace random variable with mean <span class="math inline">\(f_i(x)\)</span>.</p>
+<span class="math display">\[\begin{align*}
+\frac{f_x(z)}{f_x&#39;(z)} &amp;= \prod_{i=1}^k \frac{\frac{exp\{-|f_i(x) - z_i|\epsilon}{\Delta f}\}}{\frac{exp\{-|f_i(x&#39;) - z_i|\epsilon}{\Delta f}\}} \\
+&amp;= \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}\Big(|f_i(x&#39;) - z_i| - |z_i - f_i(x)| \Big)\} \\
+&amp;\leq \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}|f_i(x&#39;) - f_i(x)| \} \label{eq1}\tag{1}\\
+&amp;= exp \{ \frac{\epsilon}{\Delta f}\sum_{i=1}^k|f_i(x&#39;) - f_i(x)| \}\\
+&amp;= exp \{ \frac{\epsilon}{\Delta f}||f(x&#39;) - f(x)||_1 \} \\
+&amp;\leq exp \{ \frac{\epsilon}{\Delta f} \Delta f \} \label{eq2}\tag{2} \\
+&amp;= exp(\epsilon)
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{eq1}\)</span>: Triangle inequality: <span class="math inline">\(|A - C| \leq |A - B| + |B - C|\)</span></p>
+<p><span class="math inline">\(\ref{eq2}\)</span>: Definitition of <span class="math inline">\(l_1\)</span>-sensitivity</p>
+</div>
+<h4 id="binary-sums-or-real-valued-sums-counting-and-histogram-queries">Binary sums or real valued sums (counting and histogram queries)</h4>
+<p>Consider the example where each member of the popuplation <span class="math inline">\(x \in X\)</span> holds a value in <span class="math inline">\(\{ 0, 1\}\)</span> or in some bounded set of integers. We want to estimate the sum of values for the population. Then the sensitivity for this sum query function is either 1 for binary values or the suprenum value of the population of integers. To report sums differentially privately, the noise needed is <span class="math inline">\(O(\frac{\Delta f}{\epsilon})\)</span>. In the case of two neighbouring histograms, the sensitivity is given by the maximum difference between two cell values.</p>
+<h3 id="theorem-lapAcc">Accuracy of the Laplace Mechanism</h3>
+<p><span class="math inline">\(\alpha, \beta\)</span> accuracy</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#lapAcc">
+Proof
+</button>
+<div id="lapAcc" class="collapse">
+
+</div>
+<h3 id="an-experiment-validating-the-theoretical-bound">An experiment validating the theoretical bound</h3>
+<p>Writing a computer program to validate the above theory. The concentration inequality says that if I performed the laplace mechanism once then - the likelihood one of my dimensions is off by <span class="math inline">\(\log \frac{k}{\beta}\frac{\Delta f}{\epsilon}\)</span> is <span class="math inline">\(\beta\)</span>. Put in otherwords, say I did the laplace mechanism a gazillion times on my output. Only <span class="math inline">\(\beta\)</span> fraction of times will I get a bad event. A bad event is when the laplace mechanism leads to an output very far from the truth. So as an experiment, I generated many noisy but private outputs and observed how often the infinity norm went outside the boundary of the theorem. Was it more than theory claimed or less. It turns out when the number trials is large i.e. empirical means are close to actual means, the bound is quite tight.</p>
+<p><embed type="text/html" src="code/sample.html" width="800" height="600"></p>
+<h3 id="why-do-smooth-distributions-with-fatty-tails-work">Why do smooth distributions with fatty tails work</h3>
+<h2 id="exponential-mechanism">Exponential Mechanism</h2>
+<strong>This is a theoretical introduction of exponential mechanism. A practical application of such an idea can be found in making password lists private.</strong>
+<div class="intuition">
+While final result of <a href="../passwordLists/">the password list problem</a> is relatively uninteresting to me, the mathematics in the papers is quite interesting to me.
+</div>
+<p>Consider case where output of a function is very sensitive. Outputs like voting counts or auction prices. Adding noise to these values could damaging results. Take for example predicting the winner of the Balon D’or football prize. Say 30 voters voted for Cristiano Ronaldo, and 29 voters voted for Lionel Messi. The fair action of concern is to award Ronaldo the prize. No one really cares how close we were in approximating the number votes in terms of infinity norm to the actual value, as long as the right player wins. In cases like this, adding noise is not a viable solution as there is a significant chance that we get a terrible outcome.</p>
+<p>What happens when an algorithm outputs values in an arbitrary range <span class="math inline">\(R\)</span> that is not <span class="math inline">\(\mathbb{R}^k\)</span> for <span class="math inline">\(k \geq 1\)</span>. This is what the exponential mechanism was designed for. Given some arbitrary range <span class="math inline">\(R\)</span>, the exponential mechanism is defined with respect to some utility function <span class="math inline">\(u: \mathbb{N}^{|X|} \times R \rightarrow \mathbb{R}\)</span>.</p>
+<strong>Do not really understand</strong> we care only about the sensitivity of u with respect to its database argument; it can be arbitrarily sensitive in its range argument.
+<div class="intuition">
+What they mean is that the <span class="math inline">\(r\)</span> is somewhat of a free parameter. Given two neighbouring datasets <span class="math inline">\(x, x&#39;\)</span> the sensitivity is the maximum difference in their utility: considering all values of the range those database arguments map to.
+</div>
+<p><span class="math display">\[\Delta u := \text{max}_{r \in R}\text{max}_{|| x - x&#39;||_1 \leq 1} | u(x,r) - u(x&#39;,
+r)|\]</span></p>
+<h3 id="definition--expMech">The mechanism</h3>
+<p>The basic idea is given some utility function, for a given <span class="math inline">\(x \in \mathbb{N}^{|X|}\)</span>, we want to the mechanism to output <span class="math inline">\(r \in R \propto exp \Big( \frac{\epsilon}{2\Delta u}u(x, r)\Big)\)</span></p>
+<h3 id="exponential-mechanism-is-purely-private">Exponential Mechanism is purely private</h3>
+<p>The exponential mechanism satisfies <span class="math inline">\((\epsilon, 0)\)</span> privacy. Thus there is never a chance of a bad event in the privacy sphere.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#expMechIsPrivate">
+Proof
+</button>
+<div id="expMechIsPrivate" class="collapse">
+
+</div>
 <h2 id="important-papers">Important Papers</h2>
 <ol type="1">
 <li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of multiple anonymous messages</a></li>
