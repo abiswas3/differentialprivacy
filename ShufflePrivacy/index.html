@@ -23,12 +23,17 @@
   
   <ul class="bar">
     <li class="barli"><a class="active" href="https://abiswas3.github.io/">Home</a></li>
-    <li class="barli"><a href="/index.html">Notes on Differential Privacy</a></li>
+    <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li>
   </ul>
 </head>
 <body>
-<div class="container">
+
+<div class=container>
 <h1 id="separting-local-and-shuffle-privacy">Separting local and Shuffle Privacy</h1>
+<h2 id="main-takeaways">Main Takeaways</h2>
+<p>The authors propose a protocol for computing sums for histograms with error independent of the domain size/number of bins <span class="math inline">\(d\)</span> given a fixed privacy budget. This implies an arbitrarily large gap in sample complexity between the shuffled and local models. The problem was motivated by the following observation:</p>
+<p>`<code>a locally private d-bin histogram has, on some bin, error scaling with √log d. But when users trust the analyzer with their raw data (the central model), there is an algorithm that achieves error independent of d on every bin.</code></p>
+<p>The best known sample complexity for the local model can be found in [<a href="https://arxiv.org/pdf/1504.04686.pdf" title="Local, Private, Efficient Protocols for Succinct Histograms">3</a>] and for the central model in [<a href="https://arxiv.org/pdf/1511.08552.pdf" title="Simultaneous Private Learning of Multiple Concepts">4</a>].</p>
 <h2 id="background-material">Background Material</h2>
 <p>This is material that we need to be able to derive the proofs in the paper. Researchers in [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>] identified a class of distributions and argue that, if <span class="math inline">\(\eta\)</span> is sampled from such a distribution, adding <span class="math inline">\(\eta\)</span> to any output of a 1-sensitive function ensures differential privacy of that sum. Histogram sums where records differ by one count are 1-sensitive functions; thus adding a noise drawn from such a distribution will get you diffential privacy.</p>
 <h3 id="definition-smooth">Smooth Distributions</h3>
@@ -326,7 +331,11 @@ Proof
 <ol start="2" type="1">
 <li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn privately</a></li>
 </ol>
-</div>
+<ol start="3" type="1">
+<li><a href="https://arxiv.org/pdf/1504.04686.pdf">Local, Private, Efficient Protocols for Succinct Histograms</a>
+</div></li>
+</ol>
+<p><a href="https://arxiv.org/pdf/1511.08552.pdf">Simultaneous Private Learning of Multiple Concepts</a></p>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
 </div>

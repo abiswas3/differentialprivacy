@@ -1,6 +1,3 @@
-<div class=container>
-# Separting local and Shuffle Privacy
-
 \newcommand{\P}[3]{\mathbb{P}_{#2 \sim #3}\Big[#1\Big]}
 \newcommand{\D}{\mathbb{D}}
 \newcommand{\N}{\mathbb{N}}
@@ -13,6 +10,25 @@
 \newcommand{\PHist}{\textit{P}_{\epsilon, \delta}^{hist}}
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
+<div class=container>
+# Separting local and Shuffle Privacy
+
+## Main Takeaways
+
+The authors propose a protocol for computing sums for histograms with
+error independent of the domain size/number of bins $d$ given a fixed
+privacy budget. This implies an arbitrarily large gap in sample
+complexity between the shuffled and local models. The problem was
+motivated by the following observation:
+
+```a locally private d-bin histogram has, on some bin, error scaling with
+√log d. But when users trust the analyzer with their raw data (the
+central model), there is an algorithm that achieves error independent
+of d on every bin.``
+
+
+The best known sample complexity for the local model can be found in
+[[3][3]] and for the central model in [[4][4]].
 
 ## Background Material 
 
@@ -594,4 +610,11 @@ give a reason. On the train I can work it out.
 
 [2]: https://arxiv.org/pdf/0803.0924.pdf  "What can we learn privately"
 2. [What can we learn privately](https://arxiv.org/pdf/0803.0924.pdf)
-</div>
+
+[3]: https://arxiv.org/pdf/1504.04686.pdf "Local, Private, Efficient Protocols
+for Succinct Histograms"
+3. [Local, Private, Efficient Protocols for Succinct
+Histograms](https://arxiv.org/pdf/1504.04686.pdf) </div>
+
+[4]: https://arxiv.org/pdf/1511.08552.pdf "Simultaneous Private Learning of Multiple Concepts"
+[Simultaneous Private Learning of Multiple Concepts]( https://arxiv.org/pdf/1511.08552.pdf)

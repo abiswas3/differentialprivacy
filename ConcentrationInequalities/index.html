@@ -23,7 +23,7 @@
   
   <ul class="bar">
     <li class="barli"><a class="active" href="https://abiswas3.github.io/">Home</a></li>
-    <li class="barli"><a href="/index.html">Notes on Differential Privacy</a></li>
+    <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li>
   </ul>
 </head>
 <body>
@@ -31,6 +31,15 @@
 <h2 id="some-basic-definitions">Some basic definitions</h2>
 <p>It is useful to take p-th root of the moments, which leads to the notion of the <span class="math inline">\(L^p\)</span> norm of a random variable:</p>
 <h2 id="sub-gaussian-distributions">Sub-gaussian distributions</h2>
+<p>A random variable <span class="math inline">\(X\)</span> is sub-gaussian if it has one of the following properties. It can be shown that all the properties are equivalent.</p>
+<ul>
+<li><p>Tail bound: The probability that the variable is far off from its mean shrinks exponentially. (Note if doesn’t happen, means can’t be used. If we can’t use means then the algorithm is pretty useless)</p></li>
+<li><p>Moments</p></li>
+<li><p>Moment Generating function:</p></li>
+</ul>
+<h3 id="mini-exercise">Mini-exercise</h3>
+<p>Show that the normal distribution and the bernoulli random variables are sub-gaussian, Show that the poisson and exponential distribution are not.</p>
+<p>Show that any bounded random variable is sub gaussian.</p>
 <h3 id="proposition-1.1-tail-bound">Proposition 1.1 (Tail bound)</h3>
 <p>Let X be a Gaussian random variable with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span> then for any <span class="math inline">\(t &gt; 0\)</span>, it holds</p>
 <p><span class="math display">\[\begin{align*}

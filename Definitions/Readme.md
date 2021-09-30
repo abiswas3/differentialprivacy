@@ -1,6 +1,7 @@
 \newcommand{\P}[3]{\mathbb{P}_{#2 \sim #3}\Big[#1\Big]}
 \newcommand{\D}{\mathbb{D}}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\RBinHist}{\textit{R}_{\epsilon, \delta}^{zsum}}
 \newcommand{\ABinHist}{\textit{A}_{\epsilon, \delta}^{zsum}}
@@ -99,6 +100,103 @@ $\delta$.
 The hope is the following: Because we have this shuffle phase, perhaps
 we can add a little less noise to the local randomisers thereby
 getting a little bit more accuracy. 
+
+
+## L1 Sensitivity {#definition-shuffleDP}
+
+The $l_1$-sensitivity of a function $f: \N^{|X|} \rightarrow \R^k$ is defined as 
+
+$$\Delta f = \text{max}_{|| x - x' ||_1 \leq 1} || f(x) - f(x')||_1$$
+for any $x, x' \in \N^{|X|}$. Simply put, for neighbouring datasets
+$x, x'$, what is the maximum this function can differ by. High
+sensitive functions are not good differential privacy, as by changing
+just one input we see big differences in outputs -- thereby providing
+information about the unique input to the function.
+
+
+
+## Laplace Mechanism
+
+Given $f: \N^{|X|} \rightarrow \R^k$, then the laplace mechanism is
+defined as 
+
+$$M_L\Big(x, f(.), \epsilon \Big) = f(x) + (Y_1, \dots, Y_k)$$ where
+$Y_i \sim Lap(\frac{\Delta(f)}{\epsilon})$. **The laplace mechanism
+preserves pure differential privacy**
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#laplaceMech">Proof</button>
+<div class=collapse id=laplaceMech>
+
+Let $f_x(z)$ be the density function for $M_L\Big(x, f(.), \epsilon
+\Big)$. We want to show that $\frac{f_x(z)}{f_x'(z)} \leq
+e^{\epsilon}$ where $x, x'$ differ by one element only.
+
+We have $z_i= f_i(x) + Y_i$, the only randomness is from $Y_i$, thus
+we have just scaled the noise $Y_i$ by a constant. Thus $f_x(z)$ is
+just a laplace random variable with mean $f_i(x)$.
+
+
+\begin{align*}
+\frac{f_x(z)}{f_x'(z)} &= \prod_{i=1}^k \frac{\frac{exp\{-|f_i(x) - z_i|\epsilon}{\Delta f}\}}{\frac{exp\{-|f_i(x') - z_i|\epsilon}{\Delta f}\}} \\
+&= \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}\Big(|f_i(x') - z_i| - |z_i - f_i(x)| \Big)\} \\
+&\leq \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}|f_i(x') - f_i(x)| \} \label{eq1}\tag{1}\\
+&= exp \{ \frac{\epsilon}{\Delta f}\sum_{i=1}^k|f_i(x') - f_i(x)| \}\\
+&= exp \{ \frac{\epsilon}{\Delta f}||f(x') - f(x)||_1 \} \\
+&\leq exp \{ \frac{\epsilon}{\Delta f} \Delta f \} \label{eq2}\tag{2} \\
+&= exp(\epsilon)
+\end{align*}
+
+$\ref{eq1}$: Triangle inequality: $|A - C| \leq |A - B| + |B - C|$
+
+$\ref{eq2}$: Definitition of $l_1$-sensitivity
+</div>
+
+#### Binary sums or real valued sums (counting and histogram queries)
+
+Consider the example where each member of the popuplation $x \in X$
+holds a value in $\{ 0, 1\}$ or in some bounded set of integers. We
+want to estimate the sum of values for the population. Then the
+sensitivity for this sum query function is either 1 for binary values
+or the suprenum value of the population of integers. To report sums
+differentially privately, the noise needed is $O(\frac{\Delta
+f}{\epsilon})$. In the case of two neighbouring histograms, the
+sensitivity is given by the maximum difference between two cell
+values.
+
+### Accuracy of the Laplace Mechanism
+
+$\alpha, \beta$ accuracy
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#lapAcc">Proof</button>
+<div class=collapse id=lapAcc>
+
+</div>
+
+
+### An experiment validating the theoretical bound
+
+Writing a computer program to validate the above theory. The
+concentration inequality says that if I performed the laplace
+mechanism once then - the likelihood one of my dimensions is off by
+$\log \frac{k}{\beta}\frac{\Delta f}{\epsilon}$ is $\beta$. Put in
+otherwords, say I did the laplace mechanism a gazillion times on my
+output. Only $\beta$ fraction of times will I get a bad event. A bad
+event is when the laplace mechanism leads to an output very far from
+the truth. So as an experiment, I generated many noisy but private
+outputs and observed how often the infinity norm went outside the
+boundary of the theorem. Was it more than theory claimed or less. It
+turns out when the number trials is large i.e. empirical means are
+close to actual means, the bound is quite tight.
+
+ <embed type="text/html" src="code/sample.html" width="800" height="600"> 
+
+### Pictures
 
 ## Important Papers
 
