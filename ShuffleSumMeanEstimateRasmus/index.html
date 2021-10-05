@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>main</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+  
+  
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+</head>
+<body>
+
+<div class="container">
+<h1 id="differentially-private-aggregation-in-the-shuffle-model-almost-central-accuracy-in-almost-a-single-message">Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message</h1>
+<p><a href="./paper.pdf">Paper being discussed</a> published @ (ICML) 2021</p>
+<h2 id="problem-statement">Problem Statement</h2>
+<p><code>In this work, we study the problem of summing (aggregating) real numbers or integers</code></p>
+<p>We have a population of <span class="math inline">\(N\)</span> people. Each person holds a value <span class="math inline">\(x_i\)</span> in the bounded integers or bounded reals. We want to estimate the sum or the mean privately. Under central privacy, the <a href="../Definitions/index.html">laplace mechanism</a> if we add laplace noise with scale parameter <span class="math inline">\(\frac{\Delta f}{\epsilon}\)</span> or <span class="math inline">\(O(\frac{1}{\epsilon})\)</span> we get pure differential privacy and pretty good accuracy with respect to the L1 norm. <span class="math inline">\(\Delta f=1\)</span> if the <span class="math inline">\(x_i \in [0,1]\)</span>, <span class="math inline">\(\Delta f\)</span> is the maximum value in the finite population set for bounded integers and is the sup of the set of finite bounded reals.</p>
+<p>If we wanted to guarantee privacy under local privacy then we have to incur an error of <span class="math inline">\(\Theta_{\epsilon}(\sqrt{n})\)</span> which means the that the bound is tight. The proof can be found <a href="">here</a>.</p>
+<p>So the question the authors of this paper care about is that under the shuffle model (which is thought of a mid way between central and local); how close to the central guarantees can we get?</p>
+<h2 id="contribution">Contribution</h2>
+<p>This problem has been attacked by a few different researchers. They can be divided into single messages and multiple messages. Multi message means each user sends more than their perturbed input. They add more bits to fuzz the output.</p>
+<ul>
+<li>Under the single message communication setting (users cannot set extra material to the shuffler), the smallest absolute error was achieved by <a href="">Borja and crew</a> in <span class="math inline">\(\tilde{\Theta}(n^{1/6})\)</span>.
+<div class="question">
+Why is there a <span class="math inline">\(\tilde{\Theta}\)</span>
+</div></li>
+<li>The multi-message shuffle protocols exis[t with a near-central accuracy of <span class="math inline">\(O(\frac{1}{\epsilon})\)</span> but the problem is that number of messages grows quite large. Specifically, it must be at least 3 and grows <span class="math inline">\(\frac{\log(1/\delta)}{\log n}\)</span> per user.</li>
+</ul>
+<p><strong>Contribution: Our work shows that near-central accuracy and near-zero communication overhead are possible for real aggregation over sufficiently many users</strong></p>
+<h2 id="what-else-is-needed-to-fully-understand-their-work">What else is needed to fully understand their work</h2>
+<p>The main proof depends on 3 other papers.</p>
+<ul>
+<li><a href="https://timroughgarden.org/papers/priv.pdf">Discrete Laplace Mechanism or Geometric Mechanism</a>
+<ul>
+<li><a href="https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution">A very helpful post</a></li>
+<li>The LPA (Definition 5.2) perturbs query results with noise drawn from the continuous Laplace distribution. When re- turned results are expected to be integers, such mechanism cannot be directly applied. To address this, the authors linked above introduced two privacy mechanisms that ensure pure-differential privacy by perturbing their results with integer noise and truncating noisy values if needed. Their mechanisms work only for queries with sensitivity equal to one</li>
+</ul></li>
+<li><a href="http://www.mathcs.emory.edu/aims/pub/goryczka15tdsc.pdf">Infinite divisibility of Discrete Laplace distributions</a> The idea is simple: You want to get noise to add up to a certain value but you want that noise to be a result of many sums of smaller noise. With Gaussian random variables this is very simple. Since the sum of Gaussian RV is also Gaussian, we can play around mean the mean and variance by just scaling it. It’s also possible to do the same with Laplace random variables by describing it as a sum of
+<ul>
+<li>Gamma variables</li>
+<li>Gaussian Variables</li>
+<li>Laplace variables and 1 beta It is also possible to do the same for the discrete laplacian distribution described <a href="https://timroughgarden.org/papers/priv.pdf">in</a> by sampling from:</li>
+<li>Polya Distribution.</li>
+</ul></li>
+</ul>
+<p>In the next section I re-derive the relevant material for proving the contents of this paper.</p>
+<ul>
+<li><a href="https://arxiv.org/pdf/2106.04247.pdf">Near-optimal accuracy with vanishing communication overhead</a></li>
+</ul>
+<h2 id="requisite-background-material">Requisite Background Material</h2>
+<h3 id="lemma-discreteLaplace">Connection between the laplace mechanism and 2 sided geometric mechanism</h3>
+<p>Consider two random variables: <span class="math inline">\(\Delta\)</span>, distributed according to the two-sided geometric distribution; and <span class="math inline">\(\Delta^{&#39;}\)</span>, which is drawn from the Laplace distribution and then rounded to the nearest integer. It can be shown that <span class="math inline">\(\mathbb{P}_{i \sim \mathbb{Z}}\Big[\Delta=i\Big]*\frac{1+\alpha}{2\sqrt{\alpha}}=\mathbb{P}_{i \sim \mathbb{Z}}\Big[\Delta^{&#39;}=i\Big]\)</span></p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#discreteLaplace">
+Proof
+</button>
+<div id="discreteLaplace" class="collapse">
+<pre><code>    TODO</code></pre>
+</div>
+<h3 id="lemma-discreteLaplaceDP">Adding noise from the two sided geometric distribution to 1-sensitive query outputs is DP</h3>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#discreteLaplaceDP">
+Proof
+</button>
+<div id="discreteLaplaceDP" class="collapse">
+<pre><code>    TODO</code></pre>
+</div>
+<h3 id="lemma-discreteLaplaceDiv">Infinite divisibility of the Geometric distribution</h3>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#discreteLaplaceDivProof">
+Proof
+</button>
+<div id="discreteLaplaceDivProof" class="collapse">
+<pre><code>TODO</code></pre>
+</div>
+</div>
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>

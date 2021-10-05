@@ -13,6 +13,8 @@
 <div class=container>
 # Separting local and Shuffle Privacy
 
+<div class="question">Is there a major difference between mean estimation for histograms and regular mean estimation of a discrete population? [[5][5]] does the same problem as this paper but not for histograms. Therefore histograms as they are bucketted, must be easier?</div>
+
 ## Main Takeaways
 
 The authors propose a protocol for computing sums for histograms with
@@ -21,10 +23,10 @@ privacy budget. This implies an arbitrarily large gap in sample
 complexity between the shuffled and local models. The problem was
 motivated by the following observation:
 
-```a locally private d-bin histogram has, on some bin, error scaling with
-√log d. But when users trust the analyzer with their raw data (the
+```a locally private d-bin histogram has, on some bin, error scaling with √log d. But when users trust the analyzer with their raw data (the
 central model), there is an algorithm that achieves error independent
-of d on every bin.``
+of d on every bin.
+```
 
 
 The best known sample complexity for the local model can be found in
@@ -123,10 +125,11 @@ major findings:
    an arbitrarily large gap in sample complexity between the shuffled
    and local models. <div class=question>I have not verified myself
    what the accuracy guarantees of known local models are. Perhaps
-   this is something I should do.</div>
+   this is something I should do. But Grahams survey paper does this</div>
 2. Local and shuffle privacy are equivalent when we impose the
    constraints of pure differential privacy and single-message
    randomizers.
+   Not anymore: <div class="question"> [Now there (Sep 2021)](/ShuffleSumMeanEstimateRasmus/) there is a paper that gives near central guarantees for shuffle DP with near constant message complexity. Howo does this affect this papers findings? </div>
 
 ## The binary histogram
 
@@ -618,3 +621,7 @@ Histograms](https://arxiv.org/pdf/1504.04686.pdf) </div>
 
 [4]: https://arxiv.org/pdf/1511.08552.pdf "Simultaneous Private Learning of Multiple Concepts"
 [Simultaneous Private Learning of Multiple Concepts]( https://arxiv.org/pdf/1511.08552.pdf)
+
+
+[5]: https://arxiv.org/pdf/2109.13158.pdf "Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message"
+[Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message](https://arxiv.org/pdf/2109.13158.pdf)

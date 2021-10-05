@@ -6,5 +6,6 @@ cd ConcentrationInequalities/ && ./build && cd ../
 cd ExponentialMechanism/ && ./build && cd ../
 cd SuccintHist-Bassily && ./build && cd ../
 cd FrequencyEstimationSurvey && ./build && cd ../
+cd ShuffleSumMeanEstimateRasmus && ./build && cd ../
 # cd private_histograms/ && ./build && cd ../
 

@@ -45,6 +45,7 @@ about these results.
 * [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
 * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html)
 * [Pure LDP](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang-tianhao.pdf)
+* [Shuffle: Almost Central Almost no communication](ShuffleSumMeanEstimateRasmus/)
 
 ## Specific problems and how a series a research papers connect them
 
@@ -56,7 +57,15 @@ explain to a non technical person, why the results are
 important. Additionally, I write code to simulate the alogorithms and
 check for gaps in practical deployement.
 
-* [Private binary Mean Estimation]()
+* [Private Mean Estimation](): In this work, we study the problem of
+  summing (aggregating) real numbers or integers, a basic primitive in
+  numerous machine learning tasks. People have attempted this under
+  many different assumptions and come with different solutions. These
+  notes summarise the works from:
+  * Laplace
+  * Pagh
+  * Cheu
+  * Cormode
 * [Private Password Lists]()
 * [Frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
 

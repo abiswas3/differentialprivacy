@@ -241,6 +241,7 @@ to.</div>
 $$\S{u} := \max_{r \in R}\max_{|| x - x'||_1 \leq 1} | u(x,r) - u(x',
 r)|$$
 
+
 ### The mechanism {#definition--expMech}
 
 The basic idea is given some utility function, for a given $x \in
