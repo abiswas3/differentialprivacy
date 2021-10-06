@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>README</title>
-  <style type="text/css">
+  <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="main.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -21,7 +21,7 @@
   
   
   <ul class="bar">
-    <li class="barli"><a class="active" href="https://abiswas3.github.io/">Home</a></li>
+    <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
@@ -32,16 +32,23 @@
 <p>These are my notes of various textbook chapters and research papers in differential privacy. These notes reflect my attempts to understand the directions of research in statistical privacy. As a general guide for these notes: Definitions are always in blue , lemmas are written in orange and theorems are written in Green. Excerpts that provide intuition are displayed in purple and open questions and confusions are listed in red. The notes are divided into multiple views:</p>
 <h2 id="individual-research-papersmathematical-tools-to-understand-privacy">Individual research papers/mathematical tools to understand privacy</h2>
 <p>Sometimes I study a research paper or textbook chapter in isolation to understand its contents. Usually this is done to understand background material that will help me tackle a problem I care about. There is little big qpicture in those notes. In this notes I cannot always explain why someone not interested in differential privacy should care about these results.</p>
+<h3 id="background">Background</h3>
 <ul>
 <li><a href="Definitions/">Differential Privacy Cheat sheet</a>: I define central differential privacy, local differential privacy and shuffle privacy. Introduce well the laplace mechanism - what it is and why it works. Simulation code to understand <span class="math inline">(<em>α</em>, <em>β</em>)</span> accuracy guarantees for the laplace mehanism is provided.</li>
 <li><a href="ConcentrationInequalities/">Concentration Inequalities: building blocks to understanding proofs</a>: A lot of the alogirithms in this area try to approximate the expected value of random variables. Knowing when sample means are a good representation of expected mean seems to be a building block for this area and machine learning theory.</li>
-<li><a href="ExponentialMechanism/">Exponential Mechanism</a>: A theoretical technique developed for when the utility of outputs being considered are very sensitive to perturbation. Examples include auction prices or voting counts. A little bit of noise could alter the final outcome drastically. I describe the theoretical framework with a few simple non practical examples.</li>
-<li><a href="ShufflePrivacy/index.html">Separating Shuffle and Local Privacy: Albert Cheu</a>: A research paper that attempts to understand how shuffle privacy and local privacy are different in theoretical guarantees for the simple mean estimation problem. I go through the paper and re-derive the proofs and try to build some intution as to why the algorithms work.</li>
+<li><a href="ExponentialMechanism/">Exponential Mechanism</a>: A theoretical technique developed for when the utility of outputs being considered are very sensitive to perturbation. Examples include auction prices or voting counts. A little bit of noise could alter the final outcome drastically. I describe the theoretical framework with a few simple non practical examples.<br />
+</li>
 <li><a href="">Composition Theorems</a>: Todo</li>
-<li><a href="LearningMultiConcepts/">Simultaneous Private Learning of Multiple Concepts</a></li>
-<li><a href="SuccintHist-Bassily/index.html">Succint Histogram Problem – local privacy</a></li>
-<li><a href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang-tianhao.pdf">Pure LDP</a></li>
-<li><a href="ShuffleSumMeanEstimateRasmus/">Shuffle: Almost Central Almost no communication</a></li>
+</ul>
+<h3 id="new-research-papers">New Research Papers</h3>
+<ul>
+<li><p><a href="ShufflePrivacy/index.html">Separating Shuffle and Local Privacy: Albert Cheu</a>: A research paper that attempts to understand how shuffle privacy and local privacy are different in theoretical guarantees for the simple mean estimation problem. I go through the paper and re-derive the proofs and try to build some intution as to why the algorithms work.</p></li>
+<li><p><a href="ShuffleSumBinaryRasmus/">Shuffle: Binary sums with no communication</a><br />
+</p></li>
+<li><p><a href="ShuffleSumMeanEstimateRasmus/">Shuffle: Almost Central Almost no communication</a></p></li>
+<li><p><a href="LearningMultiConcepts/">Simultaneous Private Learning of Multiple Concepts</a></p></li>
+<li><p><a href="SuccintHist-Bassily/index.html">Succint Histogram Problem – local privacy</a></p></li>
+<li><p><a href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang-tianhao.pdf">Pure LDP</a></p></li>
 </ul>
 <h2 id="specific-problems-and-how-a-series-a-research-papers-connect-them">Specific problems and how a series a research papers connect them</h2>
 <p>Sometimes I care about a general problem or application like centrally private mean estimation will go through material related to the problem and analyse the solutions to get an idea of the contributions with regard to that problem only. In these notes I should be able to explain to a non technical person, why the results are important. Additionally, I write code to simulate the alogorithms and check for gaps in practical deployement.</p>

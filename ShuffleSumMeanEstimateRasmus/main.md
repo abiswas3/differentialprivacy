@@ -56,7 +56,7 @@ It is also possible to do the same for the discrete laplacian distribution descr
 In the next section I re-derive the relevant material for proving the contents of this paper.
 
 
-* [Near-optimal accuracy with vanishing communication overhead](https://arxiv.org/pdf/2106.04247.pdf)
+* [Near-optimal accuracy with vanishing communication overhead](https://arxiv.org/pdf/2106.04247.pdf) This is the simpler version of the problem discussed in this paper. Here they are only interested in binary sum estimation as opposed to integers and reals.
 
 ## Requisite Background Material
 
