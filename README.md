@@ -18,6 +18,8 @@ little big qpicture in those notes. In this notes I cannot always
 explain why someone not interested in differential privacy should care
 about these results.
 
+### Background
+
 * [Differential Privacy Cheat sheet](Definitions/): I define central
   differential privacy, local differential privacy and shuffle
   privacy. Introduce well the laplace mechanism - what it is and why
@@ -34,18 +36,25 @@ about these results.
   are very sensitive to perturbation. Examples include auction prices
   or voting counts. A little bit of noise could alter the final
   outcome drastically. I describe the theoretical framework with a few
-  simple non practical examples.
+  simple non practical examples.  
+* [Composition Theorems](): Todo 
+
+
+### New Research Papers
+
 * [Separating Shuffle and Local Privacy: Albert
   Cheu](ShufflePrivacy/index.html): A research paper that attempts to
   understand how shuffle privacy and local privacy are different in
   theoretical guarantees for the simple mean estimation problem. I go
   through the paper and re-derive the proofs and try to build some
   intution as to why the algorithms work.
-* [Composition Theorems](): Todo 
+* [Shuffle: Binary sums with no communication](ShuffleSumBinaryRasmus/)  
+* [Shuffle: Almost Central Almost no communication](ShuffleSumMeanEstimateRasmus/)
+
 * [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
 * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html)
 * [Pure LDP](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang-tianhao.pdf)
-* [Shuffle: Almost Central Almost no communication](ShuffleSumMeanEstimateRasmus/)
+
 
 ## Specific problems and how a series a research papers connect them
 
