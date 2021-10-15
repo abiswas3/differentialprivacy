@@ -66,7 +66,7 @@ explain to a non technical person, why the results are
 important. Additionally, I write code to simulate the alogorithms and
 check for gaps in practical deployement.
 
-* [Private Mean Estimation](): In this work, we study the problem of
+* [Private Mean Estimation](PrivateMeanEstimation/): In this work, we study the problem of
   summing (aggregating) real numbers or integers, a basic primitive in
   numerous machine learning tasks. People have attempted this under
   many different assumptions and come with different solutions. These

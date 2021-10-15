@@ -8,5 +8,7 @@ cd SuccintHist-Bassily && ./build && cd ../
 cd FrequencyEstimationSurvey && ./build && cd ../
 cd ShuffleSumMeanEstimateRasmus && ./build && cd ../
 cd ShuffleSumBinaryRasmus && ./build && cd ../
+cd PrivateMeanEstimation && ./build && cd ../
+
 # cd private_histograms/ && ./build && cd ../
 
