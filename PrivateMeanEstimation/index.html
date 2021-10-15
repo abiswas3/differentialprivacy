@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>main</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+  
+  
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+</head>
+<body>
+
+<div class="container">
+<h1 id="private-mean-estimation-a-survey">Private Mean Estimation – A survey</h1>
+<p>Papers being sumarised:</p>
+<ul>
+<li><a href="">Laplace</a></li>
+<li><a href="">Graham survey</a></li>
+<li><a href="">Cheu I</a></li>
+<li><a href="">Gazi I</a></li>
+<li><a href="">Gazi II</a></li>
+</ul>
+<h2 id="problem-statement">Problem Statement</h2>
+<p><code>N users have values in the bounded reals or bounded integers or binary numbers. We want to calculate the mean/sum of these numbers privately. What have people done so far towards this problem. What assumptions have people made to make this problem morre private or more accurate.</code></p>
+<p>The table below provides an overview of the understanding of the summing problem we have today. There are three modes of privacy - central, local and a hybrid of the two known as shuffle. Each paradigm has a slighlty different definition of differential privacy. The list of definitions is <a href="../Definitions/">provided here</a></p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-lt5t{background-color:#ecf4ff;border-color:inherit;color:#333333;text-align:left;vertical-align:top}
+.tg .tg-hf8k{background-color:#ecf4ff;color:#333333;text-align:left;vertical-align:top}
+.tg .tg-item{background-color:#00d2cb;border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-ltxa{background-color:#ffccc9;text-align:left;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-90e1{background-color:#ffccc9;border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0khl{background-color:#00d2cb;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-0pky">
+</th>
+<th class="tg-0lax">
+</th>
+<th class="tg-fymr">
+Upper Bound
+</th>
+<th class="tg-fymr">
+Number of messages per user
+</th>
+<th class="tg-0pky">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tg-lt5t">
+Central
+</td>
+<td class="tg-hf8k">
+</td>
+<td class="tg-lt5t">
+<a href="../Definitions/"><span class="math inline">\(O(\frac{1}{\epsilon})\)</span></a>
+</td>
+<td class="tg-lt5t">
+<span style="font-weight:400;font-style:normal">1</span>
+</td>
+<td class="tg-lt5t">
+</td>
+</tr>
+<tr>
+<td class="tg-90e1">
+Local
+</td>
+<td class="tg-ltxa">
+</td>
+<td class="tg-90e1">
+<a href="https://arxiv.org/pdf/1103.2626.pdf" target="_blank" rel="noopener noreferrer"><span style="color:#905"><a href="https://arxiv.org/pdf/1103.2626.pdf"><span class="math inline">\(O(\frac{1}{\sqrt{n}})\)</span></a></span></a><br>
+</td>
+<td class="tg-90e1">
+1
+</td>
+<td class="tg-90e1">
+</td>
+</tr>
+<tr>
+<td class="tg-item">
+Shuffle
+</td>
+<td class="tg-0khl">
+Privacy Blanket - Borja
+</td>
+<td class="tg-item">
+<span style="font-weight:400;font-style:normal"><span class="math inline">\(O(\frac{1}{\epsilon})\)</span></span>
+</td>
+<td class="tg-item">
+<span class="math inline">\(O_{\epsilon}\Big( \log\frac{n}{\delta}\Big)\)</span>
+</td>
+<td class="tg-item">
+</td>
+</tr>
+<tr>
+<td class="tg-0khl">
+</td>
+<td class="tg-0khl">
+<span style="font-weight:400;font-style:normal">Vanishing complexity - Ghazi,</span><br><span style="font-weight:400;font-style:normal">(for binary sums)</span><br>
+</td>
+<td class="tg-0khl">
+<span style="font-weight:400;font-style:normal"><span class="math inline">\(O(\frac{1}{\epsilon})\)</span></span>
+</td>
+<td class="tg-0khl">
+<span style="font-weight:400;font-style:normal"><span class="math inline">\(O_{\epsilon}\Big( \frac{\log^2\frac{1}{\delta}}{n}\Big)\)</span></span>
+</td>
+<td class="tg-0khl">
+</td>
+</tr>
+<tr>
+<td class="tg-0khl">
+</td>
+<td class="tg-0khl">
+<span style="font-weight:400;font-style:normal">Vanishing complexity - Ghazi,</span><br><span style="font-weight:400;font-style:normal">(for binary sums)</span>
+</td>
+<td class="tg-0khl">
+<span class="math inline">\(\Omega\Big( \sqrt{\log \frac{1}{\delta}}\Big)\)</span>
+</td>
+<td class="tg-0khl">
+1
+</td>
+<td class="tg-0khl">
+</td>
+</tr>
+<tr>
+<td class="tg-0khl">
+</td>
+<td class="tg-0khl">
+Almost Central
+</td>
+<td class="tg-0khl">
+</td>
+<td class="tg-0khl">
+</td>
+<td class="tg-0khl">
+</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+
+</blockquote>
+<h2 id="central-privacy">Central Privacy</h2>
+<h3 id="for-real-numbers">For real numbers</h3>
+<p>We incur a probability</p>
+<h3 id="for-integers">For integers</h3>
+<p>Since the input values are integers or binary numbers, we cannot use noise from the continuous laplace distribution. Instead we use its discrete counter part - the two sided geometric distribution or the discrete laplace distribution. [<a href="../DiscreteLaplace/paper.pdf" title="UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS">1</a>] showed that this mechanism was optimum i.e. the error of this mechanism is a lower bound for central differential privacy. We cannot do better.</p>
+<h2 id="local-privacy">Local Privacy</h2>
+<h3 id="binary-sums">Binary sums</h3>
+<p>We describe the randomised response protocol next.</p>
+<div class="algorithm">
+<p><strong>Local Randomiser</strong></p>
+<p>Input:</p>
+<ul>
+<li><span class="math inline">\(x_i \in \{ 0, 1 \}\)</span></li>
+<li><span class="math inline">\(\gamma \in (0,1/2)\)</span></li>
+</ul>
+<p>Method:</p>
+<ul>
+<li>Flip a coin with probability of heads = <span class="math inline">\(0.5 + \gamma\)</span>.</li>
+<li>If heads return <span class="math inline">\(z_i = x_i\)</span> else return <span class="math inline">\(z_i=1 - x_i\)</span></li>
+</ul>
+<p><strong>Analyser</strong></p>
+<ul>
+<li><p>Compute <span class="math inline">\(k = (\sum_{i}^N z_i)\)</span></p></li>
+<li><p>Output <span class="math inline">\(\hat{f} = \frac{ k- (0.5 - \gamma)N}{2\gamma}\)</span></p></li>
+</ul>
+</div>
+<h3 id="privacy">Privacy</h3>
+<p>Privacy for the above algorithm is trivially achieved.</p>
+<h4 id="upper-bound">Upper Bound</h4>
+<p>We now try to upper bound the behaviour of the algorithm discussed above.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#randomResponseError">
+Proof
+</button>
+<div id="randomResponseError" class="collapse">
+<p>The expected value of <span class="math inline">\(z_i = 0.5 + \gamma\)</span> when <span class="math inline">\(x_i=1\)</span> and <span class="math inline">\(0.5-\gamma\)</span> when <span class="math inline">\(x_i=0\)</span>. Thus</p>
+<span class="math display">\[\begin{align*}
+\mathbb{E}[\hat{f}] &amp;= \mathbb{E}[\frac{ k- (0.5 - \gamma)N}{2\gamma}] \\
+&amp;= \frac{1}{2\gamma}\Big(\mathbb{E}[k] -  0.5N - N\gamma \Big) \\
+&amp;= \frac{1}{2\gamma}\Big(\mathbb{E}\Big[(0.5 + \gamma)k + (0.5 - \gamma)(N -k) \Big] -  0.5N - N\gamma \Big) \\
+&amp;= k
+\end{align*}\]</span>
+</div>
+<p>Thus <span class="math inline">\(\hat{f}\)</span> is an unbiased estimator of the sum of inputs, and since <span class="math inline">\(\hat{f}\)</span> is a sum of bernoulli random variables, it means we can directly apply the <a href="http://www.stat.cmu.edu/~arinaldo/Teaching/36709/S19/Scribed_Lectures/Jan29_Tudor.pdf">hoefdinng bound for Bernoulli’s in Example 1</a> which states</p>
+<p><span class="math display">\[ \mathbb{P}\Big[ |\hat{f} - \mathbb{E}(\hat{f})| \geq t \Big] \leq 2e^{-2nt^2}\]</span></p>
+<p>To pull out an error bound set <span class="math inline">\(\delta = 2e^{-2nt^2}\)</span> and solve for t. Thus we get with probability <span class="math inline">\(1 - \delta\)</span>, <span class="math inline">\(|\hat{f} - \mathbb{E}(\hat{f})| \leq t\)</span> and <span class="math inline">\(t=\sqrt{\frac{1}{2n}\log\frac{1}{\delta}}\)</span>. Thus we can finally say that with probability <span class="math inline">\(1 - \delta\)</span></p>
+<p><span class="math display">\[|\hat{f} - \mathbb{E}(\hat{f})| \leq O(\frac{1}{\sqrt{N}})\]</span></p>
+<p>An alternate way to derive this bound is to look at the variance of the estimator <span class="math inline">\(\hat{f}\)</span> and since the estimator is unbiased, the variance of the estimator is equal to the mean squared error of the estimator. It gives a point estimate of an error not a confidence interval. The derivation can be found <a href="http://www.gautamkamath.com/CS860notes/lec3.pdf">here</a>. It is relatively straightforward.</p>
+<h4 id="lower-bound">Lower Bound</h4>
+<p>[<a href="https://arxiv.org/pdf/1103.2626.pdf" title="Distributed Private Data Analysis: On Simultaneously Solving How and What">3</a>] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight – that indeed <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> is the least error we must tolerate to ensure privacy.</p>
+<h2 id="shuffle-privacy">Shuffle Privacy</h2>
+<p>The following screenshot is taken from the <a href="https://www.youtube.com/watch?v=wkF_uBo-bLo">official talk</a> by one of the authors and provides an overview of shuffle privacy.</p>
+<p><img src="../ShuffleSumBinaryRasmus/pngs/overview.png" height="300px" width="600px"></img></p>
+<h4 id="borja-2020--private-summation-in-the-multi-message-shuffle-model">Borja 2020- Private Summation in the Multi-Message Shuffle Model</h4>
+<p>An interesting feature of the shuffle model is that increasing the amount of messages sent by each user can lead to protocols with accuracies comparable to the ones achievable in the central model. In particular, for the problem of privately computing the sum of n bounded real values held by n different users</p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li><a href="../DiscreteLaplace/paper.pdf">UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS</a></li>
+</ol>
+<ol start="2" type="1">
+<li><a href="https://arxiv.org/pdf/1903.02837.pdf">The privacy blanket of the shuffle model</a></li>
+</ol>
+<ol start="3" type="1">
+<li><a href="https://arxiv.org/pdf/1103.2626.pdf">Distributed Private Data Analysis: On Simultaneously Solving How and What</a>
+</div></li>
+</ol>
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>

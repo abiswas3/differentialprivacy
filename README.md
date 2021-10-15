@@ -40,7 +40,7 @@ about these results.
 * [Composition Theorems](): Todo 
 
 
-### New Research Papers
+### Research Papers
 
 * [Separating Shuffle and Local Privacy: Albert
   Cheu](ShufflePrivacy/index.html): A research paper that attempts to
@@ -50,17 +50,17 @@ about these results.
   intution as to why the algorithms work.
 * [Shuffle: Binary sums with no communication](ShuffleSumBinaryRasmus/)  
 * [Shuffle: Almost Central Almost no communication](ShuffleSumMeanEstimateRasmus/)
-
 * [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
-* [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html)
-* [Pure LDP](https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang-tianhao.pdf)
+* [frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
+* [Pure LDP](PureProtocols/)
 
+<!-- * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html) -->
 
 ## Specific problems and how a series a research papers connect them
 
 Sometimes I care about a general problem or application like centrally
 private mean estimation will go through material related to the
-problem and analyse the solutions to get an idea of the contributions
+problem and analyse the solutions to get an idea of the contributionsq
 with regard to that problem only. In these notes I should be able to
 explain to a non technical person, why the results are
 important. Additionally, I write code to simulate the alogorithms and
@@ -76,7 +76,7 @@ check for gaps in practical deployement.
   * Cheu
   * Cormode
 * [Private Password Lists]()
-* [Frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
+
 
 ## My own work
 

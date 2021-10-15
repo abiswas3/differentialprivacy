@@ -9,6 +9,8 @@ cd FrequencyEstimationSurvey && ./build && cd ../
 cd ShuffleSumMeanEstimateRasmus && ./build && cd ../
 cd ShuffleSumBinaryRasmus && ./build && cd ../
 cd PrivateMeanEstimation && ./build && cd ../
+cd PureProtocols  && ./build && cd ../
+cd x && ./build && cd ../
 
 # cd private_histograms/ && ./build && cd ../
 
