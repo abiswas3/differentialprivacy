@@ -176,7 +176,7 @@ Almost Central
 <h3 id="for-integers">For integers</h3>
 <p>Since the input values are integers or binary numbers, we cannot use noise from the continuous laplace distribution. Instead we use its discrete counter part - the two sided geometric distribution or the discrete laplace distribution. [<a href="../DiscreteLaplace/paper.pdf" title="UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS">1</a>] showed that this mechanism was optimum i.e. the error of this mechanism is a lower bound for central differential privacy. We cannot do better.</p>
 <h2 id="local-privacy">Local Privacy</h2>
-<h3 id="binary-sums">Binary sums</h3>
+<h3 id="binary-sums-with-randomised-response">Binary sums with Randomised Response</h3>
 <p>We describe the randomised response protocol next.</p>
 <div class="algorithm">
 <p><strong>Local Randomiser</strong></p>
@@ -197,9 +197,9 @@ Almost Central
 </ul>
 </div>
 <h3 id="privacy">Privacy</h3>
-<p>Privacy for the above algorithm is trivially achieved.</p>
+<p>Privacy for the above algorithm is trivially achieved <strong>(will insert it later)</strong></p>
 <h4 id="upper-bound">Upper Bound</h4>
-<p>We now try to upper bound the behaviour of the algorithm discussed above.</p>
+<p>We now try to upper bound the accuracy of the algorithm discussed above.</p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#randomResponseError">
 Proof
 </button>
@@ -218,7 +218,39 @@ Proof
 <p><span class="math display">\[|\hat{f} - \mathbb{E}(\hat{f})| \leq O(\frac{1}{\sqrt{N}})\]</span></p>
 <p>An alternate way to derive this bound is to look at the variance of the estimator <span class="math inline">\(\hat{f}\)</span> and since the estimator is unbiased, the variance of the estimator is equal to the mean squared error of the estimator. It gives a point estimate of an error not a confidence interval. The derivation can be found <a href="http://www.gautamkamath.com/CS860notes/lec3.pdf">here</a>. It is relatively straightforward.</p>
 <h4 id="lower-bound">Lower Bound</h4>
-<p>[<a href="https://arxiv.org/pdf/1103.2626.pdf" title="Distributed Private Data Analysis: On Simultaneously Solving How and What">3</a>] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight – that indeed <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> is the least error we must tolerate to ensure privacy.</p>
+[<a href="https://arxiv.org/pdf/1103.2626.pdf" title="Distributed Private Data Analysis: On Simultaneously Solving How and What">3</a>] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight – that indeed <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> is the least error we must tolerate to ensure privacy.
+<div class="question">
+The proof for this lower bound is quite convoluted. The authors prove the lower bound for any distributed t-coalition network, for interactive and non interactive protocols for sums. I try and simplify their proof for non interactive local privacy only. In doing so, I do my best attempt at simplifying their proof, building intuition and re-deriving it.
+</div>
+<p>What a lower bound statement is saying is that – if we wanted to <span class="math inline">\(\epsilon\)</span> local privacy and compute the mean of binary numbers, <strong>all</strong> private algorithms will error at least by <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> with non zero probability and non vanishing probability (the probability does not shrink as number of users go up.)</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#lowerBoundLocalMean">
+Lower bound for binary mean estimation
+</button>
+<div id="lowerBoundLocalMean" class="collapse">
+<p>The proof is divided into 2 parts:</p>
+<ol type="1">
+<li><p>They first define a gap version of the threshold function, denoted GAP-TR, and observe that any differentially private protocol for SUM with error <span class="math inline">\(\tau\)</span> implies a differentially-private protocol for GAP-TR with gap <span class="math inline">\(\frac{\tau}{2}\)</span>.</p></li>
+<li><p>The contrapositive of the above fact, is used to show that it is impossible to compute GAP-TR with a gap smaller than <span class="math inline">\(O(\sqrt{n})\)</span> in a differentially private manner. Therefore, it is impossible to compute SUM in a differentially private manner without suffering an error of at least <span class="math inline">\(O(\sqrt{n})\)</span>.</p></li>
+</ol>
+<p>Most of the work in the paper is done to prove the second bit.</p>
+<p><strong><span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span></strong> Gap threshold functions are defined as the following: If <span class="math inline">\(SUM(X_1, \dots, X_n) \leq \kappa\)</span>, then <span class="math inline">\(GAP-TR_{\kappa, \tau} = 0\)</span> and If <span class="math inline">\(SUM(X_1, \dots, X_n) \geq \kappa + \tau\)</span>, then <span class="math inline">\(GAP-TR_{\kappa, \tau} = 1\)</span> . The function is undefined when <span class="math inline">\(\kappa &lt; SUM(X_1, \dots, X_n) &lt; \kappa + \tau\)</span>.</p>
+<p>To show that it is impossible to compute differentially private <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> without making at least <span class="math inline">\(O(\sqrt{n})\)</span> error, the authors show that any private protocol for computing <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> is unable to distinguish between an input of at least <span class="math inline">\(\sqrt{n}\)</span> 1’s and an input of all 0’s. This is saying if the protocols spit similar answers for both inputs thereby erring by nearly <span class="math inline">\(O(\sqrt{n})\)</span>. By argument 1, they then go onto claim that a private protocol for <span class="math inline">\(SUM\)</span> on the same input would make twice the error with high probability. Thus the entire game is to show that upto <span class="math inline">\(\sqrt{n}\)</span> number of 1’s the protocol has no idea how to distinguish between inputs – so it spits out garbage.</p>
+<p>They define a distribution <span class="math inline">\(A\)</span> on inputs from <span class="math inline">\(\{0, 1\}^n\)</span> such that <span class="math inline">\(X \sim A\)</span> where <span class="math inline">\(X\)</span> is a <span class="math inline">\(n\)</span> dimensional binary vector <span class="math inline">\((x_1, \dots, x_n)\)</span> such that <span class="math inline">\(\mathbb{P}[X_i = 1] = \alpha\)</span>, where <span class="math inline">\(\alpha = \frac{1}{\epsilon\sqrt{n}}\)</span>. <strong>All the magic is encoded in the way we pick this <span class="math inline">\(\alpha\)</span></strong>.</p>
+<p>By the chernoff bound <span class="math inline">\(\mathbb{P}[\sum_{i=1}^n X_i \leq (1 - \gamma)n\alpha] \leq e^{-\frac{\alpha n\gamma^2}{2}}\)</span> as <span class="math inline">\(n\alpha\)</span> is the expected value of the sum of <span class="math inline">\(Bernoulli(\alpha)\)</span>. Plugging in the value of <span class="math inline">\(\gamma=1/2\)</span> and <span class="math inline">\(\alpha\)</span>, we get</p>
+<p><span class="math display">\[\mathbb{P}_{X \sim A}[\sum_{i=1}^n X_i \leq \frac{\sqrt{n}}{2\epsilon}] \leq e^{-\frac{\sqrt{n}}{8\epsilon}}\]</span></p>
+<p>The above statement is saying that the likelihood of seeing less than <span class="math inline">\(O(\sqrt{n})\)</span> 1’s in a vector sampled from <span class="math inline">\(A\)</span> is extremely low, thereby the sum of this vector will be greater than <span class="math inline">\(O(\sqrt{n})\)</span> with large probability. <strong>[See notes on concentration inequality to see why they had to pick <span class="math inline">\(O(\sqrt{n})\)</span>. For anything that decays quicker, concentration inequalities will go out of the window.]</strong></p>
+<p>Define <span class="math inline">\(\tau = 0.5n\alpha\)</span>. Fix any <span class="math inline">\(\epsilon\)</span>-differentially private, local protocol <span class="math inline">\(\prod\)</span> for computing <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> with <span class="math inline">\(\kappa=0\)</span>. Remember, that in the local model the curator/analyser is assumed to be deterministic. The curator, sees sanitised inputs <span class="math inline">\(c = (S(X_1), \dots, S(X_n))\)</span> which is the overall view of the execution of the protocol. It then applies a deterministic algorithm <span class="math inline">\(G\)</span> to <span class="math inline">\(c\)</span>, where <span class="math inline">\(G(c) \in \{ 0, 1\}\)</span> is the output of the protocol.</p>
+<p>Let <span class="math inline">\(D\)</span> denote the set of input vectors for which the curator answers 1, i.e., <span class="math inline">\(D := \{c=\Big(S(X_1), \dots, S(X_n)\Big) : G(c) = 1\}\)</span>. There are <span class="math inline">\(2^n\)</span> possible input values to the protocol, let <span class="math inline">\(\mathbb{P}[D]\)</span> be the fraction of times <span class="math inline">\(\prod\)</span> answers 1. Fix <span class="math inline">\(p \in [0,1]\)</span>. We look at all possible algorithms by considering the probability of answering 1. The reason the authors can do this is because the curator is deterministic. It can only see a fixed number of views, after that it just says 1 or 0. So all algorithms can be divided into 2 groups: Ones that predict 1 less than <span class="math inline">\(p\)</span> fraction of the time and ones that do not. For each of these cases we show, that all protocols fail to distinguish between <span class="math inline">\(A\)</span> and <span class="math inline">\(0\)</span>.</p>
+<p><strong>Case I:</strong> <span class="math inline">\(\mathbb{P}[D] &lt; p\)</span>. Let E denote the event of the <span class="math inline">\(\prod\)</span> making the following mistake : <span class="math inline">\(\sum_{i=1}^nX_i \geq O(\sqrt{n})\)</span> and the protocol returns 0. The complement <span class="math inline">\(E^c\)</span> of this event is <span class="math inline">\(\sum_{i=1}^nX_i \leq O(\sqrt{n})\)</span> or the protocol returns 1. Formally</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}_{X \sim A}[E^c] &amp;\leq \mathbb{P}[D] + \mathbb{P}[\sum_{i=1}^nX_i \leq O(\sqrt{n})] \\
+&amp;\leq p + 0
+\end{align*}\]</span>
+<p>By the chernoff bound we have already shown that <span class="math inline">\(\mathbb{P}[\sum_{i=1}^nX_i \leq O(\sqrt{n})]\)</span> is so unlikely, it can be ignored as it is almost 0. The <span class="math inline">\(\mathbb{P}_{X \sim A}[E] \geq 1 - p\)</span></p>
+<p><strong>What we have shown is that, all algorithm returns 0 most of the times [(1 - p) fraction of the time], if we sent the algorithm inputs from <span class="math inline">\(A\)</span> it would make mistakes with constant probability.</strong> NOTE: The reason we really needed <span class="math inline">\(O(\sqrt{n})\)</span> was to kill the Chernoff bound to 0. A sharper error rate would not have killed it off, and therefore we would not get the constant probability bound we get.</p>
+<p>What about algorithms that mostly say 1. We now show those algorithms will also make an error with constant probability because they output zero vector inputs as 1 with constant probability. To be able to show this, we need to use some lemmas which have to do with the privacy requirements. <strong>NOTE: </strong> so far we have only used Chernoff-Hoeffding bounds – nothing about the privacy of algorithms have been utilised.** The proof for the lemmas is provided below the main proof.</p>
+<p>Case II: <span class="math inline">\(\mathbb{P}[D] \geq p\)</span></p>
+</div>
 <h2 id="shuffle-privacy">Shuffle Privacy</h2>
 <p>The following screenshot is taken from the <a href="https://www.youtube.com/watch?v=wkF_uBo-bLo">official talk</a> by one of the authors and provides an overview of shuffle privacy.</p>
 <p><img src="../ShuffleSumBinaryRasmus/pngs/overview.png" height="300px" width="600px"></img></p>
