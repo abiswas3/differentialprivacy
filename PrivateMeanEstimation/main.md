@@ -164,7 +164,7 @@ The expected value of $z_i = 0.5 + \gamma$ when $x_i=1$ and $0.5-\gamma$ when $x
 &= k
 \end{align*} 
 
-</div>
+
 
 Thus $\hat{f}$ is an unbiased estimator of the sum of inputs, and since $\hat{f}$ is a sum of bernoulli random variables, it means we can directly apply the [hoefdinng bound for Bernoulli's in Example 1](http://www.stat.cmu.edu/~arinaldo/Teaching/36709/S19/Scribed_Lectures/Jan29_Tudor.pdf) which states
 
@@ -174,27 +174,38 @@ To pull out an error bound set $\delta = 2e^{-2nt^2}$ and solve for t. Thus we g
 
 $$|\hat{f} - \mathbb{E}(\hat{f})| \leq O(\frac{1}{\sqrt{N}})$$
 
+</div>
+
 An alternate way to derive this bound is to look at the variance of the estimator $\hat{f}$ and since the estimator is unbiased, the variance of the estimator is equal to the mean squared error of the estimator. It gives a point estimate of an error not a confidence interval. The derivation can be found [here](http://www.gautamkamath.com/CS860notes/lec3.pdf). It is relatively straightforward.
 
-#### Lower Bound
+#### Lower Bound for means and sum
 
 [[3][3]] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight -- that indeed $O(\frac{1}{\sqrt{N}})$ is the least error we must tolerate to ensure privacy. <div class="question"> The proof for this lower bound is quite convoluted. The authors prove the lower bound for any distributed t-coalition network, for interactive and non interactive protocols for sums. I try and simplify their proof for non interactive local privacy only. In doing so, I do my best attempt at simplifying their proof, building intuition and re-deriving it.</div> What a lower bound statement is saying is that -- if we wanted to $\epsilon$ local privacy and compute the mean of binary numbers, **all** private algorithms will error at least by $O(\frac{1}{\sqrt{N}})$ with non zero probability and non vanishing probability (the probability does not shrink as number of users go up.)
 
 
-<button type="button" class="btn btn-info" data-toggle="collapse"
-data-target="#lowerBoundLocalMean">Lower bound for binary mean estimation
-</button>
-<div class=collapse id=lowerBoundLocalMean>
-
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#mainProof">Main Proof</button>
+<div class=collapse id=mainProof>
 The proof is divided into 2 parts: 
 
 1. They first define a gap version of the threshold function, denoted GAP-TR, and observe that any differentially private protocol for SUM with error $\tau$ implies a differentially-private protocol for GAP-TR with gap $\frac{\tau}{2}$.
 
-2. The contrapositive of the above fact, is used to show that it is impossible to compute GAP-TR with a gap smaller than $O(\sqrt{n})$ in a differentially private manner. Therefore, it is impossible to compute SUM in a differentially private manner without suffering an error of at least $O(\sqrt{n})$.
+2. The contrapositive of the above fact, is used to show that it is impossible to compute GAP-TR with a gap smaller than $O(\sqrt{n})$ in a differentially private manner. Therefore, it is impossible to compute SUM in a differentially private manner without suffering an error of at least $O(\sqrt{n})$. Most of the work in the paper is done to prove the second bit.
+  
+</div>
 
-Most of the work in the paper is done to prove the second bit.
 
-**$GAP-TR_{\kappa, \tau}$** Gap threshold functions are defined as the following: If $SUM(X_1, \dots, X_n) \leq \kappa$, then $GAP-TR_{\kappa, \tau} = 0$ and If $SUM(X_1, \dots, X_n) \geq \kappa + \tau$, then $GAP-TR_{\kappa, \tau} = 1$ . The function is undefined when $\kappa < SUM(X_1, \dots, X_n) < \kappa + \tau$.
+<button type="button" class="btn btn-info" data-toggle="collapse"
+data-target="#step2">Step 2 of main proof
+</button>
+<div class=collapse id=step2>
+
+The whole proof is concerned with approximating **$\gaptr$**. Nothing in this section has to do with sums or means. We have already built the connection with sums and means in step 1.
+
+**DEFINITION**
+ Gap threshold functions are defined as the following: If $SUM(X_1, \dots, X_n) \leq \kappa$, then $GAP-TR_{\kappa, \tau} = 0$ and If $SUM(X_1, \dots, X_n) \geq \kappa + \tau$, then $GAP-TR_{\kappa, \tau} = 1$ . The function is undefined when $\kappa < SUM(X_1, \dots, X_n) < \kappa + \tau$.
 
 To show that it is impossible to compute differentially private $\gaptr$ without making at least $O(\sqrt{n})$ error, the authors show that any private protocol for computing $\gaptr$ is unable to distinguish between an input of at least $\sqrt{n}$ 1's and an input of all 0's. This is saying if the protocols spit similar answers for both inputs thereby erring by nearly $O(\sqrt{n})$. By argument 1, they then go onto claim that a private protocol for $SUM$ on the same input would make twice the error with high probability. Thus the entire game is to show that upto $\sqrt{n}$ number of 1's the protocol has no idea how to distinguish between inputs -- so it spits out garbage.
 
@@ -220,14 +231,136 @@ Let $D$ denote the set of input vectors for which the curator answers 1, i.e., $
 &\leq p + 0
 \end{align*}
 
-By the chernoff bound we have already shown that $\mathbb{P}[\sum_{i=1}^nX_i \leq O(\sqrt{n})]$ is so unlikely, it can be ignored as it is almost 0. The $\mathbb{P}_{X \sim A}[E] \geq 1 - p$
+ By the chernoff bound we have already shown that $\mathbb{P}[\sum_{i=1}^nX_i \leq O(\sqrt{n})]$ is so unlikely, it can be ignored as it is almost 0. The $\mathbb{P}_{X \sim A}[E] \geq 1 - p$
 
 
 **What we have shown is that, all algorithm returns 0 most of the times [(1 - p) fraction of the time], if we sent the algorithm inputs from $A$ it would make mistakes with constant probability.** NOTE: The reason we really needed $O(\sqrt{n})$ was to kill the Chernoff bound to 0. A sharper error rate would not have killed it off, and therefore we would not get the constant probability bound we get.
 
-What about algorithms that mostly say 1. We now show those algorithms will also make an error with constant probability because they output zero vector inputs as 1 with constant probability. To be able to show this, we need to use some lemmas which have to do with the privacy requirements. **NOTE: ** so far we have only used Chernoff-Hoeffding bounds -- nothing about the privacy of algorithms have been utilised.** The proof for the lemmas is provided below the main proof.
+What about algorithms that mostly say 1. We now show those algorithms will also make an error with constant probability because they output zero vector inputs as 1 with constant probability. To be able to show this, we need to use some lemmas which have to do with the privacy requirements. **NOTE:so far we have only used Chernoff-Hoeffding bounds -- nothing about the privacy of algorithms have been utilised.** The proof for the lemmas is provided below the main proof.
+
+### Definitions
+
+Define the curators view as $View_{C}(X) = \Big( S(X_1), \dots, S(X_n)\Big) = c$ where $S$ is the local sanitiser for each user which guarantees privacy.
+
+Define $r(c)$ as 
+
+$$r(c) := \frac{\P{View_C(X) = c}{X}{A}}{\mathbb{P}[View_C(0) = c]}$$
+
+In the local model, each user is independent of one another, so 
+
+\begin{align*}
+r(c) &= \prod_{i=1}^n \frac{\P{S(X_i) = c_i}{X}{A}}{\mathbb{P}[S(0) = c]} \\
+&= \prod_{i=1}^n r_i(c_i) \\
+\log r(c)&= \sum_{i=1}^n V_i
+\end{align*}
+
+### Lemma 1
+
+**Lemma 1 follows from the defintion of DP and Taylors theorem**
+
+For every $0 < \epsilon \leq 1$, and $\forall i$, we have with probaility 1,
+
+$$ 1 - 2\alpha\epsilon \leq r(c_i) \leq 1 + 4\alpha\epsilon $$
+
+$$ 4\alpha\epsilon \leq V_i \leq 4\alpha\epsilon $$
+
+where $r(c_i)$ and $V_i$ are as defined previously
+
+### Lemma 2
+
+**Lemma 2 follows from Lemma 1**
+
+For every $0 < \epsilon \leq 1$, and $\forall i$
+
+$$\mathbb{E}[V_i] \leq 32\alpha^2\epsilon^2$$
+
+### Lemma 3
+
+**Lemma 3 follows from Lemma 1, Lemma 2 and Hoeffding inequality. And Lemma 1 follows from the privacy.** We show this below the main proof.
+
+Let $p_{A}(c) = \mathbb{P}_{X \sim A}[(S(X_1) \dots, S(X_n) = c)]$ and
+Let $p_{0}(c) = \mathbb{P}[(S(0) \dots, S(0) = c)]$
+
+For $v > 32$, With probability $1 - e^{-\frac{(v - 32)^2}{32}}$, the curator/analayser's output satisfies
+
+$$\frac{p_{A}(c)}{p_{0}(c)} \leq e^{v}$$ 
+
+
+**NOTE:** in the original paper, this bound and $\alpha$ above have variable $d$ inside it. It only really matters for interactive protocols where there are multiple rounds of communication. Since I am interested only in a single round local protocol, this $d$ does not matter and I set it to 1. Playing with this value fo $d$, one can reduce or increase the constant probability of error in case II.
+
+We now have all the tools to prove that all protocols belonging to case II, still err with constant probability that does not shrink as $n$ grows.
 
 Case II: $\mathbb{P}[D] \geq p$
+
+We are looking the probaility of outputting 1, for the $\gaptr$ problem with $\kappa=0$ when the input is all 0s. By definition this is an error. We want to show the probability of this error bounded away from 0.
+
+From lemma 2, we have a high probability bound. If you refer to our [Definitions](../Definitions/) writeup for differential privacy we show the equivalence of writing concentration inequalities as inequalities. So one can re-write lemma 2 as 
+
+\begin{align*}
+e^{v}p_{0}(G(c) \in D) + e^{-\frac{(v - 32)^2}{32}} &\geq p_{A}(G(c) \in D) \\ 
+&= \frac{p_{A}(G(c) \in D)}{e^{v}} - e^{-\frac{(v - 32)^2}{32}}
+\end{align*}
+
+We are done! The probability is bounded away from 0. So far we have only shown that it is impossible to compute GAP-TR with a gap smaller than $O(\sqrt{n})$ which was step 2 of the main proof. We still have to show step 1 and prove the two lemmas above.
+</div>
+
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#step1">Proof for Step 1 of main proof</button>
+<div class=collapse id=step1>
+  
+
+</div>
+
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#lemma1">Lemma 1</button>
+<div class=collapse id=lemma1>
+  
+
+\begin{align*}
+r_i(c_i) &= \frac{\P{S_i(X_i) = c_i}{X}{A}}{\mathbb{P}[S_i(0) = c]} \\
+&= \frac{\alpha\mathbb{P}[S_i(1) = c_i] + (1-\alpha)\mathbb{P}[S_i(0) = c_i]}{\mathbb{P}[S_i(0) = c]} \tag{1}\label{1}\\
+&= 1 + \alpha\Big(\frac{\mathbb{P}[S_i(1) = c_i]}{\mathbb{P}[S_i(0) = c_i]} - 1\Big)
+\end{align*}
+
+$\ref{1}:$ By defintion of distribution $X \sim A$
+
+**From the defintion of local privacy**, we have 
+
+$$e^{-2\epsilon} \leq \frac{\mathbb{P}[S_i(1) = c_i]}{\mathbb{P}[S_i(0) = c_i]} \leq e^{2\epsilon}$$
+
+Subtracting 1 from both sides, Multiplying both sides by $\alpha$ and adding +1 
+
+$$1 + \alpha(e^{-2\epsilon} - 1) \leq 1 + \alpha \Big(\frac{\mathbb{P}[S_i(1) = c_i]}{\mathbb{P}[S_i(0) = c_i]} - 1\Big)   \leq 1 + \alpha(e^{2\epsilon} - 1)$$
+
+Taylors expansion for $e^x$ gives us:
+
+$e^2x < 1 + 4x$ and $1 - e^{-2x} < 2x$ for $0 < x \leq 1$, thus we get the first inequality.
+
+Using $\log(1+x) \leq x$ and $\log(1-x) \geq -2x$ for $0 < x \leq 0.5$ we get the second inequality
+
+</div>
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#lemma2">Lemma 2</button>
+<div class=collapse id=lemma2>
+  
+</div>
+
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#lemma3">Lemma 3</button>
+<div class=collapse id=lemma3>
+  
 </div>
 
 ## Shuffle Privacy
