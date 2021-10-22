@@ -249,7 +249,7 @@ $$r(c) := \frac{\P{View_C(X) = c}{X}{A}}{\mathbb{P}[View_C(0) = c]}$$
 In the local model, each user is independent of one another, so 
 
 \begin{align*}
-r(c) &= \prod_{i=1}^n \frac{\P{S(X_i) = c_i}{X}{A}}{\mathbb{P}[S(0) = c]} \\
+r(c) &= \prod_{i=1}^n \frac{\P{S(X_i) = c_i}{X}{A}}{\mathbb{P}[S(0) = c_i]} \\
 &= \prod_{i=1}^n r_i(c_i) \\
 \log r(c)&= \sum_{i=1}^n V_i
 \end{align*}
@@ -311,6 +311,36 @@ data-toggle="collapse"
 data-target="#step1">Proof for Step 1 of main proof</button>
 <div class=collapse id=step1>
   
+### Theorem
+
+If there exists an $\epsilon$-differentially private local model that approximates the sum of $n$ binary values upto error $\tau/2$ with probability $1 - \gamma$ by sending $\rho$ messages then $\forall \kappa$, there exists a $\epsilon$-differentially private local model that approximates $\gaptr$ with probability at $1 - \gamma$ by sending at most $\rho$ messages.
+
+**Proof**: 
+
+The proof is relatively simple. Since it's an existence proof we have to only come up one approximation of $\gaptr$ for any $\hat{f(X)}$ approximation of the sum. 
+
+
+Let $\hat{f(X)}$ be the approximation of a sum of $n$ binary values. Define $\hat{g(X)}$ to be 0 if $\hat{f(X)} \leq \kappa + \tau/2$ and 1 otherwise. Let $g(X)$ and $f(X)$ be the true values of $\gaptr$ and $sum$ respectively.
+
+We are given that $| f(X) - \hat{f(X)}| \geq tau/2 $ with probability less than $\gamma$
+
+It is easy to show $\hat{g(X)}$ approximates $\gaptr$ with $\tau/2$ error with probability $1-\gamma$. **Assume it does not**
+
+Consider the error event $\hat{g(X)} = 0$ and $g(X)=1$, by our assumption this event happens with probability greater than $\gamma$. 
+
+If $\hat{g(X)} = 0$, then $\hat{f(X)} \leq \kappa + \tau/2$ and if $g(X) =1$, then $f(x) \geq \kappa + \tau$
+
+We take the smallest value for $f(X)$ and the largest value for $\hat{f(X)}$ and get
+
+\begin{align*}
+| f(X) - \hat{f(X)}| &\geq | \kappa + \tau - kappa -\tau/2 |
+&= \tau/2
+\end{align*}
+
+By our assumptions the above event happens with probability greater than $\gamma$. However by problem statement we had $| f(X) - \hat{f(X)}| \geq tau/2 $ with probability less than $\gamma$ so we have reached a contradiction. Our assumption was false.
+
+
+**The main proof uses the contrapositive of the above theorem -- where we show that all local private protocol for approximating gap threshold upto $\sqrt{n}$ error fails with contant probaility, thus the same can be said about sum**.
 
 </div>
 
@@ -352,6 +382,37 @@ data-toggle="collapse"
 data-target="#lemma2">Lemma 2</button>
 <div class=collapse id=lemma2>
   
+This proof assumes that each sanitizer $S_i$'s' output is in a countable set. **NOTE: This assumption is not broken in local privacy as the number of messages per user is bounded. As the inputs are only 1 or 0, the set of possible outputs has to be countable. If you were to unbound this by sending infinite messages per input-- you are no longer in the local protocol of restricted communication.**
+
+
+Let $B_{b} := \{ c_i : r_i(c_i) = 1 + b\}$ for $-2\alpha\epsilon \leq b \leq 4\alpha\epsilon$. Lemma 1 implies there are no other possible values for b.
+
+\begin{align*}
+\frac{\mathbb{P}[S(X_i) = c_i]}{\mathbb{P}[S(0) = c_i]}  &= r_i(c_i) \\
+&= 1 + b \\
+\mathbb{P}[S(0) \in B_b]  &= \frac{\mathbb{P}[S(X_i) \in B_b]}{1+b} \\
+&\leq (1 - b +2b^2)\mathbb{P}[S(X_i) \in B_b] \label{5}\tag{1}\\
+\end{align*}
+
+$\ref{5}:$ By Taylors theorem of $(1 + x)^-1$ or the geometric series $\frac{1}{1-x}$, where you plug in x as -x.
+
+Let $\beta=2\alpha\epsilon$
+
+\begin{align*}
+\mathbb{E}[V_i] &= \mathbb{E}_{A}[\log r_i(c_i)] \\
+&= \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] \log( 1 + b) \\
+&\leq \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] b \label{6}\tag{2}\\
+&=  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] (1 + 2b^2) -  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] (1 -b +2b^2) \\
+&\leq (1 + 2(2\beta)^2)\sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b]  -  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] (1 -b +2b^2) \\
+&\leq (1 + 2(2\beta)^2)\sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b]  -  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(0) \in B_b] \label{7}\tag{3}\\
+&=  (1 + 8\beta^2)\mathbb{P}[S(X_i) \in \cup_{b}B_b] - \mathbb{P}[S(0) \in \cup_{b}B_b] \\
+&\leq (1 + 8\beta^2).1 - 1 \\
+&= 32(\alpha\epsilon)^2
+\end{align*}
+
+$\ref{6}: \log(1+x) \leq x$
+
+$\ref{7}:$ By $\ref{5}$
 </div>
 
 
@@ -361,6 +422,22 @@ data-toggle="collapse"
 data-target="#lemma3">Lemma 3</button>
 <div class=collapse id=lemma3>
   
+
+\begin{align*}
+\mathbb{P}_{A}[r(C) > e^v] &= \mathbb{P}_{A}[\sum_{i=1}^n V_i > v] \label{2}\tag{1}\\
+&= \mathbb{P}_{A}\Big[\sum_{i=1}^n V_i - \sum_{i=1}^n \mathbb{E}[V_i]> v - \sum_{i=1}^n \mathbb{E}[V_i]\Big] \\
+&\leq \mathbb{P}_{A}\Big[\sum_{i=1}^n V_i - \sum_{i=1}^n \mathbb{E}[V_i]> v - 32\alpha^2\epsilon^2\Big] \tag{2} \label{3}\\
+&\leq exp\Big\{ -\frac{2(v - n32\alpha^2\epsilon^2)^2}{64n\alpha^2\epsilon^2} \Big\} \tag{3} \label{4} \\
+&= exp\Big\{ -\frac{(v - 32)^2}{32} \Big\}
+\end{align*}
+
+
+$\ref{2}:$ Taking log on both sides and using defintions
+
+$\ref{3}:$ Lemma 2
+
+$\ref{4}:$ Hoeffding on bounded variables, from Lemma 2, we get $V_i$ is upper and lower bounded. Plug and play
+
 </div>
 
 ## Shuffle Privacy
