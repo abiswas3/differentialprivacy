@@ -87,16 +87,112 @@ Proof
 </div>
 <h2 id="the-chernoff-bound">The Chernoff Bound</h2>
 <p><strong>There are a million variants to the Chernoff bound:</strong>The Chernoff bound is like a genericized trademark: it refers not to a particular inequality, but rather a technique for obtaining exponentially decreasing bounds on tail probabilities.</p>
+<p>Authors in [<a href="https://page.mi.fu-berlin.de/mulzer/pubs/chernoff.wpdf" title="Chernoff Bounds and its applications">1</a>] wrote a very good article on the different versions of the Chernoff Bound and where they come from. I’ve reproduced them here only to strengthen my understanding.</p>
+<h3 id="the-theorem-in-its-most-general-form">The theorem in its most general form</h3>
+<p>Let <span class="math inline">\(X_1, \dots, X_n\)</span> be i.i.d random variables such that <span class="math inline">\(X_i \in \{ 0, 1\}\)</span> and <span class="math inline">\(\mathbb{P}[X_i=1] = p\)</span>, then the probability that sum of the variables deviates from its mean drops exponentially with the number of samples. Formally,</p>
+<p><span class="math display">\[\mathbb{P}[\sum_{i=1}^nX_i \geq (p + t)n] \leq e^{-D_{KL}(p + t || p)n}\]</span></p>
+<p>It can also be shown that when <span class="math inline">\(p \geq 1/2\)</span>, <span class="math inline">\(D_{KL}[p + t || p] &gt; \frac{t^2}{2p(1-p)}\)</span>, multiplying both sides by -n, we get <span class="math inline">\(D_{KL}[p + t || p] \leq \frac{nt^2}{2p(1-p)}\)</span>, thus the above bound is also popularly written as</p>
+<p><span class="math display">\[\mathbb{P}\Big[\sum_{i=1}^nX_i \geq (p + t)n\Big] \leq e^{-\frac{nt^2}{2p(1-p)}} \leq e^{-2nt^2}\]</span> where the last bound comes from plugging in <span class="math inline">\(p=1/2\)</span></p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoff1">
+Classical textbook proof using Bernstein
+</button>
+<div id="chernoff1" class="collapse">
+<p>The usual textbook proof of the above theorem uses the exponential function and Markov’s inequality. It is called the moment method, because exp simultaneously encodes all moments <span class="math inline">\(X,X^2,X^3,...\)</span> of X. This trick is often attributed to Bernstein and is called the Bernstein’s Trick.</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}\Big[\sum_{i=1}^nX_i \geq (p + t)n\Big] &amp;= \mathbb{P}\Big[\lambda\sum_{i=1}^nX_i \geq \lambda(p + t)n\Big] \\
+&amp;= \mathbb{P}\Big[e^{\lambda\sum_{i=1}^nX_i} \geq e^{\lambda(p + t)n}\Big] \\
+&amp;= \mathbb{P}\Big[e^{\lambda X} \geq e^{\lambda(p + t)n}\Big] \label{3}\tag{1}\\
+&amp;\leq \frac{\mathbb{E}[e^{\lambda X}]}{ e^{\lambda(p + t)n}} \label{4}\tag{2}\\
+&amp;= \frac{\mathbb{E}[\prod_{i=1}^ne^{\lambda X_i}]}{ e^{\lambda(p + t)n}}\\
+&amp;= \frac{\prod_{i=1}^n \mathbb{E}[e^{\lambda X_i}]}{ e^{\lambda(p + t)n}} \label{5}\tag{3}\\
+&amp;= \Big[ \frac{\mathbb{E}[e^{\lambda X_i}]}{ e^{\lambda(p + t)}} \Big]^n\\
+&amp;= \Big[ \frac{1 - p + pe^\lambda}{ e^{\lambda(p + t)}} \Big]^n \label{6}\tag{4}\\
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{3} X = \sum_{i=1}^nX_i\)</span></p>
+<p><span class="math inline">\(\ref{4}\)</span>: By Markov inequality</p>
+<p><span class="math inline">\(\ref{5}\)</span>: By Independence</p>
+<p><span class="math inline">\(\ref{6}\)</span> : <a href="https://proofwiki.org/wiki/Moment_Generating_Function_of_Bernoulli_Distribution">Moment Generating function of a bernoulli</a></p>
+<p>or every <span class="math inline">\(\lambda &gt; 0\)</span>. Optimizing for <span class="math inline">\(\lambda\)</span> using calculus (taking derivative and setting it to 0, we get that the right hand side is minimized</p>
+<p><span class="math display">\[ e^\lambda = \frac{(1-p)(p+t)}{p(1 - p - t)}\]</span> and then plugging it back into the RHS, we get</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}\Big[\sum_{i=1}^nX_i \geq (p + t)n\Big] &amp;\leq \Big[ \frac{1 - p + pe^\lambda}{ e^{\lambda(p + t)}} \Big]^n \\
+&amp;= \Big( [\frac{p}{p+t}]^{p+t}[\frac{1-p}{1-p-t}]^{1 - p - t}\Big)^n \\
+&amp;= e^{-D_{KL}(p + t || p)n}
+\end{align*}\]</span>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoff2">
+Proof using binomial theorem
+</button>
+<div id="chernoff2" class="collapse">
+<p>Let <span class="math inline">\(B(n,p)\)</span> be the random variable that gives the number of heads in <span class="math inline">\(n\)</span> independent Bernoulli trials with success probability <span class="math inline">\(p\)</span>. For any <span class="math inline">\(\tau \geq 1\)</span></p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}[B(n,p) \geq k] &amp;= \sum_{i=k}^n {n \choose i} p^{i}(1-p)^{n-i} \\
+&amp;\leq \sum_{i=k}^n {n \choose i} p^{i}(1-p)^{n-i}\tau^{i-k} + \sum_{i=0}^{k-1} {n \choose i} p^{i}(1-p)^{n-i}\tau^{i-k} \\
+&amp;\leq \frac{1}{\tau^k}\sum_{i=k}^n {n \choose i} (p\tau)^{i}(1-p)^{n-i} \\
+&amp;= \frac{1}{\tau^k}[p\tau + 1 - p]^n  \label{7}\tag{1}\\
+\end{align*}\]</span>
+<p>$: $ Binomial Theorem</p>
+<p>if we plug <span class="math inline">\(k= (t+p)n\)</span>, we go back to <span class="math inline">\(\ref{6}\)</span> of the classical proof and get to the same bound.</p>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoff3">
+Proof using differential privacy
+</button>
+<div id="chernoff3" class="collapse">
+<p>TODO</p>
+</div>
+<h3 id="chernoff-lower-tail">Chernoff Lower tail</h3>
+<p>This is just the other side of the concentration.</p>
+<p><span class="math display">\[\mathbb{P}[\sum_{i=1}^nX_i \leq (p - t)n] \leq e^{-D_{KL}(p - t || p)n}\]</span></p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoffLowerTail">
+Proof
+</button>
+<div id="chernoffLowerTail" class="collapse">
+<span class="math display">\[\begin{align*}
+\mathbb{P}[ X \leq n(p - t)] &amp;= \mathbb{P}[ -X \geq -n(p - t)]\\
+&amp;= \mathbb{P}[ n - X \leq n - n(p - t)] \\
+&amp;= \mathbb{P}[ X^{&#39;} \leq n(1 - p + t)] \\
+&amp;= \mathbb{P}[ X^{&#39;} \leq n(p^{&#39;} + t)] \\
+&amp;\leq e^{-D_{KL}(1 - p + t || 1 - p)n} \\
+&amp;\leq e^{-D_{KL}(p - t || p)n}
+\end{align*}\]</span>
+<p>where <span class="math inline">\(X^{&#39;}\)</span> is just the original Bernoulli random variable flipped and <span class="math inline">\(p^{&#39;}= 1 - p\)</span> is the probability of seeing a tails.</p>
+</div>
+<h3 id="muliplicative-version">Muliplicative version</h3>
+<p>This well-known version of the bound can be found in the classic text by Motwani and Raghavan.</p>
+<p>Let <span class="math inline">\(\delta \geq 0\)</span> and <span class="math inline">\(\mu=pn\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}[\sum_{i=1}^n X_i \geq (1 + \delta)\mu] \leq \Big( \frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}}\Big)^{\mu}\]</span></p>
+<p>Let <span class="math inline">\(\delta \geq 0\)</span> and <span class="math inline">\(\mu=pn\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}[\sum_{i=1}^n X_i \geq (1 - \delta)\mu] \leq \Big( \frac{e^{-\delta}}{(1 - \delta)^{(1 - \delta)}}\Big)^{\mu}\]</span></p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoffMult">
+Proof
+</button>
+<div id="chernoffMult" class="collapse">
+<p>Setting <span class="math inline">\(t=\frac{\delta\mu}{n}\)</span> in the original theorem:</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}[X \geq (p + t)n]  &amp;= \mathbb{P}[X \geq (1 + \delta)\mu]  \\
+\text{todo}\\
+\end{align*}\]</span>
+</div>
+<h3 id="weaker-but-more-compact-form">Weaker but more compact form</h3>
+<p>TODO</p>
 <h2 id="hoeffdings-bound">Hoeffdings Bound</h2>
+<p>TODO</p>
+<h2 id="hypergeometric-distribution">Hypergeometric distribution</h2>
+<p>TODO</p>
+<h2 id="negative-correlation">Negative Correlation</h2>
+<p>TODO</p>
 <h2 id="useful-tricks">Useful tricks</h2>
 <h3 id="bounding-bernoullis">Bounding Bernoullis</h3>
+<p>TODO</p>
 <h3 id="bounding-exponentials">Bounding exponentials</h3>
+<p>TODO</p>
 <h1 id="resources">Resources</h1>
-<ul>
-<li><a href="https://towardsdatascience.com/moment-generating-function-explained-27821a739035">How are moment Generating functions used</a></li>
-<li><a href="https://math.dartmouth.edu/~m20x18/markov">Markov and Chebyshev</a></li>
-<li><a href="">Chernoff Bounds</a></li>
-</ul>
+<ol type="1">
+<li><a href="https://page.mi.fu-berlin.de/mulzer/pubs/chernoff.wpdf">Chernoff Bounds and its applications</a></li>
+</ol>
+<ol start="2" type="1">
+<li><a href="https://math.dartmouth.edu/~m20x18/markov">Markov and Chebyshev bounds</a></li>
+</ol>
 </div>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
