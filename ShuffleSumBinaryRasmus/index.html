@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>main</title>
-  <style>
+  <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css" />
+  <link rel="stylesheet" href="../blog.css">
   <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -31,13 +31,61 @@
 
 <div class="container">
 <h1 id="private-counting-from-anonymous-messages-near-optimal-accuracy-with-vanishing-communication-overhead">Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead</h1>
-<p><a href="./binarySums.pdf">Paper being discussed</a> published @ FORC Foundations of Responsible Computing 2020</p>
+<p><a href="./binarySums.pdf">Paper being discussed</a> abstract published @ FORC Foundations of Responsible Computing 2020 and full paper @ ICML 2020.</p>
 <h2 id="problem-statement">Problem Statement</h2>
 <p><code>In this work, we study the problem of summing (aggregating) binary numbers.</code></p>
 <p>The following screenshot is taken from the <a href="https://www.youtube.com/watch?v=wkF_uBo-bLo">official talk</a> by one of the authors and provides an overview of shuffle privacy. <img src="pngs/overview.png" height="300px" width="600px"></img></p>
 <h2 id="contribution">Contribution</h2>
-<p>For the simple problem of binary sum estimation, if I want to send 1 message per user only then the accuracy bounds by given by [<a href="https://arxiv.org/pdf/1903.02837.pdf" title="The privacy blanket of the shuffle model">2</a>] and [<a href="https://arxiv.org/abs/1808.01394" title="Distributed differential privacy via shuffling">1</a>] are tight. You cannot do better! This paper proves a lower bound. If there is wiggle room on the number of messages I can send then the accuracy of the central case is achievable. They improve the bounds on the number of messages by making it disappear as <span class="math inline">\(n\)</span> goes to infinity.</p>
+<p>For the simple problem of binary sum estimation, if I want to send 1 message per user only then the accuracy bounds by given by [<a href="https://arxiv.org/pdf/1903.02837.pdf" title="The privacy blanket of the shuffle model">2</a>] and [<a href="https://arxiv.org/abs/1808.01394" title="Distributed differential privacy via shuffling">1</a>] are tight. You cannot do better! <strong>This paper proves a lower bound</strong>. If there is wiggle room on the number of messages each user can send; then the accuracy of the central case is achievable – they get arbitrarily close the discrete laplace mechanism. They also claim their algorithms are practical by running evaluations. <strong>TODO ARI: Run the code yourself and verify.</strong></p>
+<!-- They improve the bounds on the number of messages by making it disappear as $n$ goes to infinity. -->
 <p><img src="pngs/related_work.png" height="300px" width="600px"></img></p>
+<h3 id="main-theorem">Main Theorem</h3>
+<p>For every <span class="math inline">\(\epsilon \leq O(1)\)</span> and every <span class="math inline">\(\delta, \gamma \in (0, 1/2)\)</span>, there is <span class="math inline">\((\epsilon, \delta)\)</span>-DP protocol for binary summation in the multi message shuffled model, with error equal to a vector of independent Discrete Laplace random variables each with paramter <span class="math inline">\(\frac{\epsilon(1 - \gamma)}{2}\)</span> and with an expected number of messages sent per user equal to <span class="math inline">\(1 + O(\frac{B\log^2(1/\delta)}{\gamma\epsilon^2n})\)</span>, each consisting of <span class="math inline">\(\log B + 1\)</span>bits.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#binShuffleSumOptimal">
+Main proof
+</button>
+<div id="binShuffleSumOptimal" class="collapse">
+
+</div>
+<h3 id="lower-bound-if-communication-is-restricted">Lower Bound if communication is restricted</h3>
+<p>Let <span class="math inline">\(\delta=\frac{1}{n^{\Omega(1)}}\)</span> and <span class="math inline">\(\epsilon \leq O(1)\)</span>, then <strong>any</strong> <span class="math inline">\((\epsilon, \delta)\)</span>-DP protocol for binary summation in the single message shuffled model should incur a squared error of <span class="math inline">\(\Omega(\log n)\)</span>. However, if you allow <strong>almost</strong> single message then the error can get really close to central models.</p>
+<h2 id="background-material-to-understand-the-proofs">Background Material to understand the proofs</h2>
+<h3 id="distributed-d-mechanisms">Distributed D-Mechanisms</h3>
+<p>They define a D-Mechanism as the process of adding independent noise to each dimension of the final output of tha analyser/curator in central DP – similar to the laplace mechanism defined <a href="Definitions/">in</a>. The distributed D-Mechanism is the protocol of achieving the same distribution by splitting the noise into <span class="math inline">\(n\)</span> components.</p>
+<h4 id="privacy">Privacy</h4>
+<p>For any <span class="math inline">\(\epsilon &gt; 0\)</span> and <span class="math inline">\(\delta \in (0,1)\)</span>, the D-Distributed Mechanism is <span class="math inline">\((\epsilon, \delta)\)</span>-DP in the shuffled model for <span class="math inline">\(\Delta\)</span>-summation <strong>if and only if</strong> if the D Mechanism is <span class="math inline">\((\epsilon, \delta)\)</span>-DP in the central model for <span class="math inline">\(\Delta\)</span>-summation.</p>
+<h4 id="error">Error</h4>
+<p>The error of such a shuffled protocol is <span class="math inline">\(D - \mathbb{E}[D]\)</span>, the mean squared error is just the variance of the distribution.</p>
+<h4 id="communication">Communication</h4>
+<p>The expected number of messages is at most <span class="math inline">\(\Delta + \mathbb{E}[D]/n\)</span> where each messages is composed of 1’s.</p>
+<h3 id="infinitely-divisible-distributions">Infinitely Divisible Distributions</h3>
+<p><a href="https://stats.libretexts.org/Bookshelves/Probability_Theory/Probability_Mathematical_Statistics_and_Stochastic_Processes_(Siegrist)/05%3A_Special_Distributions/5.04%3A_Infinitely_Divisible_Distributions">Examples of such distributions</a></p>
+<p>One of the tricks of the paper is to use the guarantees of central privacy but finding distributions that can distribute the same noise over <span class="math inline">\(n\)</span> users. The authors use the poisson distribution and the negative binomial distribution to build intuition, but these distributions are not able to shrink the error close to central DP. Lemma 15 in the paper proves that any infinitely divisible distribution on non-negative distributions will never come close to Central DP.</p>
+<p>Then the authors go on to sample the discrete laplace distribution using the difference of negative binomials. However, by doing this we lose privacy. So the final game is to use what they call correlated distributed mechanisms to bring back the privacy – where they use noise from a second different infinitely divisible distribution to get the privacy back. They don’t lose accuracy in expectation but it does add variance.</p>
+<h4 id="poisson">Poisson</h4>
+<p><a href="https://llc.stat.purdue.edu/2014/41600/notes/prob1805.pdf">Proof by induction</a> showing that <span class="math inline">\(Poisson(\lambda)\)</span> is infinitely divisble.</p>
+<p>If we can show that the poisson mechanism is DP like the laplace mechanism, we’re done in therms of the privacy proof. The error would just be the variance of the distribution. Note: The standard concentration bounds don’t work for Poisson distributions as it is not a sub-gaussian distribution – <a href="https://math.stackexchange.com/questions/2533280/poisson-random-variable-is-not-sub-gaussian">see this writeup</a>. So to prove privacy, we need a special poisson concentration lemma</p>
+<h5 id="lemma-poisson-concentration">Lemma : Poisson concentration</h5>
+<h5 id="theorem-privacy-of-the-poisson-mechanism">Theorem: Privacy of the Poisson Mechanism</h5>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#poissonPrivacy">
+Proof: Poisson mechanism is private
+</button>
+<div id="poissonPrivacy" class="collapse">
+
+</div>
+<h4 id="negative-binomial-distribution">Negative Binomial distribution</h4>
+<p><strong>Key Observation:</strong> Sampling from a discrete laplace distributoon (2 sided geometric distribution) is equivalent to sampling from the difference of two Negative Binomial distributions.</p>
+<div class="question">
+<p>There are some statements in the paper where they claim that because the mean and variance of the poisson is the same, it leads to lot of communication when <span class="math inline">\(\frac{\epsilon}{\Delta} &lt;&lt; 1\)</span>. I do not have any intuition behind this statement. They then claim by using the negative binomial distribution this dependence can be shrunk from <span class="math inline">\((\frac{\epsilon}{\Delta})^2\)</span> in the Poisson case to <span class="math inline">\(\frac{\epsilon}{\Delta}\)</span> in the negative binomial case. I did not realy understanding anything about the distinction between the two and why one is better. I just treat them as separate examples for now.</p>
+</div>
+<h5 id="theorem-privacy-of-the-negative-binomial-mechanism">Theorem: Privacy of the Negative Binomial mechanism</h5>
+<p>For any every <span class="math inline">\(\epsilon, \delta \in (0, 1)\)</span> and <span class="math inline">\(\Delta \in \mathbb{N}\)</span>. Let <span class="math inline">\(p=e^{-.2\epsilon/Delta}\)</span> and <span class="math inline">\(r=3\big(1 + \log(1/\delta)\big)\)</span>. The <span class="math inline">\(NB(r, p)\)</span> mechanism is <span class="math inline">\((\epsilon, \delta)\)</span>-DP.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#nbPrivacy">
+Proof: negative binomial mechanism is private
+</button>
+<div id="nbPrivacy" class="collapse">
+
+</div>
 <h2 id="references">References</h2>
 </div>
 <div id="footer">

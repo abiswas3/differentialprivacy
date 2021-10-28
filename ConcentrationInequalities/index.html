@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style>
+  <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css" />
+  <link rel="stylesheet" href="../blog.css">
   <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -42,17 +42,17 @@ Proof
 <div id="markovInEq" class="collapse">
 <p>Let <span class="math inline">\(X : S \rightarrow R^+\)</span> be a non-negative random variable</p>
 <p>We can divide the set <span class="math inline">\(S = S_1 + S_2\)</span> where <span class="math inline">\(S_1 = \{ s | X(s) \geq a\}\)</span> and <span class="math inline">\(S_2 = \{ s | X(s) &lt; a\}\)</span></p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{E}[X] &amp;= \int_{s \in S} X(s)f(s)ds \\
 &amp;=\int_{s \in S_1} X(s)f(s)ds + \int_{s \in S_2} X(s)f(s)ds \\
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Since <span class="math inline">\(\int_{s \in S_2} X(s)f(s)ds \geq 0\)</span> as <span class="math inline">\(X(s) &gt; 0\)</span> <span class="math inline">\(\forall s \in S\)</span>, we have</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \int_{s \in S_1} af(s)ds &amp;\leq \int_{s \in S_1} X(s)f(s)ds \\
 &amp;\leq \mathbb{E}[X] \\
 \int_{s \in S_1} f(s)ds &amp;\leq  \frac{\mathbb{E}[X]}{a}\\
 \mathbb{P}[X \geq a]&amp;\leq \frac{\mathbb{E}[X]}{a} \\
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 </div>
 <h2 id="chebyshevs-inequality">Chebyshevs inequality</h2>
 <p>The next tail bound is for random variables from a slighlty more restrictive class. Variables who have their variances bounded. The only assumption the Markov inequality makes is that the random variable is non negative.</p>
@@ -62,10 +62,10 @@ Proof
 </button>
 <div id="Chebyshev" class="collapse">
 <p>Let <span class="math inline">\(X\)</span> be a random variable where <span class="math inline">\(Var(X) = \sigma^2\)</span>. By Markov, for every <span class="math inline">\(a &gt; 0\)</span></p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}[ (X - \mu)^2 \geq a^2] &amp;\leq \frac{\mathbb{E}[(X - \mu)^2]}{a^2} \\
 &amp;= \frac{\sigma^2}{a^2}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Note the event <span class="math inline">\(\mathbb{P}[|X - \mu| \geq a] = \mathbb{P}[(X - \mu)^2 \geq a^2]\)</span> thus we can conclude that</p>
 <p><span class="math display">\[\mathbb{P}_{X \sim D}\Big[|X - \mu| \geq a\Big] \leq \frac{Var(X)}{a^2}\]</span></p>
 </div>
@@ -78,10 +78,10 @@ Proof
 </button>
 <div id="WeakLawOfLarge" class="collapse">
 <p>Pick <span class="math inline">\(a &gt; 0\)</span>, then</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}_{X_i \sim D}\Big[|1/N\sum_{i=1}^N X_i - \mu| \geq a\Big] &amp;\leq \frac{Var(1/N\sum_{i=1}^N X_i)}{a^2} \label{1}\tag{1} \\
 &amp;= \frac{1}{N^2}Var(X_i)
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Clearly as <span class="math inline">\(N \rightarrow \infty\)</span>, the RHS goes to 0.</p>
 <p><span class="math inline">\(\ref{1}\)</span> Using chebychev</p>
 </div>
@@ -98,7 +98,7 @@ Classical textbook proof using Bernstein
 </button>
 <div id="chernoff1" class="collapse">
 <p>The usual textbook proof of the above theorem uses the exponential function and Markov’s inequality. It is called the moment method, because exp simultaneously encodes all moments <span class="math inline">\(X,X^2,X^3,...\)</span> of X. This trick is often attributed to Bernstein and is called the Bernstein’s Trick.</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}\Big[\sum_{i=1}^nX_i \geq (p + t)n\Big] &amp;= \mathbb{P}\Big[\lambda\sum_{i=1}^nX_i \geq \lambda(p + t)n\Big] \\
 &amp;= \mathbb{P}\Big[e^{\lambda\sum_{i=1}^nX_i} \geq e^{\lambda(p + t)n}\Big] \\
 &amp;= \mathbb{P}\Big[e^{\lambda X} \geq e^{\lambda(p + t)n}\Big] \label{3}\tag{1}\\
@@ -107,30 +107,30 @@ Classical textbook proof using Bernstein
 &amp;= \frac{\prod_{i=1}^n \mathbb{E}[e^{\lambda X_i}]}{ e^{\lambda(p + t)n}} \label{5}\tag{3}\\
 &amp;= \Big[ \frac{\mathbb{E}[e^{\lambda X_i}]}{ e^{\lambda(p + t)}} \Big]^n\\
 &amp;= \Big[ \frac{1 - p + pe^\lambda}{ e^{\lambda(p + t)}} \Big]^n \label{6}\tag{4}\\
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{3} X = \sum_{i=1}^nX_i\)</span></p>
 <p><span class="math inline">\(\ref{4}\)</span>: By Markov inequality</p>
 <p><span class="math inline">\(\ref{5}\)</span>: By Independence</p>
 <p><span class="math inline">\(\ref{6}\)</span> : <a href="https://proofwiki.org/wiki/Moment_Generating_Function_of_Bernoulli_Distribution">Moment Generating function of a bernoulli</a></p>
 <p>or every <span class="math inline">\(\lambda &gt; 0\)</span>. Optimizing for <span class="math inline">\(\lambda\)</span> using calculus (taking derivative and setting it to 0, we get that the right hand side is minimized</p>
 <p><span class="math display">\[ e^\lambda = \frac{(1-p)(p+t)}{p(1 - p - t)}\]</span> and then plugging it back into the RHS, we get</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}\Big[\sum_{i=1}^nX_i \geq (p + t)n\Big] &amp;\leq \Big[ \frac{1 - p + pe^\lambda}{ e^{\lambda(p + t)}} \Big]^n \\
 &amp;= \Big( [\frac{p}{p+t}]^{p+t}[\frac{1-p}{1-p-t}]^{1 - p - t}\Big)^n \\
 &amp;= e^{-D_{KL}(p + t || p)n}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoff2">
 Proof using binomial theorem
 </button>
 <div id="chernoff2" class="collapse">
 <p>Let <span class="math inline">\(B(n,p)\)</span> be the random variable that gives the number of heads in <span class="math inline">\(n\)</span> independent Bernoulli trials with success probability <span class="math inline">\(p\)</span>. For any <span class="math inline">\(\tau \geq 1\)</span></p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}[B(n,p) \geq k] &amp;= \sum_{i=k}^n {n \choose i} p^{i}(1-p)^{n-i} \\
 &amp;\leq \sum_{i=k}^n {n \choose i} p^{i}(1-p)^{n-i}\tau^{i-k} + \sum_{i=0}^{k-1} {n \choose i} p^{i}(1-p)^{n-i}\tau^{i-k} \\
 &amp;\leq \frac{1}{\tau^k}\sum_{i=k}^n {n \choose i} (p\tau)^{i}(1-p)^{n-i} \\
 &amp;= \frac{1}{\tau^k}[p\tau + 1 - p]^n  \label{7}\tag{1}\\
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>$: $ Binomial Theorem</p>
 <p>if we plug <span class="math inline">\(k= (t+p)n\)</span>, we go back to <span class="math inline">\(\ref{6}\)</span> of the classical proof and get to the same bound.</p>
 </div>
@@ -147,14 +147,14 @@ Proof using differential privacy
 Proof
 </button>
 <div id="chernoffLowerTail" class="collapse">
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}[ X \leq n(p - t)] &amp;= \mathbb{P}[ -X \geq -n(p - t)]\\
 &amp;= \mathbb{P}[ n - X \leq n - n(p - t)] \\
 &amp;= \mathbb{P}[ X^{&#39;} \leq n(1 - p + t)] \\
 &amp;= \mathbb{P}[ X^{&#39;} \leq n(p^{&#39;} + t)] \\
 &amp;\leq e^{-D_{KL}(1 - p + t || 1 - p)n} \\
 &amp;\leq e^{-D_{KL}(p - t || p)n}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>where <span class="math inline">\(X^{&#39;}\)</span> is just the original Bernoulli random variable flipped and <span class="math inline">\(p^{&#39;}= 1 - p\)</span> is the probability of seeing a tails.</p>
 </div>
 <h3 id="muliplicative-version">Muliplicative version</h3>
@@ -168,10 +168,10 @@ Proof
 </button>
 <div id="chernoffMult" class="collapse">
 <p>Setting <span class="math inline">\(t=\frac{\delta\mu}{n}\)</span> in the original theorem:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}[X \geq (p + t)n]  &amp;= \mathbb{P}[X \geq (1 + \delta)\mu]  \\
 \text{todo}\\
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 </div>
 <h3 id="weaker-but-more-compact-form">Weaker but more compact form</h3>
 <p>TODO</p>

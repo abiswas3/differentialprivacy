@@ -49,8 +49,8 @@ randomized algorithms:
 
 We denote the protocol $\textit{P} = (\textit{R}, \textit{A})$. We
 assume that the number of users n is public and available to both
-$\textit{R}$ and $\textit{A}$. $Let ⃗x \in X^n$. The evaluation of the
-protocol \textit{P} on input ⃗x is 
+$\textit{R}$ and $\textit{A}$. Let $x \in X^n$. The evaluation of the
+protocol \textit{P} on input $x$
 
 $$P(x) = (A \circ R)(x) = A\Big(R(x_1), \dots, R(x_n)\Big)$$
 
