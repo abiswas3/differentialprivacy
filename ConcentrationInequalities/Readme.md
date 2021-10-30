@@ -257,6 +257,13 @@ TODO
 
 TODO
 
+## Monte Carlo Simulations
+
+Python code to consolidate understanding -- re-creating definitions in code and observing how often the theoretical guarantees are violated.
+
+<embed type="text/html" src="code/sample.html" width="800" height="600"> 
+
+
 ## Hypergeometric distribution
 
 TODO
