@@ -36,8 +36,8 @@ about these results.
   are very sensitive to perturbation. Examples include auction prices
   or voting counts. A little bit of noise could alter the final
   outcome drastically. I describe the theoretical framework with a few
-  simple non practical examples.  
-* [Composition Theorems](): Todo 
+  simple non practical examples. **TODO**  
+* [Composition Theorems](): **TODO**
 
 
 ### Research Papers
@@ -51,7 +51,7 @@ about these results.
 * [Shuffle: Binary sums with no communication](ShuffleSumBinaryRasmus/)  
 * [Shuffle: Almost Central Almost no communication](ShuffleSumMeanEstimateRasmus/)
 * [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
-* [frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
+* [Frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
 * [Pure LDP](PureProtocols/)
 
 <!-- * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html) -->
@@ -68,14 +68,16 @@ check for gaps in practical deployement.
 
 * [Private Mean Estimation](PrivateMeanEstimation/): In this work, we study the problem of
   summing (aggregating) real numbers or integers, a basic primitive in
-  numerous machine learning tasks. People have attempted this under
-  many different assumptions and come with different solutions. These
-  notes summarise the works from:
-  * Laplace
-  * Pagh
-  * Cheu
-  * Cormode
-* [Private Password Lists]()
+  numerous machine learning tasks. What solutions have researchers come up with for central, local and shuffle privacy:
+  * Laplace mechanism - Textbook for DP
+  * [Lower bounds for local differential privacy](https://arxiv.org/pdf/1103.2626.pdf)
+  * [Ghazi, Rasmus Pagh -- binary sums and histograms](ShuffleSumBinaryRasmus/)  
+  * [Ghazi, Pagh -- real number sums](ShuffleSumMeanEstimateRasmus/)
+  * [Cheu](ShufflePrivacy/index.html)
+  * [Cormode]((FrequencyEstimationSurvey/index.html))
+* [Private Password Lists](PrivatePassowrds): Application of the exponential mechanism (first I have seen so far) **TODO**
+  * [Password Frequency list I](https://jbonneau.com/doc/BDB16-NDSS-pw_list_differential_privacy.pdf)
+  * [Private Anonymous histograms](https://arxiv.org/abs/1910.03553)
 
 
 ## My own work
@@ -84,6 +86,6 @@ In this seciton I describe original work that I am thinking of. Most
 of this work is done under the suprvision of [Graham
 Cormode](https://warwick.ac.uk/fac/sci/dcs/people/graham_cormode/)
 
-* [Re-deriving and extending Trie heavy hitters]()
+* [Re-deriving and extending Trie heavy hitters](): **TODO**
 
 <div class=container>
