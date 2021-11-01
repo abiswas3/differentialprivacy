@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css" />
+  <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+  
+  
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+</head>
+<body>
+<div class="container">
+<h1 id="election-methods">Election Methods</h1>
+<p>A review of rank aggregation methods with code. Consider the following problem where 8 voters have voted for 5 candidates - A, B, C, D and E. Shown below is the code for computing Kemeny optimal ranking, borda rank and Kwik Sort ranks for such a problem in a non private setting.</p>
+<h2 id="kemenyyoung-method">Kemeny–Young method</h2>
+<p>The Kemeny optimal ranking is a desirable aggregate ranking because it places first the <a href="https://en.wikipedia.org/wiki/Condorcet_method">Condorcet winner</a>. Assume we have a set of candidates <span class="math inline">\(A\)</span>. A vote on the candidate set comprises of a ordering of the candidates in <span class="math inline">\(A\)</span>. Say we had <span class="math inline">\(n\)</span> such votes := <span class="math inline">\(\tau = (\tau_1, \tau_2, \dots, \tau_n)\)</span>. Let the final ranking of the candidates in <span class="math inline">\(A\)</span> be <span class="math inline">\(\sigma\)</span>. The badness of a ranking is the average kendal tau distance between <span class="math inline">\(\sigma\)</span> and members of <span class="math inline">\(\tau\)</span>. The ranking with the smallest badness is the kemeny young optimal ranking.</p>
+Intutively, if we treat all voters to be equal, and took each of their votes – ran bubble sort on them till they became this minimum ranking. We would need the smallest number of total swaps over all the votes. Or in other words, if we looked at pairwise head to head matchups between candidates – the Kemeny Optimal ranking has the most number of pairs that agree with the voters.
+<div class="intution">
+Write this better
+</div>
+<p>See [<a href="https://docs.scipy.org/doc/scipy-0.15.1/reference/generated/scipy.stats.kendalltau.html" title="Practical Details on Kendall-Tau">4</a>] for production level implementation details. The wikipedia page for Kendal-Tau distance is also very informative.</p>
+<h2 id="borda-aggregation">Borda Aggregation</h2>
+<p>[<a href="https://cse.buffalo.edu/faculty/atri/papers/algos/FAS-journal-final.pdf" title="Ordering by weighted number of wins gives a good ranking for weighted tournaments">3</a>] claims that Borda-aggregation is a 5-approximation of the optimal rank aggregation. Borda count is computationally simple. For each vote submitted, it gives the candidate a score based on its position in the vote/submitted ranking. For example first place gets a score of 0 and <span class="math inline">\(m\)</span>’th place gets a score of <span class="math inline">\(m-1\)</span>. Then all the scores for all votes are summed and the candidates are ranked in increasing order of their scores.</p>
+<h2 id="kwiksort">KwikSort</h2>
+<p>[<a href="http://dimacs.rutgers.edu/~alantha/papers2/aggregating_journal.pdf" title="Aggregating Inconsistent Information: Ranking and Clustering">5</a>] show this algorithm is a 2-approximation of optimal rank aggregation.</p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li><a href="https://arxiv.org/pdf/1206.5265.pdf">Consensus ranking under the exponential model</a></li>
+</ol>
+<ol start="2" type="1">
+<li><a href="https://dl.acm.org/doi/pdf/10.5555/2791220.2791224">Rank Aggregation: Together We’re Strong</a></li>
+</ol>
+<ol start="3" type="1">
+<li><a href="https://cse.buffalo.edu/faculty/atri/papers/algos/FAS-journal-final.pdf">Ordering by weighted number of wins gives a good ranking for weighted tournaments</a></li>
+</ol>
+<ol start="4" type="1">
+<li><a href="https://docs.scipy.org/doc/scipy-0.15.1/reference/generated/scipy.stats.kendalltau.html">Practical details on Kendall-tau</a></li>
+</ol>
+<ol start="5" type="1">
+<li><a href="http://dimacs.rutgers.edu/~alantha/papers2/aggregating_journal.pdf">Aggregating Inconsistent Information: Ranking and Clustering</a></li>
+</ol>
+</div>
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>

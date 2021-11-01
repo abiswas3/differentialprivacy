@@ -11,7 +11,7 @@ cd ShuffleSumBinaryRasmus && ./build && cd ../
 cd PrivateMeanEstimation && ./build && cd ../
 cd PureProtocols  && ./build && cd ../
 cd PrivateVoting  && ./build && cd ../
-
+cd VotingSummary  && ./build && cd ../
 
 # cd private_histograms/ && ./build && cd ../
 

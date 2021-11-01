@@ -617,11 +617,13 @@ give a reason. On the train I can work it out.
 [3]: https://arxiv.org/pdf/1504.04686.pdf "Local, Private, Efficient Protocols
 for Succinct Histograms"
 3. [Local, Private, Efficient Protocols for Succinct
-Histograms](https://arxiv.org/pdf/1504.04686.pdf) </div>
+Histograms](https://arxiv.org/pdf/1504.04686.pdf) 
 
 [4]: https://arxiv.org/pdf/1511.08552.pdf "Simultaneous Private Learning of Multiple Concepts"
-[Simultaneous Private Learning of Multiple Concepts]( https://arxiv.org/pdf/1511.08552.pdf)
+4. [Simultaneous Private Learning of Multiple Concepts](https://arxiv.org/pdf/1511.08552.pdf)
 
 
 [5]: https://arxiv.org/pdf/2109.13158.pdf "Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message"
-[Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message](https://arxiv.org/pdf/2109.13158.pdf)
+5. [Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message](https://arxiv.org/pdf/2109.13158.pdf)
+
+</div>

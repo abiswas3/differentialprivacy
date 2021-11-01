@@ -78,6 +78,9 @@ check for gaps in practical deployement.
 * [Private Password Lists](PrivatePassowrds): Application of the exponential mechanism (first I have seen so far) **TODO**
   * [Password Frequency list I](https://jbonneau.com/doc/BDB16-NDSS-pw_list_differential_privacy.pdf)
   * [Private Anonymous histograms](https://arxiv.org/abs/1910.03553)
+* [Private Rank Aggregation/Voting](PrivateVoting): There seems to be some work in this area but not a whole lot. Wondering if it is because the problems are too hard or too similar to the primitives researchers already think about. Or am I lucky in that people have just not cared about it that much. Could be some novel work in here. Papers worth reading:
+  * [Differentially Private Rank Aggregation](https://cs.colgate.edu/~mhay/assets/publications/hay2017differentially.pdf)
+
 
 
 ## My own work
