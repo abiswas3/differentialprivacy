@@ -10,7 +10,7 @@ cd ShuffleSumMeanEstimateRasmus && ./build && cd ../
 cd ShuffleSumBinaryRasmus && ./build && cd ../
 cd PrivateMeanEstimation && ./build && cd ../
 cd PureProtocols  && ./build && cd ../
-
+cd EquivalenceOfPrivacyModels && ./build && cd ../
 
 # cd private_histograms/ && ./build && cd ../
 

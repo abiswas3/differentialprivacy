@@ -333,7 +333,7 @@ implies $c^* \leq 1$ with probability 1. Hence, $\PBinHist(⃗X) = 0$
 The full version of the histogram just uses $\PBinHist$ for each
 coordinate $j \in [d]$ where $d$ is the dimension of the histogram.
 
-### An algorithm for binary sums that satisfies shuffle privacy
+### An algorithm for histogram sums on integers that satisfies shuffle privacy
 
 <div class="algorithm">
 
