@@ -25,6 +25,7 @@ about these results.
   privacy. Introduce well the laplace mechanism - what it is and why
   it works. Simulation code to understand $(\alpha, \beta)$ accuracy
   guarantees for the laplace mehanism is provided.
+* [Notes on Computation Complexity](): **TODO**  
 * [Concentration Inequalities: building blocks to understanding
   proofs](ConcentrationInequalities/): A lot of the alogirithms in
   this area try to approximate the expected value of random

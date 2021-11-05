@@ -228,7 +228,7 @@ bound from $\delta$ <div class="question"> It is not immediately clear
 why they picked square root of 5: but here is my
 understanding</div><div class=intuition>Given $\alpha$ is already
 defined in terms of $\epsilon$. The authors want to find a simpler
-lower bound for $\alpha^2$ in temrs of $\epsilon$. As there is a
+lower bound for $\alpha^2$ in termss of $\epsilon$. As there is a
 squared, they picked the smallest integer such that $\alpha > 0$ for
 all values of $\epsilon \in [0,1]$ Shown below are plots for $\alpha -
 \frac{\epsilon}{\sqrt{5}}$ and $\alpha -
