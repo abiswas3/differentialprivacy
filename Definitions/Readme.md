@@ -109,16 +109,19 @@ getting a little bit more accuracy.
 The $l_1$-sensitivity of a function $f: \N^{|X|} \rightarrow \R^k$ is defined as 
 
 $$\Delta f = \text{max}_{|| x - x' ||_1 \leq 1} || f(x) - f(x')||_1$$
-for any $x, x' \in \N^{|X|}$. Simply put, for neighbouring datasets
-$x, x'$, what is the maximum this function can differ by. High
+
+for any $x, x' \in \N^{|X|}$. 
+
+
+Simply put, for neighbouring datasets$x, x'$, what is the maximum this function can differ by. High
 sensitive functions are not good differential privacy, as by changing
 just one input we see big differences in outputs -- thereby providing
 information about the unique input to the function.
 
 
-
 ## Laplace Mechanism {#theorem-lapIsPrivate}
 
+** FIX TYPOS in notation of proof. Using same variables over and over** 
 Given $f: \N^{|X|} \rightarrow \R^k$, then the laplace mechanism is
 defined as 
 

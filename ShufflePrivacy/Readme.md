@@ -10,8 +10,12 @@
 \newcommand{\PHist}{\textit{P}_{\epsilon, \delta}^{hist}}
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+
 <div class=container>
-# Separting local and Shuffle Privacy
+
+# Separating local and Shuffle Privacy
 
 <div class="question">Is there a major difference between mean estimation for histograms and regular mean estimation of a discrete population? [[5][5]] does the same problem as this paper but not for histograms. Therefore histograms as they are bucketted, must be easier?</div>
 
@@ -68,18 +72,18 @@ $$E=\frac{\P{Y'=Y}{Y'}{D}}{\P{Y'=Y+k'}{Y'}{D}}$$
 
 It's saying if I draw a random variable from $Y \sim \D$; the
 probability of drawing another variable $Y' \sim \D$ within a window
-of [Y, Y+k'] is quite close to the original probability of drawing $Y$
+of [Y-k', Y+k'] is quite close to the original probability of drawing $Y$
 to begin with.
 
 <!-- [Heading IDs](#custom-id)
 -->
 ### Lemma 2: Adding Noise from smooth distributions is a DP mechanism {#lemma-smooth}
 
-Let $f: \Z^n \rightarrow \Z$ be a function such that it is 1 sensitive
-i.e. $|f(x) - f(x')| \leq 1$ for all $x \sim x'$. Let $\D$ be a
-$(\epsilon, \delta, 1)$ smooth distribution. Then the algorithm that
+Let $f: X^n \rightarrow \Z^m$ be a k-incremental function such that it is $\Delta$ sensitive
+i.e. $|f(x) - f(x')| \leq \Delta$ for all $x \sim x'$. Let $\D$ be a
+$(\epsilon, \delta, k)$ smooth distribution. Then the algorithm that M
 takes $x \sim \Z^n$, and outputs $f(x) + \eta$ where $\eta \sim D$ is
-DP.
+$(\epsilon', \delta')$ DP, where $(\epsilon' = \epsilon\times\Delta, \delta'\times\Delta)$
 
 <button type="button" 
 class="btn btn-info" 
@@ -87,9 +91,30 @@ data-toggle="collapse"
 data-target="#smmothNoiseIsDp">Proof</button>
 <div class=collapse id=smmothNoiseIsDp>
 
-Need to read original paper in detail
+Proof follows directly as a consequence of smootheness, independence and the union bound. A k-incremental function is defined as following: $\forall X, X' || f(X) - f(X')||_{\infty} \leq k$. Binary sums for neighbouring datasets are 1-incremental. Since $f$ is k incremental, for any $j \in \floor{m}$ we have $f(X')_j - f(X)_j = k_j \leq k$
+
+We have $M(X)_j = f(X)_j + \eta$ where $\eta \sim D$ and $M(X')_j = f(X')_j + \eta_j = f(X)_j + k + \eta_j$. Since $f$ is deterministic, the randomness in the two methods comes from $\eta_j$
+
+\begin{align*}
+\P{\frac{M(X)}{M(X')}}{\eta}{D} &= \P{\prod_{j=1}^m \frac{M(X)_j}{M(X')_j}}{\eta}{D} \\
+&= \P{\prod_{j=1}^m \frac{\P{Y=\eta_j}{Y}{D}}{\P{Y=\eta_j+k_j}{Y}{D}}}{\eta}{D} \tag{1}\label{1}\\
+\end{align*}
+
+$\ref{1}:$ As defined as f is k-incremental.
+
+From smoothness we get $\P{\frac{\P{Y=\eta_j}{Y}{D}}{\P{Y=\eta_j+k_j}{Y}{D}} \geq e^{\epsilon'|k_j|/\Delta} }{\eta_j}{D} \leq \frac{\delta'}{\Delta}$
 
 </div>
+
+<!-- B
+
+\begin{align*}
+\P{\prod_{j=1}^m \frac{\P{Y=\eta_j}{Y}{D}}{\P{Y=\eta_j+k_j}{Y}{D}} \geq e^{\sum_{j=1}^m|k_j|\epsilon}}{\eta}{D} &\leq \delta\\
+\P{\prod_{j=1}^m \frac{\P{Y=\eta_j}{Y}{D}}{\P{Y=\eta_j+k_j}{Y}{D}} \geq e^{\Delta\epsilon}}{\eta}{D} &\leq \delta \tag{2}\label{2}\\
+\end{align*}
+
+$\ref{2}:$ sensitivity of $f$
+ -->
 
 
 ### Lemma 3: The binomial distribution is smooth
@@ -108,7 +133,50 @@ data-toggle="collapse"
 data-target="#binIsSmooth">Proof</button>
 <div class=collapse id=binIsSmooth>
 
-Need to read original paper in detail
+If we look at the definition of smooth distributions, they look an awful lot like concentration inequalities. It should come as no surprise that to show that the binomial distribution is $(\epsilon, \delta, k)$ - smooth we use the multiplicative chernoff bound along with some algebra.
+
+Define $Event(Y):= \frac{\P{Y'=Y}{Y'}{Binomial(n, \gamma)}}{\P{Y'=Y+k'}{Y'}{Binomial(n, \gamma)}}$ for $n \in \N$, $\gamma \in [0, 1/2]$, $-k \leq k' \leq k$ and $\mu = n\gamma$.
+
+We want to show that $\P{Event(Y) \geq e^{|k'|\epsilon}}{Y}{Binomial(n, \gamma)} \leq \delta$.
+
+Define interval $G := [ (1 - \alpha)\mu + k, (1 + \alpha)\mu - k ]$. (**Looks a lot like CHERNOFF**) for $\alpha \in [0,1]$
+
+If $k \leq \frac{\alpha\mu}{2}$, then $G$ is a subset of $[(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]$. This inequality is constructed artificially to remove the $k$ dependence and directly apply the chernoff bound. They simply doubled the range of $G$ and found conditions in which for any value of $k$, we would still fit $G$ in the range. The math is simple: $(1 - \alpha)\mu + k = (1 - \alpha/2)\mu$, if you solve for $k$ you get the inequality.
+
+Since $G \subseteq [(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]$ and $Y \sim Binomial(n, \gamma)$ is the sum of $n$ Bernoulli random variables, we can directly apply the multicative chernoff bounds for sums of bernoulli random variables. We have 
+
+$\P{Y' \geq (1 + \alpha/2)\mu}{Y'}{Bin(n, \gamma)} \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}}$ and 
+
+$\P{Y' \leq (1 - \alpha/2)\mu}{Y'}{Bin(n, \gamma)} \leq e^{-\frac{\alpha^2\mu}{8}}$
+
+Combining we get, $\P{Y' \notin G}{Y'}{Bin(n, \gamma)} \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}$. Now back to what we want to show:
+
+\begin{align*}
+\P{Event(Y) \geq e^{|k'|\epsilon}}{Y}{Bin(n, \gamma)} &\leq \P{Event(Y) \geq e^{|k'|\epsilon} \Big| Y \in G}{Y}{Bin(n, \gamma)} +  \P{Y \notin G}{Y}{Bin(n, \gamma)} \tag{1}\label{totProb}\\
+&\leq  \P{Event(Y) \geq e^{|k'|\epsilon} \Big| Y \in G}{Y}{Bin(n, \gamma)} + e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}} \tag{2}\label{chernoff}\\
+&\leq \delta
+\end{align*}
+
+$\ref{totProb}:$ Using the law of total probability
+
+$\ref{chernoff}:$ Chernoff bound from above
+
+Now if we show $\P{Event(Y) \geq e^{|k'|\epsilon} \Big| Y \in G}{Y}{Bin(n, \gamma)} = 0$, then we can set $\delta=e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}$ as in the lemma and solve for $\epsilon$. So the game simply becomes, for what $\epsilon$ do we zero out that probability.
+
+<div class="question">
+   I am copying this next bit from the paper: but I don't know where the last inequality comes from, I could not derive it.
+
+   $Event(y) = \frac{(1-\gamma)^{k'}}{y^{k'}}\times\frac{(y+1)...(y+k')}{(n-y)...(n-y-k'+1)}$
+
+   Next they claim, since $y \in G$, when $k' \leq 0$,
+
+   $Event(y) = \frac{y^{|k'|}}{(1-\gamma)^{|k'|}}\frac{(n-y+1)...(n-y +|k'|)}{y(y-1)...(y-|k'|)} \leq (\frac{1 + \alpha}{1 - \alpha})^{|k'|} = e^{\epsilon|k|}$
+
+   When $k' \geq 0$we get $\frac{(1-\gamma)^{k'}}{y^{k'}}\frac{(y+1)...(y+k')}{(n-y)...(n-y-k'+1)} \leq (1+\alpha)^{k'} \leq (\frac{1 + \alpha}{1 - \alpha})^{k'} = e^{\epsilonk}$ 
+
+   So if we set $\epsilon = ln(\frac{1 + \alpha}{1 - \alpha})$ we get everything we want. How they go from products to $\alpha$ inequalities are unclear to me!
+
+</div>
 
 </div>
 
@@ -201,7 +269,7 @@ data-target="#binHistProof">Proof</button>
 
 <div class=collapse id=binHistProof>
 
-### Part I : Proving DP 
+### Part I : Proving DP  (Needs slight re-write -- I've finally understood the game)
 
 Part I of this proof comes from background material section. The first
 question of concern is under what conditions, is sampling from a

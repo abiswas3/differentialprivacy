@@ -66,9 +66,11 @@ e^{\epsilon}\]</span> for all subsets <span class="math inline">\(T \subseteq Y\
 <p>The hope is the following: Because we have this shuffle phase, perhaps we can add a little less noise to the local randomisers thereby getting a little bit more accuracy.</p>
 <h2 id="definition-shuffleDP">L1 Sensitivity</h2>
 <p>The <span class="math inline">\(l_1\)</span>-sensitivity of a function <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow \mathbb{R}^k\)</span> is defined as</p>
-<p><span class="math display">\[\Delta f = \text{max}_{|| x - x&#39; ||_1 \leq 1} || f(x) - f(x&#39;)||_1\]</span> for any <span class="math inline">\(x, x&#39; \in \mathbb{N}^{|X|}\)</span>. Simply put, for neighbouring datasets <span class="math inline">\(x, x&#39;\)</span>, what is the maximum this function can differ by. High sensitive functions are not good differential privacy, as by changing just one input we see big differences in outputs – thereby providing information about the unique input to the function.</p>
+<p><span class="math display">\[\Delta f = \text{max}_{|| x - x&#39; ||_1 \leq 1} || f(x) - f(x&#39;)||_1\]</span></p>
+<p>for any <span class="math inline">\(x, x&#39; \in \mathbb{N}^{|X|}\)</span>.</p>
+<p>Simply put, for neighbouring datasets<span class="math inline">\(x, x&#39;\)</span>, what is the maximum this function can differ by. High sensitive functions are not good differential privacy, as by changing just one input we see big differences in outputs – thereby providing information about the unique input to the function.</p>
 <h2 id="theorem-lapIsPrivate">Laplace Mechanism</h2>
-<p>Given <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow \mathbb{R}^k\)</span>, then the laplace mechanism is defined as</p>
+<p>** FIX TYPOS in notation of proof. Using same variables over and over** Given <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow \mathbb{R}^k\)</span>, then the laplace mechanism is defined as</p>
 <p><span class="math display">\[M_L\Big(x, f(.), \epsilon \Big) = f(x) + (Y_1, \dots, Y_k)\]</span> where <span class="math inline">\(Y_i \sim Lap(\frac{\Delta(f)}{\epsilon})\)</span>. <strong>The laplace mechanism preserves pure differential privacy</strong></p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#laplaceMech">
 Proof

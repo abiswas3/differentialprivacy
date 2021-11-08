@@ -274,6 +274,7 @@ TODO
 
 ## Useful tricks 
 
+1. [Lamberts W Function](https://en.wikipedia.org/wiki/Lambert_W_function): the Lambert W function, also called the omega function or product logarithm, is a multivalued function, namely the branches of the converse relation of the function $f(w) = w \times e^w$, where w is any complex number and $e^w$ is the exponential function.
 
 ### Bounding Bernoullis
 

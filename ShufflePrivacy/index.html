@@ -30,7 +30,7 @@
 <body>
 
 <div class="container">
-<h1 id="separting-local-and-shuffle-privacy">Separting local and Shuffle Privacy</h1>
+<h1 id="separating-local-and-shuffle-privacy">Separating local and Shuffle Privacy</h1>
 <div class="question">
 Is there a major difference between mean estimation for histograms and regular mean estimation of a discrete population? [<a href="https://arxiv.org/pdf/2109.13158.pdf" title="Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message">5</a>] does the same problem as this paper but not for histograms. Therefore histograms as they are bucketted, must be easier?
 </div>
@@ -51,17 +51,33 @@ This already looks a lot like Differential Privacy, which says, for DP to hold t
 </div>
 <p>The Event <span class="math inline">\(E\)</span> is defined as the following</p>
 <p><span class="math display">\[E=\frac{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y+k&#39;\Big]}\]</span></p>
-<p>It’s saying if I draw a random variable from <span class="math inline">\(Y \sim \mathbb{D}\)</span>; the probability of drawing another variable <span class="math inline">\(Y&#39; \sim \mathbb{D}\)</span> within a window of [Y, Y+k’] is quite close to the original probability of drawing <span class="math inline">\(Y\)</span> to begin with.</p>
+<p>It’s saying if I draw a random variable from <span class="math inline">\(Y \sim \mathbb{D}\)</span>; the probability of drawing another variable <span class="math inline">\(Y&#39; \sim \mathbb{D}\)</span> within a window of [Y-k’, Y+k’] is quite close to the original probability of drawing <span class="math inline">\(Y\)</span> to begin with.</p>
 <!-- [Heading IDs](#custom-id)
 -->
 <h3 id="lemma-smooth">Lemma 2: Adding Noise from smooth distributions is a DP mechanism</h3>
-<p>Let <span class="math inline">\(f: \mathbb{Z}^n \rightarrow \mathbb{Z}\)</span> be a function such that it is 1 sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq 1\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth distribution. Then the algorithm that takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is DP.</p>
+<p>Let <span class="math inline">\(f: X^n \rightarrow \mathbb{Z}^m\)</span> be a k-incremental function such that it is <span class="math inline">\(\Delta\)</span> sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq \Delta\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth distribution. Then the algorithm that M takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is <span class="math inline">\((\epsilon&#39;, \delta&#39;)\)</span> DP, where <span class="math inline">\((\epsilon&#39; = \epsilon\times\Delta, \delta&#39;\times\Delta)\)</span></p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#smmothNoiseIsDp">
 Proof
 </button>
 <div id="smmothNoiseIsDp" class="collapse">
-<p>Need to read original paper in detail</p>
+<p>Proof follows directly as a consequence of smootheness, independence and the union bound. A k-incremental function is defined as following: <span class="math inline">\(\forall X, X&#39; || f(X) - f(X&#39;)||_{\infty} \leq k\)</span>. Binary sums for neighbouring datasets are 1-incremental. Since <span class="math inline">\(f\)</span> is k incremental, for any <span class="math inline">\(j \in \left\lfloor m \right\rfloor\)</span> we have <span class="math inline">\(f(X&#39;)_j - f(X)_j = k_j \leq k\)</span></p>
+<p>We have <span class="math inline">\(M(X)_j = f(X)_j + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> and <span class="math inline">\(M(X&#39;)_j = f(X&#39;)_j + \eta_j = f(X)_j + k + \eta_j\)</span>. Since <span class="math inline">\(f\)</span> is deterministic, the randomness in the two methods comes from <span class="math inline">\(\eta_j\)</span></p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}_{\eta \sim D}\Big[\frac{M(X)}{M(X&#39;)}\Big] &amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{M(X)_j}{M(X&#39;)_j}\Big] \\
+&amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j+k_j\Big]}\Big] \tag{1}\label{1}\\
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{1}:\)</span> As defined as f is k-incremental.</p>
+<p>From smoothness we get <span class="math inline">\(\mathbb{P}_{\eta_j \sim D}\Big[\frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j+k_j\Big]} \geq e^{\epsilon&#39;|k_j|/\Delta} \Big] \leq \frac{\delta&#39;}{\Delta}\)</span></p>
 </div>
+<!-- B
+
+\begin{align*}
+\P{\prod_{j=1}^m \frac{\P{Y=\eta_j}{Y}{D}}{\P{Y=\eta_j+k_j}{Y}{D}} \geq e^{\sum_{j=1}^m|k_j|\epsilon}}{\eta}{D} &\leq \delta\\
+\P{\prod_{j=1}^m \frac{\P{Y=\eta_j}{Y}{D}}{\P{Y=\eta_j+k_j}{Y}{D}} \geq e^{\Delta\epsilon}}{\eta}{D} &\leq \delta \tag{2}\label{2}\\
+\end{align*}
+
+$\ref{2}:$ sensitivity of $f$
+ -->
 <h3 id="lemma-3-the-binomial-distribution-is-smooth">Lemma 3: The binomial distribution is smooth</h3>
 <p>For any positive integer n, and <span class="math inline">\(\gamma \in [0,1/2], \alpha \in [0,1]\)</span> and any <span class="math inline">\(k \leq \alpha\gamma/2\)</span>, <span class="math inline">\(Binomian(n, \gamma)\)</span> is <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth with</p>
 <p><span class="math display">\[\epsilon = \log\big( \frac{1 + \alpha}{1 - \alpha}\big)\]</span> and</p>
@@ -70,7 +86,31 @@ Proof
 Proof
 </button>
 <div id="binIsSmooth" class="collapse">
-<p>Need to read original paper in detail</p>
+<p>If we look at the definition of smooth distributions, they look an awful lot like concentration inequalities. It should come as no surprise that to show that the binomial distribution is <span class="math inline">\((\epsilon, \delta, k)\)</span> - smooth we use the multiplicative chernoff bound along with some algebra.</p>
+<p>Define <span class="math inline">\(Event(Y):= \frac{\mathbb{P}_{Y&#39; \sim Binomial(n, \gamma)}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim Binomial(n, \gamma)}\Big[Y&#39;=Y+k&#39;\Big]}\)</span> for <span class="math inline">\(n \in \mathbb{N}\)</span>, <span class="math inline">\(\gamma \in [0, 1/2]\)</span>, <span class="math inline">\(-k \leq k&#39; \leq k\)</span> and <span class="math inline">\(\mu = n\gamma\)</span>.</p>
+<p>We want to show that <span class="math inline">\(\mathbb{P}_{Y \sim Binomial(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon}\Big] \leq \delta\)</span>.</p>
+<p>Define interval <span class="math inline">\(G := [ (1 - \alpha)\mu + k, (1 + \alpha)\mu - k ]\)</span>. (<strong>Looks a lot like CHERNOFF</strong>) for <span class="math inline">\(\alpha \in [0,1]\)</span></p>
+<p>If <span class="math inline">\(k \leq \frac{\alpha\mu}{2}\)</span>, then <span class="math inline">\(G\)</span> is a subset of <span class="math inline">\([(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]\)</span>. This inequality is constructed artificially to remove the <span class="math inline">\(k\)</span> dependence and directly apply the chernoff bound. They simply doubled the range of <span class="math inline">\(G\)</span> and found conditions in which for any value of <span class="math inline">\(k\)</span>, we would still fit <span class="math inline">\(G\)</span> in the range. The math is simple: <span class="math inline">\((1 - \alpha)\mu + k = (1 - \alpha/2)\mu\)</span>, if you solve for <span class="math inline">\(k\)</span> you get the inequality.</p>
+<p>Since <span class="math inline">\(G \subseteq [(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]\)</span> and <span class="math inline">\(Y \sim Binomial(n, \gamma)\)</span> is the sum of <span class="math inline">\(n\)</span> Bernoulli random variables, we can directly apply the multicative chernoff bounds for sums of bernoulli random variables. We have</p>
+<p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \geq (1 + \alpha/2)\mu\Big] \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}}\)</span> and</p>
+<p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \leq (1 - \alpha/2)\mu\Big] \leq e^{-\frac{\alpha^2\mu}{8}}\)</span></p>
+<p>Combining we get, <span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \notin G\Big] \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span>. Now back to what we want to show:</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon}\Big] &amp;\leq \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] +  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Y \notin G\Big] \tag{1}\label{totProb}\\
+&amp;\leq  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] + e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}} \tag{2}\label{chernoff}\\
+&amp;\leq \delta
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{totProb}:\)</span> Using the law of total probability</p>
+<p><span class="math inline">\(\ref{chernoff}:\)</span> Chernoff bound from above</p>
+<p>Now if we show <span class="math inline">\(\mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] = 0\)</span>, then we can set <span class="math inline">\(\delta=e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span> as in the lemma and solve for <span class="math inline">\(\epsilon\)</span>. So the game simply becomes, for what <span class="math inline">\(\epsilon\)</span> do we zero out that probability.</p>
+<div class="question">
+<p>I am copying this next bit from the paper: but I don’t know where the last inequality comes from, I could not derive it.</p>
+<p><span class="math inline">\(Event(y) = \frac{(1-\gamma)^{k&#39;}}{y^{k&#39;}}\times\frac{(y+1)...(y+k&#39;)}{(n-y)...(n-y-k&#39;+1)}\)</span></p>
+<p>Next they claim, since <span class="math inline">\(y \in G\)</span>, when <span class="math inline">\(k&#39; \leq 0\)</span>,</p>
+<p><span class="math inline">\(Event(y) = \frac{y^{|k&#39;|}}{(1-\gamma)^{|k&#39;|}}\frac{(n-y+1)...(n-y +|k&#39;|)}{y(y-1)...(y-|k&#39;|)} \leq (\frac{1 + \alpha}{1 - \alpha})^{|k&#39;|} = e^{\epsilon|k|}\)</span></p>
+<p>When <span class="math inline">\(k&#39; \geq 0\)</span>we get <span class="math inline">\(\frac{(1-\gamma)^{k&#39;}}{y^{k&#39;}}\frac{(y+1)...(y+k&#39;)}{(n-y)...(n-y-k&#39;+1)} \leq (1+\alpha)^{k&#39;} \leq (\frac{1 + \alpha}{1 - \alpha})^{k&#39;} = e^{\epsilonk}\)</span></p>
+<p>So if we set <span class="math inline">\(\epsilon = ln(\frac{1 + \alpha}{1 - \alpha})\)</span> we get everything we want. How they go from products to <span class="math inline">\(\alpha\)</span> inequalities are unclear to me!</p>
+</div>
 </div>
 <h2 id="introduction">Introduction</h2>
 <p>There has been a lot of work on local privacy. See here <strong>TODO</strong>. A new paradigm of privacy is shuffle privacy. In this paper, the authors try and understand the guarantees of shuffle privacy with respect to local privacy for the histogram sum estimation problem. There are two major findings:</p>
@@ -134,7 +174,7 @@ I have not verified myself what the accuracy guarantees of known local models ar
 Proof
 </button>
 <div id="binHistProof" class="collapse">
-<h3 id="part-i-proving-dp">Part I : Proving DP</h3>
+<h3 id="part-i-proving-dp-needs-slight-re-write-ive-finally-understood-the-game">Part I : Proving DP (Needs slight re-write – I’ve finally understood the game)</h3>
 <p>Part I of this proof comes from background material section. The first question of concern is under what conditions, is sampling from a binomial distribution <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth. Then all that remains to be shown is that, the above algorithm is basically adding noise drawn from a binomial to the exact binary sum, which by Lemma 2 is DP.</p>
 <h4 id="under-what-conditions-is-the-binomial-1-smooth">Under what conditions is the Binomial 1-smooth</h4>
 <p>By Lemma 3, We know a binomial is k-smooth if <span class="math inline">\(\epsilon = \log\big( \frac{1 + \alpha}{1 - \alpha}\big)\)</span> and <span class="math inline">\(\delta= exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha})\)</span> for any <span class="math inline">\(\alpha \in [0,1]\)</span></p>
@@ -144,7 +184,7 @@ Now if we restrict <span class="math inline">\(\alpha \in [\epsilon/\sqrt{5}, 1)
 It is not immediately clear why they picked square root of 5: but here is my understanding
 </div>
 <div class="intuition">
-Given <span class="math inline">\(\alpha\)</span> is already defined in terms of <span class="math inline">\(\epsilon\)</span>. The authors want to find a simpler lower bound for <span class="math inline">\(\alpha^2\)</span> in temrs of <span class="math inline">\(\epsilon\)</span>. As there is a squared, they picked the smallest integer such that <span class="math inline">\(\alpha &gt; 0\)</span> for all values of <span class="math inline">\(\epsilon \in [0,1]\)</span> Shown below are plots for <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{5}}\)</span> and <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{4}}\)</span>. Clearly, <span class="math inline">\(\frac{\epsilon}{\sqrt{5}} \geq \alpha\)</span> <span class="math inline">\(\forall \epsilon \in [0,1]\)</span>. Now that they have lower bounded <span class="math inline">\(\alpha\)</span> by a simple <span class="math inline">\(\epsilon\)</span> we can just use it in the <span class="math inline">\(\delta\)</span> bound.
+Given <span class="math inline">\(\alpha\)</span> is already defined in terms of <span class="math inline">\(\epsilon\)</span>. The authors want to find a simpler lower bound for <span class="math inline">\(\alpha^2\)</span> in termss of <span class="math inline">\(\epsilon\)</span>. As there is a squared, they picked the smallest integer such that <span class="math inline">\(\alpha &gt; 0\)</span> for all values of <span class="math inline">\(\epsilon \in [0,1]\)</span> Shown below are plots for <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{5}}\)</span> and <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{4}}\)</span>. Clearly, <span class="math inline">\(\frac{\epsilon}{\sqrt{5}} \geq \alpha\)</span> <span class="math inline">\(\forall \epsilon \in [0,1]\)</span>. Now that they have lower bounded <span class="math inline">\(\alpha\)</span> by a simple <span class="math inline">\(\epsilon\)</span> we can just use it in the <span class="math inline">\(\delta\)</span> bound.
 </div>
 <div class="row">
 <div class="col-md-6">
