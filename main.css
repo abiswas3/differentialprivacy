@@ -161,6 +161,10 @@ h3[id^="lemma"] {
     color: red;
 }
 
+.new{
+    color: #03fc49;
+}
+
 .collapse{
     background-color: #ABBAEA;
     border:1px solid black;
