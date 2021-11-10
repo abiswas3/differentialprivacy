@@ -3,6 +3,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\max}{\text{max}}
 \newcommand{\S}[1]{\Delta #1}
 \newcommand{\RBinHist}{\textit{R}_{\epsilon, \delta}^{zsum}}
@@ -98,21 +99,32 @@ Now consider the sampling algorithm. We do the exact same pre-processing for eac
 
 ## Analysing the parameters
 
-From the above anlaysis it seems the two methods are doing the same thing - Adding bernoulli random variables to binary inputs. However, the analysis of the two alogrithms produces different dependencies on $\epsilon, \delta$ in the proofs to guarantee privacy. In this section we try and understand this discrepancy. The difference in the two bounds must be in the assumptions and constraints on the parameters given by the problem setup. Note there is a noticebale difference in the problem setups for shuffle privacy and sample-threshold privacy. We describe it the next few sections.
+From the above anlaysis it seems the two regimes are exactly the same in randomness. Yet the privacy analysis in the proofs produces different dependencies on $\epsilon, \delta$. In this section we try and understand this discrepancy. The difference in the two bounds must be in the assumptions and constraints on the parameters given by the problem setup. In this section, we re-use the same notation from the previous setup.
+
+Straight off the bat we notice a subtle differences in the problem setup for shuffle privacy and sample-threshold.
+
+* In shuffle privacy, there is no assumption or consideration for the distribution of 1's in the population. The shuffle privacy world works like this:
+	* Someone gives us $\epsilon, \delta \in [0, 1]$. The algorithm then checks if for the given values of $\epsDelta$ - privacy is possible. If the number of users $n \geq \frac{100}{\epsilon^2}\log(2/\delta)$ then we get pure $\epsilon$-privacy with probablity 1 - $\delta$. The algorithm picks the bernoulli parameter based on $\epsDelta$, the users or the environment do not control this. There is never a discussion on the number of 1's in the dataset. It could be anything.Thus the guarantees are distribution-free.
+* The sample privacy world is a little different. The bounds depend on the number of 1's in the data. We will see exactly how in the next few sections. The regime works as follows: 	
+	* Someone gives us $\epsilon, \delta \in [0, 1]$. Now we go ahead and select $m$ which is supposed to represent $m := \E[\sum_{i=1}^n z_i]$, where $z_i \sim Bernoulli(p_2)$ We also select a $\tau$, which requires we sample at least $\tau + 1$ users with 1's to get a non zero output. The efficacy of such a $\tau$ will depend on the number of 1's in the population. Just like in shuffle privacy, where they put a restriction on the number of users $n$; to get $\epsDelta$ privacy here we put a constraint on the product of scalars $\tau\times m$. 
+
+Before looking at the general difference in bounds we consider the case when everyone in the population has a zero value.
 
 ### Identical behaviour for all 0 input
 
-For an input of all 0's i.e $\sum_{i=1}^n x_i =0$ both shuffle and sample give 0 error. Part 3 of theorem one proves this in the [shuffle privacy](ShufflePrivacy/index.html) case. For the sample and threshold regime, if all inputs $x_i=0$ then $c=n$ and $\tau > 1$ so $(n - c) < \tau$ always. Thus the algorithm outputs 0.
+For an input of all 0's i.e $\sum_{i=1}^n x_i =0$ both shuffle and sample give 0 error. Part 3 of theorem one proves this in the [shuffle privacy](ShufflePrivacy/index.html) case. For the sample and threshold regime, if all inputs $x_i=0$ then $c=n$ and $\tau > 1$ so $(n - c) < \tau$ always. 
 
 ### Dependence on $\epsilon$ and $\delta$
 
+In this section we re-derive the main parts of both proofs and establish the connection between the two regimes. Both regimes guarantee pure privacy under a good event. Both regimes claim that privacy is preserved with probaility $1 - \delta$ -- where $\delta$( the likelihood of bad events) shrinks very quickly as $n$ grows -- at least at the rate of $\frac{1}{n}$ or faster. When we write "shuffle privacy needs", what we mean is the presented analysis in the paper needs -- not the algorithm itself. As shown above both algorithms are equivalent. To guarantee privacy, shuffle privacy needs event $E_1$ and sample-threshold needs event $E_2$. Let these events occur with probability at least $1 - \delta_1$ and $1 - \delta_2$.
+
 #### Shuffle
 
-Both regimes guarantee privacy under a good event. Both regimes claim that privacy is preserved with probaility $1 - \delta$ -- where $\delta$ shrinks very quickly as $n$ grows -- at least at the rate of $\frac{1}{n}$.
+Let us try and understand what the good event $E_1$ actually is.
 
-To guarantee privacy, shuffle privacy needs event $E_1$ and sample-threshold needs event $E_2$. Let these events occur with probability at least $1 - \delta_1$ and $1 - \delta_2$.
+The proof for Shuffle privacy works out because the binomial distribution $(\epsilon, \delta, k)$-smooth and adding noise from a smooth distribution to the output of binary sums gives pure $\epsilon$ privacy with probality $1 - \delta$. 
 
-The proof for Shuffle privacy works out because the binomial distribution $(\epsilon, \delta, k)$-smooth. Source: [[2][2]] define := distribution $\D$ is smooth over $\Z$ is $(\epsilon, \delta, k)$
+[[2][2]] define := distribution $\D$ is smooth over $\Z$ is $(\epsilon, \delta, k)$
 smooth, if $\forall k' \in [-k, k]$ if the event E
 
 $$\P{E \geq e^{|k'|\epsilon}}{Y}{\D} \leq \delta$$ or 
@@ -121,7 +133,9 @@ $$\P{E < e^{|k'|\epsilon}}{Y}{\D} > 1 - \delta$$
 
 where $$E=\frac{\P{Y'=Y}{Y'}{D}}{\P{Y'=Y+k'}{Y'}{D}}$$
 
-Appendix C, Lemma 4.12 of [[2][2]]: proves that a binomial distribution is smooth. They show this by showing that if event $E_1$ happens, then event $E > e^{|k'|\epsilon}$ happening is impossible i.e. $E_1 => E \leq e^{|k'|\epsilon}$ and event $E_1$ happens with probality at least 1 - $\delta$. The event $E_1$ is the event that sum of $n$ $Bernoulli(p_1)$ random variables be within a multiplicative factor of the mean. Simply put it is concentrated around its mean or mathematically
+Appendix C, Lemma 4.12 of [[2][2]]: proves that a binomial distribution is smooth. 
+
+To show the binomial this by showing that if event $E_1$ happens, then event $I(E > e^{|k'|\epsilon})$ happening is impossible i.e. $E_1 => I(E \leq e^{|k'|\epsilon})$ with probability 1; Event $E_1$ happens with probality at least 1 - $\delta$. The event $E_1$ is the event that sum of $n$ $Bernoulli(p_1)$ random variables be within a multiplicative factor of the mean. Simply put it is concentrated around its mean or mathematically
 
 $$E_1 := \sum_{i=1}^n x_i \in [(1 - \alpha)np_1 + k, (1 + \alpha)np_1 - k]$$ where $\alpha \in (0,1)$ and $k=1$ and $x_i \sim Bernoulli(p_1)$
 
