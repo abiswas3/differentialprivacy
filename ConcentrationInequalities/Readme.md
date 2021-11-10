@@ -226,12 +226,12 @@ This well-known version of the bound can be found in the classic text by Motwani
 
 Let $\delta \geq 0$ and $\mu=pn$, 
 
-$$\mathbb{P}[\sum_{i=1}^n X_i \geq (1 + \delta)\mu] \leq \Big( \frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}}\Big)^{\mu}$$ 
+$$\mathbb{P}[\sum_{i=1}^n X_i \geq (1 + \delta)\mu] \leq \Big( \frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}}\Big)^{\mu} \leq e^{-\frac{\delta^2\mu}{2 + \delta}}$$ 
 
-Let $\delta \geq 0$ and $\mu=pn$, 
+Let $0 \leq \delta \leq 1$ and $\mu=pn$, 
 
 
-$$\mathbb{P}[\sum_{i=1}^n X_i \geq (1 - \delta)\mu] \leq \Big( \frac{e^{-\delta}}{(1 - \delta)^{(1 - \delta)}}\Big)^{\mu}$$ 
+$$\mathbb{P}[\sum_{i=1}^n X_i \geq (1 - \delta)\mu] \leq \Big( \frac{e^{-\delta}}{(1 - \delta)^{(1 - \delta)}}\Big)^{\mu} \leq e^{-\frac{\delta^2\mu}{2}}$$ 
 
 
 <button type="button" 

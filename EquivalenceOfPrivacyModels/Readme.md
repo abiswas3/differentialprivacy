@@ -143,6 +143,13 @@ For an input of all 0's i.e $\sum_{i=1}^n x_i =0$ both shuffle and sample give 0
 
 In this section we re-derive the main parts of both proofs and establish the connection between the two regimes. Both regimes guarantee pure privacy under **a good event**. Both regimes claim that privacy is preserved with probaility $1 - \delta$ -- where $\delta$ (the likelihood of bad events) shrinks very quickly as $n$ grows. When we write "shuffle privacy needs" or "sample privacy needs", what we mean is the presented analysis in the paper needs -- not the algorithm itself. As shown above both algorithms are equivalent. To guarantee privacy, shuffle privacy needs event $E_1$ and sample-threshold needs event $E_2$. Let these events occur with probability at least $1 - \delta_1$ and $1 - \delta_2$. In this analysis we will derive shuffle privacy and then morph the sample privacy proof to show equivalence.
 
+The version of chernoff bound for bernoulli's both papers utilise is the following: 
+
+Let $\delta \geq 0$ and $\mu=pn$, 
+
+$$\mathbb{P}[\sum_{i=1}^n X_i \geq (1 + \delta)\mu] \leq \Big( \frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}}\Big)^{\mu} \leq e^{-\frac{\delta^2\mu}{2 + \delta}}$$ 
+
+
 <div class="row">
 
 <div class="col-md-6">
@@ -163,19 +170,27 @@ where $$E=\frac{\P{Y'=Y}{Y'}{D}}{\P{Y'=Y+k'}{Y'}{D}}$$
 
 To show that binomial is smooth we need event $I(E \leq e^{|k'|\epsilon})$ happens with probability at least $1 - \delta$. In the proofs Ghazi et al show that if event $E_1$ happens, then event $I(E > e^{|k'|\epsilon})$ happening is impossible i.e. $E_1 => I(E \leq e^{|k'|\epsilon})$. 
 
-Thus if event $E_1$ happens with probality at least 1 - $\delta$, then so will event $I(E \leq e^{|k'|\epsilon})$. The event $E_1$ is defined as the sum of $n$ $Bernoulli(p_1)$ random variables be within a multiplicative factor of the mean of their expected sum. They can as the set of bernoulli random variables such that 
+Thus if event $E_1$ happens with probality at least 1 - $\delta$, then so will event $I(E \leq e^{|k'|\epsilon})$. The event $E_1$ is defined as the sum of $n$ $Bernoulli(p_1)$ random variables be within a multiplicative factor of the mean of their expected sum. They can as the set of bernoulli random variables such that $Z = (z_1,  \dots, z_n)$
 
-$$E_1 := \{ (z_1,  \dots, z_n) | \sum_{i=1}^n z_i \in [(1 - \alpha)np_1 + k, (1 + \alpha)np_1 - k] \}$$ where $\alpha \in (0,1)$  and $k=1$ and $z_i \sim Bernoulli(p_1)$
+$$E_1 := \{ Z | \sum_{i=1}^n z_i \in [(1 - \alpha)np_1 + k, (1 + \alpha)np_1 - k] \}$$ where $\alpha \in (0,1)$  and $k=1$ and $z_i \sim Bernoulli(p_1)$
 
 The likelihood of this event $E_1$ can be bounded by the multiplicative chernoff bound. So the $\delta$ in shuffle privacy paper is pulled from the mulipilicative chernoff bound by setting the error region to 
 
-$$\tilde{E_1} := \{ (z_1, \dots, z_n) | \sum_{i=1}^n z_i \in [(1 - \alpha/2)np_1 , (1 + \alpha/2)np_1 ]\}$$ 
+$$\tilde{E_1} := \{ Z | \sum_{i=1}^n z_i \in [(1 - \alpha/2)np_1 , (1 + \alpha/2)np_1 ]\}$$ 
+
+By the two sides of the multiplicative chernoff bound we get 
+
+For $\alpha < 1$, we have $\mathbb{P}[Z \notin \tilde{E_1}] \leq exp(-\frac{\alpha^2p_1
+n}{8}) + exp(-\frac{\alpha^2p_1 n}{8+2\alpha}) <
+exp(-\frac{\alpha^2p_1 n}{10}) + exp(-\frac{\alpha^2p_1 n}{10})$
+
+Setting $\delta =2exp(-\frac{\alpha^2p_1 n}{10})$, and solving for $p$ we get what we need.
 
 Since $\tilde{E_1} \subseteq E_1$, if an event in $\tilde{E_1}$ happens with probability $1 - \delta$ then so will an event in $E_1$.
 
- The connection between the multiplicative factor $\alpha$ and the privacy parameter $\epsilon$ is $\alpha \geq \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1}$. 
+ The connection between the multiplicative factor $\alpha$ and the privacy parameter $\epsilon$ is $\alpha = \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1}$. Note: a constant greater than equal to $\alpha$ will only make the good event region bigger, so bounds that hold for $\alpha = \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1}$ will also hold. This is how Balcer and Cheu get their bounds, in their shuffle privacy paper, Balcer and cheu show that setting $\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)$, is sufficient for the binomial distribution to be $(\epsilon, \delta, 1)$ smooth. This is only true because $\frac{\epsilon}{\sqrt{5}} \geq \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1})$ for all $\epsilon \in [0,1]$
 
-In their shuffle privacy paper, Balcer and cheu show that setting $\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)$, is sufficient for the binomial distribution to be $(\epsilon, \delta, 1)$ smooth, and since binary sums are 1-incremental and have sensitivity $\Delta=1$, we get $\epsDelta$ privacy for $\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)$.
+  and since binary sums are 1-incremental and have sensitivity $\Delta=1$, we get $\epsDelta$ privacy for $\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)$. 
 
 	
 </div>	
@@ -203,8 +218,17 @@ n - (2n - \sum_{i=1}^n x_i - \sum_{i=1}^n z_i) &\leq \tau kp_2 \\
 \sum_{i=1}^n z_i &\leq \tau \alpha np_2 + (n - k) \\
 \end{align*}
 
-</div>	
 
+$$E_2 := \{ (z_1,  \dots, z_n) | \sum_{i=1}^n z_i \in [0, \tau\alpha np_1 +(n -k)] \}$$
+
+Already $E_2$ looks the one sided version of $E_1$, with the constants slightly different. Let's see if we can maniuplate them further.
+
+<div class="intuition">The one sided vs two sided is not a big deal. It's just the constant in the log factor. What can I do to relate the variables in the two events better?</div>
+
+
+<div class="question">If I use two sided instead of 1 sided bounds -- does Grahams proof still hold.</div>
+
+</div>	
 
 </div>
 
