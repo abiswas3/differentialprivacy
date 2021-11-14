@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style type="text/css">
+  <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css">
+  <link rel="stylesheet" href="../blog.css" />
   <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -79,12 +79,12 @@ That if condition is VERY important
 <p>Define the bit flipping operator as <span class="math inline">\(\bar{x} = 1 - x\)</span>. For each <span class="math inline">\(z_i x_i\)</span> the analyser sees, assume it just flips the output to <span class="math inline">\(\bar{x_i z_i}\)</span> and uses this sum instead. We are interested in an estimator that in expectation gives us <span class="math inline">\(\sum_{i=1}^n x_i\)</span>. Note: there are exactly the same number of random variables in this method as there is in the shuffle method.</p>
 <div class="algorithm">
 <p><img src=pngs/sample.png></img></p>
-<span class="math display">\[\begin{align*}
+<p><span class="math display">\[\begin{align*}
 c_B &amp;= \sum_{i=1}^n\bar{x_i z_i} \\
 &amp;= \sum_{i=1}^n(\bar{x_i} + \bar{z_i} )\tag{1}\label{1} \\
 &amp;= (n - \sum_{i=1}^n x_i) + (n - \sum_{i=1}^n z_i) \\
 &amp;= 2n - \sum_{i=1}^n x_i - \sum_{i=1}^n z_i
-\end{align*}\]</span>
+\end{align*}\]</span></p>
 <p><span class="math inline">\(\ref{1}:\)</span> simple boolean algebra, De-Morgan’s Law</p>
 <p>The above set of equations ignores thresholding. If the number of 1’s sampled is less than <span class="math inline">\(\tau\)</span>, the algorithm returns 0. The number of 1’s sampled is <span class="math inline">\(n - c_B\)</span>, thus if <span class="math inline">\((n - c_B) \leq \tau\)</span> the <span class="math inline">\(\hat{f(X)} = 0\)</span>. Otherwise</p>
 <p><span class="math inline">\(\hat{f(X)} = -c_B + 2n - np_2\)</span> which in expectation gives us what we want. Note: <span class="math inline">\(c_B = 2n - c_A\)</span></p>
@@ -107,11 +107,11 @@ c_B &amp;= \sum_{i=1}^n\bar{x_i z_i} \\
 </ul>
 <p>In Shuffle privacy, <span class="math inline">\(p_1 = \frac{50}{\epsilon^2n}\log(2/\delta)\)</span> and in sample privacy <span class="math inline">\(p_2 = \frac{m}{n}\)</span>. The variance of both methods and therefore mean square error is <span class="math inline">\(n(1-p)p\)</span>, which is maximum when <span class="math inline">\(p=1/2\)</span> for <span class="math inline">\(p= p_1, p_2\)</span>. Shuffle privacy requires that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(2/\delta)\)</span>$</p>
 <p>If we wanted to express <span class="math inline">\(m\)</span> in terms of the shuffle algorithm, we would get <span class="math inline">\(m=\frac{50}{\epsilon^2}\log(2/\delta)\)</span> by setting <span class="math inline">\(p_1=p_2\)</span>. <strong>NOTE we also the need to condition on n to hold.</strong> To consider how the threshold <span class="math inline">\(\tau\)</span> shows up in previous algorithm, consider the the following: <span class="math inline">\(\tau-\)</span>Sample privacy returns 0 when</p>
-<span class="math display">\[\begin{align*}
+<p><span class="math display">\[\begin{align*}
 (n - c_B) &amp;\leq \tau \\
 (n - 2n + c_A) &amp;\leq \tau \\
 c_A &amp;\leq \tau + n
-\end{align*}\]</span>
+\end{align*}\]</span></p>
 <p>If we set <span class="math inline">\(n\)</span> to be a free parameter independent of <span class="math inline">\(\epsilon, \delta\)</span> like sample privacy does, then we need <span class="math inline">\(\tau\)</span> to be at least <span class="math inline">\(\frac{100}{\epsilon^2}\log(2/\delta)\)</span> to get privacy!</p>
 <div class="question">
 In the trying to relate the parameters of the two methods we notice some issues
@@ -126,6 +126,9 @@ How does that work out? There has to be something going on between the relation 
 <p>For an input of all 0’s i.e <span class="math inline">\(\sum_{i=1}^n x_i =0\)</span> both shuffle and sample give 0 error. Part 3 of theorem one proves this in the <a href="../ShufflePrivacy/index.html">shuffle privacy</a> case. For the sample and threshold regime, if all inputs <span class="math inline">\(x_i=0\)</span> then <span class="math inline">\(c=n\)</span> and <span class="math inline">\(\tau &gt; 1\)</span> so <span class="math inline">\((n - c) &lt; \tau\)</span> always.</p>
 <h3 id="dependence-on-epsilon-and-delta">Dependence on <span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(\delta\)</span></h3>
 <p>In this section we re-derive the main parts of both proofs and establish the connection between the two regimes. Both regimes guarantee pure privacy under <strong>a good event</strong>. Both regimes claim that privacy is preserved with probaility <span class="math inline">\(1 - \delta\)</span> – where <span class="math inline">\(\delta\)</span> (the likelihood of bad events) shrinks very quickly as <span class="math inline">\(n\)</span> grows. When we write “shuffle privacy needs” or “sample privacy needs”, what we mean is the presented analysis in the paper needs – not the algorithm itself. As shown above both algorithms are equivalent. To guarantee privacy, shuffle privacy needs event <span class="math inline">\(E_1\)</span> and sample-threshold needs event <span class="math inline">\(E_2\)</span>. Let these events occur with probability at least <span class="math inline">\(1 - \delta_1\)</span> and <span class="math inline">\(1 - \delta_2\)</span>. In this analysis we will derive shuffle privacy and then morph the sample privacy proof to show equivalence.</p>
+<p>The version of chernoff bound for bernoulli’s both papers utilise is the following:</p>
+<p>Let <span class="math inline">\(\delta \geq 0\)</span> and <span class="math inline">\(\mu=pn\)</span>,</p>
+<p><span class="math display">\[\mathbb{P}[\sum_{i=1}^n X_i \geq (1 + \delta)\mu] \leq \Big( \frac{e^{\delta}}{(1 + \delta)^{(1 + \delta)}}\Big)^{\mu} \leq e^{-\frac{\delta^2\mu}{2 + \delta}}\]</span></p>
 <div class="row">
 <div class="col-md-6">
 <h4 id="shuffle">Shuffle</h4>
@@ -135,22 +138,25 @@ How does that work out? There has to be something going on between the relation 
 <p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E \geq e^{|k&#39;|\epsilon}\Big] \leq \delta\]</span> or</p>
 <p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E &lt; e^{|k&#39;|\epsilon}\Big] &gt; 1 - \delta\]</span></p>
 <p>where <span class="math display">\[E=\frac{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y+k&#39;\Big]}\]</span></p>
-<p>To show that binomial is smooth we need event <span class="math inline">\(I(E \leq e^{|k&#39;|\epsilon})\)</span> happens with probability at least <span class="math inline">\(1 - \delta\)</span>. In the proofs Ghazi et al show that if event <span class="math inline">\(E_1\)</span> happens, then event <span class="math inline">\(I(E &gt; e^{|k&#39;|\epsilon})\)</span> happening is impossible i.e. <span class="math inline">\(E_1 =&gt; I(E \leq e^{|k&#39;|\epsilon})\)</span>.</p>
-<p>Thus if event <span class="math inline">\(E_1\)</span> happens with probality at least 1 - <span class="math inline">\(\delta\)</span>, then so will event <span class="math inline">\(I(E \leq e^{|k&#39;|\epsilon})\)</span>. The event <span class="math inline">\(E_1\)</span> is defined as the sum of <span class="math inline">\(n\)</span> <span class="math inline">\(Bernoulli(p_1)\)</span> random variables be within a multiplicative factor of the mean of their expected sum. They can as the set of bernoulli random variables such that</p>
-<p><span class="math display">\[E_1 := \{ (z_1,  \dots, z_n) | \sum_{i=1}^n z_i \in [(1 - \alpha)np_1 + k, (1 + \alpha)np_1 - k] \}\]</span> where <span class="math inline">\(\alpha \in (0,1)\)</span> and <span class="math inline">\(k=1\)</span> and <span class="math inline">\(z_i \sim Bernoulli(p_1)\)</span></p>
+<p>To show that binomial is smooth we need event <span class="math inline">\(I(E \leq e^{|k&#39;|\epsilon})\)</span> happens with probability at least <span class="math inline">\(1 - \delta\)</span>. In the proofs Ghazi et al show that if event <span class="math inline">\(E_1\)</span> happens, then event <span class="math inline">\(I(E &gt; e^{|k&#39;|\epsilon})\)</span> happening is impossible i.e. <span class="math inline">\(E_1 =&gt; I(E \leq e^{|k&#39;|\epsilon})\)</span>.</p>
+<p>Thus if event <span class="math inline">\(E_1\)</span> happens with probality at least 1 - <span class="math inline">\(\delta\)</span>, then so will event <span class="math inline">\(I(E \leq e^{|k&#39;|\epsilon})\)</span>. The event <span class="math inline">\(E_1\)</span> is defined as the sum of <span class="math inline">\(n\)</span> <span class="math inline">\(Bernoulli(p_1)\)</span> random variables be within a multiplicative factor of the mean of their expected sum. They can as the set of bernoulli random variables such that <span class="math inline">\(Z = (z_1, \dots, z_n)\)</span></p>
+<p><span class="math display">\[E_1 := \{ Z | \sum_{i=1}^n z_i \in [(1 - \alpha)np_1 + k, (1 + \alpha)np_1 - k] \}\]</span> where <span class="math inline">\(\alpha \in (0,1)\)</span> and <span class="math inline">\(k=1\)</span> and <span class="math inline">\(z_i \sim Bernoulli(p_1)\)</span></p>
 <p>The likelihood of this event <span class="math inline">\(E_1\)</span> can be bounded by the multiplicative chernoff bound. So the <span class="math inline">\(\delta\)</span> in shuffle privacy paper is pulled from the mulipilicative chernoff bound by setting the error region to</p>
-<p><span class="math display">\[\tilde{E_1} := \{ (z_1, \dots, z_n) | \sum_{i=1}^n z_i \in [(1 - \alpha/2)np_1 , (1 + \alpha/2)np_1 ]\}\]</span></p>
+<p><span class="math display">\[\tilde{E_1} := \{ Z | \sum_{i=1}^n z_i \in [(1 - \alpha/2)np_1 , (1 + \alpha/2)np_1 ]\}\]</span></p>
+<p>By the two sides of the multiplicative chernoff bound we get</p>
+<p>For <span class="math inline">\(\alpha &lt; 1\)</span>, we have <span class="math inline">\(\mathbb{P}[Z \notin \tilde{E_1}] \leq exp(-\frac{\alpha^2p_1 n}{8}) + exp(-\frac{\alpha^2p_1 n}{8+2\alpha}) &lt; exp(-\frac{\alpha^2p_1 n}{10}) + exp(-\frac{\alpha^2p_1 n}{10})\)</span></p>
+<p>Setting <span class="math inline">\(\delta =2exp(-\frac{\alpha^2p_1 n}{10})\)</span>, and solving for <span class="math inline">\(p\)</span> we get what we need.</p>
 <p>Since <span class="math inline">\(\tilde{E_1} \subseteq E_1\)</span>, if an event in <span class="math inline">\(\tilde{E_1}\)</span> happens with probability <span class="math inline">\(1 - \delta\)</span> then so will an event in <span class="math inline">\(E_1\)</span>.</p>
-<p>The connection between the multiplicative factor <span class="math inline">\(\alpha\)</span> and the privacy parameter <span class="math inline">\(\epsilon\)</span> is <span class="math inline">\(\alpha \geq \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1}\)</span>.</p>
-<p>In their shuffle privacy paper, Balcer and cheu show that setting <span class="math inline">\(\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)\)</span>, is sufficient for the binomial distribution to be <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth, and since binary sums are 1-incremental and have sensitivity <span class="math inline">\(\Delta=1\)</span>, we get <span class="math inline">\((\epsilon, \delta)\)</span> privacy for <span class="math inline">\(\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)\)</span>.</p>
+<p>The connection between the multiplicative factor <span class="math inline">\(\alpha\)</span> and the privacy parameter <span class="math inline">\(\epsilon\)</span> is <span class="math inline">\(\alpha = \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1}\)</span>. Note: a constant greater than equal to <span class="math inline">\(\alpha\)</span> will only make the good event region bigger, so bounds that hold for <span class="math inline">\(\alpha = \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1}\)</span> will also hold. This is how Balcer and Cheu get their bounds, in their shuffle privacy paper, Balcer and cheu show that setting <span class="math inline">\(\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)\)</span>, is sufficient for the binomial distribution to be <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth. This is only true because <span class="math inline">\(\frac{\epsilon}{\sqrt{5}} \geq \frac{e^{\epsilon} - 1}{e^{\epsilon} + 1})\)</span> for all <span class="math inline">\(\epsilon \in [0,1]\)</span></p>
+<p>and since binary sums are 1-incremental and have sensitivity <span class="math inline">\(\Delta=1\)</span>, we get <span class="math inline">\((\epsilon, \delta)\)</span> privacy for <span class="math inline">\(\alpha = [\frac{\epsilon}{\sqrt{5}}, 1)\)</span>.</p>
 </div>
 <div class="col-md-6">
 <h4 id="sample-threshold">Sample-Threshold</h4>
 <p>Now we look at the event <span class="math inline">\(E_2\)</span> that is needed for privacy to hold. From Grahams AI stats submission, lemma 1 defines <span class="math inline">\(E_2\)</span>. Lemma 1 states: the probability that the number of samples of an item is more than <span class="math inline">\(\tau\)</span> times its expectation is at most <span class="math inline">\(\delta\)</span>, for <span class="math inline">\(\tau = 3 + \log(1/\delta)\)</span>. In the world of just binary numbers, these requirements can be restated as the following:</p>
-<p>Given the number of 1’s in the population is k. i.e. <span class="math inline">\(\sum_{i=1}^n x_i = k\)</span>. Each person <span class="math inline">\(x_i\)</span> has a <span class="math inline">\(p_2\)</span> chance of being sampled. Thus the expected number of 1’s in the sampled dataset is <span class="math inline">\(E[\sum_{i=1}^n z_ix_i] = kp_2=\frac{km}{n}\)</span></p>
+<p>Given the number of 1’s in the population is k. i.e. <span class="math inline">\(\sum_{i=1}^n x_i = k\)</span>. Each person <span class="math inline">\(x_i\)</span> has a <span class="math inline">\(p_2\)</span> chance of being sampled. Thus the expected number of 1’s in the sampled dataset is <span class="math inline">\(E[\sum_{i=1}^n z_ix_i] = kp_2=\frac{km}{n}\)</span></p>
 <p>An element in the set of good events <span class="math inline">\(E_2\)</span> is defined as the sum of sampled population being less than <span class="math inline">\(\tau\)</span> times the expected value of the sum of the sampled population. Let <span class="math inline">\(\alpha = \frac{k}{n}\)</span> the fraction of users that have 1 in the dataset. Clearly, <span class="math inline">\(\alpha \in [0,1]\)</span></p>
 <p><span class="math display">\[E_2: = \sum_{i=1}^n z_ix_i \leq \tau kp_2\]</span> Now we connect this event to the event <span class="math inline">\(E_1\)</span> in shuffle privacy.</p>
-<span class="math display">\[\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \sum_{i=1}^n z_ix_i &amp;\leq \tau kp_2 \\
 n - \sum_{i=1}^n \bar{z_ix_i} &amp;\leq \tau kp_2 \\
 n - (2n - \sum_{i=1}^n x_i - \sum_{i=1}^n z_i) &amp;\leq \tau kp_2 \\
@@ -158,7 +164,15 @@ n - (2n - \sum_{i=1}^n x_i - \sum_{i=1}^n z_i) &amp;\leq \tau kp_2 \\
 \sum_{i=1}^n z_i &amp;\leq \tau kp_2 + (n - k) \\
 \sum_{i=1}^n z_i &amp;\leq \tau \frac{k}{n} np_2 + (n - k) \\
 \sum_{i=1}^n z_i &amp;\leq \tau \alpha np_2 + (n - k) \\
-\end{align*}\]</span>
+\end{align*}\]</span></p>
+<p><span class="math display">\[E_2 := \{ (z_1,  \dots, z_n) | \sum_{i=1}^n z_i \in [0, \tau\alpha np_1 +(n -k)] \}\]</span></p>
+<p>Already <span class="math inline">\(E_2\)</span> looks the one sided version of <span class="math inline">\(E_1\)</span>, with the constants slightly different. Let’s see if we can maniuplate them further.</p>
+<div class="intuition">
+The one sided vs two sided is not a big deal. It’s just the constant in the log factor. What can I do to relate the variables in the two events better?
+</div>
+<div class="question">
+If I use two sided instead of 1 sided bounds – does Grahams proof still hold.
+</div>
 </div>
 </div>
 <h2 id="ignore">IGNORE</h2>

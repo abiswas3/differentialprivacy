@@ -312,7 +312,7 @@ bound.</div>
 </div>
 
 \begin{align}
-2exp(-\frac{\alpha^2\gamma n}{10}) &\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1}0C\ \\
+2exp(-\frac{\alpha^2\gamma n}{10}) &\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1} \\
 	&= \delta \\
 \frac{\gamma\epsilon^2n}{50} &= \log(\frac{2}{\delta}) \label{eq2}\tag{2}\\
 \gamma &= \frac{50}{\epsilon^2n}\log(\frac{2}{\delta})
