@@ -184,6 +184,18 @@ data-target="#lapAcc">Proof</button>
 </div>
 
 
+### Exponential noise 
+
+Similar bounds to Laplace
+
+\begin{align*}
+\mathbb{P}\Big[ \frac{M(D) \in T}{M(D') \in T}\Big] &= e^{-\lambda(|f(X) - f(X'))} \\
+&\geq e^{-\lambda(\Delta f)} \\
+&\geq e^{-\epsilon}
+\end{align*}
+
+where $\epsilon = \lambda \times \Delta f$ and $\lambda$ is the rate parameter of the noise distribution. The variance of the distribution is $\frac{1}{\lambda^2} = O(\frac{1}{\epsilon^2})$
+
 ### An experiment validating the theoretical bound
 
 Writing a computer program to validate the above theory. The

@@ -100,6 +100,14 @@ Proof
 <div id="lapAcc" class="collapse">
 
 </div>
+<h3 id="exponential-noise">Exponential noise</h3>
+<p>Similar bounds to Laplace</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}\Big[ \frac{M(D) \in T}{M(D&#39;) \in T}\Big] &amp;= e^{-\lambda(|f(X) - f(X&#39;))} \\
+&amp;\geq e^{-\lambda(\Delta f)} \\
+&amp;\geq e^{-\epsilon}
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(\epsilon = \lambda \times \Delta f\)</span> and <span class="math inline">\(\lambda\)</span> is the rate parameter of the noise distribution. The variance of the distribution is <span class="math inline">\(\frac{1}{\lambda^2} = O(\frac{1}{\epsilon^2})\)</span></p>
 <h3 id="an-experiment-validating-the-theoretical-bound">An experiment validating the theoretical bound</h3>
 <p>Writing a computer program to validate the above theory. The concentration inequality says that if I performed the laplace mechanism once then - the likelihood one of my dimensions is off by <span class="math inline">\(\log \frac{k}{\beta}\frac{\Delta f}{\epsilon}\)</span> is <span class="math inline">\(\beta\)</span>. Put in otherwords, say I did the laplace mechanism a gazillion times on my output. Only <span class="math inline">\(\beta\)</span> fraction of times will I get a bad event. A bad event is when the laplace mechanism leads to an output very far from the truth. So as an experiment, I generated many noisy but private outputs and observed how often the infinity norm went outside the boundary of the theorem. Was it more than theory claimed or less. It turns out when the number trials is large i.e. empirical means are close to actual means, the bound is quite tight.</p>
 <p><embed type="text/html" src="code/sample.html" width="800" height="600"></p>

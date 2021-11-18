@@ -30,7 +30,7 @@
 <body>
 
 <div class="container">
-<h1 id="private-mean-estimation-a-survey">Private Mean Estimation – A survey</h1>
+<h1 id="private-binary-mean-estimation-a-survey">Private Binary Mean Estimation : A survey</h1>
 <p>Papers being sumarised:</p>
 <ul>
 <li><a href="">Laplace</a></li>
@@ -40,9 +40,10 @@
 <li><a href="">Gazi II</a></li>
 </ul>
 <h2 id="problem-statement">Problem Statement</h2>
-<p><code>N users have values in the bounded reals or bounded integers or binary numbers. We want to calculate the mean/sum of these numbers privately. What have people done so far towards this problem. What assumptions have people made to make this problem morre private or more accurate.</code></p>
-<p>The table below provides an overview of the understanding of the summing problem we have today. There are three modes of privacy - central, local and a hybrid of the two known as shuffle. Each paradigm has a slighlty different definition of differential privacy. The list of definitions is <a href="../Definitions/">provided here</a></p>
-<style type="text/css">
+<p><code>N users have values binary numbers. We want to calculate the mean/sum of these numbers privately.</code></p>
+<!-- The table below provides an overview of the understanding of the summing problem we have today. There are three modes of privacy - central, local and a hybrid of the two known as shuffle. Each paradigm has a slighlty different definition of differential privacy. The list of definitions is [provided here](../Definitions/)
+ -->
+<!-- <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   overflow:hidden;padding:10px 5px;word-break:normal;}
@@ -60,16 +61,94 @@
 </style>
 <table class="tg">
 <thead>
+  <tr>
+    <th class="tg-0pky"></th>
+    <th class="tg-0lax"></th>
+    <th class="tg-fymr">Upper Bound</th>
+    <th class="tg-fymr">Number of messages per user</th>
+    <th class="tg-0pky"></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-lt5t">Central</td>
+    <td class="tg-hf8k"></td>
+    <td class="tg-lt5t">[$O(\frac{1}{\epsilon})$](../Definitions/)</td>
+    <td class="tg-lt5t"><span style="font-weight:400;font-style:normal">1</span></td>
+    <td class="tg-lt5t"></td>
+  </tr>
+  <tr>
+    <td class="tg-90e1">Local </td>
+    <td class="tg-ltxa"></td>
+    <td class="tg-90e1"><a href="https://arxiv.org/pdf/1103.2626.pdf" target="_blank" rel="noopener noreferrer"><span style="color:#905">[$O(\frac{1}{\sqrt{n}})$](https://arxiv.org/pdf/1103.2626.pdf)</span></a><br></td>
+    <td class="tg-90e1">1</td>
+    <td class="tg-90e1"></td>
+  </tr>
+  <tr>
+    <td class="tg-item">Shuffle</td>
+    <td class="tg-0khl">Privacy Blanket - Borja</td>
+    <td class="tg-item"><span style="font-weight:400;font-style:normal">$O(\frac{1}{\epsilon})$</span></td>
+    <td class="tg-item">$O_{\epsilon}\Big( \log\frac{n}{\delta}\Big)$</td>
+    <td class="tg-item"></td>
+  </tr>
+  <tr>
+    <td class="tg-0khl"></td>
+    <td class="tg-0khl"><span style="font-weight:400;font-style:normal">Vanishing complexity - Ghazi,</span><br><span style="font-weight:400;font-style:normal">(for binary sums)</span><br></td>
+    <td class="tg-0khl"><span style="font-weight:400;font-style:normal">$O(\frac{1}{\epsilon})$</span></td>
+    <td class="tg-0khl"><span style="font-weight:400;font-style:normal">$O_{\epsilon}\Big( \frac{\log^2\frac{1}{\delta}}{n}\Big)$</span></td>
+    <td class="tg-0khl"></td>
+  </tr>
+  <tr>
+    <td class="tg-0khl"></td>
+    <td class="tg-0khl"><span style="font-weight:400;font-style:normal">Vanishing complexity - Ghazi,</span><br><span style="font-weight:400;font-style:normal">(for binary sums)</span></td>
+    <td class="tg-0khl">$\Omega\Big( \sqrt{\log \frac{1}{\delta}}\Big)$</td>
+    <td class="tg-0khl">1</td>
+    <td class="tg-0khl"></td>
+  </tr>
+  <tr>
+    <td class="tg-0khl"></td>
+    <td class="tg-0khl">Almost Central </td>
+    <td class="tg-0khl"></td>
+    <td class="tg-0khl"></td>
+    <td class="tg-0khl"></td>
+  </tr>
+</tbody>
+</table>>
+ -->
+<h2 id="central-privacy">Central Privacy</h2>
+<h3 id="the-additive-mechanism">The Additive Mechanism</h3>
+<p>The additive mechanism can be described as follows: Each user <span class="math inline">\(i \in \left\lfloor \mathbb{N} \right\rfloor\)</span> sends their value <span class="math inline">\(x_i \in \{ 0, 1\}\)</span> to the analyser <span class="math inline">\(A\)</span>. The analyser samples noise <span class="math inline">\(Y \sim D\)</span>. To get privacy we need <span class="math inline">\(D\)</span> to obey some properties</p>
+<div class="algorithm">
+<p><img src= pngs/central.png></img></p>
+<p><span class="math inline">\(\hat{f}(X) = \sum_{i=1}^n x_i + Y\)</span></p>
+<p>where <span class="math inline">\(Y \sim D\)</span></p>
+</div>
+<ul>
+<li>If the tail of <span class="math inline">\(D\)</span> drops faster than the laplace distribution, one can only guarantee <span class="math inline">\((\epsilon, \delta)\)</span> DP (also known as concentrated DP or approximate DP). To achieve this privacy with noise from such distributions, we always rely on some good event <span class="math inline">\(E\)</span> that happens with probability at least <span class="math inline">\(1 - \delta\)</span>. If this good event occurs, <span class="math inline">\(\epsilon\)</span> pure privacy is possible, thus we get pure privacy with probability <span class="math inline">\(1 - \delta\)</span>. These good events are typically related to concentration inequalities – where the tail drops exponentially. Thus there is always a <span class="math inline">\(O(\log(1/\delta))\)</span> term when describing the error/accuracy of such mechanisms.</li>
+<li>If noise grows slower than laplace – then pure privacy is possible.</li>
+</ul>
+<embed type="text/html" src="code/CtsDists.html" width="800" height="600">
+<h3 id="accuracyprivacy-trade-off">Accuracy/privacy trade-off</h3>
+<p>Given <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> how do the distributions compare:</p>
+<h4 id="well-known-continous-distributions">Well known continous distributions</h4>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
 <tr>
 <th class="tg-0pky">
 </th>
-<th class="tg-0lax">
+<th class="tg-0pky">
+Error
 </th>
-<th class="tg-fymr">
-Upper Bound
-</th>
-<th class="tg-fymr">
-Number of messages per user
+<th class="tg-0pky">
+Proof
 </th>
 <th class="tg-0pky">
 </th>
@@ -77,104 +156,55 @@ Number of messages per user
 </thead>
 <tbody>
 <tr>
-<td class="tg-lt5t">
-Central
+<td class="tg-0pky">
+Laplace
 </td>
-<td class="tg-hf8k">
+<td class="tg-0pky">
+<span class="math inline">\(O(\frac{1}{\epsilon^2})\)</span> : From variance of laplace (see proof)
 </td>
-<td class="tg-lt5t">
-<a href="../Definitions/"><span class="math inline">\(O(\frac{1}{\epsilon})\)</span></a>
+<td class="tg-0pky">
+<a href="../Definitions">Under section Laplace Mechanism</a>
 </td>
-<td class="tg-lt5t">
-<span style="font-weight:400;font-style:normal">1</span>
-</td>
-<td class="tg-lt5t">
+<td class="tg-0pky">
 </td>
 </tr>
 <tr>
-<td class="tg-90e1">
-Local
+<td class="tg-0pky">
+Gauss
 </td>
-<td class="tg-ltxa">
+<td class="tg-0pky">
+<span style="font-weight:400;font-style:normal"><span class="math inline">\(O(\frac{1}{\epsilon^2}\log\frac{1}{\delta})\)</span> : From variance (see links)</span>
 </td>
-<td class="tg-90e1">
-<a href="https://arxiv.org/pdf/1103.2626.pdf" target="_blank" rel="noopener noreferrer"><span style="color:#905"><a href="https://arxiv.org/pdf/1103.2626.pdf"><span class="math inline">\(O(\frac{1}{\sqrt{n}})\)</span></a></span></a><br>
+<td class="tg-0pky">
+<span style="font-weight:400;font-style:normal">Proof using <a href="http://www.cs.toronto.edu/~anikolov/CSC2412F20/slides/DP-Gauss.pdf">tail bounds</a>. <a href="https://proceedings.mlr.press/v80/balle18a/balle18a.pdf">Balle et al</a> address the limitations by developing an optimal Gaussian mechanism whose variance is calibrated directly using the Gaussian cumulative density function instead of a tail bound approximation.
 </td>
-<td class="tg-90e1">
-1
-</td>
-<td class="tg-90e1">
+<td class="tg-0pky">
 </td>
 </tr>
 <tr>
-<td class="tg-item">
-Shuffle
+<td class="tg-0pky">
+Exponential
 </td>
-<td class="tg-0khl">
-Privacy Blanket - Borja
+<td class="tg-0pky">
+<span style="font-weight:400;font-style:normal"><span class="math inline">\(O(\frac{1}{\epsilon^2})\)</span> : From variance of exponential distribution</span>
 </td>
-<td class="tg-item">
-<span style="font-weight:400;font-style:normal"><span class="math inline">\(O(\frac{1}{\epsilon})\)</span></span>
+<td class="tg-0pky">
+<span style="font-weight:400;font-style:normal"><a href="../Definitions">Under section </span>Exponential <span style="font-weight:400;font-style:normal">noise</a></span>
 </td>
-<td class="tg-item">
-<span class="math inline">\(O_{\epsilon}\Big( \log\frac{n}{\delta}\Big)\)</span>
-</td>
-<td class="tg-item">
-</td>
-</tr>
-<tr>
-<td class="tg-0khl">
-</td>
-<td class="tg-0khl">
-<span style="font-weight:400;font-style:normal">Vanishing complexity - Ghazi,</span><br><span style="font-weight:400;font-style:normal">(for binary sums)</span><br>
-</td>
-<td class="tg-0khl">
-<span style="font-weight:400;font-style:normal"><span class="math inline">\(O(\frac{1}{\epsilon})\)</span></span>
-</td>
-<td class="tg-0khl">
-<span style="font-weight:400;font-style:normal"><span class="math inline">\(O_{\epsilon}\Big( \frac{\log^2\frac{1}{\delta}}{n}\Big)\)</span></span>
-</td>
-<td class="tg-0khl">
-</td>
-</tr>
-<tr>
-<td class="tg-0khl">
-</td>
-<td class="tg-0khl">
-<span style="font-weight:400;font-style:normal">Vanishing complexity - Ghazi,</span><br><span style="font-weight:400;font-style:normal">(for binary sums)</span>
-</td>
-<td class="tg-0khl">
-<span class="math inline">\(\Omega\Big( \sqrt{\log \frac{1}{\delta}}\Big)\)</span>
-</td>
-<td class="tg-0khl">
-1
-</td>
-<td class="tg-0khl">
-</td>
-</tr>
-<tr>
-<td class="tg-0khl">
-</td>
-<td class="tg-0khl">
-Almost Central
-</td>
-<td class="tg-0khl">
-</td>
-<td class="tg-0khl">
-</td>
-<td class="tg-0khl">
+<td class="tg-0pky">
 </td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-
-</blockquote>
-<h2 id="central-privacy">Central Privacy</h2>
-<h3 id="for-real-numbers">For real numbers</h3>
-<p>We incur a probability</p>
-<h3 id="for-integers">For integers</h3>
-<p>Since the input values are integers or binary numbers, we cannot use noise from the continuous laplace distribution. Instead we use its discrete counter part - the two sided geometric distribution or the discrete laplace distribution. [<a href="../DiscreteLaplace/paper.pdf" title="UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS">1</a>] showed that this mechanism was optimum i.e. the error of this mechanism is a lower bound for central differential privacy. We cannot do better.</p>
+<h4 id="well-known-discrete-distributions">Well Known Discrete Distributions</h4>
+<p>Shown are some examples of distributions we will discuss in these notes. Note the above distributions are continuous – but they have discrete cousins. The same statements apply to their discrete cousins. Shown below are a list of continous-discrete cousin distributions.</p>
+<ul>
+<li>Discrete Laplace</li>
+<li>Poisson</li>
+<li>Binomial,</li>
+<li>Negative Binomial</li>
+<li>Geometric Distribution</li>
+</ul>
 <h2 id="local-privacy">Local Privacy</h2>
 <h3 id="binary-sums-with-randomised-response">Binary sums with Randomised Response</h3>
 <p>We describe the randomised response protocol next.</p>
@@ -385,7 +415,10 @@ Lemma 3
 <li><a href="https://arxiv.org/pdf/1903.02837.pdf">The privacy blanket of the shuffle model</a></li>
 </ol>
 <ol start="3" type="1">
-<li><a href="https://arxiv.org/pdf/1103.2626.pdf">Distributed Private Data Analysis: On Simultaneously Solving How and What</a>
+<li><a href="https://arxiv.org/pdf/1103.2626.pdf">Distributed Private Data Analysis: On Simultaneously Solving How and What</a></li>
+</ol>
+<ol start="4" type="1">
+<li><a href="https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution">Distinction between one sided and 2 sided Geometric distributions</a>
 </div></li>
 </ol>
 <div id="footer">

@@ -12,10 +12,11 @@
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 \newcommand{\gaptr}{GAP-TR_{\kappa, \tau}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 
 
 <div class="container">
-# Private Mean Estimation -- A survey
+# Private Binary Mean Estimation : A survey
 
 Papers being sumarised:
 
@@ -27,12 +28,11 @@ Papers being sumarised:
 
 ## Problem Statement 
 
-```N users have values in the bounded reals or bounded integers or binary numbers. We want to calculate the mean/sum of these numbers privately. What have people done so far towards this problem. What assumptions have people made to make this problem morre private or more accurate.
-```
+```N users have values binary numbers. We want to calculate the mean/sum of these numbers privately. ```
 
-The table below provides an overview of the understanding of the summing problem we have today. There are three modes of privacy - central, local and a hybrid of the two known as shuffle. Each paradigm has a slighlty different definition of differential privacy. The list of definitions is [provided here](../Definitions/)
-
-<style type="text/css">
+<!-- The table below provides an overview of the understanding of the summing problem we have today. There are three modes of privacy - central, local and a hybrid of the two known as shuffle. Each paradigm has a slighlty different definition of differential privacy. The list of definitions is [provided here](../Definitions/)
+ -->
+<!-- <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   overflow:hidden;padding:10px 5px;word-break:normal;}
@@ -103,16 +103,81 @@ The table below provides an overview of the understanding of the summing problem
   </tr>
 </tbody>
 </table>>
-
+ -->
 ## Central Privacy
 
-### For real numbers
+### The Additive Mechanism
 
-We incur a probability 
+The additive mechanism can be described as follows:  Each user $i \in \floor{\N}$ sends their value $x_i \in \{ 0, 1\}$ to the analyser $A$. The analyser samples noise $Y \sim D$. To get privacy we need $D$ to obey some properties
 
-### For integers
+<div class="algorithm">
 
-Since the input values are integers or binary numbers, we cannot use noise from the continuous laplace distribution. Instead we use its discrete counter part - the two sided geometric distribution or the discrete laplace distribution. [[1][1]] showed that this mechanism was optimum i.e. the error of this mechanism is a lower bound for central differential privacy. We cannot do better.
+<img src= pngs/central.png></img>
+
+$\hat{f}(X) = \sum_{i=1}^n x_i + Y$
+
+where $Y \sim D$
+</div>
+
+* If the tail of $D$ drops faster than the laplace distribution, one can only guarantee $\epsDelta$ DP (also known as concentrated DP or approximate DP). To achieve this privacy with noise from such distributions, we always rely on some good event $E$ that happens with probability at least $1 - \delta$. If this good event occurs, $\epsilon$ pure privacy is possible, thus we get pure privacy with probability $1 - \delta$. These good events are typically related to concentration inequalities -- where the tail drops exponentially. Thus there is always a $O(\log(1/\delta))$ term when describing the error/accuracy of such mechanisms.
+* If noise grows slower than laplace -- then pure privacy is possible.
+
+<embed type="text/html" src="code/CtsDists.html" width="800" height="600"> 
+
+### Accuracy/privacy trade-off 
+
+Given $\epsilon, \delta \in [0,1]$ how do the distributions compare:
+
+#### Well known continous distributions 
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"></th>
+    <th class="tg-0pky">Error</th>
+    <th class="tg-0pky">Proof</th>
+    <th class="tg-0pky"></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">Laplace</td>
+    <td class="tg-0pky">$O(\frac{1}{\epsilon^2})$ : From variance of laplace (see proof)</td>
+    <td class="tg-0pky">[Under section Laplace Mechanism](../Definitions)</td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Gauss</td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">$O(\frac{1}{\epsilon^2}\log\frac{1}{\delta})$ : From variance (see links)</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">Proof using [tail bounds](http://www.cs.toronto.edu/~anikolov/CSC2412F20/slides/DP-Gauss.pdf). [Balle et al](https://proceedings.mlr.press/v80/balle18a/balle18a.pdf) address the limitations by developing an optimal Gaussian mechanism whose variance is calibrated directly using the Gaussian cumulative density function instead of a tail bound approximation.</td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Exponential</td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">$O(\frac{1}{\epsilon^2})$ : From variance of exponential distribution</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">[Under section </span>Exponential <span style="font-weight:400;font-style:normal">noise](../Definitions)</span></td>
+    <td class="tg-0pky"></td>
+  </tr>
+</tbody>
+</table>
+
+#### Well Known Discrete Distributions
+
+Shown are some examples of distributions we will discuss in these notes. Note the above distributions are continuous -- but they have discrete cousins. The same statements apply to their discrete cousins. Shown below are a list of continous-discrete cousin distributions.
+
+* Discrete Laplace
+* Poisson
+* Binomial,
+* Negative Binomial
+* Geometric Distribution
 
 ## Local Privacy
 
@@ -465,4 +530,7 @@ the sum of n bounded real values held by n different users
 
 [3]: https://arxiv.org/pdf/1103.2626.pdf "Distributed Private Data Analysis: On Simultaneously Solving How and What"
 3. [Distributed Private Data Analysis: On Simultaneously Solving How and What](https://arxiv.org/pdf/1103.2626.pdf)
+
+[4]: https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution "Distinction between one sided and 2 sided Geometric distributions"
+4. [Distinction between one sided and 2 sided Geometric distributions](https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution)
 </div>

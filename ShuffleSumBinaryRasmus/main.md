@@ -20,20 +20,25 @@
 
 ## Problem Statement 
 
-```In this work, we study the problem of summing (aggregating) binary numbers.
+```In this work, we study the problem of summing (aggregating) binary numbers while preserving Shuffle Differential privacy.
 ```
 
+The organisation of this writeup is as follows: We will for a while pretend Shuffle DP = Central DP. We will discuss their contributions as in terms of central differential privacy to build intuition about the theorems in this paper. Finally in a we will connect it back to shuffle privacy by discussing the communication aspect of the algorithms. For distinction between local, central and shuffle refer [here](../Definitions/)
+
+<!-- 
 The following screenshot is taken from the [official talk](https://www.youtube.com/watch?v=wkF_uBo-bLo) by one of the authors and provides an overview of shuffle privacy.
 <img src="pngs/overview.png" height="300px" width="600px"></img>
-
+ -->
 
 ## Contribution
 
-For the simple problem of binary sum estimation, if I want to send 1 message per user only then the accuracy bounds by given by [[2][2]] and [[1][1]] are tight. You cannot do better! **This paper proves a lower bound**. If there is wiggle room on the number of messages each user can send; then the accuracy of the central case is achievable -- they get arbitrarily close the discrete laplace mechanism. They also claim their algorithms are practical by running evaluations. **TODO ARI: Run the code yourself and verify.**
+For the simple problem of binary sum estimation, if I want to send 1 message per user only then the accuracy bounds by given by [[2][2]] and [[1][1]] are tight. You cannot do better! **This paper proves a lower bound**. If there is wiggle room on the number of messages each user can send; then the accuracy of the central case is achievable -- they get arbitrarily close the discrete laplace mechanism. 
+
+We will worry about the lower bound later, but first address the statement "arbitrarily close to central first". Assume that the discrete laplace mechanism gave us $\epsilon$ pure privacy. Then theialgorithm has error equal to the discrete laplace distribution but with privacy parameter $(1 - \gamma)\epsilon$ for $\gamma \in (0, 1/2)$.
 
 <!-- They improve the bounds on the number of messages by making it disappear as $n$ goes to infinity. -->
 
-<img src="pngs/related_work.png" height="300px" width="600px"></img>
+<!-- <img src="pngs/related_work.png" height="300px" width="600px"></img> -->
 
 ### Main Theorem 
 
