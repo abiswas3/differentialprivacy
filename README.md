@@ -26,6 +26,7 @@ about these results.
   it works. Simulation code to understand $(\alpha, \beta)$ accuracy
   guarantees for the laplace mehanism is provided.
 * [Notes on Computation Complexity](): **TODO**  
+* [A survey on randomised response](RRSurvey/)
 * [Concentration Inequalities: building blocks to understanding
   proofs](ConcentrationInequalities/): A lot of the alogirithms in
   this area try to approximate the expected value of random
@@ -43,6 +44,7 @@ about these results.
 
 ### Research Papers
 
+* [Shuffle Privacy From Shuffling](CheuShuffleRR/): In this paper we take the well studied Randomised Response method which is optimal for local privacy and tweak it to get approximate central privacy.
 * [Separating Shuffle and Local Privacy: Albert
   Cheu](ShufflePrivacy/index.html): A research paper that attempts to
   understand how shuffle privacy and local privacy are different in
@@ -91,6 +93,6 @@ of this work is done under the suprvision of [Graham
 Cormode](https://warwick.ac.uk/fac/sci/dcs/people/graham_cormode/)
 
 * [Sample and threshold](): **Work by Graham before we started working together: Under Submission for AI Stats**
-* [Connecting Central , Shuffle and Sampling Privacy](EquivalenceOfPrivacyModels/): **new work**
+* [Connecting Central , Shuffle and Sampling Privacy](EquivalenceOfPrivacyModels/): **Some of the proofs are incorrect, I am in the process of fixing them**
 
 <div class=container>

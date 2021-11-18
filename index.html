@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>README</title>
-  <style>
+  <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="main.css">
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -37,6 +37,7 @@
 <li><a href="Definitions/">Differential Privacy Cheat sheet</a>: I define central differential privacy, local differential privacy and shuffle privacy. Introduce well the laplace mechanism - what it is and why it works. Simulation code to understand <span class="math inline">(<em>α</em>, <em>β</em>)</span> accuracy guarantees for the laplace mehanism is provided.</li>
 <li><a href="">Notes on Computation Complexity</a>: <strong>TODO</strong><br />
 </li>
+<li><a href="RRSurvey/">A survey on randomised response</a></li>
 <li><a href="ConcentrationInequalities/">Concentration Inequalities: building blocks to understanding proofs</a>: A lot of the alogirithms in this area try to approximate the expected value of random variables. Knowing when sample means are a good representation of expected mean seems to be a building block for this area and machine learning theory.</li>
 <li><a href="ExponentialMechanism/">Exponential Mechanism</a>: A theoretical technique developed for when the utility of outputs being considered are very sensitive to perturbation. Examples include auction prices or voting counts. A little bit of noise could alter the final outcome drastically. I describe the theoretical framework with a few simple non practical examples. <strong>TODO</strong><br />
 </li>
@@ -44,6 +45,7 @@
 </ul>
 <h3 id="research-papers">Research Papers</h3>
 <ul>
+<li><a href="CheuShuffleRR/">Shuffle Privacy From Shuffling</a>: In this paper we take the well studied Randomised Response method which is optimal for local privacy and tweak it to get approximate central privacy.</li>
 <li><a href="ShufflePrivacy/index.html">Separating Shuffle and Local Privacy: Albert Cheu</a>: A research paper that attempts to understand how shuffle privacy and local privacy are different in theoretical guarantees for the simple mean estimation problem. I go through the paper and re-derive the proofs and try to build some intution as to why the algorithms work.</li>
 <li><a href="ShuffleSumBinaryRasmus/">Shuffle: Binary sums with no communication</a><br />
 </li>
@@ -80,7 +82,7 @@
 <p>In this seciton I describe original work that I am thinking of. Most of this work is done under the suprvision of <a href="https://warwick.ac.uk/fac/sci/dcs/people/graham_cormode/">Graham Cormode</a></p>
 <ul>
 <li><a href="">Sample and threshold</a>: <strong>Work by Graham before we started working together: Under Submission for AI Stats</strong></li>
-<li><a href="EquivalenceOfPrivacyModels/">Connecting Central , Shuffle and Sampling Privacy</a>: <strong>new work</strong></li>
+<li><a href="EquivalenceOfPrivacyModels/">Connecting Central , Shuffle and Sampling Privacy</a>: <strong>Some of the proofs are incorrect, I am in the process of fixing them</strong></li>
 </ul>
 <div class=container>
 <div id="footer">

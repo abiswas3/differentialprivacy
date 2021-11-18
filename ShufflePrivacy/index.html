@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style>
+  <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css" />
+  <link rel="stylesheet" href="../blog.css">
   <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -55,17 +55,17 @@ This already looks a lot like Differential Privacy, which says, for DP to hold t
 <!-- [Heading IDs](#custom-id)
 -->
 <h3 id="lemma-smooth">Lemma 2: Adding Noise from smooth distributions is a DP mechanism</h3>
-<p>Let <span class="math inline">\(f: X^n \rightarrow \mathbb{Z}^m\)</span> be a k-incremental function such that it is <span class="math inline">\(\Delta\)</span> sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq \Delta\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth distribution. Then the algorithm that M takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is <span class="math inline">\((\epsilon&#39;, \delta&#39;)\)</span> DP, where <span class="math inline">\((\epsilon&#39; = \epsilon\times\Delta, \delta&#39;\times\Delta)\)</span></p>
+<p>Let <span class="math inline">\(f: X^n \rightarrow \mathbb{Z}^m\)</span> be a k-incremental function such that it is <span class="math inline">\(\Delta\)</span> sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq \Delta\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth distribution. Then the algorithm that M takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is <span class="math inline">\((\epsilon&#39;, \delta&#39;)\)</span> DP, where <span class="math inline">\((\epsilon&#39; = \epsilon\times\Delta, \delta&#39;\times\Delta)\)</span></p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#smmothNoiseIsDp">
 Proof
 </button>
 <div id="smmothNoiseIsDp" class="collapse">
 <p>Proof follows directly as a consequence of smootheness, independence and the union bound. A k-incremental function is defined as following: <span class="math inline">\(\forall X, X&#39; || f(X) - f(X&#39;)||_{\infty} \leq k\)</span>. Binary sums for neighbouring datasets are 1-incremental. Since <span class="math inline">\(f\)</span> is k incremental, for any <span class="math inline">\(j \in \left\lfloor m \right\rfloor\)</span> we have <span class="math inline">\(f(X&#39;)_j - f(X)_j = k_j \leq k\)</span></p>
 <p>We have <span class="math inline">\(M(X)_j = f(X)_j + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> and <span class="math inline">\(M(X&#39;)_j = f(X&#39;)_j + \eta_j = f(X)_j + k + \eta_j\)</span>. Since <span class="math inline">\(f\)</span> is deterministic, the randomness in the two methods comes from <span class="math inline">\(\eta_j\)</span></p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}_{\eta \sim D}\Big[\frac{M(X)}{M(X&#39;)}\Big] &amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{M(X)_j}{M(X&#39;)_j}\Big] \\
 &amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j+k_j\Big]}\Big] \tag{1}\label{1}\\
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{1}:\)</span> As defined as f is k-incremental.</p>
 <p>From smoothness we get <span class="math inline">\(\mathbb{P}_{\eta_j \sim D}\Big[\frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j+k_j\Big]} \geq e^{\epsilon&#39;|k_j|/\Delta} \Big] \leq \frac{\delta&#39;}{\Delta}\)</span></p>
 </div>
@@ -95,11 +95,11 @@ Proof
 <p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \geq (1 + \alpha/2)\mu\Big] \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}}\)</span> and</p>
 <p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \leq (1 - \alpha/2)\mu\Big] \leq e^{-\frac{\alpha^2\mu}{8}}\)</span></p>
 <p>Combining we get, <span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \notin G\Big] \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span>. Now back to what we want to show:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon}\Big] &amp;\leq \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] +  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Y \notin G\Big] \tag{1}\label{totProb}\\
 &amp;\leq  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] + e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}} \tag{2}\label{chernoff}\\
 &amp;\leq \delta
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{totProb}:\)</span> Using the law of total probability</p>
 <p><span class="math inline">\(\ref{chernoff}:\)</span> Chernoff bound from above</p>
 <p>Now if we show <span class="math inline">\(\mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] = 0\)</span>, then we can set <span class="math inline">\(\delta=e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span> as in the lemma and solve for <span class="math inline">\(\epsilon\)</span>. So the game simply becomes, for what <span class="math inline">\(\epsilon\)</span> do we zero out that probability.</p>
@@ -165,7 +165,7 @@ I have not verified myself what the accuracy guarantees of known local models ar
 <ol type="1">
 <li><p><span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private in the shuffled model.</p></li>
 <li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>, the error <span class="math inline">\(|\textit{P}_{\epsilon, \delta}^{zsum}(X) - \frac{1}{n}\sum_{i=1}^n x_i| \leq \alpha\)</span> with probability <span class="math inline">\(1 - \beta\)</span></p></li>
-<li><p>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span> i.e. we have 0 error.</p>
+<li>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span> i.e. we have 0 error.
 <div class="question">
 
 </div></li>
@@ -197,35 +197,35 @@ Given <span class="math inline">\(\alpha\)</span> is already defined in terms of
 
 </div>
 </div>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 2exp(-\frac{\alpha^2\gamma n}{10}) &amp;\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1} \\
     &amp;= \delta \\
 \frac{\gamma\epsilon^2n}{50} &amp;= \log(\frac{2}{\delta}) \label{eq2}\tag{2}\\
 \gamma &amp;= \frac{50}{\epsilon^2n}\log(\frac{2}{\delta})
-\end{align}\]</span></p>
+\end{align}\]</span>
 <p><span class="math inline">\(\ref{eq1}\)</span> Substituiting the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span></p>
 <p><span class="math inline">\(\ref{eq2}\)</span> Re-arranging terms to get a value for <span class="math inline">\(\gamma\)</span></p>
 <p>But we really need is 1-smooth, so we need</p>
 <p><span class="math display">\[ n\alpha\gamma \geq 2 \]</span></p>
 <p>We are interested in the smallest value of <span class="math inline">\(n\alpha\gamma\)</span>, which we get trivially by plugging it the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span>, the theorem definition states <span class="math inline">\(n= \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> and from the above derivation we get <span class="math inline">\(\gamma =\frac{50}{\epsilon^2n}\log(\frac{2}{\delta})\)</span></p>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 n\alpha \gamma &amp;= \frac{50}{\epsilon^2}\log(\frac{2}{\delta})\frac{\epsilon}{\sqrt{5}} \\
 &amp;=\frac{10\sqrt{5}}{\epsilon}\log(\frac{2}{\delta}) \\
 &amp;\geq \frac{10\sqrt{5}}{1}\log(\frac{2}{1}) \label{eq3}\tag{3} \\
 &amp;\geq 2
-\end{align}\]</span></p>
+\end{align}\]</span>
 <p><span class="math inline">\(\ref{eq3}\)</span> by plugging in the largest values for <span class="math inline">\(\epsilon, \delta = 1, 1\)</span></p>
 <p>In conclusion – the conditions of seting any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> makes sampling from the <span class="math inline">\(Binmonial(n, \gamma)\)</span> 1-smmoth. Now all that remains is to show is that the algorithm described above just adds binomial noise to a 1-sensitive function.</p>
 <h4 id="the-above-algorithm-just-adds-noise-drawn-from-a-binomial-distribution-to-the-true-sum">The above algorithm just adds noise drawn from a binomial distribution to the true sum</h4>
 <p>If we let <span class="math inline">\(z_i \sim Bernoulli(1 - \gamma)\)</span> be the random bit (heads or tails) generated by the i-th user, the total number of messages is <span class="math inline">\(|y| = \sum_{i=1}^n x_i + z_i\)</span>. Here <span class="math inline">\(\gamma=1-p\)</span> as defined in the algorithm above and re-derived in the proof above. Observe that learning <span class="math inline">\(|y|\)</span> is sufficient to represent the output of shuffler since all messages have the same value i.e. they are all 1s. We can say the above algorithm is equivalent to the following</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 |y| &amp;= \sum_{i=1}^n x_i + z_i \\
     &amp;= \sum_{i=1}^n x_i + \sum_{i=1}^n z_i \\
     &amp;= \sum_{i=1}^n x_i + Binomial(n, 1 - \gamma) \\
     &amp;= \sum_{i=1}^n x_i + n - Binomial(n, \gamma) \\
     &amp;= -\Big (-\sum_{i=1}^n x_i  + Binomial(n, \gamma) \Big) + n \\
     &amp;= -\Big (M_{neg}(X) \Big) + n \\   
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>If show the output of <span class="math inline">\(M_{neg}(X)\)</span> is DP, then it follows by the deterministic post processing rule of DP that the full algorithmis DP.</p>
 <p>For neighbouring detasets <span class="math inline">\(X \sim X&#39;\)</span>, <span class="math inline">\(\sum_{i=1}^n x_i\)</span> is a 1-sensitive function. Thus we are adding noise drawn from a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth binomial distrubution to a 1-sensitive function. Thus the output of the shuffler <span class="math inline">\((S \circ R)(X)\)</span> is DP making the algorithm shuffle DP.</p>
 <h3 id="the-accuracy-of-the-protocol-part-ii">The accuracy of the protocol (part II)</h3>
@@ -295,14 +295,14 @@ Proof
 <h4 id="part-iii">Part (iii)</h4>
 <p>To bound simultaneous error, we leverage the property that when  = 0, the counting protocol will report a nonzero value with probability 0. Let Q be the set of non zero indices in the dataset such that <span class="math inline">\(Q = \{ j \in [d] | c_j(x) &gt; 0\}\)</span></p>
 <p>From part (ii) we have with probability <span class="math inline">\(\beta/n\)</span> there exists an index <span class="math inline">\(j\)</span> st <span class="math inline">\((\tilde{c_j(x)} - c(x)) \leq \alpha\)</span> with <span class="math inline">\(\alpha\)</span> as defined in the binary histogram protocol.</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}\Big( \exists j \in [d] \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) 
 &amp;\leq \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) + \mathbb{P}\Big( \exists j \notin Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha \Big) \\
 &amp;= \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq4}\tag{4} \\
 &amp;\leq \sum_{j \in Q} \mathbb{P}\Big( \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq5}\tag{5} \\
 &amp;\leq \beta/n \label{eq6}\tag{6} \\
 &amp;= \beta
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{eq4}\)</span> : comes from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (iii) for all 0 input.</p>
 <p><span class="math inline">\(\ref{eq5}\)</span> : Union bound</p>
 <p><span class="math inline">\(\ref{eq6}\)</span> : comes from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (ii) accuracy bound.</p>
@@ -325,12 +325,12 @@ Proof
 <p>By our assumption, there exists <span class="math inline">\(x \sim x&#39;\)</span> and a <span class="math inline">\(Y \in \mathbb{Y}\)</span> such that</p>
 <p><span class="math display">\[ \mathbb{P}( R(x) \in Y) &gt; e^{\epsilon} \mathbb{P}( R(x&#39;) \in Y)\]</span></p>
 <p>Assume datasets X and X’ such that, <span class="math inline">\(X = (x, ..., x)\)</span> contains <span class="math inline">\(n\)</span> copies of <span class="math inline">\(x\)</span> and <span class="math inline">\(X&#39; = (x&#39;, x, ..., x)\)</span>, contains <span class="math inline">\(n-1\)</span> copies of <span class="math inline">\(x\)</span> and <span class="math inline">\(x&#39;\)</span>.</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \mathbb{P}[(S \circ R)(X) \in Y^n] &amp;= \mathbb{P}[(R)(X) \in Y^n] \label{eq7}\tag{7}\\
 &amp;= \mathbb{P}[(R)(X) \in Y]^n \label{eq8}\tag{8}\\
 &amp;&gt; e^{\epsilon} \mathbb{P}[ R(x&#39;) \in Y]\mathbb{P}[ R(x&#39;) \in Y]^{n-1} \label{eq9}\tag{9}\\
 &amp;= e^{\epsilon} \mathbb{P}[ (S \circ R)(X&#39;) \in Y^n]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><span class="math inline">\(\ref{eq7}\)</span> : The shuffle is uniformly random, so no shuffle has equal probability as any other permutation.</p>
 <p><span class="math inline">\(\ref{eq8}\)</span> : Each local randomiser is independent of other inputs</p>
 <p><span class="math inline">\(\ref{eq9}\)</span> : By assumption</p>
