@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css" />
+  <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+  
+  
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+</head>
+<body>
+
+<div class="container">
+<h1 id="distributed-differential-privacy-via-shuffling">Distributed Differential Privacy via Shuffling*</h1>
+<h2 id="binary-sums">Binary Sums</h2>
+<p>Each member of the dataset <span class="math inline">\(x \in D\)</span> holds a value in <span class="math inline">\(\{0, 1\}\)</span>. We simply want to estimate <span class="math inline">\(f(X) = \sum_{i=1}^n x_i\)</span>. Let <span class="math inline">\(\hat{f}(X)\)</span> be the estimated sum by the algorithm. Understanding the guarantees of this algorithm will provide a lot of insight into the Sample and threshold algorithm that Graham has. <strong>I am fairly certain I can show the equivalence</strong>. In this writeup I re-derive the work done by [[1][1]]. In a later post I show the connection with Grahams paper.</p>
+<p>The algorithm used to estimate the binary sums is a modified version of randomised response (RR). My survey on RR can be found <a href="../RRSurvey/">here</a>. We describe the algorithm again:</p>
+<div class="algorithm">
+<p><strong>Local Randomiser:</strong> Inputs: <span class="math inline">\(x_i \in \{ 0, 1\}\)</span>, <span class="math inline">\(\lambda \in \{ 1, \dots, n-1\}\)</span></p>
+<p>Let <span class="math inline">\(p=\frac{\lambda}{n}\)</span> Each user tosses a coin with probability of heads being <span class="math inline">\(p\)</span></p>
+<p>If heads: <span class="math inline">\(y_i = Bernoulli(1/2)\)</span></p>
+<p>If tails: <span class="math inline">\(y_i = x_i\)</span></p>
+<p>return y_i</p>
+<p><strong>Analyser:</strong> Inputs: <span class="math inline">\(Y=\{ y_1, \dots, y_n \}\)</span>, <span class="math inline">\(\lambda\)</span> from local randomiser</p>
+<p>Output: <span class="math inline">\(\frac{n}{n - \lambda}\Big(\sum_{i=1}^n y_i - \frac{\lambda}{2}\Big)\)</span></p>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#rrUnbiased">
+The above estimator is an unbiased estimator of <span class="math inline">\(\sum_{i=1}^n x_i\)</span>
+</button>
+<div id="rrUnbiased" class="collapse">
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}[y_i=1] &amp;= (1-p)\mathbb{P}[x_i=1] + \frac{p}{2} \\
+\mathbb{P}[x_i=1] &amp;= \frac{\mathbb{P}[y_i=1] - \frac{p}{2}}{1-p} \\
+\frac{\sum_{i=1}^n x_i}{n} &amp;= \frac{\frac{\sum_{i=1}^n y_i}{n} - p\frac{1}{2}}{1-p} \tag{1}\label{MLE}\\
+\sum_{i=1}^n x_i &amp;= \frac{n}{n - \lambda}\Big(\sum_{i=1}^n y_i - \frac{\lambda}{2}\Big)
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{MLE}:\)</span> Whre the MLE of <span class="math inline">\(\mathbb{P}[y_i=1]\)</span> is <span class="math inline">\(\frac{\sum_{i=1}^n y_i}{n}\)</span></p>
+<p>Thus in expectation the output of the algorithm gives us the Expected value of sum of binary values.</p>
+</div>
+<h3 id="an-alternate-way-to-describe-the-above-algorithm">An alternate way to describe the above algorithm</h3>
+<p>An equivalent version of the local algorithm can be described by the following algorithm. <strong>Assume each person has been made anonymous, so we can use shuffle privacy and central privacy synonymously</strong></p>
+<div class="algorithm">
+<p><strong>Analyser</strong> Inputs: <span class="math inline">\(Y=\{ x_1, \dots, x_n \}\)</span>, <span class="math inline">\(\lambda\)</span> from local randomiser</p>
+</div>
+<h1 id="references">References</h1>
+<!-- [1]: https://arxiv.org/pdf/2109.13158.pdf "Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message"
+1. [Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message](https://arxiv.org/pdf/2109.13158.pdf)
+
+[2]: https://arxiv.org/pdf/1908.11358.pdf  "On the power of multiple anonymous messages"
+2. [On the power of multiple anonymous messages](https://arxiv.org/pdf/1908.11358.pdf)
+ -->
+</div>
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>

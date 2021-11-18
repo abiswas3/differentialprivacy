@@ -14,7 +14,8 @@ cd PureProtocols  && ./build && cd ../
 cd EquivalenceOfPrivacyModels && ./build && cd ../
 cd PrivateVoting  && ./build && cd ../
 cd VotingSummary  && ./build && cd ../
-
+cd CheuShuffleRR  && ./build && cd ../
+cd RRSurvey && ./build && cd ../
 
 # cd private_histograms/ && ./build && cd ../
 
