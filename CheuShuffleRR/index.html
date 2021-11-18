@@ -53,8 +53,13 @@ The above estimator is an unbiased estimator of <span class="math inline">\(\sum
 \frac{\sum_{i=1}^n x_i}{n} &amp;= \frac{\frac{\sum_{i=1}^n y_i}{n} - p\frac{1}{2}}{1-p} \tag{1}\label{MLE}\\
 \sum_{i=1}^n x_i &amp;= \frac{n}{n - \lambda}\Big(\sum_{i=1}^n y_i - \frac{\lambda}{2}\Big)
 \end{align*}\]</span>
-<p><span class="math inline">\(\ref{MLE}:\)</span> Where the MLE of <span class="math inline">\(\mathbb{P}[y_i=1]\)</span> is <span class="math inline">\(\frac{\sum_{i=1}^n y_i}{n}\)</span></p>
+<p><span class="math inline">\(\ref{MLE}:\)</span> Whre the MLE of <span class="math inline">\(\mathbb{P}[y_i=1]\)</span> is <span class="math inline">\(\frac{\sum_{i=1}^n y_i}{n}\)</span></p>
 <p>Thus in expectation the output of the algorithm gives us the Expected value of sum of binary values.</p>
+</div>
+<h3 id="an-alternate-way-to-describe-the-above-algorithm">An alternate way to describe the above algorithm</h3>
+<p>An equivalent version of the local algorithm can be described by the following algorithm. <strong>Assume each person has been made anonymous, so we can use shuffle privacy and central privacy synonymously</strong></p>
+<div class="algorithm">
+<p><strong>Analyser</strong> Inputs: <span class="math inline">\(Y=\{ x_1, \dots, x_n \}\)</span>, <span class="math inline">\(\lambda\)</span> from local randomiser</p>
 </div>
 <h1 id="references">References</h1>
 <!-- [1]: https://arxiv.org/pdf/2109.13158.pdf "Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message"
