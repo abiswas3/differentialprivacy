@@ -58,10 +58,20 @@ data-target="#rrUnbiased">The above estimator is an unbiased estimator of $\sum_
 \sum_{i=1}^n x_i &= \frac{n}{n - \lambda}\Big(\sum_{i=1}^n y_i - \frac{\lambda}{2}\Big)
 \end{align*}
 
-$\ref{MLE}:$ Where the MLE of $\mathbb{P}[y_i=1]$ is $\frac{\sum_{i=1}^n y_i}{n}$
+$\ref{MLE}:$ Whre the MLE of $\mathbb{P}[y_i=1]$ is $\frac{\sum_{i=1}^n y_i}{n}$
 
 Thus in expectation the output of the algorithm gives us the Expected value of sum of binary values.
 
+</div>
+
+### An alternate way to describe the above algorithm 
+
+An equivalent version of the local algorithm can be described by the following algorithm. **Assume each person has been made anonymous, so we can use shuffle privacy and central privacy synonymously**
+
+<div class="algorithm">
+
+**Analyser**
+Inputs: $Y=\{ x_1, \dots, x_n \}$, $\lambda$ from local randomiser
 </div>
 
 
