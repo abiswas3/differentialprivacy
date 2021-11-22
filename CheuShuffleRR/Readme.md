@@ -12,6 +12,8 @@
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\H}{\mathcal{H}}
+
 
 <div class="container">
 
@@ -33,7 +35,8 @@ Let $p=\frac{\lambda}{n}$
 Each user tosses a coin with probability of heads being $p$ 
 
 If heads:  $y_i = Bernoulli(1/2)$
-
+<div class="intuition"> In the variant of Randomised Response known as Forced Randomised Response: we always output 1. Say we always output 0 instead. The maths doesnt really change. But it will help us connect two different algorithms.
+</div>
 If tails: $y_i = x_i$
 
 return y_i
@@ -66,12 +69,39 @@ Thus in expectation the output of the algorithm gives us the Expected value of s
 
 ### An alternate way to describe the above algorithm 
 
-An equivalent version of the local algorithm can be described by the following algorithm. **Assume each person has been made anonymous, so we can use shuffle privacy and central privacy synonymously**
+An equivalent version of the local algorithm can be described by the following algorithm. **Assume each person has been made anonymous, so we can use shuffle privacy and central privacy synonymously** In this section we compare the Cheu algorithm to Sample and threshold by Graham. Throughout this paper, we derive the missing pieces for Sample and threshold analysis.
 
 <div class="algorithm">
 
 **Analyser**
-Inputs: $Y=\{ x_1, \dots, x_n \}$, $\lambda$ from local randomiser
+Inputs: $Y=\{ x_1, \dots, x_n \}$, Same $\lambda$ from local randomiser
+
+Let $p=\frac{\lambda}{n}$
+
+$s \leftarrow Binomial(n, p)$
+
+Define $\H_s = \{ H \subseteq \floor{n} | |H| = s\}$
+
+In words $\H_s$ is a set of sets. Each set inside $\H_s$ is a way to select $s$ elements from $\floor{n}$. There are ${n \choose s}$ ways of doing this.
+
+Select $H \sim Uniform(\H_S)$
+
+<div class="intuition"> $H$ represents a set obtained by Poisson sampling with parameter $p$, where Poisson sampling is described how Graham describes it in his Sample and Threshold paper.
+</div>
+
+Final output:  $\sum_{i \notin H}y_i + Bin(s, \frac{1}{2})$
+
+<div class="intuition"> In the sample and threshold regime the final output is. 
+
+Final output:  $\sum_{i \notin H}y_i + \sum_{i \notin H} 0$
+
+We get exactly forced randomised response [see first example of wikipedia page](https://en.wikipedia.org/wiki/Randomized_response)
+
+$\sum_{i \notin H}y_i + \sum_{i \notin H} 1$
+
+</div>
+
+
 </div>
 
 
