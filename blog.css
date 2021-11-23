@@ -172,4 +172,7 @@ h3[id^="lemma"] {
     margin-left: 5px;
 }
 
-    	
+.row > div {
+  flex: 1;
+  border: 1px solid grey;
+}

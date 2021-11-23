@@ -31,5 +31,8 @@ Notes based on [[1][1]]
 [1]: https://imai.fas.harvard.edu/research/files/randresp.pdf "A survey of Randomised Response techniques"
 1. [A survey of Randomised Response techniques](https://imai.fas.harvard.edu/research/files/randresp.pdf)
 
+https://arxiv.org/pdf/1612.05568.pdf "Optimal Differentially Private Mechanisms for
+Randomised Response"
+2. [Optimal Differentially Private Mechanisms for Randomised Response](https://arxiv.org/pdf/1612.05568.pdf)
 
 </div>

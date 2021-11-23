@@ -255,7 +255,9 @@ TODO
 
 ## Hoeffdings Bound
 
-TODO
+If $x_i, \dots, x_n$ are i.i.d random variables bounded in $(a, b)$ with mean $\mu$, for every $\delta > 0$ we have 
+
+$$\mathbb{P}[|\sum_{i=1}^n x_i - \mu n | \geq (b-a)\sqrt{\frac{n}{2}\log(\frac{2}{\delta})} ] \leq \delta$$
 
 ## Monte Carlo Simulations
 

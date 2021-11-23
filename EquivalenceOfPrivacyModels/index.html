@@ -32,98 +32,54 @@
 <div class="container">
 <p>Draft (first update): Novmber 2nd, 2021, 10:04 BST</p>
 <p>Draft (last update): Novmber 18th, 2021. 14:24 BST</p>
-<h1 id="introduction">Introduction</h1>
-Consider the problem of releasing the histogram sum
-<div class="question">
-(I think they are called counting queries or something else or succint histograms)
-</div>
-<p>of a population of integers privately under the three models:</p>
-<ol type="1">
-<li>Laplace Mechanism for Central Privacy</li>
-<li>Binomial noise in Shuffle Privacy by <a href="../ShufflePrivacy/index.html">Cheu</a></li>
-<li>Sample and Threshold Method that was re-derived by Graham.</li>
-<li><strong>TODO: <a href="../ShuffleSumBinaryRasmus/">Ghazi, Rasmus Pagh – binary sums and histograms</a></strong> is also very closely connected. Working on this as next step if these proofs are correct.</li>
-</ol>
-We can show they 2 and 3 are equivalent. In terms of how 2 and 3 relate to 1:
-<div class="intuition">
-I have not proven this fact explicitly yet but I think I can show (1) just happens to be the “sharpest” sub-gaussian noise distribution we can sample from with tails fat enough for the right signal to noise. Conceptually I think it will end up looking like hinge loss and logistic loss where both work in practice. Logistic loss is smoother and nicer but the hinge loss is the tighest convex relaxation to the 0-1 loss.
-</div>
-<p>We first look at the binary summation problem and then for summation of integers.</p>
-<h2 id="binary-sums">Binary Sums</h2>
+<h1 id="algorithms-for-binary-sums-while-ensuring-differential-privacy">Algorithms for Binary Sums while ensuring Differential Privacy</h1>
+<h2 id="the-problem-binary-sums">The problem – Binary Sums</h2>
 <p>Each member of the dataset <span class="math inline">\(x \in D\)</span> holds a value in <span class="math inline">\(\{0, 1\}\)</span>. We simply want to estimate <span class="math inline">\(f(X) = \sum_{i=1}^n x_i\)</span>. Let <span class="math inline">\(\hat{f}(X)\)</span> be the estimated sum by the algorithms. Understanding binary sum gives us all the key insights we need to anslyse integer sums. In this writeup we consider the view of the anlyser for the three regimes in consideration. <strong>NOTE:</strong> this is purely for the sake of analysis. In practice they are usually implemented in a federated setting or local/shuffle privacy setting. The noise addition, thresholding and sampling might be done at the user level. We perform all the computations at the analyser level as it simplifies the analysis.</p>
-<p>Under the <a href="Definitions/">central privacy</a>, the anlayser sees all the inputs, sums them and adds one instance noise drawn from a Laplace distribution. See picture below:</p>
-<div class="algorithm">
-<p><img src=pngs/central.png></img></p>
-<p><span class="math inline">\(\hat{f}(X) = \sum_{i=1}^n x_i + Y\)</span></p>
-<p>where <span class="math inline">\(Y \sim Lap(\frac{1}{\epsilon})\)</span></p>
+<h2 id="the-2-different-regimes">The 2 different regimes</h2>
+<p>Even though there are other algorithms quoted in the literature. We will show later in this document that analysing just two algorithms is sufficient to understand when to use which algorithm.</p>
+<div class="row">
+<div class="col-md-6">
+<h3 id="simplified-additive-noise">Simplified Additive noise</h3>
 </div>
-In shuffle privacy, under the <a href="../ShufflePrivacy/index.html">“The binary histogram”</a> section of this writeup we show that the authors just draw <span class="math inline">\(n\)</span> random variables <span class="math inline">\(z_i \sim Bernoulli(p_1)\)</span> and add them <span class="math inline">\(f(X)\)</span>. Let <span class="math inline">\(Y= \sum_{i=1}^n z_i\)</span>, the final answer is just the expected value of <span class="math inline">\(Y\)</span> subtracted from <span class="math inline">\(f(X)\)</span>. In all these shuffle privacy papers which claim near central accuracy, this is repeated theme. <span class="math inline">\(n\)</span> units of little noise that when added up – pretend to be one unit from a smooth sub gaussian distribution. In <a href="../ShuffleSumBinaryRasmus/">Ghazi, Rasmus Pagh – binary sums and histograms</a> they dive deep into this with Poisson, Negative Binomial and Discrete Laplace distributions (all infinitely divisible distributions) See picture below.
-<div class="new">
-Something I did not notice in the first pass is that the algorithm is not simply add bernoulli random variables to binary variables. The last line of this algorithm has a strong connection with thresholding. We will estbalish this connection: in the connecting parameters section.
+<div class="col-md-6">
+<h3 id="sample-and-threshold">Sample and Threshold</h3>
 </div>
-<div class="algorithm">
-<p><img src=pngs/shuffle.png></img></p>
-<p>Let <span class="math inline">\(c_A = \sum_{i=1}^n (x_i + z_i)\)</span></p>
-<p><span class="math inline">\(\hat{f}(X) = c_A - E[\sum_{i=1}^n z_i]\)</span> <strong>only if <span class="math inline">\(\sum_{i=1}^n (x_i + z_i) &gt; n\)</span> else 0</strong></p>
-<div class="intuition">
-That if condition is VERY important
 </div>
-<p>or, if we have <span class="math inline">\(c_A &gt; n\)</span>, then</p>
-<p><span class="math inline">\(\hat{f}(X) = \sum_{i=1}^n (x_i + z_i) - np_1\)</span></p>
-<p>else <span class="math inline">\(\hat{f}(X) = 0\)</span></p>
-<p>where <span class="math inline">\(z_i \sim Bernoulli(p_1))\)</span></p>
+<h2 id="the-game-we-are-playing-which-algorithm-should-i-use">The game we are playing – Which algorithm should I use</h2>
+<p>Say company “A” needs an estimate of a binary sum – and they need to do it privately. They do not understand statistics. All they have is a privacy budget described by <span class="math inline">\((\epsilon, \delta)\)</span>. Given this budget, they want the most accurate estimate possible. As consultants for this company how should we proceed.</p>
+<div class="row">
+<div class="col-md-6">
+<h3 id="additive-binomial-noise-no-thresholding">Additive Binomial noise (no thresholding)</h3>
+<p>Given an <span class="math inline">\((\epsilon, \delta)\)</span>, this regime needs the number of users <span class="math inline">\(n\)</span> to be at least <span class="math inline">\(\frac{100}{\epsilon^2}\log(2/\delta)\)</span> or more. Setting <span class="math inline">\(n=\frac{100}{\epsilon^2}\log(2/\delta)\)</span>, gives us <span class="math inline">\(p=1/2\)</span> which is adds the most noise to the algorithm (variance of binomial maximal at p=1/2)</p>
+<p>We look at practical values of <span class="math inline">\((\epsilon, \delta)\)</span> and observe how many users are truly needed to guarantee differential privacy.</p>
+<p><img src="pngs/dependence.png" width="100%" height="100%"></img></p>
+<p>Observe, even with epsilon as high as 0.5, to avoid bad events 95% of the time, we need at least 1000 users to get privacy. This also means that <span class="math inline">\(Z \sim Binomial(n,p)\)</span> is approximately equal to <span class="math inline">\(np\)</span> as we are under the large <span class="math inline">\(n\)</span> regime. We expect error to be very small (from the tail bounds of a binomial within <span class="math inline">\(\frac{1}{\sqrt{n}}\)</span>). A second thing to note is that the error of this regime is given by <span class="math inline">\(|np - Z|\)</span> where <span class="math inline">\(Z \sim Binomial(n,p)\)</span>. The number of 1’s in a users data k, does not show up in the formula for error at all. We empirically validate this in the plot below. There should be no correlation between error and fraction of 1’s in users data.</p>
+<p><img src="pngs/errorBinomialWithK.png" width="100%" height="100%"></img></p>
+<p>Since the error of this regime is not effected by <span class="math inline">\(k=\sum_{i=1}^n x_i\)</span>, <strong>an effective application of this algorithm is when we are in the large data setting: n is large, and the number of users with 1’s is sparse.</strong></p>
 </div>
-<p>Both methods add one single instance of noise to the truth: (1) Adds one Laplacian random variable (2) Adds one random variable drawn from a <span class="math inline">\(Binomial(n, p_1)\)</span>. All the work in <a href="../ShufflePrivacy/index.html">Cheu</a> is to figure out what values of <span class="math inline">\(p\)</span> is acceptable given <span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(\delta\)</span> to ensure privacy. If one were to plot the formulae they use, it shows that only a restricted range of <span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(\delta\)</span> is possible.</p>
-<p>Now consider a simplified version of the sample and threshold algorithm.</p>
-<p>The analyser receives values from <span class="math inline">\(n\)</span> users. For each user, it generates a random variable <span class="math inline">\(z_i \sim Bernoulli(p_2)\)</span>. If the <span class="math inline">\(z_i\)</span> is heads it includes sample <span class="math inline">\(x_i\)</span> in the calculation for the sum, otherwise it does not. This describes Poisson sampling as described in the paper. Thus algorithm is outputting <span class="math inline">\(\hat{f}(X) = \sum_{i=1}^n z_i x_i\)</span>. We now show that with a bit of simple algebra, this algorithm is equivalent to the shuffle privacy algorithm for the case of Binary sums.</p>
-<p>Define the bit flipping operator as <span class="math inline">\(\bar{x} = 1 - x\)</span>. For each <span class="math inline">\(z_i x_i\)</span> the analyser sees, assume it just flips the output to <span class="math inline">\(\bar{x_i z_i}\)</span> and uses this sum instead. We are interested in an estimator that in expectation gives us <span class="math inline">\(\sum_{i=1}^n x_i\)</span>. Note: there are exactly the same number of random variables in this method as there is in the shuffle method.</p>
-<div class="algorithm">
-<p><img src=pngs/sample.png></img></p>
+<div class="col-md-6">
+<h3 id="sample-and-threshold-1">Sample and Threshold</h3>
+<p>Given an <span class="math inline">\((\epsilon, \delta)\)</span>, this algorithm imposes some restrictions on <span class="math inline">\(m\)</span> and <span class="math inline">\(\tau\)</span>. To ensure privacy, it requires <span class="math inline">\(\tau \geq 3 + \log(1/\delta)\)</span> and <span class="math inline">\(m \leq \frac{\epsilon n}{\tau}\)</span>. The random coin has parameter <span class="math inline">\(p=\frac{m}{n}\)</span>. Intuitively, the bigger the value of m, the worse the privacy but better the accuracy. Given a <span class="math inline">\((\epsilon, \delta)\)</span>, the optimal thing in terms of accuracy would be to set <span class="math inline">\(m\)</span> equal to <span class="math inline">\(\frac{\epsilon n}{\tau}\)</span> where <span class="math inline">\(\tau=3 + \log(1/\delta)\)</span>, which is the smallest possile value for the parameter. The figure below looks at the distribution of the parameter value <span class="math inline">\(p\)</span> as we look at practical values of <span class="math inline">\((\epsilon, \delta)\)</span></p>
+<p><img src="pngs/pDep.png" width="100%" height="100%"></img></p>
+<p>If we require extreme privacy, really small <span class="math inline">\(\epsilon\)</span> we will need to sample less than <span class="math inline">\(1\%\)</span> of the data and apply thresholding. Furthermore, we never sample more than <span class="math inline">\(8\%\)</span> of the data. Note,the parameter <span class="math inline">\(p\)</span> is independent of <span class="math inline">\(n\)</span>. See below:</p>
 <span class="math display">\[\begin{align*}
-c_B &amp;= \sum_{i=1}^n\bar{x_i z_i} \\
-&amp;= \sum_{i=1}^n(\bar{x_i} + \bar{z_i} )\tag{1}\label{1} \\
-&amp;= (n - \sum_{i=1}^n x_i) + (n - \sum_{i=1}^n z_i) \\
-&amp;= 2n - \sum_{i=1}^n x_i - \sum_{i=1}^n z_i
+p &amp;= \frac{m}{n} \\
+ &amp;= \frac{\epsilon}{\tau} \tag{1} \label{1}\\
 \end{align*}\]</span>
-<p><span class="math inline">\(\ref{1}:\)</span> simple boolean algebra, De-Morgan’s Law</p>
-<p>The above set of equations ignores thresholding. If the number of 1’s sampled is less than <span class="math inline">\(\tau\)</span>, the algorithm returns 0. The number of 1’s sampled is <span class="math inline">\(n - c_B\)</span>, thus if <span class="math inline">\((n - c_B) \leq \tau\)</span> the <span class="math inline">\(\hat{f(X)} = 0\)</span>. Otherwise</p>
-<p><span class="math inline">\(\hat{f(X)} = -c_B + 2n - np_2\)</span> which in expectation gives us what we want. Note: <span class="math inline">\(c_B = 2n - c_A\)</span></p>
+<p><span class="math inline">\(\ref{1}:\)</span> since <span class="math inline">\(m=\frac{\epsilon n}{\tau}\)</span></p>
+<p>The above analysis provides intuition about where we expect this algorithm to shine! Non sparse regimes in the non large data regime. If the data set is very sparse where <span class="math inline">\(k \leq tau\)</span>, we have no hope to begin with. <strong>NOTE: The additive noise mechanisms have no issue in this regime, provided <span class="math inline">\(n\)</span> is big enough.</strong> On the contrary, in this world, no matter how small <span class="math inline">\(n\)</span> is, as long as <span class="math inline">\(k\)</span> is big enough we need not worry about getting bad estimates under even small values of <span class="math inline">\(n\)</span>.</p>
+<p><strong>The natural question is how sparse is too sparse. With the other algorithm there is deterministic formula for <span class="math inline">\(n\)</span> which tells us that with probability 1 - <span class="math inline">\(\delta\)</span> we get privacy</strong></p>
 </div>
-<h2 id="connection-between-sampling-and-shuffle-privacy-for-histogram-sums">Connection between Sampling and Shuffle privacy for histogram sums</h2>
-<p>We have shown that for binary sums, shuffle privacy and sample privacy are equivalent. We now look at the shuffle privacy algorithm <a href="../ShufflePrivacy/index.html">described in detail here</a>.</p>
-<p>Now each user has a value <span class="math inline">\(x \in \{1, 2, ..., d \}\)</span>. As shorthand we right <span class="math inline">\(x_i \in \left\lfloor d \right\rfloor\)</span>. Cheu et al, just decompose this into <span class="math inline">\(d\)</span> binary sum problems for each <span class="math inline">\(d\)</span>. For a particular <span class="math inline">\(j \in \left\lfloor d \right\rfloor\)</span>, all <span class="math inline">\(x_i=j\)</span> are set to 1 and the rest are set to 0. Then the analyser outputs <span class="math inline">\(j \times \hat{f}(X)\)</span> by running the previous algorithm.</p>
-<p>Now consider the sampling algorithm. We do the exact same pre-processing for each <span class="math inline">\(j \in \left\lfloor d \right\rfloor\)</span>. Now instead of additive bernoulli noise we just sample/multiply with the random variables as shown above. We have shown equivalence.</p>
-<h2 id="analysing-the-parameters">Analysing the parameters</h2>
-<p>From the above anlaysis it seems that the two regimes have exactly the same in randomness. Yet the privacy analysis in the proofs produces different dependencies on <span class="math inline">\(\epsilon, \delta\)</span>. In this section we try and understand this discrepancy. The difference in the two bounds must be in the assumptions and constraints on the parameters given by the problem setup. In this section, we re-use the same notation from the previous setup:</p>
+<h2 id="experiments">Experiments</h2>
+<p>Here we show empirically that our analysis above is true. We design datasets that suit each algorithm.</p>
 <ul>
-<li>In shuffle privacy, there is no explicit assumption or consideration for the distribution of 1’s in the population. The shuffle privacy world works like this:
-<ul>
-<li>The environment gives us <span class="math inline">\(\epsilon, \delta \in [0, 1]\)</span>. The algorithm then checks if for the given values of <span class="math inline">\((\epsilon, \delta)\)</span> - privacy is possible. If the number of users <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(2/\delta)\)</span> then we get pure <span class="math inline">\(\epsilon\)</span>-privacy with probablity 1 - <span class="math inline">\(\delta\)</span>. The algorithm picks the bernoulli parameter <span class="math inline">\(p_1\)</span> based on <span class="math inline">\((\epsilon, \delta)\)</span>. The users or the environment do not control the parameter. There is never a discussion on the number of 1’s in the dataset. It could be anything. Thus the guarantees appear to be distribution-free but they are not.</li>
-</ul></li>
-<li>The sample privacy world is a little different. The bounds depend on the number of 1’s in the data, which are expresed as <span class="math inline">\(k = \sum_{i=1}^n x_i\)</span>. The regime works as follows:
-<ul>
-<li>The environment gives us <span class="math inline">\(\epsilon, \delta \in [0, 1]\)</span>. Now we go ahead and select <span class="math inline">\(m \in \{1, 2, \dots, n/2 \}\)</span> which is supposed to represent <span class="math inline">\(m := \mathbb{E}[\sum_{i=1}^n z_i]\)</span>, where <span class="math inline">\(z_i \sim Bernoulli(p_2)\)</span>. <span class="math inline">\(m\)</span> represents the number of users the Analyser samples on average if we used this sampling algorithm a lot. The paper expresses the privacy parameter <span class="math inline">\(\epsilon = O(\frac{m}{n}\log(1/\delta))=\tilde{O}(\frac{m}{n})\)</span>. Smaller <span class="math inline">\(m\)</span> values give more privacy but worse accuracy. Larger <span class="math inline">\(m\)</span> gives accurate results but less privacy. For this procedure to work privately, there is <span class="math inline">\(\tau \in \left\lfloor \mathbb{N} \right\rfloor\)</span>, which requires we sample at least <span class="math inline">\(\tau + 1\)</span> users with 1’s to get a non zero output. The value of <span class="math inline">\(\tau\)</span> and thereby its efficacy, depends on implicitly on the number of 1’s in the population.</li>
-</ul></li>
+<li>Dataset I : The dataset is not sparse but we are in the low user regime.</li>
+<li>Dataset II : Extremely sparse data but large user base.</li>
+<li>Dataset III : A regime where they are roughly equal – as seen in AI stats paper datasets.</li>
 </ul>
-<p>In Shuffle privacy, <span class="math inline">\(p_1 = \frac{50}{\epsilon^2n}\log(2/\delta)\)</span> and in sample privacy <span class="math inline">\(p_2 = \frac{m}{n}\)</span>. The variance of both methods and therefore mean square error is <span class="math inline">\(n(1-p)p\)</span>, which is maximum when <span class="math inline">\(p=1/2\)</span> for <span class="math inline">\(p= p_1, p_2\)</span>. Shuffle privacy requires that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(2/\delta)\)</span>$</p>
-<p>If we wanted to express <span class="math inline">\(m\)</span> in terms of the shuffle algorithm, we would get <span class="math inline">\(m=\frac{50}{\epsilon^2}\log(2/\delta)\)</span> by setting <span class="math inline">\(p_1=p_2\)</span>. <strong>NOTE we also the need to condition on n to hold.</strong> To consider how the threshold <span class="math inline">\(\tau\)</span> shows up in previous algorithm, consider the the following: <span class="math inline">\(\tau-\)</span>Sample privacy returns 0 when</p>
-<span class="math display">\[\begin{align*}
-(n - c_B) &amp;\leq \tau \\
-(n - 2n + c_A) &amp;\leq \tau \\
-c_A &amp;\leq \tau + n
-\end{align*}\]</span>
-<p>If we set <span class="math inline">\(n\)</span> to be a free parameter independent of <span class="math inline">\(\epsilon, \delta\)</span> like sample privacy does, then we need <span class="math inline">\(\tau\)</span> to be at least <span class="math inline">\(\frac{100}{\epsilon^2}\log(2/\delta)\)</span> to get privacy!</p>
-<div class="question">
-In the trying to relate the parameters of the two methods we notice some issues
+<h3 id="the-experiments-in-the-ai-stats-paper-do-not-shine-light-on-the-strengths-of-this-algorithm">The experiments in the AI Stats paper do not shine light on the strengths of this algorithm</h3>
+<h2 id="the-thresholding-in-the-cheu-paper-is-slightly-deceiving">The thresholding in the Cheu paper is slightly deceiving</h2>
 </div>
-The analysis of sample privacy relates when <span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(m\)</span> linearly wheras the analysis from shuffle privacy states <span class="math inline">\(m = \tilde{O}(\frac{1}{\epsilon^2})\)</span>.
-<div class="intuition">
-How does that work out? There has to be something going on between the relation of <span class="math inline">\(m\)</span> and <span class="math inline">\(\tau\)</span> in the sample privacy proofs
-</div>
-<p>To understand this discrepancy we analyse the proofs next.</p>
-<p>Before looking at the proof techniques for both methods,bounds we consider the case when everyone in the population has a zero value. Then we dive deeper into where the above bounds come from.</p>
-<h3 id="identical-behaviour-for-all-0-input">Identical behaviour for all 0 input</h3>
-<p>For an input of all 0’s i.e <span class="math inline">\(\sum_{i=1}^n x_i =0\)</span> both shuffle and sample give 0 error. Part 3 of theorem one proves this in the <a href="../ShufflePrivacy/index.html">shuffle privacy</a> case. For the sample and threshold regime, if all inputs <span class="math inline">\(x_i=0\)</span> then <span class="math inline">\(c=n\)</span> and <span class="math inline">\(\tau &gt; 1\)</span> so <span class="math inline">\((n - c) &lt; \tau\)</span> always.</p>
 <h3 id="dependence-on-epsilon-and-delta">Dependence on <span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(\delta\)</span></h3>
 <p>In this section we re-derive the main parts of both proofs and establish the connection between the two regimes. Both regimes guarantee pure privacy under <strong>a good event</strong>. Both regimes claim that privacy is preserved with probaility <span class="math inline">\(1 - \delta\)</span> – where <span class="math inline">\(\delta\)</span> (the likelihood of bad events) shrinks very quickly as <span class="math inline">\(n\)</span> grows. When we write “shuffle privacy needs” or “sample privacy needs”, what we mean is the presented analysis in the paper needs – not the algorithm itself. As shown above both algorithms are equivalent. To guarantee privacy, shuffle privacy needs event <span class="math inline">\(E_1\)</span> and sample-threshold needs event <span class="math inline">\(E_2\)</span>. Let these events occur with probability at least <span class="math inline">\(1 - \delta_1\)</span> and <span class="math inline">\(1 - \delta_2\)</span>. In this analysis we will derive shuffle privacy and then morph the sample privacy proof to show equivalence.</p>
 <p>The version of chernoff bound for bernoulli’s both papers utilise is the following:</p>
@@ -175,16 +131,6 @@ If I use two sided instead of 1 sided bounds – does Grahams proof still hold.
 </div>
 </div>
 </div>
-<h2 id="studying-different-noise-distributions-for-central-privacy.">Studying different noise distributions for central privacy.</h2>
-<h2 id="ignore">IGNORE</h2>
-<p>We fix . For a given <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span>, <a href="../ShufflePrivacy/index.html">shuffle privacy</a> requires the number of users <span class="math inline">\(n\)</span> to be atleast <span class="math inline">\(\frac{100}{\epsilon^2}\log(2/\delta)\)</span> to ensure the release of binary sums is private. There is no user specified parameter like <span class="math inline">\(m\)</span> here. <span class="math inline">\(n\)</span> users show up with a desire for <span class="math inline">\((\epsilon, \delta)\)</span> privacy. If n is above a certain value, then they will get privacy with probability 1 - <span class="math inline">\(\delta\)</span>.</p>
-<p>Shown below is a heatmap of the size of <span class="math inline">\(n\)</span> is powers of 10 given different parameter values.</p>
-<p><img src=pngs/shuffleN.png></img></p>
-<p>In sample and threshold there is a user specified parameter <span class="math inline">\(m\)</span> which dictates how many people we sample. This <span class="math inline">\(m\)</span> dictates the probability <span class="math inline">\(p_2\)</span> in the above algorithm. We want to sample <span class="math inline">\(m\)</span> users on average, thus <span class="math inline">\(np_2 =m\)</span> or <span class="math inline">\(p_2=\frac{m}{n}\)</span>. <strong>This the first difference in between the two setups</strong>. In shuffle privacy given <span class="math inline">\(n, (\epsilon, \delta)\)</span> we are allowed to select an optimal value for <span class="math inline">\(p\)</span> (if it is possible). In sample and threshold privacy, someone else gives us <span class="math inline">\(p\)</span> and it can be value in <span class="math inline">\([0,1]\)</span> and we have to guarantee privacy from here. Shuffle privacy states that as long as we have <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(2/\delta)\)</span> users we are good with high probabilty. The high probability statement is simply saying there is an event <span class="math inline">\(E_1\)</span> which happens with probability <span class="math inline">\(1 - \delta\)</span>. If this event <span class="math inline">\(E_1\)</span> happens we get privacy.</p>
-<p>Sample privacy on the other hand asks for a requirement on the distribution of values in the <span class="math inline">\(n\)</span> users – this is where <span class="math inline">\(\tau\)</span> comes in. We need the number of 1’s in the set of users to be above a certain level.</p>
-<p>Now <span class="math inline">\(n\)</span> users show up with a desire for <span class="math inline">\((\epsilon, \delta)\)</span> privacy – to guarantee privacy we need</p>
-<h3 id="dependence-on">Dependence on</h3>
-<h2 id="section"></h2>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a href="https://arxiv.org/pdf/2109.13158.pdf">Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message</a></li>

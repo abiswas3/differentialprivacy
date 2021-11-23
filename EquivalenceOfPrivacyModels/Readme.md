@@ -18,126 +18,96 @@ Draft (first update): Novmber 2nd, 2021, 10:04 BST
 
 Draft (last update): Novmber 18th, 2021. 14:24 BST
 
-# Introduction
+# Algorithms for Binary Sums while ensuring Differential Privacy
 
-Consider the problem of releasing the histogram sum <div class="question">(I think they are called counting queries or something else or succint histograms)</div> of a population of integers privately under the three models:
+## The problem -- Binary Sums 
 
-1. Laplace Mechanism for Central Privacy
-2. Binomial noise in Shuffle Privacy by [Cheu](../ShufflePrivacy/index.html) 
-3. Sample and Threshold Method that was re-derived by Graham.
-4. **TODO: [Ghazi, Rasmus Pagh -- binary sums and histograms](../ShuffleSumBinaryRasmus/)** is also very closely connected. Working on this as next step if these proofs are correct.
+Each member of the dataset $x \in D$ holds a value in $\{0, 1\}$. We simply want to estimate $f(X) = \sum_{i=1}^n x_i$. 
+Let $\hat{f}(X)$ be the estimated sum by the algorithms. Understanding binary sum gives us all the key insights we need to anslyse integer sums. In this writeup we consider the view of the anlyser for the three regimes in consideration. **NOTE:** this is purely for the sake of analysis. In practice they are usually implemented in a federated setting or local/shuffle privacy setting. The noise addition, thresholding and sampling might be done at the user level. We perform all the computations at the analyser level as it simplifies the analysis.
 
-We can show they 2 and 3 are equivalent. In terms of how 2 and 3 relate to 1:<div class="intuition">I have not proven this fact explicitly yet but I think I can show (1) just happens to be the "sharpest" sub-gaussian noise distribution we can sample from with tails fat enough for the right signal to noise. Conceptually I think it will end up looking like hinge loss and logistic loss where both work in practice. Logistic loss is smoother and nicer but the hinge loss is the tighest convex relaxation to the 0-1 loss.</div> We first look at the binary summation problem and then for summation of integers.
+## The 2 different regimes
 
+Even though there are other algorithms quoted in the literature. We will show later in this document that analysing just two algorithms is sufficient to understand when to use which algorithm.
 
-## Binary Sums 
+<div class="row">
 
-Each member of the dataset $x \in D$ holds a value in $\{0, 1\}$. We simply want to estimate $f(X) = \sum_{i=1}^n x_i$. Let $\hat{f}(X)$ be the estimated sum by the algorithms. Understanding binary sum gives us all the key insights we need to anslyse integer sums. In this writeup we consider the view of the anlyser for the three regimes in consideration. **NOTE:** this is purely for the sake of analysis. In practice they are usually implemented in a federated setting or local/shuffle privacy setting. The noise addition, thresholding and sampling might be done at the user level. We perform all the computations at the analyser level as it simplifies the analysis.
+<div class="col-md-6">
 
-Under the [central privacy](Definitions/), the anlayser sees all the inputs, sums them and adds one instance noise drawn from a Laplace distribution. See picture below:
+### Simplified Additive noise
 
-<div class="algorithm">
-
-<img src=pngs/central.png></img>
-
-$\hat{f}(X) = \sum_{i=1}^n x_i + Y$
-
-where $Y \sim Lap(\frac{1}{\epsilon})$
 </div>
 
+<div class="col-md-6">
 
+### Sample and Threshold
 
-In shuffle privacy, under the ["The binary histogram"](../ShufflePrivacy/index.html) section of this writeup we show that the authors just draw $n$ random variables $z_i \sim Bernoulli(p_1)$ and add them $f(X)$. Let $Y= \sum_{i=1}^n z_i$, the final answer is just the expected value of $Y$ subtracted from $f(X)$. In all these shuffle privacy papers which claim near central accuracy, this is repeated theme. $n$ units of little noise that when added up -- pretend to be one unit from a smooth sub gaussian distribution. In [Ghazi, Rasmus Pagh -- binary sums and histograms](../ShuffleSumBinaryRasmus/) they dive deep into this with Poisson, Negative Binomial and Discrete Laplace distributions (all infinitely divisible distributions) See picture below. <div class="new">Something I did not notice in the first pass is that the algorithm is not simply add bernoulli random variables to binary variables. The last line of this algorithm has a strong connection with thresholding. We will estbalish this connection: in the connecting parameters section.</div>
-
-<div class="algorithm">
-
-<img src=pngs/shuffle.png></img>
-
-Let $c_A = \sum_{i=1}^n (x_i + z_i)$
-
-$\hat{f}(X) =  c_A - E[\sum_{i=1}^n z_i]$ **only if $\sum_{i=1}^n (x_i + z_i) > n$ else 0**
-
-<div class="intuition">That if condition is VERY important</div>
-
-or, if we have $c_A > n$, then 
-
-$\hat{f}(X) = \sum_{i=1}^n (x_i + z_i) - np_1$ 
-
-else
-$\hat{f}(X) = 0$
-
-where $z_i \sim Bernoulli(p_1))$
 </div>
 
+</div>
 
-Both methods add one single instance of noise to the truth: (1) Adds one Laplacian random variable (2) Adds one random variable drawn from a $Binomial(n, p_1)$. All the work in [Cheu](../ShufflePrivacy/index.html) is to figure out what values of $p$ is acceptable given $\epsilon$ and $\delta$ to ensure privacy. If one were to plot the formulae they use, it shows that only a restricted range of $\epsilon$ and $\delta$ is possible. 
+## The game we are playing -- Which algorithm should I use
 
-
-Now consider a simplified version of the sample and threshold algorithm.
-
-The analyser receives values from $n$ users. For each user, it generates a random variable $z_i \sim Bernoulli(p_2)$. If the $z_i$ is heads it includes sample $x_i$ in the calculation for the sum, otherwise it does not. This describes Poisson sampling as described in the paper. Thus algorithm is outputting $\hat{f}(X) = \sum_{i=1}^n z_i x_i$. We now show that with a bit of simple algebra, this algorithm is equivalent to the shuffle privacy algorithm for the case of Binary sums. 
-
-Define the bit flipping operator as $\bar{x} = 1 - x$. For each $z_i  x_i$ the analyser sees, assume it just flips the output to $\bar{x_i z_i}$ and uses this sum instead. We are interested in an estimator that in expectation gives us $\sum_{i=1}^n x_i$. Note: there are exactly the same number of random variables in this method as there is in the shuffle method. 
+Say company "A" needs an estimate of a binary sum -- and they need to do it privately. They do not understand statistics. All they have is a privacy budget described by $\epsDelta$. Given this budget, they want the most accurate estimate possible. As consultants for this company how should we proceed.
 
 
-<div class="algorithm">
+<div class="row">
 
-<img src=pngs/sample.png></img>
+<div class="col-md-6">
+
+### Additive Binomial noise (no thresholding)
+
+Given an $\epsDelta$, this regime needs the number of users $n$ to be at least $\frac{100}{\epsilon^2}\log(2/\delta)$ or more. Setting $n=\frac{100}{\epsilon^2}\log(2/\delta)$, gives us $p=1/2$ which is adds the most noise to the algorithm (variance of binomial maximal at p=1/2)
+
+We look at practical values of $\epsDelta$ and observe how many users are truly needed to guarantee differential privacy.
+
+<img src="pngs/dependence.png" width="100%" height="100%"></img>
+
+Observe, even with epsilon as high as 0.5, to avoid bad events 95% of the time, we need at least 1000 users to get privacy. This also means that $Z \sim Binomial(n,p)$ is approximately equal to $np$ as we are under the large $n$ regime. We expect error to be very small (from the tail bounds of a binomial within $\frac{1}{\sqrt{n}}$). A second thing to note is that the error of this regime is given by $|np - Z|$ where $Z \sim Binomial(n,p)$. The number of 1's in a users data k, does not show up in the formula for error at all. We empirically validate this in the plot below. There should be no correlation between error and fraction of 1's in users data.
+
+<img src="pngs/errorBinomialWithK.png" width="100%" height="100%"></img>
+
+Since the error of this regime is not effected by $k=\sum_{i=1}^n x_i$,
+**an effective application of this algorithm is when we are in the large data setting: n is large, and the number of users with 1's is sparse.**
+</div>
+
+<div class="col-md-6">
+
+### Sample and Threshold 
+
+Given an $\epsDelta$, this algorithm imposes some restrictions on $m$ and $\tau$. To ensure privacy, it requires $\tau \geq 3 + \log(1/\delta)$ and $m \leq \frac{\epsilon n}{\tau}$. The random coin has parameter $p=\frac{m}{n}$. Intuitively, the bigger the value of m, the worse the privacy but better the accuracy. Given a $\epsDelta$, the optimal thing in terms of accuracy would be to set $m$ equal to $\frac{\epsilon n}{\tau}$ where $\tau=3 + \log(1/\delta)$, which is the smallest possile value for the parameter. The figure below looks at the distribution of the parameter value $p$ as we look at practical values of $\epsDelta$
+
+<img src="pngs/pDep.png" width="100%" height="100%"></img>
+
+
+If we require extreme privacy, really small $\epsilon$ we will need to sample less than $1\%$ of the data and apply thresholding. Furthermore, we never sample more than $8\%$ of the data. Note,the parameter $p$ is independent of $n$. See below:
 
 \begin{align*}
-c_B &= \sum_{i=1}^n\bar{x_i z_i} \\
-&= \sum_{i=1}^n(\bar{x_i} + \bar{z_i} )\tag{1}\label{1} \\
-&= (n - \sum_{i=1}^n x_i) + (n - \sum_{i=1}^n z_i) \\
-&= 2n - \sum_{i=1}^n x_i - \sum_{i=1}^n z_i
+p &= \frac{m}{n} \\
+ &= \frac{\epsilon}{\tau} \tag{1} \label{1}\\
 \end{align*}
 
-$\ref{1}:$ simple boolean algebra, De-Morgan's Law 
+$\ref{1}:$ since $m=\frac{\epsilon n}{\tau}$
 
-The above set of equations ignores thresholding. If the number of 1's sampled is less than $\tau$, the algorithm returns 0. The number of 1's sampled is $n - c_B$, thus if $(n - c_B) \leq \tau$ the $\hat{f(X)} = 0$. Otherwise
+The above analysis provides intuition about where we expect this algorithm to shine! Non sparse regimes in the non large data regime. If the data set is very sparse where $k \leq tau$, we have no hope to begin with. **NOTE: The additive noise mechanisms have no issue in this regime, provided $n$ is big enough.** On the contrary, in this world, no matter how small $n$ is, as long as $k$ is big enough we need not worry about getting bad estimates under even small values of $n$.
 
-$\hat{f(X)} = -c_B + 2n - np_2$ which in expectation gives us what we want. Note: $c_B = 2n - c_A$
-
+**The natural question is how sparse is too sparse. With the other algorithm there is deterministic formula for $n$ which tells us that with probability 1 - $\delta$ we get privacy**
 
 </div>
 
-## Connection between Sampling and Shuffle privacy for histogram sums
+## Experiments
 
-We have shown that for binary sums, shuffle privacy and sample privacy are equivalent. We now look at the shuffle privacy algorithm [described in detail here](../ShufflePrivacy/index.html).
+Here we show empirically that our analysis above is true. We design datasets that suit each algorithm.
 
-Now each user has a value $x \in \{1, 2, ..., d \}$. As shorthand we right $x_i \in \floor{d}$. Cheu et al, just decompose this into $d$ binary sum problems for each $d$. For a particular $j \in \floor{d}$, all $x_i=j$ are set to 1 and the rest are set to 0. Then the analyser outputs $j \times \hat{f}(X)$ by running the previous algorithm. 
-
-Now consider the sampling algorithm. We do the exact same pre-processing for each $j \in \floor{d}$. Now instead of additive bernoulli noise we just sample/multiply with the random variables as shown above. We have shown equivalence.
-
-## Analysing the parameters
-
-From the above anlaysis it seems that the two regimes have exactly the same in randomness. Yet the privacy analysis in the proofs produces different dependencies on $\epsilon, \delta$. In this section we try and understand this discrepancy. The difference in the two bounds must be in the assumptions and constraints on the parameters given by the problem setup. In this section, we re-use the same notation from the previous setup:
-
-* In shuffle privacy, there is no explicit assumption or consideration for the distribution of 1's in the population. The shuffle privacy world works like this:
-	* The environment gives us $\epsilon, \delta \in [0, 1]$. The algorithm then checks if for the given values of $\epsDelta$ - privacy is possible. If the number of users $n \geq \frac{100}{\epsilon^2}\log(2/\delta)$ then we get pure $\epsilon$-privacy with probablity 1 - $\delta$. The algorithm picks the bernoulli parameter $p_1$ based on $\epsDelta$. The users or the environment do not control the parameter. There is never a discussion on the number of 1's in the dataset. It could be anything. Thus the guarantees appear to be distribution-free but they are not.
-* The sample privacy world is a little different. The bounds depend on the number of 1's in the data, which are expresed as $k = \sum_{i=1}^n x_i$. The regime works as follows: 	
-	* The environment gives us $\epsilon, \delta \in [0, 1]$. Now we go ahead and select $m \in \{1, 2, \dots, n/2 \}$ which is supposed to represent $m := \E[\sum_{i=1}^n z_i]$, where $z_i \sim Bernoulli(p_2)$. $m$ represents the number of users the Analyser samples on average if we used this sampling algorithm a lot. The paper expresses the privacy parameter $\epsilon = O(\frac{m}{n}\log(1/\delta))=\tilde{O}(\frac{m}{n})$. Smaller $m$ values give more privacy but worse accuracy. Larger $m$ gives accurate results but less privacy. For this procedure to work privately, there is $\tau \in \floor{\N}$, which requires we sample at least $\tau + 1$ users with 1's to get a non zero output. The value of $\tau$ and thereby its efficacy, depends on implicitly on the number of 1's in the population. 
+* Dataset I   : The dataset is not sparse but we are in the low user regime.
+* Dataset II  : Extremely sparse data but large user base.
+* Dataset III : A regime where they are roughly equal -- as seen in AI stats paper datasets.
 
 
-In Shuffle privacy, $p_1 = \frac{50}{\epsilon^2n}\log(2/\delta)$ and in sample privacy $p_2 = \frac{m}{n}$. The variance of both methods and therefore mean square error is $n(1-p)p$, which is maximum when $p=1/2$ for $p= p_1, p_2$. Shuffle privacy requires that $n \geq \frac{100}{\epsilon^2}\log(2/\delta)$$
+### The experiments in the AI Stats paper do not shine light on the strengths of this algorithm
 
-If we wanted to express $m$ in terms of the shuffle algorithm, we would get $m=\frac{50}{\epsilon^2}\log(2/\delta)$ by setting $p_1=p_2$. **NOTE we also the need to condition on n to hold.** To consider how the threshold $\tau$ shows up in previous algorithm, consider the the following: $\tau-$Sample privacy returns 0 when 
+## The thresholding in the Cheu paper is slightly deceiving
 
-\begin{align*}
-(n - c_B) &\leq \tau \\
-(n - 2n + c_A) &\leq \tau \\
-c_A &\leq \tau + n
-\end{align*}
-
-If we set $n$ to be a free parameter independent of $\epsilon, \delta$ like sample privacy does, then we need $\tau$ to be at least $\frac{100}{\epsilon^2}\log(2/\delta)$ to get privacy!
-
-<div class="question">In the trying to relate the parameters of the two methods we notice some issues</div>
-The analysis of sample privacy relates when $\epsilon$ and $m$ linearly wheras the analysis from shuffle privacy states $m = \tilde{O}(\frac{1}{\epsilon^2})$. <div class="intuition">How does that work out? There has to be  something going on between the relation of $m$ and $\tau$ in the sample privacy proofs</div> To understand this discrepancy we analyse the proofs next.
-
-Before looking at the proof techniques for both methods,bounds we consider the case when everyone in the population has a zero value. Then we dive deeper into where the above bounds come from.
-
-### Identical behaviour for all 0 input
-
-For an input of all 0's i.e $\sum_{i=1}^n x_i =0$ both shuffle and sample give 0 error. Part 3 of theorem one proves this in the [shuffle privacy](../ShufflePrivacy/index.html) case. For the sample and threshold regime, if all inputs $x_i=0$ then $c=n$ and $\tau > 1$ so $(n - c) < \tau$ always. 
+</div>
 
 ### Dependence on $\epsilon$ and $\delta$
 
@@ -232,25 +202,7 @@ Already $E_2$ looks the one sided version of $E_1$, with the constants slightly 
 
 </div>
 
-## Studying different noise distributions for central privacy.
 
-## IGNORE
-
-We fix . For a given $\epsilon, \delta \in [0,1]$, [shuffle privacy](../ShufflePrivacy/index.html) requires the number of users $n$ to be atleast $\frac{100}{\epsilon^2}\log(2/\delta)$ to ensure the release of binary sums is private. There is no user specified parameter like $m$ here. $n$ users show up with a desire for $\epsDelta$ privacy. If n is above a certain value, then they will get privacy with probability 1 - $\delta$. 
-
-Shown below is a heatmap of the size of $n$ is powers of 10 given different parameter values.
-
-<img src=pngs/shuffleN.png></img>
-
-In sample and threshold there is a user specified parameter $m$ which dictates how many people we sample. This $m$ dictates the probability $p_2$ in the above algorithm. We want to sample $m$ users on average, thus $np_2 =m$ or $p_2=\frac{m}{n}$. **This the first difference in between the two setups**. In shuffle privacy given $n, \epsDelta$ we are allowed to select an optimal value for $p$ (if it is possible). In sample and threshold privacy, someone else gives us $p$ and it can be value in $[0,1]$ and we have to guarantee privacy from here. Shuffle privacy states that as long as we have $n \geq \frac{100}{\epsilon^2}\log(2/\delta)$ users we are good with high probabilty. The high probability statement is simply saying there is an event $E_1$ which happens with probability $1 - \delta$. If this event $E_1$ happens we get privacy.
-
-Sample privacy on the other hand asks for a requirement on the distribution of values in the $n$ users -- this is where $\tau$ comes in. We need the number of 1's in the set of users to be above a certain level.
-
-Now $n$ users show up with a desire for $\epsDelta$ privacy -- to guarantee privacy we need 
-
-### Dependence on 
-
-## 
 
 # References 
 

@@ -17,6 +17,8 @@
 
 # Separating local and Shuffle Privacy
 
+[Link](./#notLocalNotShuffleLemma)
+
 <div class="question">Is there a major difference between mean estimation for histograms and regular mean estimation of a discrete population? [[5][5]] does the same problem as this paper but not for histograms. Therefore histograms as they are bucketted, must be easier?</div>
 
 ## Main Takeaways
@@ -540,6 +542,8 @@ d + 1 messages/bits/1's maximum.
 
 ## Pure Shuffle Privacy
 
+**TODO: EDIT THIS** 
+
 It can be shown that if we restricted to pure differential privacy
 i.e. a deterministic concentration inequality Shuffle privacygives us
 the same guarantees as local privacy for single message
@@ -551,51 +555,39 @@ protocol under the same privacy constraint.
 
 
 
-### Single Message Shuffle => It's randomiser is central DP.
+### If not local DP => Not Shuffle DP either {#notLocalNotShuffleLemma}
 
-<div class=lemma> Let $P = (R,A)$ be any single-message shuffled
+<div class="lemma"> Let $P = (R,A)$ be any single-message shuffled
 protocol that satisfies $\epsilon$-differential privacy. Then $R$ is
 an $\epsilon$-differentially private algorithm.
 </div>
 
-
-There exists a multi-message shuffled protocol that is
-$\epsilon$-differentially private for all ε ≥ 0 but its randomizer is
-not $\epsilon$-differentially private for any finite ε.
-
 <button type="button" 
 class="btn btn-info" 
 data-toggle="collapse" 
-data-target="#shuffleRisDP">Proof</button>
-<div class=collapse id=shuffleRisDP>
+data-target="#notLocalNotShuffle">Proof
+</button>
 
-Proof the contrapositive. Assume $R$ is not $\epsilon$ DP. If we show
-$(S \circ R)(X)$ is also not DP, then we are done.
+<div class=collapse id=notLocalNotShuffle>
 
-By our assumption, there exists $x \sim x'$ and a $Y \in \mathbb{Y}$
-such that
+Proof the contrapositive. 
 
-$$ \mathbb{P}( R(x) \in Y) > e^{\epsilon} \mathbb{P}( R(x') \in Y)$$
+$R$ is the randomiser and the local randomiser spits out $R(x) \in T \subseteq [m,n]$. All the above is saying is that the randomisers output is in some bounded interval $T$.
 
-Assume datasets X and X' such that, $X = (x, ..., x)$ contains $n$
-copies of $x$ and $X' = (x', x, ..., x)$, contains $n-1$ copies of $x$
-and $x'$.
-
+Consider two datasets $X$ and $X’$ such that $X$ contains $n$ copies of element $x$, and $X’$ contains $n-1$ copies of $x$ and 1 copy of $x'$. Without loss of generality say, the n'th element of both datasets is different.
 
 \begin{align*}
-\mathbb{P}[(S \circ R)(X) \in Y^n] &= \mathbb{P}[(R)(X) \in Y^n] \label{eq7}\tag{7}\\
-&= \mathbb{P}[(R)(X) \in Y]^n \label{eq8}\tag{8}\\
-&> e^{\epsilon} \mathbb{P}[ R(x') \in Y]\mathbb{P}[ R(x') \in Y]^{n-1} \label{eq9}\tag{9}\\
-&= e^{\epsilon} \mathbb{P}[ (S \circ R)(X') \in Y^n]
+\mathbb{P}[(S \circ R)(X) \in T^n] &= \prod_{i=1}^n\mathbb{P}[R(x_i) \in T_i] \tag{1}\label{7}\\
+&= \mathbb{P}[R(x) \in T_n]\prod_{i=1}^{n-1}\mathbb{P}[R(x_i) \in T_i] \\
+&> e^{\epsilon}\mathbb{P}[R(x') \in T_n]\prod_{i=1}^{n-1}\mathbb{P}[R(x_i) \in T_i] \tag{2}\label{8} \\
+&= e^{\epsilon}\mathbb{P}[(S \circ R)(X') \in T^n]
 \end{align*}
 
+$\ref{7}:$ By independence of distributed mechanism.
 
-$\ref{eq7}$ : The shuffle is uniformly random, so no shuffle has equal
-probability as any other permutation. 
+$\ref{8}:$ We assumed no local privacy, $\mathbb{P}( R(x) \in T) > e^{\epsilon} \mathbb{P}( R(x') \in T)$ 
 
-$\ref{eq8}$ : Each local randomiser is independent of other inputs
-
-$\ref{eq9}$ : By assumption
+What we have shown is that when the local randomiser doesn't satisfy privacy, then the anoymised distributed version of that local randomiser fails to satisfy central privacy all the time as well. 
 
 </div>
 
