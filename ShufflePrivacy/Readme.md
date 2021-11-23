@@ -17,8 +17,6 @@
 
 # Separating local and Shuffle Privacy
 
-[Link](./#notLocalNotShuffleLemma)
-
 <div class="question">Is there a major difference between mean estimation for histograms and regular mean estimation of a discrete population? [[5][5]] does the same problem as this paper but not for histograms. Therefore histograms as they are bucketted, must be easier?</div>
 
 ## Main Takeaways
