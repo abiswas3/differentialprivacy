@@ -5,13 +5,13 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style type="text/css">
+  <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css">
+  <link rel="stylesheet" href="../blog.css" />
   <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -78,7 +78,7 @@ Proof
 <div id="laplaceMech" class="collapse">
 <p>Let <span class="math inline">\(f_x(z)\)</span> be the density function for <span class="math inline">\(M_L\Big(x, f(.), \epsilon \Big)\)</span>. We want to show that <span class="math inline">\(\frac{f_x(z)}{f_x&#39;(z)} \leq e^{\epsilon}\)</span> where <span class="math inline">\(x, x&#39;\)</span> differ by one element only.</p>
 <p>We have <span class="math inline">\(z_i= f_i(x) + Y_i\)</span>, the only randomness is from <span class="math inline">\(Y_i\)</span>, thus we have just scaled the noise <span class="math inline">\(Y_i\)</span> by a constant. Thus <span class="math inline">\(f_x(z)\)</span> is just a laplace random variable with mean <span class="math inline">\(f_i(x)\)</span>.</p>
-<span class="math display">\[\begin{align*}
+<p><span class="math display">\[\begin{align*}
 \frac{f_x(z)}{f_x&#39;(z)} &amp;= \prod_{i=1}^k \frac{\frac{exp\{-|f_i(x) - z_i|\epsilon}{\Delta f}\}}{\frac{exp\{-|f_i(x&#39;) - z_i|\epsilon}{\Delta f}\}} \\
 &amp;= \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}\Big(|f_i(x&#39;) - z_i| - |z_i - f_i(x)| \Big)\} \\
 &amp;\leq \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}|f_i(x&#39;) - f_i(x)| \} \label{eq1}\tag{1}\\
@@ -86,7 +86,7 @@ Proof
 &amp;= exp \{ \frac{\epsilon}{\Delta f}||f(x&#39;) - f(x)||_1 \} \\
 &amp;\leq exp \{ \frac{\epsilon}{\Delta f} \Delta f \} \label{eq2}\tag{2} \\
 &amp;= exp(\epsilon)
-\end{align*}\]</span>
+\end{align*}\]</span></p>
 <p><span class="math inline">\(\ref{eq1}\)</span>: Triangle inequality: <span class="math inline">\(|A - C| \leq |A - B| + |B - C|\)</span></p>
 <p><span class="math inline">\(\ref{eq2}\)</span>: Definitition of <span class="math inline">\(l_1\)</span>-sensitivity</p>
 </div>
@@ -100,6 +100,14 @@ Proof
 <div id="lapAcc" class="collapse">
 
 </div>
+<h3 id="exponential-noise">Exponential noise</h3>
+<p>Similar bounds to Laplace</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}\Big[ \frac{M(D) \in T}{M(D&#39;) \in T}\Big] &amp;= e^{-\lambda(|f(X) - f(X&#39;))} \\
+&amp;\geq e^{-\lambda(\Delta f)} \\
+&amp;\geq e^{-\epsilon}
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(\epsilon = \lambda \times \Delta f\)</span> and <span class="math inline">\(\lambda\)</span> is the rate parameter of the noise distribution. The variance of the distribution is <span class="math inline">\(\frac{1}{\lambda^2} = O(\frac{1}{\epsilon^2})\)</span></p>
 <h3 id="an-experiment-validating-the-theoretical-bound">An experiment validating the theoretical bound</h3>
 <p>Writing a computer program to validate the above theory. The concentration inequality says that if I performed the laplace mechanism once then - the likelihood one of my dimensions is off by <span class="math inline">\(\log \frac{k}{\beta}\frac{\Delta f}{\epsilon}\)</span> is <span class="math inline">\(\beta\)</span>. Put in otherwords, say I did the laplace mechanism a gazillion times on my output. Only <span class="math inline">\(\beta\)</span> fraction of times will I get a bad event. A bad event is when the laplace mechanism leads to an output very far from the truth. So as an experiment, I generated many noisy but private outputs and observed how often the infinity norm went outside the boundary of the theorem. Was it more than theory claimed or less. It turns out when the number trials is large i.e. empirical means are close to actual means, the bound is quite tight.</p>
 <p><embed type="text/html" src="code/sample.html" width="800" height="600"></p>

@@ -33,7 +33,7 @@ data-target="#markovInEq">Proof</button>
 
 Let $X : S \rightarrow R^+$ be a non-negative random variable
 
-We can divide the set $S = S_1 + S_2$ where $S_1 = \{ s | X(s) \geq a\}$  and $S_2 = \{ s | X(s) < a\}$
+We can divide the set $S = S_1 \cup S_2$ where $S_1 = \{ s | X(s) \geq a\}$  and $S_2 = \{ s | X(s) < a\}$
 
 
 \begin{align*}
