@@ -563,7 +563,7 @@ an $\epsilon$-differentially private algorithm.
 <button type="button" 
 class="btn btn-info" 
 data-toggle="collapse" 
-data-target="#notLocalNotShuffle">Proof
+data-target="#notLocalNotShuffle">Proof: not local => not shuffle
 </button>
 
 <div class=collapse id=notLocalNotShuffle>
