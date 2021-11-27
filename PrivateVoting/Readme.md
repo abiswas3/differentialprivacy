@@ -4,7 +4,8 @@
 This material needs a fair bit of new background. The topics include:
 
 * [Exponential Mechanism](ExponentialMechanism)
-* [A review of non-private Rank Aggregation]()
+* [Introduction to Choice Theory](https://plato.stanford.edu/entries/social-choice/)
+* [Differentially Private Rank Aggregation](https://cs.colgate.edu/~mhay/assets/publications/hay2017differentially.pdf)
 * [A general understanding of Voting methods]()
 
 ## References

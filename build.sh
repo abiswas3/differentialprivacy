@@ -16,6 +16,6 @@ cd PrivateVoting  && ./build && cd ../
 cd VotingSummary  && ./build && cd ../
 cd CheuShuffleRR  && ./build && cd ../
 cd RRSurvey && ./build && cd ../
-
+cd Proposal && ./build && cd ../
 # cd private_histograms/ && ./build && cd ../
 
