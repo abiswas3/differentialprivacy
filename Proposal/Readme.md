@@ -14,10 +14,6 @@ The shuffle model lies in between the central and local model [[20][20]]. The sh
 
 Rank aggregation is the process of computing a ranking that can serve as a single best representative of a collection of preferences over a set of items. Non private rank aggregation has been studied ad nauseam in the machine learning community owing to its direct application to web search and recommendations [[37][37]]. Most ranking algorithms can be described by a composition of the basic primitives described above. However, rank aggregation has not received the same degree of attention under the lens of privacy. [[26][26]] develop private versions of Borda count ranking [[38][38]] and Kwik sort ranking [[39][39]] under the central model. [[27][27]] propose a private version of Kwik sort under the local model. The shuffled model for ranking with near central error guarantees remains open. To the best of our knowledge, the optimal bounds for ranking have not been studied in detail even under the central model. Given the importance of ranking to Machine Learning and social science community we wish to focus on the problem of distributed ranking with theoretical guarantees.
 
-## Research directions
-
-Our focus will be to develop practical algorithms for distributed rank aggregation with theoretical guarantees while preserving privacy.
-
 ### PHD Objectives
 
 * To develop new practical distributed algorithms with theoretical guarantees that preserve privacy.
@@ -25,6 +21,9 @@ Our focus will be to develop practical algorithms for distributed rank aggregati
 * Unify existing distributed algorithms under a single proof framework. 
 * Develop a scalable open source implementations of distributed algorithms and integrate with existing open source implementations.
 
+## Research directions
+
+**TODO**: Outline work with the exponential mechanism and secure comparison protocols.
 
 ## Timeline
 
