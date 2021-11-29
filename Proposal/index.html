@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+  
+  
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+</head>
+<body>
+<div class="container">
+<h1 id="working-title-distributed-rank-aggregation-with-theoretical-guarantees">Working Title: Distributed Rank Aggregation with Theoretical Guarantees</h1>
+<h2 id="motivation">Motivation</h2>
+<p>We are experiencing a surge in the adoption of Artificial Intelligence (AI) across the tech industry and society. According to the Harvard Business Review [<a href="https://hbr.org/2021/09/ai-adoption-skyrocketed-over-the-last-18-months" title="Increase in AI Adoption">1</a>], 86% of the surveyed companies claimed they use AI as a mainstream technology and 67% companies plan to further invest in AI. Personal activities such as browsing the news, searching for articles or listening to music, are now influenced by AI powered technology [<a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/35599.pdf" title="Personalized News Recommendation Based on Click Behavior">2</a>]. These algorithms are designed to maximise user engagement; thereby, their success almost always hinges on large scale user data collection. Furthermore, these algorithms have proven to be major economic drivers in the 21st century. According to [<a href="https://datadrivenadvertising.eu/wp-content/uploads/2017/09/DigitalAdvertisingEconomicContribution_FINAL.pdf" title="Economic Gains of Ads">4</a>], <em>digital advertising contributed to €526 billion in Gross Value Added to the European Economy</em>. With the growing popularity of data intensive deep learning algorithms [<a href="https://journalofbigdata.springeropen.com/articles/10.1186/s40537-014-0007-7" title="Deep learning applications and challenges in big data analytics">11</a>], users find themselves being continuously monitored. Search engines like Google, Amazon and Bing record user clicks to optimise algorithms [<a href="https://www.cs.cornell.edu/people/tj/publications/joachims_02c.pdf" title="Optimizing search engines using clickthrough data">3</a>] and tailor search results for users. Social media companies like Instagram, Twitter and Facebook use polls and surveys to illicit opinion on topics ranging from politics to sports. This large scale recording and continuous monitoring has raised ethical concerns about user privacy. Massive AI/Machine learning pipelines lead to complex software systems that are more vulnerable to breaches and attacks. Just in the 21st century, 3 billion user accounts have been compromised at Yahoo [<a href="https://www.ncsc.gov.uk/news/yahoo-data-breach-ncsc-response" title="Yahoo data breach: NCSC response">5</a>], 1.1 billion users had their usernames and mobile numbers compromised at Ali Baba [<a href="https://www.bloomberg.com/news/articles/2021-06-16/alibaba-victim-of-huge-data-leak-as-china-tightens-security" title="Alibaba Victim of Huge Data Leak as China Tightens Security">7</a>] and LinkedIN had 700 million user accounts posted on the dark web [<a href="https://www.forbes.com/sites/quickerbettertech/2021/07/05/a-linkedin-breach-exposes-92-of-usersand-other-small-business-tech-news/" title="LinkedIn Data Breach">6</a>]. These breaches have serious explicit and implicit consequences. The explicit consequences include loss of privacy in the form of credit card, telephone numbers and other vital personal information being compromised. Implicit consequences often show up in the form hacktivism, the use of computer-based techniques such as hacking as a form of civil disobedience to promote a political agenda or social change. British consulting firm Cambridge Analytica collected Facebook user data without consent to influence political elections [<a href="https://www.bbc.co.uk/news/world-43476762" title="Cambridge Analytica: The data firm&#39;s global influence">8</a>]. One form of defence against the aforementioned risks is legal restrictions. An example of such restrictions are GDPR laws [<a href="https://gdpr.eu/what-is-gdpr/" title="GDPR Laws">9</a>] which restrict the freedom with which software entities can log or store user data. There is a feeling however, that such laws stifle innovation [<a href="https://www.infosecurity-magazine.com/news/gdpr-is-stifling-innovation-says/" title="GDPR stifle innovation">10</a>]. As stated earlier, these algorithms are highly desirable and contribute to economic growth. Given these concerns, there has been a renewed interest in building privacy enhancing technology (PET). Examples include Differential Privacy [<a href="http://www.dbis.informatik.hu-berlin.de/fileadmin/lectures/SS2011/VL_Privacy/Differential_Privacy.pdf" title="Differential Privacy">15</a>], Secure Multiparty Computation [<a href="https://eprint.iacr.org/2008/197.pdf" title="Secure Multiparty Computation for Privacy-Preserving Data Mining">35</a>] and Homomorphic Encryption [<a href="https://eprint.iacr.org/2015/1192" title="A Guide to Fully Homomorphic Encryption">36</a>] among many others. Differential Privacy will be the primary focus of our research. It is a branch of PET, in which the algorithms make the following promise to users - <em>“You will not be affected, adversely or otherwise, by allowing your data to be used in any study or analysis, no matter what other studies, data sets, or information sources, are available.”</em> [<a href="https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf" title="The Algorithmic Foundations of Differential Privacy">14</a>]. Differential privacy is considered a de facto standard for protecting confidentiality of user data in statistical applications and has been adopted by organizations such as Google [<a href="https://arxiv.org/abs/1407.6981" title="Randomized aggregatable privacy-preserving ordinal response">28</a>, <a href="https://arxiv.org/abs/1710.00901" title="Strong privacy for analytics in the crowd">29</a>], Apple [<a href="https://machinelearning.apple.com/research/learning-with-privacy-at-scale" title="Learning with privacy at scale">30</a>], Microsoft [<a href="https://proceedings.neurips.cc/paper/2017/file/253614bbac999b38b5b60cae531c4969-Paper.pdf" title="Collecting telemetry data privately">31</a>] and the U.S. Census Bureau [<a href="https://ieeexplore.ieee.org/document/4497436#:~:text=The%20source%20data%20for%20this,data%20while%20providing%20privacy%20guarantees." title="Privacy: From theory to practice on the map">32</a>, <a href="https://dl.acm.org/doi/10.1145/3035918.3035940" title="Utility cost of formal privacy for releasing national employer - employee statistics">33</a>, <a href="https://core.ac.uk/download/pdf/219376854.pdf" title="The US Census Bureau adopts differential privacy.">34</a>].</p>
+<h2 id="background">Background</h2>
+<p>Differential privacy addresses the paradox of learning nothing about an individual while learning useful information about a population. A useful property of differential privacy states that, algorithms defined by a composition of differentially private algorithms are also private [<a href="https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf" title="The Algorithmic Foundations of Differential Privacy">14</a>]. Additionally, differential privacy is robust to post processing <strong>CITE</strong>. Computer scientists have studied algorithms for efficiently estimating primitives such as sums, averages and most frequent item (heavy hitter) of a large population for years [<a href="http://wrap.warwick.ac.uk/59804/" title="Summary data structures for massive data">12</a>]. These primitives are important as they are fundamental, and can be composed to answer complex queries which have practical real world implications. For example, the success of supervised machine learning relies on our understanding of the variance of sums of bounded random variables[<a href="https://www.researchgate.net/profile/Yann-Lecun/publication/220500215_Measuring_the_VC-Dimension_of_a_Learning_Machine/links/0912f50f9e76564012000000/Measuring-the-VC-Dimension-of-a-Learning-Machine.pdf" title="Measuring the VC-dimension of a Learning Machine">13</a>]. Owing to composability and the post processing property of privacy, researchers have been trying to estimate aforementioned primitives under differential privacy. This work has led to the categorisations of three trust models for differential privacy, namely, central, local and shuffle privacy. In central privacy [<a href="http://www.dbis.informatik.hu-berlin.de/fileadmin/lectures/SS2011/VL_Privacy/Differential_Privacy.pdf" title="Differential Privacy">15</a>], members of the population send their true values to a trusted aggregator/analyser. The aggregator applies a carefully selected random transformation to the aggregate statistics of the population and publishes it. In the local model, each member applies their own random transformation and sends their privatised data to a non trusted aggregator. The aggregator performs aggregation on noisy data and releases the population statistics. The trust model of the local model allows each user plausible deniability i.e. the aggregator is not able to guess an individuals true value with certainty. This implies the local model provides more privacy than the central model, but this comes at the cost of accuracy. The theoretical trade-off between privacy and accuracy for computing mean and sums of populations has been studied in detail in the last ten years. The Laplace Mechanism [<a href="http://www.dbis.informatik.hu-berlin.de/fileadmin/lectures/SS2011/VL_Privacy/Differential_Privacy.pdf" title="Differential Privacy">15</a>] estimates the mean of a real valued population up to constant error. Under the local model, [<a href="https://timroughgarden.org/papers/priv.pdf" title="UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS">16</a>] prove a tight lower bound on error, showing a square root dependency on the size of the population is unavoidable. They prove that the well studied randomised response algorithms [<a href="https://imai.fas.harvard.edu/research/files/randresp.pdf" title="Design and Analysis of the Randomized Response Technique">22</a>] for anonymised survey design are optimal for local privacy. This theoretical understanding of means and sums have enabled us to compute histograms[<a href="https://arxiv.org/abs/1504.04686" title="Local, Private, Efficient Protocols for Succinct Histograms">17</a>], heavy hitters [<a href="https://arxiv.org/abs/1902.08534" title="Federated Heavy Hitters Discovery with Differential Privacy">18</a>], quantiles [<a href="https://openreview.net/pdf?id=msTLiku_34p" title="Sample-and-threshold differential privacy: Histograms and applications">19</a>] and other complex primitives privately and efficiently.</p>
+<p>The shuffle model lies in between the central and local model [<a href="https://arxiv.org/abs/1811.12469" title="Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity">20</a>]. The shuffle model can be thought of an anonymous local model analysed from a central perspective [<a href="https://arxiv.org/abs/1903.02837" title="The Privacy Blanket of the Shuffle Model">21</a>]. Under the shuffled model, each member of the population performs their own random transformations (like in local privacy) but magnitude of random transformations are small enough to guarantee central privacy. It is desirable because the accuracy guarantees in the shuffled model are closer to that of central privacy while the privacy guarantees are close to that of the local model. In recent work, [<a href="https://privacytools.seas.harvard.edu/publications/separating-local-shuffled-differential-privacy-histograms" title="Separating Local &amp; Shuffled Differential Privacy via Histograms">23</a>] and [<a href="https://arxiv.org/abs/2106.04247" title="Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead">24</a>] have developed algorithms with error near central accuracy for sum and mean estimation of real valued populations. [<a href="https://arxiv.org/abs/1908.11358" title="On the Power of Multiple Anonymous Messages">25</a>] describes a framework connecting shuffle privacy to local and central privacy by proving lower bounds for the shuffle model.</p>
+<p>Rank Aggregation is a regime, that computes a ranking that can serve as a single best representative of a collection of preferences over a set of items. Non private Rank Aggregation has been studied ad nauseam in the machine learning community owing to its direct application to web search and recommendations [<a href="https://www.amazon.co.uk/Learning-Rank-Information-Retrieval-Tie-Yan/dp/3642142664" title="Learning to rank">37</a>]. Most ranking algorithms can be described by a composition of the basic primitives described above. However, rank aggregation has not received the same degree of attention under the lens of privacy. [<a href="https://people.cs.umass.edu/~miklau/assets/pubs/dp/hay17differentially.pdf" title="Differentially Private Rank Aggregation">26</a>] develop private versions of Borda count ranking [[]] and kwik sort ranking [[][]] under the central model. [<a href="https://arxiv.org/abs/1908.04486" title="Private Rank Aggregation under Local Differential Privacy">27</a>] propose a private version of kwik sort under the local model. The distributed algorithm for ranking with theoretical guarantees with near central guarantees remains open. To the best of our knowledge, the optimal bounds for ranking have not been studied in detail even under the central model. Given the importance of ranking to Machine Learning and social science community we wish to focus on the problem of distributed ranking with theoretical guarantees.</p>
+<h2 id="research-directions">Research directions</h2>
+<h3 id="phd-objectives">PHD Objectives</h3>
+<ul>
+<li>To develop new practical distributed algorithms with theoretical guarantees that preserve privacy.</li>
+<li>Extend distributed privacy to the problem of ranking and social choice.</li>
+<li>Unify existing distributed algorithms under a single proof framework.</li>
+<li>Develop a scalable open source implementations of distributed algorithms and integrate with existing open source implementations.</li>
+</ul>
+<h2 id="timeline">Timeline</h2>
+<h3 id="year-i">Year I</h3>
+<ul>
+<li>Survey existing learning to rank and choice theory literature.</li>
+<li>Conduct literature review for distributed mechanisms for rank aggregation and mean estimation.</li>
+<li>Unify relevant algorithms under a single open source library for fair comparison on practical real world datasets.</li>
+<li>Propose first novel distributed private algorithm for rank aggregation.</li>
+</ul>
+<h3 id="year-ii">Year II</h3>
+<ul>
+<li>Prove the theoretical framework for distributed algorithms for theory of social choice.</li>
+<li>Establish links with other well studied primitives.</li>
+<li>Propose efficient and practical algorithms for distributed ranking.</li>
+<li>Open source a library scaleable distributed rank aggregation.</li>
+</ul>
+<h3 id="year-iii">Year III</h3>
+<ul>
+<li>Continuing down themes covered in the second year or starting on other research directions as previously listed</li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a href="https://hbr.org/2021/09/ai-adoption-skyrocketed-over-the-last-18-months">Increase in AI Adoption</a></li>
+</ol>
+<ol start="2" type="1">
+<li><a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/35599.pdf">Personalized News Recommendation Based on Click Behavior</a></li>
+</ol>
+<ol start="3" type="1">
+<li><a href="https://www.cs.cornell.edu/people/tj/publications/joachims_02c.pdf">Optimizing search engines using clickthrough data</a></li>
+</ol>
+<ol start="4" type="1">
+<li><a href="https://datadrivenadvertising.eu/wp-content/uploads/2017/09/DigitalAdvertisingEconomicContribution_FINAL.pdf">Economic Gains of Ads</a></li>
+</ol>
+<ol start="5" type="1">
+<li><a href="https://www.ncsc.gov.uk/news/yahoo-data-breach-ncsc-response">Yahoo data breach: NCSC response</a></li>
+</ol>
+<ol start="6" type="1">
+<li><a href="https://www.forbes.com/sites/quickerbettertech/2021/07/05/a-linkedin-breach-exposes-92-of-usersand-other-small-business-tech-news/">LinkedIn Data Breach</a></li>
+</ol>
+<ol start="7" type="1">
+<li><a href="https://www.bloomberg.com/news/articles/2021-06-16/alibaba-victim-of-huge-data-leak-as-china-tightens-security">Alibaba Victim of Huge Data Leak as China Tightens Security</a></li>
+</ol>
+<ol start="8" type="1">
+<li><a href="https://www.bbc.co.uk/news/world-43476762">Cambridge Analytica: The data firm’s global influence</a></li>
+</ol>
+<ol start="9" type="1">
+<li><a href="https://gdpr.eu/what-is-gdpr/">GDPR Laws</a></li>
+</ol>
+<ol start="10" type="1">
+<li><a href="https://www.infosecurity-magazine.com/news/gdpr-is-stifling-innovation-says/">GDPR stifle innovation</a></li>
+</ol>
+<ol start="11" type="1">
+<li><a href="https://journalofbigdata.springeropen.com/articles/10.1186/s40537-014-0007-7">Deep learning applications and challenges in big data analytics</a></li>
+</ol>
+<ol start="12" type="1">
+<li><a href="http://wrap.warwick.ac.uk/59804/">Summary data structures for massive data</a></li>
+</ol>
+<ol start="13" type="1">
+<li><a href="https://www.researchgate.net/profile/Yann-Lecun/publication/220500215_Measuring_the_VC-Dimension_of_a_Learning_Machine/links/0912f50f9e76564012000000/Measuring-the-VC-Dimension-of-a-Learning-Machine.pdf">Measuring the VC-dimension of a Learning Machine</a></li>
+</ol>
+<ol start="14" type="1">
+<li><a href="https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf">The Algorithmic Foundations of Differential Privacy</a></li>
+</ol>
+<ol start="15" type="1">
+<li><a href="http://www.dbis.informatik.hu-berlin.de/fileadmin/lectures/SS2011/VL_Privacy/Differential_Privacy.pdf">Differential Privacy</a></li>
+</ol>
+<ol start="16" type="1">
+<li><a href="https://timroughgarden.org/papers/priv.pdf">UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS</a></li>
+</ol>
+<ol start="17" type="1">
+<li><a href="https://arxiv.org/abs/1504.04686">Local, Private, Efficient Protocols for Succinct Histograms</a></li>
+</ol>
+<ol start="18" type="1">
+<li><a href="https://arxiv.org/abs/1902.08534">Federated Heavy Hitters Discovery with Differential Privacy</a></li>
+</ol>
+<ol start="19" type="1">
+<li><a href="https://openreview.net/pdf?id=msTLiku_34p">Sample-and-threshold differential privacy: Histograms and applications</a></li>
+</ol>
+<ol start="20" type="1">
+<li><a href="https://arxiv.org/abs/1811.12469">Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity</a></li>
+</ol>
+<ol start="21" type="1">
+<li><a href="https://arxiv.org/abs/1903.02837">The Privacy Blanket of the Shuffle Model</a></li>
+</ol>
+<ol start="22" type="1">
+<li><a href="https://imai.fas.harvard.edu/research/files/randresp.pdf">Design and Analysis of the Randomized Response Technique</a></li>
+</ol>
+<ol start="23" type="1">
+<li><a href="https://privacytools.seas.harvard.edu/publications/separating-local-shuffled-differential-privacy-histograms">Separating Local &amp; Shuffled Differential Privacy via Histograms</a></li>
+</ol>
+<ol start="24" type="1">
+<li><a href="https://arxiv.org/abs/2106.04247">Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead</a></li>
+</ol>
+<ol start="25" type="1">
+<li><a href="https://arxiv.org/abs/1908.11358">On the Power of Multiple Anonymous Messages</a></li>
+</ol>
+<ol start="26" type="1">
+<li><a href="https://people.cs.umass.edu/~miklau/assets/pubs/dp/hay17differentially.pdf">Differentially Private Rank Aggregation</a></li>
+</ol>
+<ol start="27" type="1">
+<li><a href="https://arxiv.org/abs/1908.04486">Private Rank Aggregation under Local Differential Privacy</a></li>
+</ol>
+<ol start="28" type="1">
+<li><a href="https://arxiv.org/abs/1407.6981">Randomized aggregatable privacy-preserving ordinal response</a></li>
+</ol>
+<ol start="29" type="1">
+<li><a href="https://arxiv.org/abs/1710.00901">Strong privacy for analytics in the crowd</a></li>
+</ol>
+<ol start="30" type="1">
+<li><a href="https://machinelearning.apple.com/research/learning-with-privacy-at-scale">Learning with privacy at scale</a></li>
+</ol>
+<ol start="31" type="1">
+<li><a href="https://proceedings.neurips.cc/paper/2017/file/253614bbac999b38b5b60cae531c4969-Paper.pdf">Collecting telemetry data privately</a></li>
+</ol>
+<ol start="32" type="1">
+<li><a href="https://ieeexplore.ieee.org/document/4497436#:~:text=The%20source%20data%20for%20this,data%20while%20providing%20privacy%20guarantees.">Privacy: From theory to practice on the map</a></li>
+</ol>
+<ol start="31" type="1">
+<li><a href="https://dl.acm.org/doi/10.1145/3035918.3035940">Utility cost of formal privacy for releasing national employer- employee statistics</a></li>
+</ol>
+<ol start="34" type="1">
+<li><a href="https://core.ac.uk/download/pdf/219376854.pdf">The US Census Bureau adopts differential privacy.</a></li>
+</ol>
+<ol start="35" type="1">
+<li><a href="https://eprint.iacr.org/2008/197.pdf">Secure Multiparty Computation for Privacy-Preserving Data Mining</a></li>
+</ol>
+<ol start="36" type="1">
+<li><a href="https://eprint.iacr.org/2015/1192">A Guide to Fully Homomorphic Encryption</a></li>
+</ol>
+<ol start="37" type="1">
+<li><a href="https://www.amazon.co.uk/Learning-Rank-Information-Retrieval-Tie-Yan/dp/3642142664">Learning to rank</a></li>
+</ol>
+</div>
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>
