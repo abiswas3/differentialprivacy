@@ -18,5 +18,7 @@ cd CheuShuffleRR  && ./build && cd ../
 cd RRSurvey && ./build && cd ../
 cd Proposal && ./build && cd ../
 cd SecurityBasics && ./build && cd ../
+cd conferences && ./build && cd ../
+
 # cd private_histograms/ && ./build && cd ../
 
