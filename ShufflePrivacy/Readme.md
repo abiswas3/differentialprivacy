@@ -172,7 +172,7 @@ Now if we show $\P{Event(Y) \geq e^{|k'|\epsilon} \Big| Y \in G}{Y}{Bin(n, \gamm
 
    $Event(y) = \frac{y^{|k'|}}{(1-\gamma)^{|k'|}}\frac{(n-y+1)...(n-y +|k'|)}{y(y-1)...(y-|k'|)} \leq (\frac{1 + \alpha}{1 - \alpha})^{|k'|} = e^{\epsilon|k|}$
 
-   When $k' \geq 0$we get $\frac{(1-\gamma)^{k'}}{y^{k'}}\frac{(y+1)...(y+k')}{(n-y)...(n-y-k'+1)} \leq (1+\alpha)^{k'} \leq (\frac{1 + \alpha}{1 - \alpha})^{k'} = e^{\epsilonk}$ 
+   When $k' \geq 0$ we get $\frac{(1-\gamma)^{k'}}{y^{k'}}\frac{(y+1)...(y+k')}{(n-y)...(n-y-k'+1)} \leq (1+\alpha)^{k'} \leq (\frac{1 + \alpha}{1 - \alpha})^{k'} = e^{\epsilon |k|}$ 
 
    So if we set $\epsilon = ln(\frac{1 + \alpha}{1 - \alpha})$ we get everything we want. How they go from products to $\alpha$ inequalities are unclear to me!
 
