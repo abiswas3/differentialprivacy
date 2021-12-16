@@ -84,6 +84,114 @@ check for gaps in practical deployement.
 * [Private Rank Aggregation/Voting](PrivateVoting): There seems to be some work in this area but not a whole lot. Wondering if it is because the problems are too hard or too similar to the primitives researchers already think about. Or am I lucky in that people have just not cared about it that much. Could be some novel work in here. Papers worth reading:
   * [Differentially Private Rank Aggregation](https://cs.colgate.edu/~mhay/assets/publications/hay2017differentially.pdf)
 
+### Sample Mean Extraction
+s
+
+### Population Mean Extraction
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"></th>
+    <th class="tg-1wig">Contribution</th>
+    <th class="tg-1wig">Venue</th>
+    <th class="tg-1wig">Authors</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Distributed mean estimation using randomised response : Amplification by shuffling</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Thirtieth Annual ACM-SIAM Symposium on Discrete Algorithms (2019)</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Erlingsson, Ulfar and Feldman, Vitaly and Mironov, Ilya and Raghunathan, Ananth and Talwar, Kunal and Thakurta, Abhradeep</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Distributed mean estimation using randomised response : d-histogram problem</td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Annual International Cryptology Conference (2019)</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Balle, Borja and Bell, James and Gasc{\'o}n, Adria and Nissim, Kobbi</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Distributed mean estimation using randomised response -</td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Annual International Conference on the Theory and Applications of Cryptographic Techniques (2019)</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Cheu, Albert and Smith, Adam and Ullman, Jonathan and Zeber, David and Zhilyaev, Maxim</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Distributed mean estimation using binomial noise </td>
+    <td class="tg-0lax"><span style="font-style:normal">Information-Theoretic Cryptography, </span><br><span style="font-style:normal">ITC 2020</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Balcer, Victor and Cheu, Alber</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Distributed mean estimation using correlated noise - binary population<br></td>
+    <td class="tg-0lax">ICML 2020</td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">B Ghazi, R Kumar, P Manurangsi, R Pagh</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Distributed mean estimation using correlated noise - integer valued population. </td>
+    <td class="tg-0lax">ICML 2021</td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Badih Ghazi, Noah Zeger Golowich, Shanmugasundaram Ravikumar, Pasin Manurangsi, Ameya Avinash Velingker, Rasmus Pagh</span></td>
+  </tr>
+</tbody>
+</table>
+
+### N-gram extraction / private set union
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"></th>
+    <th class="tg-0lax">Contribution</th>
+    <th class="tg-0lax">Venue</th>
+    <th class="tg-0lax">Authors</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Differentially private set union : A datasets of n user, each with their own <br>set $W_i \subset U$, where U is a very large universe of items (possibly <br>unbounded). The basic laplace mechanism needs to much noise due to <br>high worst case sensitivity. They present an adaptive algorithm that keeps<br>sensitivity small for the laplace/gaussian mechanism. Once this is done, it's just <br>the well understood additive noise mechanism. <br><br>**Areas of improvement: ** (1) Algorithm is sequential and thus a federated version<br>does not exist. </td>
+    <td class="tg-0lax">ICML 2020</td>
+    <td class="tg-0lax">Gopi, Gulhane, Kulkarni, Shen, Shokouhi, Yekhanin</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Differentially private n gram<br>extraction: The setup is very similar as the previous problem. Now. instead of items users<br>have sequences with each element from a very large universe. They iteratively use set union,<br>to construct a private ngram extraction method.<br><br>**Areas of improvement: ** (1) Cannot be distributed (2) How does McMahan and Grahams <br>trie heavy hitter algorithm compare to this. Once again it will allow us to compare sampling vs<br>additive noise. </td>
+    <td class="tg-0lax">NIPS 2021</td>
+    <td class="tg-0lax">Kim, Gopi, Kulkarni, Yekhanin</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+</tbody>
+</table>
+
+### Secure Comparison Protocols
+
+### Voting methods 
+
 
 
 ## My own work
