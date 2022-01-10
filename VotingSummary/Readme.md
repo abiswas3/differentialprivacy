@@ -1,7 +1,10 @@
 <div class="container">
+
 # Election Methods
 
 A review of rank aggregation methods with code. Consider the following problem where 8 voters have voted for 5 candidates - A, B, C, D and E. Shown below is the code for computing Kemeny optimal ranking, borda rank and Kwik Sort ranks for such a problem in a non private setting.
+
+
 
 ## Kemeny–Young method
 

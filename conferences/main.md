@@ -48,4 +48,5 @@ An alternative to the discreet gaussian due to nicer properties. I do not quite 
 
 ### Problem
 
+
 </div>	

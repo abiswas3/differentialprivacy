@@ -85,7 +85,7 @@ check for gaps in practical deployement.
   * [Differentially Private Rank Aggregation](https://cs.colgate.edu/~mhay/assets/publications/hay2017differentially.pdf)
 
 ### Sample Mean Extraction
-s
+
 
 ### Population Mean Extraction
 
@@ -169,7 +169,7 @@ s
 <tbody>
   <tr>
     <td class="tg-0lax"></td>
-    <td class="tg-0lax">Differentially private set union : A datasets of n user, each with their own <br>set $W_i \subset U$, where U is a very large universe of items (possibly <br>unbounded). The basic laplace mechanism needs to much noise due to <br>high worst case sensitivity. They present an adaptive algorithm that keeps<br>sensitivity small for the laplace/gaussian mechanism. Once this is done, it's just <br>the well understood additive noise mechanism. <br><br>**Areas of improvement: ** (1) Algorithm is sequential and thus a federated version<br>does not exist. </td>
+    <td class="tg-0lax">Differentially private set union : A datasets of n user, each with their own <br>set $W_i \subset U$, where U is a very large universe of items (possibly <br>unbounded). The basic laplace mechanism needs to much noise due to <br>high worst case sensitivity. They present an adaptive algorithm that keeps<br>sensitivity small for the laplace/gaussian mechanism. Once this is done, it's just <br>the well understood additive noise mechanism. <br><br>**Areas of improvement: ** (1) Algorithm is sequential and thus a federated version does not exist. (2) There are no utility guarantees presented. </td>
     <td class="tg-0lax">ICML 2020</td>
     <td class="tg-0lax">Gopi, Gulhane, Kulkarni, Shen, Shokouhi, Yekhanin</td>
   </tr>
@@ -190,9 +190,77 @@ s
 
 ### Secure Comparison Protocols
 
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky">Contribution</th>
+    <th class="tg-0pky">Venue</th>
+    <th class="tg-0pky">Authors</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">Secure aggregation for a single round: Under the honest but curious model, the server is able to compute<br>the sum of user inputs even in the case of t dropouts. The protocol only works for a single round of computing <br>sums. </td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">2017 ACM SIGSAC Conference on Computer and Communications Security</span><br></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">Bonawitz, Keith and Ivanov, Vladimir and Kreuter, Ben and Marcedone, Antonio and McMahan, H Brendan and Patel, Sarvar and Ramage, Daniel and Segal, Aaron and Seth, Karn</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Yao's millionaire problem: Given two millionaires a and b, both parties with to compute the value of a &lt; b without,<br>seeing each others values. A few ways to target this problem. One way is to convert the problem into private set intersection. Then use homomorphic encryption. [Link](https://eprint.iacr.org/2005/043.pdf)</td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">International Conference on Applied Cryptography and Network Security</span>(2005)</td>
+    <td class="tg-0pky">Hsiao-Ying Lin and Wen-Guey Tzeng</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">Private set intersection: Given two sets A and B, both parties want to compute A intersection B without revealing A and B. One solution, </span><br>is to use an honest server, otherwise known as [server aided PSI or third party PSI](https://decentralizedthoughts.github.io/2020-03-29-private-set-intersection-a-soft-introduction/)</td>
+    <td class="tg-0pky">BLOG post</td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:italic">Avishay Yanai</span></td>
+  </tr>
+</tbody>
+</table>
+
 ### Voting methods 
 
-
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax">Contribution</th>
+    <th class="tg-0lax">Venue</th>
+    <th class="tg-0lax">Authors</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Differentially Private Rank Aggregation](https://cs.colgate.edu/~mhay/assets/publications/hay2017differentially.pdf): </td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">2017 SIAM International Conference on Data Mining</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal">Hay, Michael and Elagina, Liudmila and Miklau, Gerome</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+</tbody>
+</table>
 
 ## My own work
 
