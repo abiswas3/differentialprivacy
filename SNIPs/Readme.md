@@ -37,7 +37,7 @@ Instead of 1 verifier that are $k$ verifiers. Furthermore, for our proofs to be 
 
 ### Arithmetic circuit
 
-In computational complexity theory, arithmetic circuits are the standard model for computing polynomials. Informally, an arithmetic circuit takes as inputs either variables or numbers, and is allowed to either add or multiply two expressions it has already computed. Additionally any arithmetic circuit for a polynomial of degree $n$ can be expressed by $n$ add operations on the input and $n$ multiplication operations. Let $p(x)$ be an polynomial of degree $n$ in $\Z$ and $x_1, \dots, x_n$ be the roots. We can always write $p(x) as (x-x_1)(x-x_2)\dots(x-x_n)$ 
+In computational complexity theory, arithmetic circuits are the standard model for computing polynomials. Informally, an arithmetic circuit takes as inputs either variables or numbers, and is allowed to either add or multiply two expressions it has already computed. Additionally any arithmetic circuit for a polynomial of degree $n$ can be expressed by $n$ add operations on the input and $n$ multiplication operations. Let $p(x)$ be an polynomial of degree $n$ in $\Z$ and $x_1, \dots, x_n$ be the roots. We can always write $p(x)$ as $(x-x_1)(x-x_2)\dots(x-x_n)$ 
 
 ### Polynomials
 
