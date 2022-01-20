@@ -20,6 +20,6 @@ cd Proposal && ./build && cd ../
 cd SecurityBasics && ./build && cd ../
 cd conferences && ./build && cd ../
 cd PrivateSetUnion && ./build && cd ../
-cd PracticalMethodsForSecureAggregation && ./build && cd ../ 
+cd SNIPs && ./build && cd ../ 
 # cd private_histograms/ && ./build && cd ../
 

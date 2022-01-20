@@ -1,4 +1,6 @@
 <div class=container>
+
+  
 # Statistical privacy
 
 These are my notes of various textbook chapters and research papers in
