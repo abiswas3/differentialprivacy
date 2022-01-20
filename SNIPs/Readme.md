@@ -220,6 +220,7 @@ To ensure a vote is valid there $M+3$ total circuit evaluations. For efficiency 
 
 ### Zero Knowledge
 
+TODO
 
 # References 
 
