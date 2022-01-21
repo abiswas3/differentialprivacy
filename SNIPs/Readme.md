@@ -237,6 +237,13 @@ Each server j computes $[\hat{fg}]_j(r) = de/s + d[b]_j + e[a]_j + [c]_j$ where 
 \end{align*}
 
 
+## Worked out Example in Python3 
+
+This is not production quality code. Just a worked out example with all the circuits to show that the experiment backs up the claims stated above.
+
+ <embed type="text/html" src="./SNIPS_Voting.html" width="800" height="600"> 
+
+
 # References 
 
 [1]: https://dl.acm.org/doi/pdf/10.1145/3133956.3133982 ""
