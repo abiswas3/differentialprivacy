@@ -247,7 +247,7 @@ Thanks for the notes.  The calculations look correct, based on binonial distribu
 Reducing the communication in this way is essentially being able to suppress messages in the noise setting, i.e., having noise that leads us to output zero most of the time.  This may not be possible without effectively including sampling in the method, and incurring the corresponding error from sampling.
 ```
 
-## References and Links exchanged
+## References
 
 [1]: ../DiscreteLaplace/paper.pdf "UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS"
 1. [UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS](../DiscreteLaplace/paper.pdf)
@@ -279,21 +279,11 @@ From Local to Central Differential Privacy via Anonymity](https://arxiv.org/pdf/
 [9]: https://arxiv.org/abs/2106.04247 "Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead"
 9. [Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead](https://arxiv.org/abs/2106.04247)
 
-## Links
+## Other Links shared in the time frame
 
-Streaming paper including voting:
-https://arxiv.org/abs/1603.00213
-
-Local differential privacy for voting/ranking
-https://arxiv.org/pdf/1908.04920.pdf
-(there may be some follow up)
-
-Your notes on privacy:
-https://abiswas3.github.io/differentialprivacy/
-
-Bonus:
-Mean estimation with low communication:
-https://arxiv.org/abs/2010.02331
-(privacy follows by applying randomized response to the bit that is sent)
+* [Streaming paper including voting](https://arxiv.org/abs/1603.00213)
+* [Local differential privacy for voting/ranking](https://arxiv.org/pdf/1908.04920.pdf): This was not very useful. This was just Laplace Mechanism with very little insight into something new.
+* [Bonus- Mean estimation with low communication:](https://arxiv.org/abs/2010.02331)
+privacy follows by applying randomized response to the bit that is sent
 
 </div>
