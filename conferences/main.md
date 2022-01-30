@@ -2,7 +2,6 @@
 
 # NIPS 2021
 
-
 * [Littlestone Classes are Privately Online Learnable](https://nips.cc/Conferences/2021/Schedule?showEvent=28079)
 * [Covariance Aware Mean Estimation](https://nips.cc/Conferences/2021/Schedule?showEvent=26983)
 * [Differentially Private Model Personalization](https://nips.cc/Conferences/2021/Schedule?showEvent=27821)
@@ -26,8 +25,7 @@ Authors: Xiyang Liu, Weihao Kong, Sham M. Kakade, Sewoong Oh
 
 ### Problem 
 
-In this paper,focus on one of the most canonical problems in statistics: estimating the mean of a distribution from i.i.d. samples. <
-
+In this paper,focus on one of the most canonical problems in statistics: estimating the mean of a distribution from i.i.d. samples. 
 
 ### Contribution
 
@@ -43,10 +41,10 @@ So this is the first work to bring them together -- for sub-gaussian and heavy t
 
 An alternative to the discreet gaussian due to nicer properties. I do not quite understand these nice properties yet.
 
-
 ## [Learning with User-Level Privacy](https://openreview.net/forum?id=G1jmxFOtY_)
 
 ### Problem
 
+## [Differentially Private Multi-Armed Bandits in the Shuffle Model](https://arxiv.org/pdf/2106.02900.pdf)
 
 </div>	

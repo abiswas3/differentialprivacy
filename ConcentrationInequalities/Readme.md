@@ -12,6 +12,12 @@
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 
 <div class="container">
+
+Resources that I found useful:
+
+* [Concentration Measures - Terry Tao](https://terrytao.wordpress.com/2010/01/03/254a-notes-1-concentration-of-measure/)
+* [Central Limit Theorem - Terry Tao](https://terrytao.wordpress.com/2010/01/05/254a-notes-2-the-central-limit-theorem/)
+
 # Concentration Inequalities
 
 Interested in tail bounds i.e. how random variables deviate from their means.
