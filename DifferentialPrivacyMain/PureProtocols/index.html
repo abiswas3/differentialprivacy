@@ -73,7 +73,7 @@ Proof
 </div>
 <p>An alternate way to derive this bound is to look at the variance of the estimator <span class="math inline">\(\hat{f}\)</span> and since the estimator is unbiased, the variance of the estimator is equal to the mean squared error of the estimator. It gives a point estimate of an error not a confidence interval. The derivation can be found <a href="http://www.gautamkamath.com/CS860notes/lec3.pdf">here</a>. It is relatively straightforward.</p>
 <h4 id="lower-bound-for-means-and-sum">Lower Bound for means and sum</h4>
-[[3][3]] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight – that indeed <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> is the least error we must tolerate to ensure privacy.
+[<a href="https://arxiv.org/pdf/1103.2626.pdf" title="Distributed Private Data Analysis: On Simultaneously Solving How and What">3</a>] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight – that indeed <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> is the least error we must tolerate to ensure privacy.
 <div class="question">
 The proof for this lower bound is quite convoluted. The authors prove the lower bound for any distributed t-coalition network, for interactive and non interactive protocols for sums. I try and simplify their proof for non interactive local privacy only. In doing so, I do my best attempt at simplifying their proof, building intuition and re-deriving it.
 </div>
@@ -227,6 +227,19 @@ Lemma 3
 <p><span class="math inline">\(\ref{3}:\)</span> Lemma 2</p>
 <p><span class="math inline">\(\ref{4}:\)</span> Hoeffding on bounded variables, from Lemma 2, we get <span class="math inline">\(V_i\)</span> is upper and lower bounded. Plug and play</p>
 </div>
+<h2 id="references">References</h2>
+<ol type="1">
+<li><a href="../DiscreteLaplace/paper.pdf">UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS</a></li>
+</ol>
+<ol start="2" type="1">
+<li><a href="https://arxiv.org/pdf/1903.02837.pdf">The privacy blanket of the shuffle model</a></li>
+</ol>
+<ol start="3" type="1">
+<li><a href="https://arxiv.org/pdf/1103.2626.pdf">Distributed Private Data Analysis: On Simultaneously Solving How and What</a></li>
+</ol>
+<ol start="4" type="1">
+<li><a href="https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution">Distinction between one sided and 2 sided Geometric distributions</a></li>
+</ol>
 </div>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann

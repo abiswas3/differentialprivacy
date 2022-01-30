@@ -48,9 +48,9 @@
 
 
 
-* [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
+<!-- * [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
 * [Frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
-
+ -->
 
 <!-- * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html) -->
 

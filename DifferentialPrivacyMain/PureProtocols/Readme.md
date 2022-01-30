@@ -341,6 +341,18 @@ $\ref{4}:$ Hoeffding on bounded variables, from Lemma 2, we get $V_i$ is upper a
 
 </div>
 
+## References 
 
+[1]: ../DiscreteLaplace/paper.pdf "UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS"
+1. [UNIVERSALLY UTILITY-MAXIMIZING PRIVACY MECHANISMS](../DiscreteLaplace/paper.pdf)
+
+[2]: https://arxiv.org/pdf/1903.02837.pdf "The privacy blanket of the shuffle model"
+2. [The privacy blanket of the shuffle model](https://arxiv.org/pdf/1903.02837.pdf)
+
+[3]: https://arxiv.org/pdf/1103.2626.pdf "Distributed Private Data Analysis: On Simultaneously Solving How and What"
+3. [Distributed Private Data Analysis: On Simultaneously Solving How and What](https://arxiv.org/pdf/1103.2626.pdf)
+
+[4]: https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution "Distinction between one sided and 2 sided Geometric distributions"
+4. [Distinction between one sided and 2 sided Geometric distributions](https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution)
 	
 </div>

@@ -162,10 +162,7 @@ ICML 2021
 <p>Graham and I have been working on understanding how multiplicative noise and additive noise are related over the last few months. In the next few sections, we summarise some of the open problems in this area.</p>
 <h4 id="section">21-08-2021</h4>
 <pre><code>I had in mind the algorithm that outputs the mean of the sampled items, without censoring.  However, I think some bounds need to be placed on the size of the items being reported.  Otherwise, we have the &#39;billionaire&#39;s problem&#39;: looking at the mean reveals whether or not there was a billioniaire in the sample, which in turn reveals whether or not they were in the input.</code></pre>
-This was posed initially when we were discussing the sample and threshold problem. The question was, whether there was a way to use this mechanism to report sums and means of populations instead of reporting succint histograms of the population. I was able to show that reporting the sum of the histogram/mean is DP but this is not very satisfying, as by creating a histogram we have created buckets and brought in rounding error.
-<div class="intuition">
-<strong>TODO: </strong> How did Ghazi et al 2021 ICML paper get around this problem for non binary valued integers? I cannot remember at the top of my head
-</div>
+<p>This was posed initially when we were discussing the sample and threshold problem. The question was, whether there was a way to use this mechanism to report sums and means of populations instead of reporting succint histograms of the population. I was able to show that reporting the sum of the histogram/mean is DP but this is not very satisfying, as by creating a histogram we have created buckets and brought in rounding error.<strong>We never settled this. Recent discoveries might make this worth attending to.</strong></p>
 <h4 id="section-1">23-11-2021</h4>
 <pre><code>Among all these options, are there any strict dominances, i.e., is there any method that has an asymptotically better guarantee than another across all epsilon and n choices?  I think probably not, but not sure yet.</code></pre>
 <pre><code>Otherwise, how best can we compare these?  Maybe plotting the shape of the distributions for a few different settings will help to compare them better. </code></pre>
@@ -202,6 +199,10 @@ New Results: Connecting Additive and Multiplicative
 </button>
 <div id="multAddConnection" class="collapse">
 <p>Our previous attempt failed as <strong>OR</strong> is not the same is as <strong>Addition</strong> but i found a new way to connect them.</p>
+<p>All that SNIPs reading with circuits and graduate school pre-reading of computational theory made me draw up the boolean circuits that express sampling and additive mechanisms as circuits. The imporant difference is Sampling is a 1 bit protocol whereas addition is a 2 bit protocol. This extra bit allows for more wiggle room in general. The second thing to note is that if we truncated the addition operation and kept the MSB then the two protocols are equivalent.</p>
+<p>I re-state two imporant theorems (1) By Cheu that says if you are 1 message only, the not local implies not shuffle. This means that the sampling method is not shuffle DP. (2) Randomised Response is the best you can do in local and shuffle DP if you are restricted to 1 bit/message communications. Thus Sample privacy is a paradigm that is less private than 1 bit shuffle but more accurate based on all experiments shown in the previous step.</p>
+<p>See the writeup below. Aplogies for small illegible handwriting.</p>
+<p><img src="./pngs/circuits.jpeg" width="80%"></img> <br> <img src="./pngs/circuits2.jpeg" width="80%"></img></p>
 </div>
 <p><br></p>
 <pre><code>Can we make single proof of a general result that holds for distributions with some property, and then specialize it for each of these different approaches?  Or is that already done in the prior work?</code></pre>

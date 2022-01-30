@@ -113,7 +113,8 @@ Graham and I have been working on understanding how multiplicative noise and add
 I had in mind the algorithm that outputs the mean of the sampled items, without censoring.  However, I think some bounds need to be placed on the size of the items being reported.  Otherwise, we have the 'billionaire's problem': looking at the mean reveals whether or not there was a billioniaire in the sample, which in turn reveals whether or not they were in the input.
 ```
 
-This was posed initially when we were discussing the sample and threshold problem. The question was, whether there was a way to use this mechanism to report sums and means of populations instead of reporting succint histograms of the population. I was able to show that reporting the sum of the histogram/mean is DP but this is not very satisfying, as by creating a histogram we have created buckets and brought in rounding error. <div class="intuition">**TODO: ** How did Ghazi et al 2021 ICML paper get around this problem for non binary valued integers? I cannot remember at the top of my head </div>
+This was posed initially when we were discussing the sample and threshold problem. The question was, whether there was a way to use this mechanism to report sums and means of populations instead of reporting succint histograms of the population. I was able to show that reporting the sum of the histogram/mean is DP but this is not very satisfying, as by creating a histogram we have created buckets and brought in rounding error.**We never settled this. Recent discoveries might make this worth attending to.** 
+
 
 #### 23-11-2021
 
@@ -186,6 +187,16 @@ data-target="#multAddConnection">New Results: Connecting Additive and Multiplica
 <div class=collapse id=multAddConnection>
 
 Our previous attempt failed as **OR** is not the same is as **Addition** but i found a new way to connect them.
+
+All that SNIPs reading with circuits and graduate school pre-reading of computational theory made me draw up the boolean circuits that express sampling and additive mechanisms as circuits. The imporant difference is Sampling is a 1 bit protocol whereas addition is a 2 bit protocol. This extra bit allows for more wiggle room in general. The second thing to note is that if we truncated the addition operation and kept the MSB then the two protocols are equivalent. 
+
+I re-state two imporant theorems (1) By Cheu that says if you are 1 message only, the not local implies not shuffle. This means that the sampling method is not shuffle DP. (2) Randomised Response is the best you can do in local and shuffle DP if you are restricted to 1 bit/message communications. Thus Sample privacy is a paradigm that is less private than 1 bit shuffle but more accurate based on all experiments shown in the previous step. 
+
+See the writeup below. Aplogies for small illegible handwriting.
+
+<img src="./pngs/circuits.jpeg" width="80%"></img>
+<br>
+<img src="./pngs/circuits2.jpeg" width="80%"></img> 
 </div>
 <br>
 ```
