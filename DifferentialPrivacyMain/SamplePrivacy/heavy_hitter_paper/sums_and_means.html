@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Differentially Private Succint Histograms</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  
+  <ul class="navbar">
+    <li class="navbar-list-item"><a class="active" href="/index.html">Home</a></li>
+    <li class="navbar-list-item"><a href="/projects/">Projects</a></li>  
+    <li class="navbar-list-item"><a href="/misc/">News</a></li>
+    <!-- <li class="navbar-list-item"><a href="/blog/">Blog</a></li> -->
+    <!-- <li class="navbar-list-item" style="float:right"><a href="#about">About</a></li> -->
+  </ul>
+</head>
+<body>
+<header>
+<h1 class="title">Differentially Private Succint Histograms</h1>
+</header>
+<h1 id="introduction">Introduction</h1>
+<p>TODO or copy from Grahams writeup</p>
+<h2 id="another-view-of-triehh-algorithm">Another view of TrieHH algorithm</h2>
+<p>Consider a specific round of the trie heavy hitter algorithm, say round <span class="math inline">\(l\)</span>. In this round users vote on whether their prefix of size <span class="math inline">\(l\)</span> can extend the trie. Let <span class="math inline">\(A\)</span> represent the set of a size 1 prefixes. Then the set <span class="math inline">\(A^l\)</span> represents all possible prefixes that can be added to the trie. For a trie of height <span class="math inline">\(l\)</span>, each leaf node represents one element from <span class="math inline">\(A^l\)</span>. Thus each row of the trie can be viewed as a histogram with <span class="math inline">\(|A^l|\)</span> bins/partitions. The figure below illustrates the idea. As the set of possible values is countable, we get write down a bijection from <span class="math inline">\(f: A^l \rightarrow \mathbb{N}\)</span>.</p>
+<p><img src="pngs/equivalence.png" alt="drawing" width="800"/></p>
+<p>If we publish the counts at each intermediate node, then we get a succint histogram where only elements that occur omore than <span class="math inline">\(\theta\)</span> times have a non zero probability of being added to the histogram. If we do not publish the counts, we see a 1 hot encoding of the same histogram with the same partitions. From here on we will describe the trie heavy hitter algorithm as publishing histograms at every round.</p>
+<h2 id="sums-and-means-are-also-differentially-private">Sums and means are also differentially private</h2>
+<p>So far we have shown that our algorithm <span class="math inline">\(M\)</span> that publishes histograms <span class="math inline">\(r \in R\)</span>, is differentially private i.e. <span class="math inline">\(Pr\Big[M(D) \in r \Big] \leq exp(\epsilon)Pr\Big[M(D&#39;) \in r \Big] + \delta\)</span>. We now show that, if instead of the histogram, we published sums or means of the histogram, the output is still differentially private. This is somewhat intuitive: If we can publish the full histogram without compromising differential privacy, outputting just the sum and mean which exposes less information, should not compromise differential privacy.See illustration below</p>
+<p><img src="pngs/sums_are_dp.png" alt="drawing" width="800"/></p>
+<p>For our proof we consider histograms where the bins have an ordering order or cases like the alphabet where the bins have no strict ordering.</p>
+<p>Consider two adjacet histograms D and D’ shown above. Let them differ by one record at index <span class="math inline">\(k\)</span>. If the input space consists of non integers like letters shown above, we can always learn a bijection of the input to the natural numbers. In the diagram above, cell m refers to positon k. Let <span class="math inline">\(d\)</span> denote the number of bins in each histograms.</p>
+<p>After application of M on the two histograms, under a good event <span class="math inline">\(E\)</span> we get from Lemma 3:</p>
+<p><span class="math display">\[\frac{Pr\Big[ M_k(D) = \tau | E \Big]}{Pr\Big[ M_k(D&#39;) = \tau | E \Big]} \leq
+1 + \frac{10m\theta}{9n} = e^{\epsilon}\]</span> and</p>
+<p><span class="math display">\[\frac{Pr\Big[ M_j(D) = \tau\Big]}{Pr\Big[ M_j(D&#39;) = \tau\Big]} = 1\]</span> for all <span class="math inline">\(j \neq k\)</span></p>
+<p>We have <span class="math display">\[\begin{align*}
+sum(M(D)) &amp;= \sum_{i=1}^d M_i(D)*v_i \\
+&amp;= M_k(D)*v_k + \sum_{i \neq k} M_i(D)v_i \\
+&amp;= M_k(D)*v_k + X
+\end{align*}\]</span></p>
+<p>Similarly, <span class="math display">\[\begin{align*}
+sum(M(D&#39;)) &amp;= \sum_{i=1}^d M_i(D&#39;)*v_i \\
+&amp;= M_k(D&#39;)*v_k + \sum_{i \neq k} M_i(D&#39;)v_i \\
+&amp;= M_k(D&#39;)*v_k + X
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(v_i\)</span> denote the weight of the i’th bin/index of the histogram. For our problem <span class="math inline">\(v_i=1\)</span> <span class="math inline">\(\forall i=\{1,..,d\}\)</span>. If users had integers instead of letters, then <span class="math inline">\(v_i\)</span> would correspond the value of the integer. In the last step we introduce random variable <span class="math inline">\(X\)</span> to clean up our notation. It represents the sum of histogram bins that do not differ in D and D’.</p>
+<span class="math display">\[\begin{align*}
+Pr\Big[ sum(M(D)) = \tau | E\Big] &amp;= \sum_{a,b | a + b = \tau} Pr\Big[ X=b, M_k(D)*v_k=a  | E\Big]\\
+&amp;= \sum_{a,b | a + b = \tau} Pr\Big[M_k(D)*v_k=a | E\Big]Pr\Big[ X=b| E\Big]\\
+&amp; \leq  \sum_{a,b | a + b = \tau} e^{\epsilon}Pr\Big[M_k(D&#39;)*v_k=a | E\Big]Pr\Big[ X=b| E\Big]\\
+&amp;= e^{\epsilon} \sum_{a,b | a + b = \tau} Pr\Big[M_k(D&#39;)*v_k=a, X=b  | E\Big]\\
+&amp;= e^{\epsilon}Pr\Big[ sum(M(D&#39;)) = \tau | E\Big] 
+\end{align*}\]</span>
+<p>The second step comes from the cells of the histogram being independent. The third step comes from Lemma 3.</p>
+<p>We can use the same logic as Grahams writeup to put all the non good events in the delta part of the definition.</p>
+<span class="math display">\[\begin{align*}
+    P[sum(M(D)) = \tau] &amp; = P[sum(M(D)) = \tau, E] + P[sum(M(D)) = \tau, E^c] \\
+    &amp;= P[E]P[sum(M(D)) = \tau| E] + P[E^c]P[sum(M(D)) = \tau | E^c] \\
+    &amp; \leq P[E]P[sum(M(D)) = \tau | E] + P[E^c] \\
+    \text{Since } P[sum(M(D)) = \tau | E^c] \leq 1\\
+    &amp; \leq P[E]\text{exp}(\epsilon)P[sum(M(D&#39;)) = \tau | E] + P[E^c] \\
+    \text{Since } P[E] \leq 1\\
+    &amp; \leq \text{exp}(\epsilon)P[sum(M(D&#39;)) = \tau | E] + P[E^c]
+\end{align*}\]</span>
+<p>The same argument would hold for means: it is just the sum scaled by the sampled population size <span class="math inline">\(m\)</span> which is known before hand.</p>
+<div id="footer">
+   Copyright something something - what people usually right
+</div>
+</body>
+</html>

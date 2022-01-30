@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+  
+  
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+</head>
+<body>
+
+<div class="container">
+<h2 id="local-privacy">Local Privacy</h2>
+<h3 id="binary-sums-with-randomised-response">Binary sums with Randomised Response</h3>
+<p>We describe the randomised response protocol next.</p>
+<div class="algorithm">
+<p><strong>Local Randomiser</strong></p>
+<p>Input:</p>
+<ul>
+<li><span class="math inline">\(x_i \in \{ 0, 1 \}\)</span></li>
+<li><span class="math inline">\(\gamma \in (0,1/2)\)</span></li>
+</ul>
+<p>Method:</p>
+<ul>
+<li>Flip a coin with probability of heads = <span class="math inline">\(0.5 + \gamma\)</span>.</li>
+<li>If heads return <span class="math inline">\(z_i = x_i\)</span> else return <span class="math inline">\(z_i=1 - x_i\)</span></li>
+</ul>
+<p><strong>Analyser</strong></p>
+<ul>
+<li><p>Compute <span class="math inline">\(k = (\sum_{i}^N z_i)\)</span></p></li>
+<li><p>Output <span class="math inline">\(\hat{f} = \frac{ k- (0.5 - \gamma)N}{2\gamma}\)</span></p></li>
+</ul>
+</div>
+<h3 id="privacy">Privacy</h3>
+<p>Privacy for the above algorithm is trivially achieved <strong>(will insert it later)</strong></p>
+<h4 id="upper-bound">Upper Bound</h4>
+<p>We now try to upper bound the accuracy of the algorithm discussed above.</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#randomResponseError">
+Proof
+</button>
+<div id="randomResponseError" class="collapse">
+<p>The expected value of <span class="math inline">\(z_i = 0.5 + \gamma\)</span> when <span class="math inline">\(x_i=1\)</span> and <span class="math inline">\(0.5-\gamma\)</span> when <span class="math inline">\(x_i=0\)</span>. Thus</p>
+<span class="math display">\[\begin{align*}
+\mathbb{E}[\hat{f}] &amp;= \mathbb{E}[\frac{ k- (0.5 - \gamma)N}{2\gamma}] \\
+&amp;= \frac{1}{2\gamma}\Big(\mathbb{E}[k] -  0.5N - N\gamma \Big) \\
+&amp;= \frac{1}{2\gamma}\Big(\mathbb{E}\Big[(0.5 + \gamma)k + (0.5 - \gamma)(N -k) \Big] -  0.5N - N\gamma \Big) \\
+&amp;= k
+\end{align*}\]</span>
+<p>Thus <span class="math inline">\(\hat{f}\)</span> is an unbiased estimator of the sum of inputs, and since <span class="math inline">\(\hat{f}\)</span> is a sum of bernoulli random variables, it means we can directly apply the <a href="http://www.stat.cmu.edu/~arinaldo/Teaching/36709/S19/Scribed_Lectures/Jan29_Tudor.pdf">hoefdinng bound for Bernoulli’s in Example 1</a> which states</p>
+<p><span class="math display">\[ \mathbb{P}\Big[ |\hat{f} - \mathbb{E}(\hat{f})| \geq t \Big] \leq 2e^{-2nt^2}\]</span></p>
+<p>To pull out an error bound set <span class="math inline">\(\delta = 2e^{-2nt^2}\)</span> and solve for t. Thus we get with probability <span class="math inline">\(1 - \delta\)</span>, <span class="math inline">\(|\hat{f} - \mathbb{E}(\hat{f})| \leq t\)</span> and <span class="math inline">\(t=\sqrt{\frac{1}{2n}\log\frac{1}{\delta}}\)</span>. Thus we can finally say that with probability <span class="math inline">\(1 - \delta\)</span></p>
+<p><span class="math display">\[|\hat{f} - \mathbb{E}(\hat{f})| \leq O(\frac{1}{\sqrt{N}})\]</span></p>
+</div>
+<p>An alternate way to derive this bound is to look at the variance of the estimator <span class="math inline">\(\hat{f}\)</span> and since the estimator is unbiased, the variance of the estimator is equal to the mean squared error of the estimator. It gives a point estimate of an error not a confidence interval. The derivation can be found <a href="http://www.gautamkamath.com/CS860notes/lec3.pdf">here</a>. It is relatively straightforward.</p>
+<h4 id="lower-bound-for-means-and-sum">Lower Bound for means and sum</h4>
+[[3][3]] Gives us a proof that shows that the simple algorithm above that was invented in 1965 is actually the best you can do. It states that the upper bound is tight – that indeed <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> is the least error we must tolerate to ensure privacy.
+<div class="question">
+The proof for this lower bound is quite convoluted. The authors prove the lower bound for any distributed t-coalition network, for interactive and non interactive protocols for sums. I try and simplify their proof for non interactive local privacy only. In doing so, I do my best attempt at simplifying their proof, building intuition and re-deriving it.
+</div>
+<p>What a lower bound statement is saying is that – if we wanted to <span class="math inline">\(\epsilon\)</span> local privacy and compute the mean of binary numbers, <strong>all</strong> private algorithms will error at least by <span class="math inline">\(O(\frac{1}{\sqrt{N}})\)</span> with non zero probability and non vanishing probability (the probability does not shrink as number of users go up.)</p>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#mainProof">
+Main Proof
+</button>
+<div id="mainProof" class="collapse">
+<p>The proof is divided into 2 parts:</p>
+<ol type="1">
+<li><p>They first define a gap version of the threshold function, denoted GAP-TR, and observe that any differentially private protocol for SUM with error <span class="math inline">\(\tau\)</span> implies a differentially-private protocol for GAP-TR with gap <span class="math inline">\(\frac{\tau}{2}\)</span>.</p></li>
+<li><p>The contrapositive of the above fact, is used to show that it is impossible to compute GAP-TR with a gap smaller than <span class="math inline">\(O(\sqrt{n})\)</span> in a differentially private manner. Therefore, it is impossible to compute SUM in a differentially private manner without suffering an error of at least <span class="math inline">\(O(\sqrt{n})\)</span>. Most of the work in the paper is done to prove the second bit.</p></li>
+</ol>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#step2">
+Step 2 of main proof
+</button>
+<div id="step2" class="collapse">
+<p>The whole proof is concerned with approximating <strong><span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span></strong>. Nothing in this section has to do with sums or means. We have already built the connection with sums and means in step 1.</p>
+<p><strong>DEFINITION</strong> Gap threshold functions are defined as the following: If <span class="math inline">\(SUM(X_1, \dots, X_n) \leq \kappa\)</span>, then <span class="math inline">\(GAP-TR_{\kappa, \tau} = 0\)</span> and If <span class="math inline">\(SUM(X_1, \dots, X_n) \geq \kappa + \tau\)</span>, then <span class="math inline">\(GAP-TR_{\kappa, \tau} = 1\)</span> . The function is undefined when <span class="math inline">\(\kappa &lt; SUM(X_1, \dots, X_n) &lt; \kappa + \tau\)</span>.</p>
+<p>To show that it is impossible to compute differentially private <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> without making at least <span class="math inline">\(O(\sqrt{n})\)</span> error, the authors show that any private protocol for computing <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> is unable to distinguish between an input of at least <span class="math inline">\(\sqrt{n}\)</span> 1’s and an input of all 0’s. This is saying if the protocols spit similar answers for both inputs thereby erring by nearly <span class="math inline">\(O(\sqrt{n})\)</span>. By argument 1, they then go onto claim that a private protocol for <span class="math inline">\(SUM\)</span> on the same input would make twice the error with high probability. Thus the entire game is to show that upto <span class="math inline">\(\sqrt{n}\)</span> number of 1’s the protocol has no idea how to distinguish between inputs – so it spits out garbage.</p>
+<p>They define a distribution <span class="math inline">\(A\)</span> on inputs from <span class="math inline">\(\{0, 1\}^n\)</span> such that <span class="math inline">\(X \sim A\)</span> where <span class="math inline">\(X\)</span> is a <span class="math inline">\(n\)</span> dimensional binary vector <span class="math inline">\((x_1, \dots, x_n)\)</span> such that <span class="math inline">\(\mathbb{P}[X_i = 1] = \alpha\)</span>, where <span class="math inline">\(\alpha = \frac{1}{\epsilon\sqrt{n}}\)</span>. <strong>All the magic is encoded in the way we pick this <span class="math inline">\(\alpha\)</span></strong>.</p>
+<p>By the chernoff bound <span class="math inline">\(\mathbb{P}[\sum_{i=1}^n X_i \leq (1 - \gamma)n\alpha] \leq e^{-\frac{\alpha n\gamma^2}{2}}\)</span> as <span class="math inline">\(n\alpha\)</span> is the expected value of the sum of <span class="math inline">\(Bernoulli(\alpha)\)</span>. Plugging in the value of <span class="math inline">\(\gamma=1/2\)</span> and <span class="math inline">\(\alpha\)</span>, we get</p>
+<p><span class="math display">\[\mathbb{P}_{X \sim A}[\sum_{i=1}^n X_i \leq \frac{\sqrt{n}}{2\epsilon}] \leq e^{-\frac{\sqrt{n}}{8\epsilon}}\]</span></p>
+<p>The above statement is saying that the likelihood of seeing less than <span class="math inline">\(O(\sqrt{n})\)</span> 1’s in a vector sampled from <span class="math inline">\(A\)</span> is extremely low, thereby the sum of this vector will be greater than <span class="math inline">\(O(\sqrt{n})\)</span> with large probability. <strong>[See notes on concentration inequality to see why they had to pick <span class="math inline">\(O(\sqrt{n})\)</span>. For anything that decays quicker, concentration inequalities will go out of the window.]</strong></p>
+<p>Define <span class="math inline">\(\tau = 0.5n\alpha\)</span>. Fix any <span class="math inline">\(\epsilon\)</span>-differentially private, local protocol <span class="math inline">\(\prod\)</span> for computing <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> with <span class="math inline">\(\kappa=0\)</span>. Remember, that in the local model the curator/analyser is assumed to be deterministic. The curator, sees sanitised inputs <span class="math inline">\(c = (S(X_1), \dots, S(X_n))\)</span> which is the overall view of the execution of the protocol. It then applies a deterministic algorithm <span class="math inline">\(G\)</span> to <span class="math inline">\(c\)</span>, where <span class="math inline">\(G(c) \in \{ 0, 1\}\)</span> is the output of the protocol.</p>
+<p>Let <span class="math inline">\(D\)</span> denote the set of input vectors for which the curator answers 1, i.e., <span class="math inline">\(D := \{c=\Big(S(X_1), \dots, S(X_n)\Big) : G(c) = 1\}\)</span>. There are <span class="math inline">\(2^n\)</span> possible input values to the protocol, let <span class="math inline">\(\mathbb{P}[D]\)</span> be the fraction of times <span class="math inline">\(\prod\)</span> answers 1. Fix <span class="math inline">\(p \in [0,1]\)</span>. We look at all possible algorithms by considering the probability of answering 1. The reason the authors can do this is because the curator is deterministic. It can only see a fixed number of views, after that it just says 1 or 0. So all algorithms can be divided into 2 groups: Ones that predict 1 less than <span class="math inline">\(p\)</span> fraction of the time and ones that do not. For each of these cases we show, that all protocols fail to distinguish between <span class="math inline">\(A\)</span> and <span class="math inline">\(0\)</span>.</p>
+<p><strong>Case I:</strong> <span class="math inline">\(\mathbb{P}[D] &lt; p\)</span>. Let E denote the event of the <span class="math inline">\(\prod\)</span> making the following mistake : <span class="math inline">\(\sum_{i=1}^nX_i \geq O(\sqrt{n})\)</span> and the protocol returns 0. The complement <span class="math inline">\(E^c\)</span> of this event is <span class="math inline">\(\sum_{i=1}^nX_i \leq O(\sqrt{n})\)</span> or the protocol returns 1. Formally</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}_{X \sim A}[E^c] &amp;\leq \mathbb{P}[D] + \mathbb{P}[\sum_{i=1}^nX_i \leq O(\sqrt{n})] \\
+&amp;\leq p + 0
+\end{align*}\]</span>
+<p>By the chernoff bound we have already shown that <span class="math inline">\(\mathbb{P}[\sum_{i=1}^nX_i \leq O(\sqrt{n})]\)</span> is so unlikely, it can be ignored as it is almost 0. The <span class="math inline">\(\mathbb{P}_{X \sim A}[E] \geq 1 - p\)</span></p>
+<p><strong>What we have shown is that, all algorithm returns 0 most of the times [(1 - p) fraction of the time], if we sent the algorithm inputs from <span class="math inline">\(A\)</span> it would make mistakes with constant probability.</strong> NOTE: The reason we really needed <span class="math inline">\(O(\sqrt{n})\)</span> was to kill the Chernoff bound to 0. A sharper error rate would not have killed it off, and therefore we would not get the constant probability bound we get.</p>
+<p>What about algorithms that mostly say 1. We now show those algorithms will also make an error with constant probability because they output zero vector inputs as 1 with constant probability. To be able to show this, we need to use some lemmas which have to do with the privacy requirements. <strong>NOTE:so far we have only used Chernoff-Hoeffding bounds – nothing about the privacy of algorithms have been utilised.</strong> The proof for the lemmas is provided below the main proof.</p>
+<h3 id="definitions">Definitions</h3>
+<p>Define the curators view as <span class="math inline">\(View_{C}(X) = \Big( S(X_1), \dots, S(X_n)\Big) = c\)</span> where <span class="math inline">\(S\)</span> is the local sanitiser for each user which guarantees privacy.</p>
+<p>Define <span class="math inline">\(r(c)\)</span> as</p>
+<p><span class="math display">\[r(c) := \frac{\mathbb{P}_{X \sim A}\Big[View_C(X) = c\Big]}{\mathbb{P}[View_C(0) = c]}\]</span></p>
+<p>In the local model, each user is independent of one another, so</p>
+<span class="math display">\[\begin{align*}
+r(c) &amp;= \prod_{i=1}^n \frac{\mathbb{P}_{X \sim A}\Big[S(X_i) = c_i\Big]}{\mathbb{P}[S(0) = c_i]} \\
+&amp;= \prod_{i=1}^n r_i(c_i) \\
+\log r(c)&amp;= \sum_{i=1}^n V_i
+\end{align*}\]</span>
+<h3 id="lemma-1">Lemma 1</h3>
+<p><strong>Lemma 1 follows from the defintion of DP and Taylors theorem</strong></p>
+<p>For every <span class="math inline">\(0 &lt; \epsilon \leq 1\)</span>, and <span class="math inline">\(\forall i\)</span>, we have with probaility 1,</p>
+<p><span class="math display">\[ 1 - 2\alpha\epsilon \leq r(c_i) \leq 1 + 4\alpha\epsilon \]</span></p>
+<p><span class="math display">\[ 4\alpha\epsilon \leq V_i \leq 4\alpha\epsilon \]</span></p>
+<p>where <span class="math inline">\(r(c_i)\)</span> and <span class="math inline">\(V_i\)</span> are as defined previously</p>
+<h3 id="lemma-2">Lemma 2</h3>
+<p><strong>Lemma 2 follows from Lemma 1</strong></p>
+<p>For every <span class="math inline">\(0 &lt; \epsilon \leq 1\)</span>, and <span class="math inline">\(\forall i\)</span></p>
+<p><span class="math display">\[\mathbb{E}[V_i] \leq 32\alpha^2\epsilon^2\]</span></p>
+<h3 id="lemma-3">Lemma 3</h3>
+<p><strong>Lemma 3 follows from Lemma 1, Lemma 2 and Hoeffding inequality. And Lemma 1 follows from the privacy.</strong> We show this below the main proof.</p>
+<p>Let <span class="math inline">\(p_{A}(c) = \mathbb{P}_{X \sim A}[(S(X_1) \dots, S(X_n) = c)]\)</span> and Let <span class="math inline">\(p_{0}(c) = \mathbb{P}[(S(0) \dots, S(0) = c)]\)</span></p>
+<p>For <span class="math inline">\(v &gt; 32\)</span>, With probability <span class="math inline">\(1 - e^{-\frac{(v - 32)^2}{32}}\)</span>, the curator/analayser’s output satisfies</p>
+<p><span class="math display">\[\frac{p_{A}(c)}{p_{0}(c)} \leq e^{v}\]</span></p>
+<p><strong>NOTE:</strong> in the original paper, this bound and <span class="math inline">\(\alpha\)</span> above have variable <span class="math inline">\(d\)</span> inside it. It only really matters for interactive protocols where there are multiple rounds of communication. Since I am interested only in a single round local protocol, this <span class="math inline">\(d\)</span> does not matter and I set it to 1. Playing with this value fo <span class="math inline">\(d\)</span>, one can reduce or increase the constant probability of error in case II.</p>
+<p>We now have all the tools to prove that all protocols belonging to case II, still err with constant probability that does not shrink as <span class="math inline">\(n\)</span> grows.</p>
+<p>Case II: <span class="math inline">\(\mathbb{P}[D] \geq p\)</span></p>
+<p>We are looking the probaility of outputting 1, for the <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> problem with <span class="math inline">\(\kappa=0\)</span> when the input is all 0s. By definition this is an error. We want to show the probability of this error bounded away from 0.</p>
+<p>From lemma 2, we have a high probability bound. If you refer to our <a href="../Definitions/">Definitions</a> writeup for differential privacy we show the equivalence of writing concentration inequalities as inequalities. So one can re-write lemma 2 as</p>
+<span class="math display">\[\begin{align*}
+e^{v}p_{0}(G(c) \in D) + e^{-\frac{(v - 32)^2}{32}} &amp;\geq p_{A}(G(c) \in D) \\ 
+&amp;= \frac{p_{A}(G(c) \in D)}{e^{v}} - e^{-\frac{(v - 32)^2}{32}}
+\end{align*}\]</span>
+<p>We are done! The probability is bounded away from 0. So far we have only shown that it is impossible to compute GAP-TR with a gap smaller than <span class="math inline">\(O(\sqrt{n})\)</span> which was step 2 of the main proof. We still have to show step 1 and prove the two lemmas above.</p>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#step1">
+Proof for Step 1 of main proof
+</button>
+<div id="step1" class="collapse">
+<h3 id="theorem">Theorem</h3>
+<p>If there exists an <span class="math inline">\(\epsilon\)</span>-differentially private local model that approximates the sum of <span class="math inline">\(n\)</span> binary values upto error <span class="math inline">\(\tau/2\)</span> with probability <span class="math inline">\(1 - \gamma\)</span> by sending <span class="math inline">\(\rho\)</span> messages then <span class="math inline">\(\forall \kappa\)</span>, there exists a <span class="math inline">\(\epsilon\)</span>-differentially private local model that approximates <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> with probability at <span class="math inline">\(1 - \gamma\)</span> by sending at most <span class="math inline">\(\rho\)</span> messages.</p>
+<p><strong>Proof</strong>:</p>
+<p>The proof is relatively simple. Since it’s an existence proof we have to only come up one approximation of <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> for any <span class="math inline">\(\hat{f(X)}\)</span> approximation of the sum.</p>
+<p>Let <span class="math inline">\(\hat{f(X)}\)</span> be the approximation of a sum of <span class="math inline">\(n\)</span> binary values. Define <span class="math inline">\(\hat{g(X)}\)</span> to be 0 if <span class="math inline">\(\hat{f(X)} \leq \kappa + \tau/2\)</span> and 1 otherwise. Let <span class="math inline">\(g(X)\)</span> and <span class="math inline">\(f(X)\)</span> be the true values of <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> and <span class="math inline">\(sum\)</span> respectively.</p>
+<p>We are given that $| f(X) - | tau/2 $ with probability less than <span class="math inline">\(\gamma\)</span></p>
+<p>It is easy to show <span class="math inline">\(\hat{g(X)}\)</span> approximates <span class="math inline">\(GAP-TR_{\kappa, \tau}\)</span> with <span class="math inline">\(\tau/2\)</span> error with probability <span class="math inline">\(1-\gamma\)</span>. <strong>Assume it does not</strong></p>
+<p>Consider the error event <span class="math inline">\(\hat{g(X)} = 0\)</span> and <span class="math inline">\(g(X)=1\)</span>, by our assumption this event happens with probability greater than <span class="math inline">\(\gamma\)</span>.</p>
+<p>If <span class="math inline">\(\hat{g(X)} = 0\)</span>, then <span class="math inline">\(\hat{f(X)} \leq \kappa + \tau/2\)</span> and if <span class="math inline">\(g(X) =1\)</span>, then <span class="math inline">\(f(x) \geq \kappa + \tau\)</span></p>
+<p>We take the smallest value for <span class="math inline">\(f(X)\)</span> and the largest value for <span class="math inline">\(\hat{f(X)}\)</span> and get</p>
+<span class="math display">\[\begin{align*}
+| f(X) - \hat{f(X)}| &amp;\geq | \kappa + \tau - kappa -\tau/2 |
+&amp;= \tau/2
+\end{align*}\]</span>
+<p>By our assumptions the above event happens with probability greater than <span class="math inline">\(\gamma\)</span>. However by problem statement we had $| f(X) - | tau/2 $ with probability less than <span class="math inline">\(\gamma\)</span> so we have reached a contradiction. Our assumption was false.</p>
+<p><strong>The main proof uses the contrapositive of the above theorem – where we show that all local private protocol for approximating gap threshold upto <span class="math inline">\(\sqrt{n}\)</span> error fails with contant probaility, thus the same can be said about sum</strong>.</p>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#lemma1">
+Lemma 1
+</button>
+<div id="lemma1" class="collapse">
+<span class="math display">\[\begin{align*}
+r_i(c_i) &amp;= \frac{\mathbb{P}_{X \sim A}\Big[S_i(X_i) = c_i\Big]}{\mathbb{P}[S_i(0) = c]} \\
+&amp;= \frac{\alpha\mathbb{P}[S_i(1) = c_i] + (1-\alpha)\mathbb{P}[S_i(0) = c_i]}{\mathbb{P}[S_i(0) = c]} \tag{1}\label{1}\\
+&amp;= 1 + \alpha\Big(\frac{\mathbb{P}[S_i(1) = c_i]}{\mathbb{P}[S_i(0) = c_i]} - 1\Big)
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{1}:\)</span> By defintion of distribution <span class="math inline">\(X \sim A\)</span></p>
+<p><strong>From the defintion of local privacy</strong>, we have</p>
+<p><span class="math display">\[e^{-2\epsilon} \leq \frac{\mathbb{P}[S_i(1) = c_i]}{\mathbb{P}[S_i(0) = c_i]} \leq e^{2\epsilon}\]</span></p>
+<p>Subtracting 1 from both sides, Multiplying both sides by <span class="math inline">\(\alpha\)</span> and adding +1</p>
+<p><span class="math display">\[1 + \alpha(e^{-2\epsilon} - 1) \leq 1 + \alpha \Big(\frac{\mathbb{P}[S_i(1) = c_i]}{\mathbb{P}[S_i(0) = c_i]} - 1\Big)   \leq 1 + \alpha(e^{2\epsilon} - 1)\]</span></p>
+<p>Taylors expansion for <span class="math inline">\(e^x\)</span> gives us:</p>
+<p><span class="math inline">\(e^2x &lt; 1 + 4x\)</span> and <span class="math inline">\(1 - e^{-2x} &lt; 2x\)</span> for <span class="math inline">\(0 &lt; x \leq 1\)</span>, thus we get the first inequality.</p>
+<p>Using <span class="math inline">\(\log(1+x) \leq x\)</span> and <span class="math inline">\(\log(1-x) \geq -2x\)</span> for <span class="math inline">\(0 &lt; x \leq 0.5\)</span> we get the second inequality</p>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#lemma2">
+Lemma 2
+</button>
+<div id="lemma2" class="collapse">
+<p>This proof assumes that each sanitizer <span class="math inline">\(S_i\)</span>’s’ output is in a countable set. <strong>NOTE: This assumption is not broken in local privacy as the number of messages per user is bounded. As the inputs are only 1 or 0, the set of possible outputs has to be countable. If you were to unbound this by sending infinite messages per input– you are no longer in the local protocol of restricted communication.</strong></p>
+<p>Let <span class="math inline">\(B_{b} := \{ c_i : r_i(c_i) = 1 + b\}\)</span> for <span class="math inline">\(-2\alpha\epsilon \leq b \leq 4\alpha\epsilon\)</span>. Lemma 1 implies there are no other possible values for b.</p>
+<span class="math display">\[\begin{align*}
+\frac{\mathbb{P}[S(X_i) = c_i]}{\mathbb{P}[S(0) = c_i]}  &amp;= r_i(c_i) \\
+&amp;= 1 + b \\
+\mathbb{P}[S(0) \in B_b]  &amp;= \frac{\mathbb{P}[S(X_i) \in B_b]}{1+b} \\
+&amp;\leq (1 - b +2b^2)\mathbb{P}[S(X_i) \in B_b] \label{5}\tag{1}\\
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{5}:\)</span> By Taylors theorem of <span class="math inline">\((1 + x)^-1\)</span> or the geometric series <span class="math inline">\(\frac{1}{1-x}\)</span>, where you plug in x as -x.</p>
+<p>Let <span class="math inline">\(\beta=2\alpha\epsilon\)</span></p>
+<span class="math display">\[\begin{align*}
+\mathbb{E}[V_i] &amp;= \mathbb{E}_{A}[\log r_i(c_i)] \\
+&amp;= \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] \log( 1 + b) \\
+&amp;\leq \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] b \label{6}\tag{2}\\
+&amp;=  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] (1 + 2b^2) -  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] (1 -b +2b^2) \\
+&amp;\leq (1 + 2(2\beta)^2)\sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b]  -  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b] (1 -b +2b^2) \\
+&amp;\leq (1 + 2(2\beta)^2)\sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(X_i) \in B_b]  -  \sum+_{-\beta \leq b \leq 2\beta} \mathbb{P}[S(0) \in B_b] \label{7}\tag{3}\\
+&amp;=  (1 + 8\beta^2)\mathbb{P}[S(X_i) \in \cup_{b}B_b] - \mathbb{P}[S(0) \in \cup_{b}B_b] \\
+&amp;\leq (1 + 8\beta^2).1 - 1 \\
+&amp;= 32(\alpha\epsilon)^2
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{6}: \log(1+x) \leq x\)</span></p>
+<p><span class="math inline">\(\ref{7}:\)</span> By <span class="math inline">\(\ref{5}\)</span></p>
+</div>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#lemma3">
+Lemma 3
+</button>
+<div id="lemma3" class="collapse">
+<span class="math display">\[\begin{align*}
+\mathbb{P}_{A}[r(C) &gt; e^v] &amp;= \mathbb{P}_{A}[\sum_{i=1}^n V_i &gt; v] \label{2}\tag{1}\\
+&amp;= \mathbb{P}_{A}\Big[\sum_{i=1}^n V_i - \sum_{i=1}^n \mathbb{E}[V_i]&gt; v - \sum_{i=1}^n \mathbb{E}[V_i]\Big] \\
+&amp;\leq \mathbb{P}_{A}\Big[\sum_{i=1}^n V_i - \sum_{i=1}^n \mathbb{E}[V_i]&gt; v - 32\alpha^2\epsilon^2\Big] \tag{2} \label{3}\\
+&amp;\leq exp\Big\{ -\frac{2(v - n32\alpha^2\epsilon^2)^2}{64n\alpha^2\epsilon^2} \Big\} \tag{3} \label{4} \\
+&amp;= exp\Big\{ -\frac{(v - 32)^2}{32} \Big\}
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{2}:\)</span> Taking log on both sides and using defintions</p>
+<p><span class="math inline">\(\ref{3}:\)</span> Lemma 2</p>
+<p><span class="math inline">\(\ref{4}:\)</span> Hoeffding on bounded variables, from Lemma 2, we get <span class="math inline">\(V_i\)</span> is upper and lower bounded. Plug and play</p>
+</div>
+</div>
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>

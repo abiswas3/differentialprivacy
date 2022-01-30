@@ -32,12 +32,11 @@
 <div class="container">
 
 <h1 id="distributed-population-mean-estimation">Distributed Population mean estimation</h1>
-<p>Not to be confused with mean estimation of a statistical distribution. Those papers are similar but the end goal is different and so are the guarantees.</p>
+<p><strong>Disclaimer for self:</strong> Not to be confused with parameter (mean) estimation of a finite population drawm from an unknown statistical distribution. Although similar techniques are used, the guarantees are very different.</p>
 <h2 id="summary-of-the-state-of-affairs">Summary of the state of affairs</h2>
-<p><span class="math inline">\(N\)</span> users have values <span class="math inline">\(x_i \in \{0,1\}\)</span>, where <span class="math inline">\(i=\{1, 2, \dots, N\}\)</span> For now we focus on binary values, later we will extend to integers. The goal is to approximate the the mean/sum of the population privately, without each user sending their values to some central aggregator. The problem was first considered by [<a href="https://arxiv.org/pdf/1811.12469.pdf" title="Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity">5</a>]. They stated it as – <code>What can we say about central DP guarantees of a protocol that satisfies</code><span class="math inline">\(\epsilon\)</span>-local DP? Since then, there have been two approaches to this problem – additive noise mechanism (think laplace) and sampling based mechanisms (randomised response).</p>
-<p>This makes sense as we are looking at local privacy from a central perspective. So we considered the most basic central model and moved it to the a local setting or considered the most basic local model and moved it to understand a central setting.</p>
+<p><span class="math inline">\(N\)</span> users have values <span class="math inline">\(x_i \in \{0,1\}\)</span>, where <span class="math inline">\(i=\{1, 2, \dots, N\}\)</span>. We focus on binary values, later we will extend to integers or bounded reals. The goal is to approximate the the mean/sum of the population privately, without each user sending their values to some central aggregator. The problem was first considered by [<a href="https://arxiv.org/pdf/1811.12469.pdf" title="Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity">5</a>]. They stated it as – <code>What can we say about central DP guarantees of a protocol that satisfies</code><span class="math inline">\(\epsilon\)</span>-local DP? In the original paper, they show that by looking at Randomised Response from a central perspective the error could be drastically be redeuced. Since then, there have been a series of papers on this topic but they can all be described by one of two approaches – additive noise mechanism (the aggregator adds noise from some distribution and outputs statistics) and sampling based mechanisms (mulitplicative noise - the analyser supresses some values completely and replaces them with random noise while revealing a subset only). The figure below illustrates the general idea</p>
 <p><img src="./pngs/mechanisms.jpeg" width="80%"></img></p>
-<p>The noise distributions for additive mechanisms tend to be infinitely divisible distributions. This allows us to locally perturb the private values while still doing the analysis from a central perspective. The table below summarises the important contributions to the problem of population mean estimation.</p>
+<p>To make this ordeal distributed, the noise distributions for additive mechanisms tend to be infinitely divisible distributions. This allows us to locally perturb the private values while still doing the analysis from a central perspective. The table below summarises the important contributions to the problem of population mean estimation.</p>
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -71,7 +70,7 @@ Authors
 <span style="font-weight:400;font-style:normal">Any permutation invariant algorithm satisfying <span class="math inline">\(\epsilon\)</span>-local differential privacy will satisfy <span class="math inline">\((O(\frac{\epsilon}{\sqrt{n}}\sqrt{log1/δ}), δ)\)</span>-central differential privacy. Or more simply by using lazy notation, <span class="math inline">\(\epsilon = O_{\epsilon, \delta}(\frac{1}{\sqrt{n}})\)</span></span>
 </td>
 <td class="tg-0lax">
-<span style="font-weight:400;font-style:normal">Thirtieth Annual ACM-SIAM Symposium on Discrete Algorithms (2019)</span>
+<span style="font-weight:400;font-style:normal">Thirtieth Annual ACM-SIAM Symposium on Discrete Algorithms (2019) [<a href="https://arxiv.org/pdf/1811.12469.pdf" title="Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity">8</a>]</span>
 </td>
 <td class="tg-0lax">
 <span style="font-weight:400;font-style:normal">Erlingsson, Ulfar and Feldman, Vitaly and Mironov, Ilya and Raghunathan, Ananth and Talwar, Kunal and Thakurta, Abhradeep</span>
@@ -82,12 +81,13 @@ Authors
 </td>
 <td class="tg-0lax">
 <ul>
-<li><p>Amplification bound generalizes the results by Erlingsson et al. to a wider range of parameters, and provides a whole family of methods to analyze privacy amplification in the shuffle model.</p></li>
-<li><p>A new lower bound for the accuracy of private protocols for summation of real numbers in the shuffle model. There are lot of fancy constants but the asymptotic complexity for the lower bound is still <span class="math inline">\(O_{\epsilon, \delta}(\frac{1}{\sqrt{n}})\)</span>, which</p></li>
-<li>Provide an optimal single message protocol for summation of real numbers in the shuffle model. This is based on randomised response as well
+<li>Amplification bound generalizes the results by Erlingsson et al. to a wider range of parameters, and provides a whole family of methods to analyze privacy amplification in the shuffle model.</li>
+<li>A new lower bound for the accuracy of private protocols for summation of real numbers in the shuffle model. There are lot of fancy constants but the asymptotic complexity for the lower bound is still <span class="math inline">\(O_{\epsilon, \delta}(\frac{1}{\sqrt{n}})\)</span>, which</li>
+<li>Provide an optimal single message protocol for summation of real numbers in the shuffle model. This is based on randomised response as well</li>
+</ul>
 </td>
 <td class="tg-0lax">
-<span style="font-weight:400;font-style:normal">Annual International Cryptology Conference (2019)</span>
+<span style="font-weight:400;font-style:normal">Annual International Cryptology Conference (2019) [<a href="https://arxiv.org/pdf/1903.02837.pdf" title="The privacy blanket of the shuffle model">2</a>]</span>
 </td>
 <td class="tg-0lax">
 <span style="font-weight:400;font-style:normal">Balle, Borja and Bell, James and Gasc{'o}n, Adria and Nissim, Kobbi</span>
@@ -97,10 +97,10 @@ Authors
 <td class="tg-0lax">
 </td>
 <td class="tg-0lax">
-Distributed mean estimation using randomised response- more of the same of the above two really. This analysis was for integers and binary values. The above paper is an improvement on this
+Distributed mean estimation using randomised response- more of the same of the above two really. This analysis was for integers and binary values. The above paper is an improvement on this. <a href="../CheuShuffleRR/">My writeup</a>
 </td>
 <td class="tg-0lax">
-<span style="font-weight:400;font-style:normal">Annual International Conference on the Theory and Applications of Cryptographic Techniques (2019)</span>
+<span style="font-weight:400;font-style:normal">Annual International Conference on the Theory and Applications of Cryptographic Techniques (2019) [<a href="https://arxiv.org/pdf/1811.12469.pdf" title="Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity">5</a>]</span>
 </td>
 <td class="tg-0lax">
 <span style="font-weight:400;font-style:normal">Cheu, Albert and Smith, Adam and Ullman, Jonathan and Zeber, David and Zhilyaev, Maxim</span>
@@ -110,10 +110,13 @@ Distributed mean estimation using randomised response- more of the same of the a
 <td class="tg-0lax">
 </td>
 <td class="tg-0lax">
-Distributed mean estimation using binomial noise
+<ul>
+<li>Develop a protocol protocol that estimates histograms with error independent of the domain size. This implies an arbitrarily large gap in sample complexity between the shuffled and local models when considering <span class="math inline">\((\epsilon, \delta)\)</span> privacy. Most of the heavy lifting for this protocol was done here [<a href="https://arxiv.org/abs/1908.11358" title="On the Power of Multiple Anonymous Messages">7</a>] by the Google group.</li>
+<li>If we want pure privacy from a single message, shuffle privacy and local privacy are equivalent <a href="../ShufflePrivacy/">My writeup</a></li>
+</ul>
 </td>
 <td class="tg-0lax">
-<span style="font-style:normal">Information-Theoretic Cryptography, </span><br><span style="font-style:normal">ITC 2020</span>
+<span style="font-style:normal">Information-Theoretic Cryptography, </span><br><span style="font-style:normal">ITC 2020 [<a href="https://privacytools.seas.harvard.edu/publications/separating-local-shuffled-differential-privacy-histograms" title="Seperating Local and Shuffle privacy via histograms">6</a>]</span>
 </td>
 <td class="tg-0lax">
 <span style="font-weight:400;font-style:normal">Balcer, Victor and Cheu, Alber</span>
@@ -123,10 +126,17 @@ Distributed mean estimation using binomial noise
 <td class="tg-0lax">
 </td>
 <td class="tg-0lax">
-Distributed mean estimation using correlated noise - binary population<br>
+<ul>
+<li>Really a generalisation of the their previous paper [<a href="https://arxiv.org/abs/1908.11358" title="On the Power of Multiple Anonymous Messages">7</a>]. They extend that by finding infinitely divisible distributions that area also smooth.</li>
+<li>A second contribution is the correlated noise mechanism that allows them to re-produce the discrete laplace mechanism in the distributed setting.
+<div class="intuition">
+In practice this doesn’t make that much of a difference. Borja has a paper that already shows the Gaussian mechanism is not that far off the laplace mechanism. The Binomial is the discrete cousin of the Gaussian. Adding Binomial noise is simpler.</li>
+</ul>
+<p><a href="../ShuffleSumBinaryRasmus">My writeup</a></p>
+</div>
 </td>
 <td class="tg-0lax">
-ICML 2020
+ICML 2020 [<a href="https://arxiv.org/abs/2106.04247" title="Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead">9</a>]
 </td>
 <td class="tg-0lax">
 <span style="font-weight:400;font-style:normal">B Ghazi, R Kumar, P Manurangsi, R Pagh</span>
@@ -136,7 +146,7 @@ ICML 2020
 <td class="tg-0lax">
 </td>
 <td class="tg-0lax">
-Distributed mean estimation using correlated noise - integer valued population.
+Extend the above method for summing bounded integers to get central privacy error rates for shuffled privacy. <strong>I have not read the proofs in detail yet</strong>
 </td>
 <td class="tg-0lax">
 ICML 2021
@@ -146,24 +156,25 @@ ICML 2021
 </td>
 </tr>
 </tbody>
-</table></li>
-</ul>
-<p>Not mentioned in above table but of relevance in Sample and Threshold mechanism proposed by Graham.</p>
-<h2 id="questions">Questions</h2>
-<h4 id="these-questions-were-posed-on-21-08-2021">These questions were posed on 21-08-2021</h4>
+</table>
+<p><br> <strong>Not mentioned in above table but of relevance is Sample and Threshold mechanism proposed by Graham.</strong></p>
+<h2 id="questionsopen-problems">Questions/Open Problems</h2>
+<p>Graham and I have been working on understanding how multiplicative noise and additive noise are related over the last few months. In the next few sections, we summarise some of the open problems in this area.</p>
+<h4 id="section">21-08-2021</h4>
 <pre><code>I had in mind the algorithm that outputs the mean of the sampled items, without censoring.  However, I think some bounds need to be placed on the size of the items being reported.  Otherwise, we have the &#39;billionaire&#39;s problem&#39;: looking at the mean reveals whether or not there was a billioniaire in the sample, which in turn reveals whether or not they were in the input.</code></pre>
 This was posed initially when we were discussing the sample and threshold problem. The question was, whether there was a way to use this mechanism to report sums and means of populations instead of reporting succint histograms of the population. I was able to show that reporting the sum of the histogram/mean is DP but this is not very satisfying, as by creating a histogram we have created buckets and brought in rounding error.
 <div class="intuition">
 <strong>TODO: </strong> How did Ghazi et al 2021 ICML paper get around this problem for non binary valued integers? I cannot remember at the top of my head
 </div>
-<h4 id="these-questions-were-posed-on-23-11-2021.">These questions were posed on 23-11-2021.</h4>
+<h4 id="section-1">23-11-2021</h4>
 <pre><code>Among all these options, are there any strict dominances, i.e., is there any method that has an asymptotically better guarantee than another across all epsilon and n choices?  I think probably not, but not sure yet.</code></pre>
 <pre><code>Otherwise, how best can we compare these?  Maybe plotting the shape of the distributions for a few different settings will help to compare them better. </code></pre>
 <pre><code>Can we characterize which parameter regimes work best for each method (dense/sparse data, high/low populations size, epsilon value etc.)?</code></pre>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#comparingAlgs">
 How to compare additive mechanisms with multiplicative mechanisms - new conjectures
 </button>
-<div id="comparingAlgs" class="collapse">
+<div class=collapse id=comparingAlgs>
+
 <p><strong>Last update: 30-01-2022</strong></p>
 <p>All these methods work by flipping a coin with probability of heads <span class="math inline">\(p\)</span>, <span class="math inline">\(n\)</span> times. The exact value of <span class="math inline">\(p\)</span> is given by <span class="math inline">\((\epsilon, \delta)\)</span>. Let’s ignore <span class="math inline">\((\epsilon, \delta)\)</span> and fix <span class="math inline">\(p\)</span> and see how they compare. We expect additive noise mechanisms to have best accuracy, followed by sampling and randomised response to have the worst accuracy. Intuition provided below:</p>
 <h4 id="inutuition-as-to-why">Inutuition as to why</h4>
@@ -177,13 +188,25 @@ How to compare additive mechanisms with multiplicative mechanisms - new conjectu
 <h4 id="a-little-experiment-to-verify-this-conjecture">A little experiment to verify this conjecture</h4>
 <p>Before trying to formally develop theory for this intuition, we ran some experiments to verify if our conjecture was true.</p>
 <p>Let <span class="math inline">\(n\)</span> be the number of users. Let <span class="math inline">\(k=\sum_{i=1}^n x_i\)</span>, the number of users that voted yes. Define error as <span class="math inline">\(|k - f(X)|\)</span> where <span class="math inline">\(f(X)\)</span> is the estimated number of yes votes by the algorithm. Ignore <span class="math inline">\((\epsilon, \delta)\)</span> for now and just focus on a fixed <span class="math inline">\(p\)</span>.</p>
+<p><strong>NOTE: </strong> <span class="math inline">\(n\)</span> is too small for additive mechanisms to provide privacy here.</p>
+<embed type="text/html" src="./Comparison.html" width="800" height="600">
 <p>We find that Randomised Response is always worse than the other methods, but as expected Additive noise works better when the data is sparse i.e. fraction of people that say yes is low. Sampling on the other hand does better when this fraction is higher. Too see why, refer to the document below where we derive the variance of the sampling estimator.</p>
+<p><strong>IMPORATANT:</strong> This would also imply that for any given <span class="math inline">\((\epsilon, \delta)\)</span> and <span class="math inline">\(n\)</span> it would be easiest to satisfy privacy with Randomise Response, then shuffle privacy and then additive noise. This is exactly what we found when analysing the <span class="math inline">\((\epsilon, \delta)\)</span> relationships with <span class="math inline">\(p\)</span>. We have already discussed that additive mechanisms need a very large value for <span class="math inline">\(n\)</span> before they can give us privacy. Randomised Response does not have any requirements for <span class="math inline">\(n\)</span> as it is a locally private algorithm. Sampling does not place restriction on <span class="math inline">\(n\)</span> but puts restrictions on the value of <span class="math inline">\(k\)</span>. To be useful, it states a lower bound on <span class="math inline">\(k\)</span>.</p>
 </div>
-<pre><code>Are there any approaches that are analytically or empirically the same (we tried to argue that binomial noise addition was equivalent to sampling, but this dod not go through). </code></pre>
-<p>This is still unresolved but I have a new idea using arithmetic circuits, that I would like to discuss <br></p>
+<p><br></p>
+<pre><code>Are there any approaches that are analytically or empirically the same (we tried to argue that binomial noise addition was equivalent to sampling, but this dod not go through). 
+
+</code></pre>
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#multAddConnection">
+New Results: Connecting Additive and Multiplicative
+</button>
+<div id="multAddConnection" class="collapse">
+<p>Our previous attempt failed as <strong>OR</strong> is not the same is as <strong>Addition</strong> but i found a new way to connect them.</p>
+</div>
+<p><br></p>
 <pre><code>Can we make single proof of a general result that holds for distributions with some property, and then specialize it for each of these different approaches?  Or is that already done in the prior work?</code></pre>
-<p>The paper power of multiple anonymous messages does this for all additive methods. They define smooth distributions or distributions with a certain hockey stick divergence. Then they show that the central additive mehcanism is good for all such distributions. For the distributed case, if your distribution is infinitely divisible, you win. If we can connect multiplicative noise distributions to these distributions it would give us a general proof under their framework. We can also try to come up with something new. <br></p>
-<h4 id="these-questions-were-posed-on-07-12-2021">These questions were posed on 07-12-2021</h4>
+<p>The paper power of multiple anonymous messages does this for all additive methods. They define smooth distributions or distributions with a certain hockey stick divergence. Then they show that the central additive mehcanism is good for all such distributions. For the distributed case, if your distribution is infinitely divisible, you win. If we can connect multiplicative noise distributions to these distributions it would give us a general proof under their framework. We can also try to come up with something new. <strong>I am optimistic there is a better and cleaner proof</strong>. <br></p>
+<h4 id="section-2">07-12-2021</h4>
 <p>I had sent a pdf writing out explicitly the variance and mean of the sampling estimator based on binomial coefficients.</p>
 <pre><code>Ari: Assuming communication complexity is not an issue and we can talk to all n people, then when n is large, additive noise mechanisms 
 usually always win. This makes sense to me, I’ve added my reasoning in the writeup.
@@ -202,8 +225,10 @@ I can see why the connection between additive noise and sampling is so tempting;
  could reduce communication complexity by  m + O(sqrt(m)).
 
 Graham: This is an intersting niche.</code></pre>
-<pre><code>Additional remarks:
-Thanks for the notes.  The calculations look correct, based on binonial distribution.  I expect there is some nice statistical tricks to manipulate the pmf further.  Do you think there is any chance for a closed form for the variance, or is it best to leave it to numerical evaluation?
+<p><strong>A lot of these questions are answered in the previous section</strong>.</p>
+<h3 id="additional-remarks">Additional remarks</h3>
+<p>I wrote a <a href="./Variance_of_Sampling.pdf">short note</a> to derive the variance of sampling estimator. <strong>TODO</strong> The final form is quite ugly- full of sums of binomial coefficients, I have to still upper bound in standard form still.</p>
+<pre><code>Thanks for the notes.  The calculations look correct, based on binonial distribution.  I expect there is some nice statistical tricks to manipulate the pmf further.  Do you think there is any chance for a closed form for the variance, or is it best to leave it to numerical evaluation?
 
 Reducing the communication in this way is essentially being able to suppress messages in the noise setting, i.e., having noise that leads us to output zero most of the time.  This may not be possible without effectively including sampling in the method, and incurring the corresponding error from sampling.</code></pre>
 <h2 id="references-and-links-exchanged">References and Links exchanged</h2>
@@ -219,8 +244,21 @@ Reducing the communication in this way is essentially being able to suppress mes
 <ol start="4" type="1">
 <li><a href="https://mathoverflow.net/questions/213221/what-is-a-two-sided-geometric-distribution">Distinction between one sided and 2 sided Geometric distributions</a></li>
 </ol>
-<p>[Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity](https://arxiv.org/pdf/1811.12469.pdf “Amplification by Shuffling:)</p>
-<p><a href="https://privacytools.seas.harvard.edu/publications/separating-local-shuffled-differential-privacy-histograms">Seperating Local and Shuffle privacy via histograms</a></p>
+<ol start="5" type="1">
+<li><a href="https://arxiv.org/pdf/1811.12469.pdf">Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity</a></li>
+</ol>
+<ol start="6" type="1">
+<li><a href="https://privacytools.seas.harvard.edu/publications/separating-local-shuffled-differential-privacy-histograms">Seperating Local and Shuffle privacy via histograms</a></li>
+</ol>
+<ol start="7" type="1">
+<li><a href="https://arxiv.org/abs/1908.11358">On the Power of Multiple Anonymous Messages</a></li>
+</ol>
+<ol start="8" type="1">
+<li><a href="https://arxiv.org/pdf/1811.12469.pdf">Amplification by Shuffling: From Local to Central Differential Privacy via Anonymity</a></li>
+</ol>
+<ol start="9" type="1">
+<li><a href="https://arxiv.org/abs/2106.04247">Private Counting from Anonymous Messages: Near-Optimal Accuracy with Vanishing Communication Overhead</a></li>
+</ol>
 <h2 id="links">Links</h2>
 <p>Streaming paper including voting: https://arxiv.org/abs/1603.00213</p>
 <p>Local differential privacy for voting/ranking https://arxiv.org/pdf/1908.04920.pdf (there may be some follow up)</p>

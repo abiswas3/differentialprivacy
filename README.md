@@ -8,5 +8,7 @@ theoretical computer science. These notes reflect my attempts to understand the 
 the directions of research.
 
 * [Statistical Privacy Notes](./DifferentialPrivacyMain)
-* [Secure Multiparty Computation]()
+* [Secure Multiparty Computation/Crypto](./Crypto/)
+* [Conference Notes](./conferences/)
+
 <div class=container>
