@@ -10,5 +10,5 @@ the directions of research.
 * [Statistical Privacy Notes](./DifferentialPrivacyMain)
 * [Secure Multiparty Computation/Crypto](./Crypto/)
 * [Conference Notes](./conferences/)
-
+* [Course Notes](./GraduateSchoolCourses/)
 <div class=container>

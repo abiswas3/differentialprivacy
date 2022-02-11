@@ -1,5 +1,6 @@
 \newcommand{\P}[3]{\mathbb{P}_{#2 \sim #3}\Big[#1\Big]}
 \newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -12,11 +13,6 @@
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 
 <div class="container">
-
-Resources that I found useful:
-
-* [Concentration Measures - Terry Tao](https://terrytao.wordpress.com/2010/01/03/254a-notes-1-concentration-of-measure/)
-* [Central Limit Theorem - Terry Tao](https://terrytao.wordpress.com/2010/01/05/254a-notes-2-the-central-limit-theorem/)
 
 # Concentration Inequalities
 
@@ -187,7 +183,7 @@ Let $B(n,p)$ be the random variable that gives the number of heads in $n$ indepe
 &= \frac{1}{\tau^k}[p\tau + 1 - p]^n  \label{7}\tag{1}\\
 \end{align*}
 
-$\ref{7}: $ Binomial Theorem
+$\ref{7}:$ Binomial Theorem
 
 if we plug $k= (t+p)n$, we go back to $\ref{6}$ of the classical proof and get to the same bound.
 </div>
@@ -257,13 +253,14 @@ Setting $t=\frac{\delta\mu}{n}$ in the original theorem:
 
 ### Weaker but more compact form
 
-TODO 
+## Hoeffdings Lemma
 
-## Hoeffdings Bound
+If $x_i, \dots, x_n$ are i.i.d random variables bounded in $(a, b)$ with mean $\mu$. Let $S_n = \sum_{i=1}^n x_i$, then for every $\lambda \in \R$ we have 
 
-If $x_i, \dots, x_n$ are i.i.d random variables bounded in $(a, b)$ with mean $\mu$, for every $\delta > 0$ we have 
+\begin{align}
+\E[e^{\lambda(S_n - \E[S_n])}] \leq \text{exp}(\frac{\lambda^2\sum_{i=1}^n(b_i - a_i)^2}{8})
+\end{align}
 
-$$\mathbb{P}[|\sum_{i=1}^n x_i - \mu n | \geq (b-a)\sqrt{\frac{n}{2}\log(\frac{2}{\delta})} ] \leq \delta$$
 
 ## Monte Carlo Simulations
 
@@ -292,6 +289,43 @@ TODO
 
 TODO
 
+### Maximal inequalities
+
+Here are some general inequalities about the Max of i.i.d sub-gaussian random variables.
+
+* [Course Notes by Gautam Kamath](http://www.gautamkamath.com/writings/gaussian_max.pdf)
+* [Course Notes by Behrad Moniri](https://bemoniri.github.io/Notes/X4/X4.pdf)
+
+The lemma below is a slight modification of the methods above to get an upper bound for sums of bounded random variables. Bounded random variables are also sub-gaussian [See why here](https://statisticaloddsandends.wordpress.com/2018/10/05/bounded-random-variables-are-sub-gaussian/). This lemma is used to lower bound the accuracy of locally private DP algorithms by [Bassily and Smith](https://arxiv.org/pdf/1504.04686.pdf).
+
+<div class="lemma">
+<h4>Lemma:</h4>
+Let $v_i \in \{1, \dots, d\}$ for $i=1,\dots, n$. Define $X_1, X_2, \dots, X_d$ such that $X_j = 	|\frac{1}{n}\sum_{i=1}^n I[v_i = j]$ and $Y = \text{max}_{1, \dots, d} |X_j - \E[X_j]|$. Then $\E[Y] \leq O(\sqrt{\frac{\ln d}{n}})$
+
+**Proof:**
+Using Hoeffdings lemma we can bound $\E[e^{s (X_j - \E[X_j])}] \leq \text{exp}(\frac{s^2}{8n})$ for any $s \in \R$.
+
+\begin{align*}
+e^{s\E[Y]} &\leq \E[e^{sY}]\tag{a}\label{a1}\\
+&\leq \sum_{i=1}^d \E[e^{sX_i}]\tag{b}\label{a2}\\
+&= d\text{ exp}(\frac{s^2}{8n}) \tag{c}\label{a3}\\
+\E[Y] &\leq \frac{\ln d}{s} + \frac{s}{8n} \tag{d}\label{a4}\\
+\end{align*}
+
+
+$\ref{a1}:$ Using Jensens inequality, as $e^x$ is convex.
+
+$\ref{a2}:$ Union Bound
+
+$\ref{a3}:$ Hoeffdings Lemma
+
+$\ref{a4}:$ Taking log on both sides
+
+If we minimise for s by taking the derivative and settig it to 0, we get, $s = O(\sqrt{n\ln d})$ and plugging it back into the equation, we get
+
+$$\E[Y] \leq O(\sqrt{\frac{\ln d}{n}})$$
+
+</div>	
 # Resources
 
 [1]: https://page.mi.fu-berlin.de/mulzer/pubs/chernoff.wpdf  "Chernoff Bounds and its applications"
@@ -300,5 +334,13 @@ TODO
 [2]: https://math.dartmouth.edu/~m20x18/markov  "Markov and Chebyshev bounds"
 2. [Markov and Chebyshev bounds](https://math.dartmouth.edu/~m20x18/markov)
 
+[3]: https://people.cs.umass.edu/~domke/courses/sml2010/10theory.pdf "Hoeffding bound intuition"
+3. [Hoeffding bound intuition](https://people.cs.umass.edu/~domke/courses/sml2010/10theory.pdf)
+
+[4]: https://terrytao.wordpress.com/2010/01/03/254a-notes-1-concentration-of-measure/ "Concentration Measures - Terry Tao"
+4. [Concentration Measures - Terry Tao](https://terrytao.wordpress.com/2010/01/03/254a-notes-1-concentration-of-measure/)
+
+[5]: https://terrytao.wordpress.com/2010/01/05/254a-notes-2-the-central-limit-theorem/ "Central Limit Theorem - Terry Tao"
+5. [Central Limit Theorem - Terry Tao](https://terrytao.wordpress.com/2010/01/05/254a-notes-2-the-central-limit-theorem/)
 
 </div>

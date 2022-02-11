@@ -242,6 +242,8 @@ This should be enough to show that $H(n) \sim \ln n$ but to be fully formal we d
 
 A good taylors series recap can be found [here]()
 
+**TODO from Asymptotia: Some theorems about Taylors series**
+
 <div class="important">
 This approximation shows up in papers all the time.
 
@@ -269,9 +271,98 @@ From above analysis both $1 +\ln n$ and $\ln (n+1)$ are equivalent to $\ln n$ bu
 
 ### Inverting Functions
 
-## Birthday Pardox Problem 
+Consider a relation such as $y = x \ln x$ for $x \geq 1$. This is an increasing function of $x$ and so there is a unique inverse function $x = f(y)$ for $y \geq 0$. However, there is no compact way to write $f(y)$ precisely. However, if we were to consider only the asymptotic behaviour of these functions -- this problem disappears.
 
-This is a concerete example of how using asympotics helps us understand complicated functions and it will lead us to more tricks to bound factorials and binomial coefficients which show up in all kinds of counting problems.
+For very large $x$ and $y$,
+
+\begin{align}
+\ln y &= \ln(x) + \ln \ln(x)
+\end{align}
+
+As $\ln \ln(x)$ is grows really slowly, we can say 
+
+\begin{align}
+x &= \frac{y}{\ln(x)} 
+&\sim \frac{y}{\ln(y)} 
+\end{align}
+
+Using this intuition, from Asymptotia by Spencer we state the following theorem:
+
+<div class="theorem">
+<h4>Theorem:</h4> If $y=\Theta(x^a\ln^b x)$, then $x=\Theta(y^{\frac{1}{a}} \ln^{\frac{-b}{a}}y)$ 
+
+</div>	
+
+
+## Birthday Paradox Problem 
+
+This is a concrete example of how using asympotics helps us understand complicated functions and it will lead us to more tricks to bound factorials and binomial coefficients which show up in all kinds of counting problems.
+
+<div class="important">
+**FACT: ** If we have 23 people in a room, there is a 50% chance that 2 people with the same birthday.
+</div>
+
+### General form
+
+In general, if we have $m$ bins and $n$ balls. We play a game by tossing the balls into the bins one after the other without replacement. We are interested in knowing for a fixed $m$ how does the probability of a collision grow with $n$. Define $p_{m,n}:=$ as the probablity 
+of seeing no collisions.
+
+\begin{align}
+p_{m,n} &= 1(1-\frac{1}{m})(1-\frac{2}{m})\dots(1-\frac{n-11}{m}) \\
+&\leq e^{-1/m}e^{-2/m}\dots e^{-n+1/m} \tag{a}\label{tBound} \\
+&= exp\{-\frac{n(n-1)}{2m}\}\\
+&= exp\{-\frac{n^2}{m}\}exp\{\frac{n}{m}\}\\
+&\leq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\tag{b}\label{tBound2}
+\end{align}
+
+$\ref{tBound}: 1 - x \leq e^{-x}$ $\forall x \geq 0$ using Taylors series for $\ln( 1-x)$
+
+$\ref{tBound2}: 1 + x \leq e^{x}$ $\forall x \geq 0$
+
+<div class="lemma">
+<h4>**FACT:**</h4> $1 + x \geq exp\{x + Cx^2\}$
+</div>
+
+Using the above fact we have 
+
+\begin{align}
+p_{m,n} &= 1(1-\frac{1}{m})(1-\frac{2}{m})\dots(1-\frac{n-11}{m}) \\
+&\geq exp\{-\frac{1}{m} - C\frac{1}{m^2}\}exp\{-\frac{2^2}{m} - C\frac{2}{m^2}\}\dots exp\{-\frac{n-1}{m} - C\frac{(n-1)^2}{m^2}\} \\
+&= exp\{-\frac{n(n-1)}{2m}\}exp\{-C\frac{O(n^3)}{m^2}\} \tag{a}\label{sSquares}\\
+&= exp\{-\frac{n(n-1)}{2m}\}\Big( 1 - O(\frac{n^3}{m^2})\Big) \tag{b}\label{tBound3}\\
+&\geq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 - O(\frac{n^3}{m^2})\Big)
+\end{align}
+
+Note: This lower bound is trivial if $n^3$ is greater than $m^2$, making it a negative number. All probabilities are greater than negative numbers. 
+**So assume $n^3 \leq m^3$**
+
+$\ref{sSquares}:$ Upper bounding sum of squares
+
+$\ref{tBound3}: 1 + x \leq e^{x}$ $\forall x \geq 0$ and we are lower bounding so multiplying by a smaller number only decreases lower bound.
+
+Finally we have that 
+
+\begin{align}
+exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 - O(\frac{n^3}{m^2})\Big) &\leq p_{m.n}\\
+&\leq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)
+\end{align}
+
+which means we can write the above results as 
+
+\begin{align}
+ p_{m.n} &= exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 - O(\frac{n^3}{m^2})\Big)
+\end{align}
+
+We have two error terms : $\Big( 1 + O(\frac{n}{m})\Big)$ and $\Big( 1 - O(\frac{n^3}{m^2})\Big)$. Both of them approach constants, so we can set $p_{m.n} \approx exp\{-\frac{n^2}{m}\} giving us
+
+\begin{align}
+ p_{m.n} &\approx exp\{-\frac{n^2}{m}\}\\
+ n &= \sqrt{m\ln (1/p_{m,m})}
+\end{align}
+
+Also note, magically at $n=\sqrt{m}$, we have $\frac{n^3}{m} = \frac{n}{m}$ so both error terms contribute equally.
+
+A little  numerical experiment to verify how tight this is bound is 
 
 # Factorials and Binomial Coefficients (Lec 3)
 

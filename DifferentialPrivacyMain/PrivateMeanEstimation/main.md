@@ -237,7 +237,7 @@ Graham: This is an intersting niche.
 
 **A lot of these questions are answered in the previous section**.
 
-### Additional remarks
+#### Additional remarks
 
 I wrote a [short note](./Variance_of_Sampling.pdf) to derive the variance of sampling estimator. **TODO** The final form is quite ugly- full of sums of binomial coefficients, I have to still upper bound in standard form still. 
 
@@ -245,6 +245,19 @@ I wrote a [short note](./Variance_of_Sampling.pdf) to derive the variance of sam
 Thanks for the notes.  The calculations look correct, based on binonial distribution.  I expect there is some nice statistical tricks to manipulate the pmf further.  Do you think there is any chance for a closed form for the variance, or is it best to leave it to numerical evaluation?
 
 Reducing the communication in this way is essentially being able to suppress messages in the noise setting, i.e., having noise that leads us to output zero most of the time.  This may not be possible without effectively including sampling in the method, and incurring the corresponding error from sampling.
+```
+#### 2022-02-02
+
+```
+Is it accurate to call randomized response 'multiplicative'?  RR can take an input 0 --> 1 in the output, so it's not only doing multiplications.
+
+Let's talk more about the Boolean circuit representation.  There is some work on DP + circuits, but I think it is approaching from a different direction -- more from a computational complexity perspective
+(e.g., https://privacytools.seas.harvard.edu/publications/complexity-verifying-loop-free-programs-differentially-private )
+
+The fact that sample+threshold sits outside of shuffle is not very surprising -- the thresholding is not something we can achieve.  But it would be easy to generalize the shuffler to perform the threshold step, creating a new model.
+
+I'm more interested in understanding other forms of distributed noise generation.  Is there anything proposed in the shuffle model that can't be easily simulated via secure aggregation?  The tech companies seem to be moving more in the direction of secure aggregation rather than shuffling implementations.  The Bell et al. secagg paper mentions that they can effectively perform shuffling within secure aggregation.
+
 ```
 
 ## References

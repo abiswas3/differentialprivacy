@@ -28,29 +28,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a {
     border:  solid;
 }
 
-/*
-h1 {
-    font-size: 130%;
-}
 
-h2 {
-    font-size: 110%;
-}
-
-h3 {
-    font-size: 90%;
-}
-
-h4 {
-    font-size: 85%;
-    font-style: italic;
-}
-
-h5 {
-    font-size: 80%;
-    font-style: italic;
-}
-*/
 h1.title {
     font-size: 200%;
     font-weight: bold;
@@ -125,25 +103,6 @@ dd p {
     text-align: center;
 }
 
-h2[id^="definition"] {
-    /*color: blue;*/
-}
-h2[id^="theorem"] {
-    color:  #218001;
-}
-h2[id^="lemma"] {
-    color: orange;
-}
-
-h3[id^="definition"] {
-    color: blue;
-}
-h3[id^="theorem"] {
-    color:  #218001;
-}
-h3[id^="lemma"] {
-    color: orange;
-}
 
 .definition{
   z-index: 1;
@@ -156,7 +115,7 @@ h3[id^="lemma"] {
   z-index: 1;
   padding-left: 10px;
   border: 1px solid #900;
-  background-color: #a3b6ff;
+  background-color: #d6ffe1;
   /*opacity: 20%;    */
 }
 
@@ -169,6 +128,10 @@ h3[id^="lemma"] {
 
 .theorem{
     color:  #218001;    
+    padding-left: 10px;
+    border: 1px solid #900;
+    background-color: #fdd;
+
 }
 
 .algorithm{

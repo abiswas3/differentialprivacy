@@ -23,13 +23,14 @@
   
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
-    <li class="barli"><a href="/differentialprivacy/index.html">Notes on Differential Privacy</a></li>  
+    <li class="barli"><a href="/DifferentialPrivacyMain/index.html">Notes on Differential Privacy</a></li>  
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
 </head>
 <body>
 
 <div class="container">
+
 <h1 id="concentration-inequalities">Concentration Inequalities</h1>
 <p>Interested in tail bounds i.e. how random variables deviate from their means.</p>
 <p><strong>Plot the different rates and show why one is better than the other</strong></p>
@@ -131,7 +132,7 @@ Proof using binomial theorem
 &amp;\leq \frac{1}{\tau^k}\sum_{i=k}^n {n \choose i} (p\tau)^{i}(1-p)^{n-i} \\
 &amp;= \frac{1}{\tau^k}[p\tau + 1 - p]^n  \label{7}\tag{1}\\
 \end{align*}\]</span>
-<p>$: $ Binomial Theorem</p>
+<p><span class="math inline">\(\ref{7}:\)</span> Binomial Theorem</p>
 <p>if we plug <span class="math inline">\(k= (t+p)n\)</span>, we go back to <span class="math inline">\(\ref{6}\)</span> of the classical proof and get to the same bound.</p>
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#chernoff3">
@@ -174,10 +175,11 @@ Proof
 \end{align*}\]</span>
 </div>
 <h3 id="weaker-but-more-compact-form">Weaker but more compact form</h3>
-<p>TODO</p>
-<h2 id="hoeffdings-bound">Hoeffdings Bound</h2>
-<p>If <span class="math inline">\(x_i, \dots, x_n\)</span> are i.i.d random variables bounded in <span class="math inline">\((a, b)\)</span> with mean <span class="math inline">\(\mu\)</span>, for every <span class="math inline">\(\delta &gt; 0\)</span> we have</p>
-<p><span class="math display">\[\mathbb{P}[|\sum_{i=1}^n x_i - \mu n | \geq (b-a)\sqrt{\frac{n}{2}\log(\frac{2}{\delta})} ] \leq \delta\]</span></p>
+<h2 id="hoeffdings-lemma">Hoeffdings Lemma</h2>
+<p>If <span class="math inline">\(x_i, \dots, x_n\)</span> are i.i.d random variables bounded in <span class="math inline">\((a, b)\)</span> with mean <span class="math inline">\(\mu\)</span>. Let <span class="math inline">\(S_n = \sum_{i=1}^n x_i\)</span>, then for every <span class="math inline">\(\lambda \in \mathbb{R}\)</span> we have</p>
+<span class="math display">\[\begin{align}
+\mathbb{E}[e^{\lambda(S_n - \mathbb{E}[S_n])}] \leq \text{exp}(\frac{\lambda^2\sum_{i=1}^n(b_i - a_i)^2}{8})
+\end{align}\]</span>
 <h2 id="monte-carlo-simulations">Monte Carlo Simulations</h2>
 <p>Python code to consolidate understanding – re-creating definitions in code and observing how often the theoretical guarantees are violated.</p>
 <embed type="text/html" src="code/sample.html" width="800" height="600">
@@ -193,6 +195,32 @@ Proof
 <p>TODO</p>
 <h3 id="bounding-exponentials">Bounding exponentials</h3>
 <p>TODO</p>
+<h3 id="maximal-inequalities">Maximal inequalities</h3>
+<p>Here are some general inequalities about the Max of i.i.d sub-gaussian random variables.</p>
+<ul>
+<li><a href="http://www.gautamkamath.com/writings/gaussian_max.pdf">Course Notes by Gautam Kamath</a></li>
+<li><a href="https://bemoniri.github.io/Notes/X4/X4.pdf">Course Notes by Behrad Moniri</a></li>
+</ul>
+<p>The lemma below is a slight modification of the methods above to get an upper bound for sums of bounded random variables. Bounded random variables are also sub-gaussian <a href="https://statisticaloddsandends.wordpress.com/2018/10/05/bounded-random-variables-are-sub-gaussian/">See why here</a>. This lemma is used to lower bound the accuracy of locally private DP algorithms by <a href="https://arxiv.org/pdf/1504.04686.pdf">Bassily and Smith</a>.</p>
+<div class="lemma">
+<h4>
+Lemma:
+</h4>
+<p>Let <span class="math inline">\(v_i \in \{1, \dots, d\}\)</span> for <span class="math inline">\(i=1,\dots, n\)</span>. Define <span class="math inline">\(X_1, X_2, \dots, X_d\)</span> such that <span class="math inline">\(X_j = |\frac{1}{n}\sum_{i=1}^n I[v_i = j]\)</span> and <span class="math inline">\(Y = \text{max}_{1, \dots, d} |X_j - \mathbb{E}[X_j]|\)</span>. Then <span class="math inline">\(\mathbb{E}[Y] \leq O(\sqrt{\frac{\ln d}{n}})\)</span></p>
+<p><strong>Proof:</strong> Using Hoeffdings lemma we can bound <span class="math inline">\(\mathbb{E}[e^{s (X_j - \mathbb{E}[X_j])}] \leq \text{exp}(\frac{s^2}{8n})\)</span> for any <span class="math inline">\(s \in \mathbb{R}\)</span>.</p>
+<span class="math display">\[\begin{align*}
+e^{s\mathbb{E}[Y]} &amp;\leq \mathbb{E}[e^{sY}]\tag{a}\label{a1}\\
+&amp;\leq \sum_{i=1}^d \mathbb{E}[e^{sX_i}]\tag{b}\label{a2}\\
+&amp;= d\text{ exp}(\frac{s^2}{8n}) \tag{c}\label{a3}\\
+\mathbb{E}[Y] &amp;\leq \frac{\ln d}{s} + \frac{s}{8n} \tag{d}\label{a4}\\
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{a1}:\)</span> Using Jensens inequality, as <span class="math inline">\(e^x\)</span> is convex.</p>
+<p><span class="math inline">\(\ref{a2}:\)</span> Union Bound</p>
+<p><span class="math inline">\(\ref{a3}:\)</span> Hoeffdings Lemma</p>
+<p><span class="math inline">\(\ref{a4}:\)</span> Taking log on both sides</p>
+<p>If we minimise for s by taking the derivative and settig it to 0, we get, <span class="math inline">\(s = O(\sqrt{n\ln d})\)</span> and plugging it back into the equation, we get</p>
+<p><span class="math display">\[\mathbb{E}[Y] \leq O(\sqrt{\frac{\ln d}{n}})\]</span></p>
+</div>
 <h1 id="resources">Resources</h1>
 <ol type="1">
 <li><a href="https://page.mi.fu-berlin.de/mulzer/pubs/chernoff.wpdf">Chernoff Bounds and its applications</a></li>
@@ -200,9 +228,19 @@ Proof
 <ol start="2" type="1">
 <li><a href="https://math.dartmouth.edu/~m20x18/markov">Markov and Chebyshev bounds</a></li>
 </ol>
+<ol start="3" type="1">
+<li><a href="https://people.cs.umass.edu/~domke/courses/sml2010/10theory.pdf">Hoeffding bound intuition</a></li>
+</ol>
+<ol start="4" type="1">
+<li><a href="https://terrytao.wordpress.com/2010/01/03/254a-notes-1-concentration-of-measure/">Concentration Measures - Terry Tao</a></li>
+</ol>
+<ol start="5" type="1">
+<li><a href="https://terrytao.wordpress.com/2010/01/05/254a-notes-2-the-central-limit-theorem/">Central Limit Theorem - Terry Tao</a></li>
+</ol>
 </div>
 <div id="footer">
-  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+  “Study hard what interests you the most in the most undisciplined,
+  irreverent and original manner possible.”― Richard Feynmann
 </div>
 </body>
 </html>

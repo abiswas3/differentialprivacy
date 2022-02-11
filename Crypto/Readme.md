@@ -15,9 +15,16 @@
 
 <div class="container">
 
+
+
+
 ## General 
 
+* [Foundations](./Foundations/)
 * [MPC notes](): Need to transfer from notebook to digital.
+* [How To Simulate It – A Tutorial on the Simulation Proof Technique](https://eprint.iacr.org/2016/046.pdf): Information theoretic security, semantic security, simulator security. What is this mallarky? 
+* [Distributed Point Functions]():
+* [Function secret sharing and homomorphic secret sharing]():
 
 ## Proof Systems
 

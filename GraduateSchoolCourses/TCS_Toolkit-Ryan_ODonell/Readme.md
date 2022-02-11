@@ -15,9 +15,13 @@
 
 <div class="container">
 
-**Disclaimer:** I did not actually attend CMU. I found his lectures on youtube and homework sets on his website. I attempted to complete them on my own, so there may be bugs.
+**Disclaimer:** I did not actually attend CMU. I found his lectures on youtube and homework sets on his website. I attempt to complete them on my own, so there may be bugs. The course notes and homework sets are likely not from the same year either. That is the price of a free education. Syllabus is screenshot below.
+
+<img src="./pngs/syllabus.png" width="95%"></img>
 
 # Table of Contents
+
+
 
 1. [Asymptotics (Lectues 2-5)](./AsymptoticsAndGaussians/)
     * Homework 1: 

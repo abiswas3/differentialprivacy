@@ -28,10 +28,6 @@ h1 a, h2 a, h3 a, h4 a, h5 a {
     border:  solid;
 }
 
-h1, h2, h3, h4, h5 { font-family: verdana;
-		     font-weight: bold;
-		     /* border-bottom: 1px dotted black; */
-		     color: #000000; }
 h1 {
     font-size: 130%;
 }
@@ -135,6 +131,13 @@ dd p {
   /*opacity: 20%;    */
 }
 
+.solution{
+  padding-left: 10px;
+  border: 1px solid #900;   
+  background-color: #d9ffe3;
+  width: 100%;
+}
+
 .lemma{
   z-index: 1;
   padding-left: 10px;
@@ -143,7 +146,12 @@ dd p {
 }
 
 .theorem{
-    color:  #218001;    
+    color:  #f7efda;    
+    background-color: #4d4b49;
+    border:1px solid black;
+    margin-left: 5px;
+    padding-left: 5px;
+
 }
 
 .algorithm{
@@ -164,12 +172,18 @@ dd p {
 }
 
 .collapse{
-    background-color: #e0ffff;
+    background-color: #fffafa;
     border:1px solid black;        
     z-index: 1;
     padding-left: 10px;
 
 }
+
+.collapseSolutions{
+    border:1px solid black;        
+    z-index: 1;
+    padding-left: 10px;
+
 
 .row > div {
   flex: 1;

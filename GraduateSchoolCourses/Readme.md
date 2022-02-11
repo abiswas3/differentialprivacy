@@ -12,18 +12,19 @@
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 <div class=container>
 
-* Theoretical Computer Science Toolkit - Taught By Ryan O Donnell **IN PROGRESS**
-* Introduction to Real Analaysis - Taught by Simon Marshall **IN PROGRESS**
-* Boolean function analysis - Taught by Ryan O Donnell **IN PROGRESS**
-* Graduate Computation Theory
-------------------------------------------------
-* PCP by Tom Gur : TODO
+# Course
+
+* [Theoretical Computer Science Toolkit](./TCS_Toolkit-Ryan_ODonell/) - Taught By Ryan O Donnell **IN PROGRESS**
+* Introduction to Real Analaysis - Taught by Simon Marshall **Need to transfer coursework from paper to digital**
+* Boolean function analysis - Taught by Ryan O Donnell **Not yet started**
+
+<!-- * PCP by Tom Gur : TODO
 * Fat tailed distributions : Todo
 * Graduate Real Analysis : TODO
 * Abstract Algebra: TOD
 * Graduate Abstract Algebra : TODO
 * Additive Combinatorics : TODO
-
+ -->
 <!-- * Abstract Algebra
 * Interactive decision making
 * Stochastic processes and graph theory
