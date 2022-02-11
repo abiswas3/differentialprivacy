@@ -44,10 +44,10 @@
 <li><strong>Easy to compute:</strong> There exists a (deterministic) polynomial-time algorithm <span class="math inline">\(A\)</span> such that on input <span class="math inline">\(x\)</span> algorithm <span class="math inline">\(A\)</span> outputs <span class="math inline">\(f(x)\)</span> (i.e., <span class="math inline">\(A(x) = f (x)\)</span>).</li>
 <li><strong>Hard to invert:</strong> For every probabilistic polynomial-time algorithm <span class="math inline">\(A^′\)</span>,every positive polynomial <span class="math inline">\(p(·)\)</span>, and all sufficiently large <span class="math inline">\(n\)</span>’s,</li>
 </ol>
-<p><span class="math display">\[P_{u\sim U^n, r \sim U^m}\Big[A^&#39;(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq \frac{1}{p(n)}\]</span></p>
+<p><span class="math display">\[P_{u\sim U^n, r \sim U^m}\Big[A&#39;(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq \frac{1}{p(n)}\]</span></p>
 <p>where <span class="math inline">\(r\)</span> represents the internal coin flips and <span class="math inline">\(m=poly(n)\)</span>.</p>
 </div>
-<p>The second condition says that on average <span class="math inline">\(f\)</span> is hard to invert. Also any pre-image of <span class="math inline">\(f(u)\)</span> is bad not just the one that was used to create <span class="math inline">\(f(u)\)</span>. The axillary input <span class="math inline">\(1^n\)</span> is given to tell the <span class="math inline">\(A^&#39;\)</span> the size of the output, in the case <span class="math inline">\(f\)</span> shrunk the input.</p>
+<p>The second condition says that on average <span class="math inline">\(f\)</span> is hard to invert. Also any pre-image of <span class="math inline">\(f(u)\)</span> is bad not just the one that was used to create <span class="math inline">\(f(u)\)</span>. The axillary input <span class="math inline">\(1^n\)</span> is given to tell the <span class="math inline">\(A^{&#39;}\)</span> the size of the output, in the case <span class="math inline">\(f\)</span> shrunk the input.</p>
 <p><strong>THERE are two more examples that I would like to understand more before moving on</strong></p>
 <h2 id="weak-one-way-function">Weak One way Function</h2>
 <div class="lemma">

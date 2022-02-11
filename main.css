@@ -88,32 +88,6 @@ dd p {
   background-color: #111;
 }
 
-.navbar {
-    background-color: #dddddd;
-    border:1px solid black;
-    border-bottom: 3px solid black;
-    list-style-type: none;
-    /* margin: 0; */
-    /* padding: 0; */
-    /* overflow: hidden; */
-      
-}
-.navbar-list-item {
-    float: left;
-    fontsize: 22px;
-    border-right:2px solid #bbb;
-    padding-right:10px;
-    display: block;
-    fontsize: 22px;
-    text-align: center;
-
-}
-
-.navbar-list-item:last-child {
-    border-right: none;
-    padding-left: 20px;
-    float: left;
-}
 
 #footer {
     padding-top: 1em;

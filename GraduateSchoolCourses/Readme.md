@@ -12,10 +12,12 @@
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 <div class=container>
 
-# Course
+# Coursework that I can remember
 
 * [Theoretical Computer Science Toolkit](./TCS_Toolkit-Ryan_ODonell/) - Taught By Ryan O Donnell **IN PROGRESS**
-* Introduction to Real Analaysis - Taught by Simon Marshall **Need to transfer coursework from paper to digital**
+* [Foundations of Cryptography](../Crypto/Foundations/) - Self Taught **IN PROGRESS**
+* Introduction to Real Analaysis - Taught by Simon Marshall @Wisc**Need to transfer coursework from paper to digital**
+* Non Linear Optimisation - Taught by Stephen Wright @Wisc **Need to transfer coursework from paper to digital**
 * Boolean function analysis - Taught by Ryan O Donnell **Not yet started**
 
 <!-- * PCP by Tom Gur : TODO

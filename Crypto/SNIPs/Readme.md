@@ -9,7 +9,7 @@
 
 ## Recap of voting protocol
 
-TODO.
+See slides I sent Graham.
 
 ## What is a proof system
 
