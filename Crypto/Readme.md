@@ -15,9 +15,6 @@
 
 <div class="container">
 
-
-
-
 ## General 
 
 * [Foundations](./Foundations/)
@@ -30,6 +27,7 @@
 
 * [General Proof System Notes](): TOOD
 * [SNIPs](./SNIPs/)
+* [Poplar](./Poplar/)
 
 
 </div>

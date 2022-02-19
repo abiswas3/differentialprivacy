@@ -106,6 +106,13 @@
 </tbody>
 </table>
 
+## My work
+
+From meeting on **INSERT** there are two threads that have emerged.
+
+1. End to End to secure voting with a malicicious adversary
+2. A circuit styled approach to DP.
+
 <!-- ### Secure Comparison Protocols
 
 <style type="text/css">
