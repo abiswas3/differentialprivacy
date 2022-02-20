@@ -5,119 +5,288 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
-  <link rel="stylesheet" href="../../crypto.css">
-  <script src="../../../code/es5/tex-chtml.js" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="../../crypto.css" />
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-  
-  
+
+
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My Notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>  
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
+
+  <script src="../../../code/es5/tex-chtml.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-
 <div class="container">
 <h1 id="background-material">Background material</h1>
-<p><strong>Why:</strong> I have never taken a formal computation theory class, and, modern cryptography is based on complexity theory. Research papers often use words I do not fully understand, this document attempts at summarising some background information about those words. The skeleton structure of these notes are based of Chapter 1 of [<a href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368" title="Foundations of Cryptography V1">1</a>].</p>
-<p>The chapter also introduced some basic probability - over which I felt I had a reasonable grasp.</p>
-<h2 id="different-complexity-classes-and-running-times">Different Complexity Classes and running times</h2>
+<p><strong>Why:</strong> I have never taken a formal computation theory
+class, and, modern cryptography is based on complexity theory. Research
+papers often use words I do not fully understand, this document attempts
+at summarising some background information about those words. The
+skeleton structure of these notes are based of Chapter 1 of [<a
+href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368"
+title="Foundations of Cryptography V1">1</a>].</p>
+<p>The chapter also introduced some basic probability - over which I
+felt I had a reasonable grasp.</p>
+<h2 id="different-complexity-classes-and-running-times">Different
+Complexity Classes and running times</h2>
 <h3 id="mathcalp"><span class="math inline">\(\mathcal{P}\)</span></h3>
 <div class="lemma">
-<p>A language <span class="math inline">\(L\)</span> is recognizable in (deterministic) <strong>polynomial time</strong> if there exists a deterministic turing machine <span class="math inline">\(M\)</span> and a polynomial <span class="math inline">\(p(·)\)</span> such that:</p>
+<p>A language <span class="math inline">\(L\)</span> is recognizable in
+(deterministic) <strong>polynomial time</strong> if there exists a
+deterministic turing machine <span class="math inline">\(M\)</span> and
+a polynomial <span class="math inline">\(p(·)\)</span> such that:</p>
 <ul>
-<li>on input string <span class="math inline">\(x\)</span>, <span class="math inline">\(M\)</span> halts in <span class="math inline">\(O\left(p(|x|)\right)\)</span> steps (poly time)</li>
+<li>on input string <span class="math inline">\(x\)</span>, <span
+class="math inline">\(M\)</span> halts in <span
+class="math inline">\(O\left(p(|x|)\right)\)</span> steps (poly
+time)</li>
 <li><span class="math inline">\(M(x) = 1 \iff x \in L\)</span></li>
 </ul>
 </div>
-<p><em>Remark:</em> This notation of <span class="math inline">\(x \in L\)</span> is a fancy way of saying all <span class="math inline">\(x \in \{ 0, 1\}^*\)</span> such that <span class="math inline">\(f(x) = 1\)</span>, where <span class="math inline">\(f\)</span> is described by the language <span class="math inline">\(L\)</span>. Here the turing machine <span class="math inline">\(M\)</span> represents that function. These functions where the output is 1 bit are called decidable functions. Languages, functions and turing machines can be interchanged.</p>
-<p><em><span class="math inline">\(\mathcal{P}\)</span> is the class of languages/(functions) that can be recognized in (deterministic) polynomial time.</em></p>
-<h3 id="mathcalnp"><span class="math inline">\(\mathcal{NP}\)</span></h3>
-<p>The complexity class <span class="math inline">\(\mathcal{NP}\)</span> is associated with computational problems having solutions that, <strong>once given</strong>, can be efficiently tested for validity by a non deterministic polynomial time turing machine or equivalently: <br></p>
+<p><em>Remark:</em> This notation of <span class="math inline">\(x \in
+L\)</span> is a fancy way of saying all <span class="math inline">\(x
+\in \{ 0, 1\}^*\)</span> such that <span class="math inline">\(f(x) =
+1\)</span>, where <span class="math inline">\(f\)</span> is described by
+the language <span class="math inline">\(L\)</span>. Here the turing
+machine <span class="math inline">\(M\)</span> represents that function.
+These functions where the output is 1 bit are called decidable
+functions. Languages, functions and turing machines can be
+interchanged.</p>
+<p><em><span class="math inline">\(\mathcal{P}\)</span> is the class of
+languages/(functions) that can be recognized in (deterministic)
+polynomial time.</em></p>
+<h3 id="mathcalnp"><span
+class="math inline">\(\mathcal{NP}\)</span></h3>
+<p>The complexity class <span
+class="math inline">\(\mathcal{NP}\)</span> is associated with
+computational problems having solutions that, <strong>once
+given</strong>, can be efficiently tested for validity by a non
+deterministic polynomial time turing machine or equivalently: <br></p>
 <div class="lemma">
-<p>A language <span class="math inline">\(L\)</span> is in <span class="math inline">\(\mathcal{NP}\)</span> if there exists a Boolean relation (think of it as the test for validity of a solution) <span class="math inline">\(R_L \subseteq \{0, 1\}^* \times \{0, 1\}^*\)</span> and a polynomial <span class="math inline">\(p(·)\)</span> such that <span class="math inline">\(R_L\)</span> can be recognized in (deterministic) polynomial time, and <span class="math inline">\(x \in L\)</span> if and only if there exists a <span class="math inline">\(y\)</span> such that <span class="math inline">\(|y| \leq p(|x|)\)</span> and <span class="math inline">\((x,y) \in R_L\)</span>. Such a <span class="math inline">\(y\)</span> is called a witness for membership of <span class="math inline">\(x \in L\)</span>.</p>
+<p>A language <span class="math inline">\(L\)</span> is in <span
+class="math inline">\(\mathcal{NP}\)</span> if there exists a Boolean
+relation (think of it as the test for validity of a solution) <span
+class="math inline">\(R_L \subseteq \{0, 1\}^* \times \{0,
+1\}^*\)</span> and a polynomial <span
+class="math inline">\(p(·)\)</span> such that <span
+class="math inline">\(R_L\)</span> can be recognized in (deterministic)
+polynomial time, and <span class="math inline">\(x \in L\)</span> if and
+only if there exists a <span class="math inline">\(y\)</span> such that
+<span class="math inline">\(|y| \leq p(|x|)\)</span> and <span
+class="math inline">\((x,y) \in R_L\)</span>. Such a <span
+class="math inline">\(y\)</span> is called a witness for membership of
+<span class="math inline">\(x \in L\)</span>.</p>
 </div>
-<p><em>Remark:</em> There is a lot fancy language in the above defintion, but from what I understand it just says you wanted to know if a graph <span class="math inline">\(x\)</span> was 3 colorable. Someone gave me a colouring <span class="math inline">\(y\)</span> of the graph, then I can verify in poly time that indeed the graph is 3 colourable. This <span class="math inline">\(y\)</span> which we are calling the proof/witness/certificate has to be within polynomial size of the graph (input) itself. Note: someone gave me <span class="math inline">\(y\)</span>, I did not have to come up with a colouring.</p>
-<h3 id="mathcalnp-completeness"><span class="math inline">\(\mathcal{NP}\)</span>-completeness</h3>
+<p><em>Remark:</em> There is a lot fancy language in the above
+defintion, but from what I understand it just says you wanted to know if
+a graph <span class="math inline">\(x\)</span> was 3 colorable. Someone
+gave me a colouring <span class="math inline">\(y\)</span> of the graph,
+then I can verify in poly time that indeed the graph is 3 colourable.
+This <span class="math inline">\(y\)</span> which we are calling the
+proof/witness/certificate has to be within polynomial size of the graph
+(input) itself. Note: someone gave me <span
+class="math inline">\(y\)</span>, I did not have to come up with a
+colouring.</p>
+<h3 id="mathcalnp-completeness"><span
+class="math inline">\(\mathcal{NP}\)</span>-completeness</h3>
 <div class="lemma">
-<p>A language is <span class="math inline">\(\mathcal{NP}\)</span>-complete if it is in <span class="math inline">\(\mathcal{NP}\)</span> and every language in <span class="math inline">\(\mathcal{NP}\)</span> is polynomially reducible to it.</p>
+<p>A language is <span
+class="math inline">\(\mathcal{NP}\)</span>-complete if it is in <span
+class="math inline">\(\mathcal{NP}\)</span> and every language in <span
+class="math inline">\(\mathcal{NP}\)</span> is polynomially reducible to
+it.</p>
 </div>
-<p>A language <span class="math inline">\(L\)</span> is polynomially reducible to a language <span class="math inline">\(L^′\)</span> if there exists a polynomial-time-computable function <span class="math inline">\(f\)</span> such that <span class="math inline">\(x \in L\)</span> if and only if <span class="math inline">\(f(x) \in L^′\)</span>.</p>
-<p>Among the languages known to be NP-complete are Satisfiability (of propositional formulae), Graph Colorability, and Graph Hamiltonicity.</p>
+<p>A language <span class="math inline">\(L\)</span> is polynomially
+reducible to a language <span class="math inline">\(L^′\)</span> if
+there exists a polynomial-time-computable function <span
+class="math inline">\(f\)</span> such that <span class="math inline">\(x
+\in L\)</span> if and only if <span class="math inline">\(f(x) \in
+L^′\)</span>.</p>
+<p>Among the languages known to be NP-complete are Satisfiability (of
+propositional formulae), Graph Colorability, and Graph
+Hamiltonicity.</p>
 <div class="intuition">
-<p>I have never formally gone through the proof for showing these reudctions. Would be nice to do when I have time.</p>
+<p>I have never formally gone through the proof for showing these
+reudctions. Would be nice to do when I have time.</p>
 </div>
-<h3 id="probabilistic-turing-machinesrandomised-algorithms">Probabilistic Turing Machines/Randomised algorithms</h3>
-<h4 id="internal-coin-flipsprivate-coins">Internal coin flips/private coins</h4>
-<p>Formally, this can be modeled by a Turing machine in which the transition function maps pairs of the form (⟨state⟩, ⟨symbol⟩) to <strong>two</strong> possible triples of the form (⟨state⟩, ⟨symbol⟩, ⟨direction⟩). The next step for such a machine is determined by a random choice of one of these triples. Namely, to make a step, the machine chooses at random (with probability 0.5 for each possibility) either the first triple or the second one and then acts accordingly. These random choices are called the internal coin tosses of the machine.</p>
-<p>Now the output of a probabilistic machine <span class="math inline">\(M\)</span> on input <span class="math inline">\(x\)</span> is not a string but rather a random variable that assumes strings as possible values. So we get a distribution over strings.</p>
-<p>Because we consider only polynomial-time machines, we can assume, without loss of generality, that the number of coin tosses made by <span class="math inline">\(M\)</span> on input <span class="math inline">\(x\)</span> is independent of the outcome of earlier coin tosses and is denoted by t_{M}(x). We denote by <span class="math inline">\(M_r(x)\)</span> the output of <span class="math inline">\(M\)</span> on input <span class="math inline">\(x\)</span> when <span class="math inline">\(r\)</span> is the outcome of its internal coin tosses. Then</p>
-<p><span class="math display">\[P[M_r(x) = y] := \frac{\{r \in \{0,1\}^{t_M(x)}: M_r(x) = y\}}{2^{t_M(x)}}\]</span></p>
-<p>It’s just the fraction of coin tosses over all coin tosses that would give us the right result.</p>
+<h3
+id="probabilistic-turing-machinesrandomised-algorithms">Probabilistic
+Turing Machines/Randomised algorithms</h3>
+<h4 id="internal-coin-flipsprivate-coins">Internal coin flips/private
+coins</h4>
+<p>Formally, this can be modeled by a Turing machine in which the
+transition function maps pairs of the form (⟨state⟩, ⟨symbol⟩) to
+<strong>two</strong> possible triples of the form (⟨state⟩, ⟨symbol⟩,
+⟨direction⟩). The next step for such a machine is determined by a random
+choice of one of these triples. Namely, to make a step, the machine
+chooses at random (with probability 0.5 for each possibility) either the
+first triple or the second one and then acts accordingly. These random
+choices are called the internal coin tosses of the machine.</p>
+<p>Now the output of a probabilistic machine <span
+class="math inline">\(M\)</span> on input <span
+class="math inline">\(x\)</span> is not a string but rather a random
+variable that assumes strings as possible values. So we get a
+distribution over strings.</p>
+<p>Because we consider only polynomial-time machines, we can assume,
+without loss of generality, that the number of coin tosses made by <span
+class="math inline">\(M\)</span> on input <span
+class="math inline">\(x\)</span> is independent of the outcome of
+earlier coin tosses and is denoted by t_{M}(x). We denote by <span
+class="math inline">\(M_r(x)\)</span> the output of <span
+class="math inline">\(M\)</span> on input <span
+class="math inline">\(x\)</span> when <span
+class="math inline">\(r\)</span> is the outcome of its internal coin
+tosses. Then</p>
+<p><span class="math display">\[P[M_r(x) = y] := \frac{\{r \in
+\{0,1\}^{t_M(x)}: M_r(x) = y\}}{2^{t_M(x)}}\]</span></p>
+<p>It’s just the fraction of coin tosses over all coin tosses that would
+give us the right result.</p>
 <h4 id="public-coins">Public coins</h4>
-<p>The second way of looking at randomized algorithms is to view the outcome of the internal coin tosses of the machine as an auxiliary input to a deterministic turing machine M. Thus <span class="math inline">\(M(r,x) = M_r(x)\)</span>, we assume that <span class="math inline">\(r\)</span> is chosen uniformly at random.</p>
-<p><em>Remark:</em> Not sure but I think someone showed that these two models are equivalent for zero knowledge proofs. Think I read it on the wikipedia page for zero knowledge proofs. Need to verify later.</p>
+<p>The second way of looking at randomized algorithms is to view the
+outcome of the internal coin tosses of the machine as an auxiliary input
+to a deterministic turing machine M. Thus <span
+class="math inline">\(M(r,x) = M_r(x)\)</span>, we assume that <span
+class="math inline">\(r\)</span> is chosen uniformly at random.</p>
+<p><em>Remark:</em> Not sure but I think someone showed that these two
+models are equivalent for zero knowledge proofs. Think I read it on the
+wikipedia page for zero knowledge proofs. Need to verify later.</p>
 <div class="important">
-<p>As convention, from now on when we refer to efficient computation, we mean</p>
-<p>Efficient computations correspond to computations that can be carried out by probabilistic polynomial-time Turing machines.</p>
+<p>As convention, from now on when we refer to efficient computation, we
+mean</p>
+<p>Efficient computations correspond to computations that can be carried
+out by probabilistic polynomial-time Turing machines.</p>
 </div>
-<h3 id="bounded-probability-polynomial-time-mathcalbpp">Bounded-Probability Polynomial Time <span class="math inline">\(\mathcal{BPP}\)</span></h3>
+<h3
+id="bounded-probability-polynomial-time-mathcalbpp">Bounded-Probability
+Polynomial Time <span class="math inline">\(\mathcal{BPP}\)</span></h3>
 <div class="lemma">
-<p>Bounded-Probability Polynomial Time, <span class="math inline">\(\mathcal{BPP}\)</span>: We say that <span class="math inline">\(L\)</span> is recognized by the probabilistic polynomial-time Turing machine <span class="math inline">\(M\)</span> if</p>
+<p>Bounded-Probability Polynomial Time, <span
+class="math inline">\(\mathcal{BPP}\)</span>: We say that <span
+class="math inline">\(L\)</span> is recognized by the probabilistic
+polynomial-time Turing machine <span class="math inline">\(M\)</span>
+if</p>
 <ol type="1">
-<li>Correctness: for every <span class="math inline">\(x \in L\)</span> it holds that <span class="math inline">\(P[M(x)=1] \geq \frac{2}{3}\)</span></li>
-<li>Non false positiveness: for every <span class="math inline">\(x \notin L\)</span> it holds that <span class="math inline">\(P[M(x)=0] \geq \frac{2}{3}\)</span></li>
+<li>Correctness: for every <span class="math inline">\(x \in L\)</span>
+it holds that <span class="math inline">\(P[M(x)=1] \geq
+\frac{2}{3}\)</span></li>
+<li>Non false positiveness: for every <span class="math inline">\(x
+\notin L\)</span> it holds that <span class="math inline">\(P[M(x)=0]
+\geq \frac{2}{3}\)</span></li>
 </ol>
 </div>
-<p>The idea can be described by the following picture (screenshotted from wikipedia):</p>
+<p>The idea can be described by the following picture (screenshotted
+from wikipedia):</p>
 <p><img src="./pngs/BPP.png"> </img></p>
-<p><br> The phrase “bounded-probability” indicates that the success probability is bounded away from <span class="math inline">\(\frac{1}{2}\)</span>. Languages in BPP can be recognized by probabilistic polynomial- time algorithms with a negligible error probability. This is shown in exercise 5.</p>
+<p><br> The phrase “bounded-probability” indicates that the success
+probability is bounded away from <span
+class="math inline">\(\frac{1}{2}\)</span>. Languages in BPP can be
+recognized by probabilistic polynomial- time algorithms with a
+negligible error probability. This is shown in exercise 5.</p>
 <h3 id="negligible-functions">Negligible Functions</h3>
 <div class="lemma">
-<p>We call a function <span class="math inline">\(\mu : \mathbb{N} \rightarrow \mathbb{R}\)</span> negligible if for every positive polynomial <span class="math inline">\(p(·)\)</span> there exists an <span class="math inline">\(N\)</span> such that for all <span class="math inline">\(n &gt; N\)</span>,</p>
+<p>We call a function <span class="math inline">\(\mu : \mathbb{N}
+\rightarrow \mathbb{R}\)</span> negligible if for every positive
+polynomial <span class="math inline">\(p(·)\)</span> there exists an
+<span class="math inline">\(N\)</span> such that for all <span
+class="math inline">\(n &gt; N\)</span>,</p>
 <p><span class="math display">\[\mu(n) &lt; \frac{1}{p(n)}\]</span></p>
 </div>
 <p><br></p>
-<p>The negation of negligible functions is noticeable functions which are defined as follows:</p>
+<p>The negation of negligible functions is noticeable functions which
+are defined as follows:</p>
 <div class="lemma">
-<p>We call a function <span class="math inline">\(\mu : \mathbb{N} \rightarrow \mathbb{R}\)</span> noticeable if <strong>there exists a</strong> positive polynomial <span class="math inline">\(p(·)\)</span> such that for sufficiently large <span class="math inline">\(n\)</span>,</p>
+<p>We call a function <span class="math inline">\(\mu : \mathbb{N}
+\rightarrow \mathbb{R}\)</span> noticeable if <strong>there exists
+a</strong> positive polynomial <span class="math inline">\(p(·)\)</span>
+such that for sufficiently large <span
+class="math inline">\(n\)</span>,</p>
 <p><span class="math display">\[\mu(n) &gt; \frac{1}{p(n)}\]</span></p>
 </div>
 <p><br></p>
 <h3 id="non-uniform-polynomial-time">Non-Uniform Polynomial Time</h3>
-<p>A stronger (and actually unrealistic) model of efficient computation is that of non- uniform polynomial time. This model will be used only in the negative way, namely, for saying that even such machines cannot do something (specifically, even if the adversary employs such a machine, it cannot cause harm).</p>
-<p>It can be thought of a polynomial time turing machine with two inputs - the standard <span class="math inline">\(x\)</span> and an advice tape <span class="math inline">\(a=a_1, a_2, \dots, a_n, \dots\)</span>. The machine gets the same advice <span class="math inline">\(a_n\)</span> for any input of size <span class="math inline">\(|x|=n\)</span>. Intuitively the advice <span class="math inline">\(a_n\)</span> maybe useful in some cases but cannot encode enough information for all <span class="math inline">\(2^n\)</span> inputs (since M is polytime, even if it did it would be useless).</p>
-<p>Alternatively, we can think of non-uniform polynomial-time “machines” as an infinite sequence of polynomial turing machines <span class="math inline">\(M_1, \dots, M_n\)</span> for inputs of size <span class="math inline">\(n\)</span>.</p>
-<p>Note the correspondence between the two ways of looking at non-uniform polynomial time. The first definition gives rise to an infinite sequence of def machines <span class="math inline">\(M_{a_1}, M_{a_2}, \dots\)</span> where <span class="math inline">\(M(x, a_n) = M_{a_n}(x)\)</span>. On the other hand the second definiton gives rise to <span class="math inline">\((U,(⟨M_1⟩,⟨M_2⟩,...))\)</span> where <span class="math inline">\(U\)</span> is the universal turing machine and <span class="math inline">\(&lt;M_i&gt;\)</span> is the description of Machine <span class="math inline">\(M_i\)</span> or <span class="math inline">\(U(x, &lt;M_{|x|}&gt;) = M_{|x|}(x)\)</span></p>
+<p>A stronger (and actually unrealistic) model of efficient computation
+is that of non- uniform polynomial time. This model will be used only in
+the negative way, namely, for saying that even such machines cannot do
+something (specifically, even if the adversary employs such a machine,
+it cannot cause harm).</p>
+<p>It can be thought of a polynomial time turing machine with two inputs
+- the standard <span class="math inline">\(x\)</span> and an advice tape
+<span class="math inline">\(a=a_1, a_2, \dots, a_n, \dots\)</span>. The
+machine gets the same advice <span class="math inline">\(a_n\)</span>
+for any input of size <span class="math inline">\(|x|=n\)</span>.
+Intuitively the advice <span class="math inline">\(a_n\)</span> maybe
+useful in some cases but cannot encode enough information for all <span
+class="math inline">\(2^n\)</span> inputs (since M is polytime, even if
+it did it would be useless).</p>
+<p>Alternatively, we can think of non-uniform polynomial-time “machines”
+as an infinite sequence of polynomial turing machines <span
+class="math inline">\(M_1, \dots, M_n\)</span> for inputs of size <span
+class="math inline">\(n\)</span>.</p>
+<p>Note the correspondence between the two ways of looking at
+non-uniform polynomial time. The first definition gives rise to an
+infinite sequence of def machines <span class="math inline">\(M_{a_1},
+M_{a_2}, \dots\)</span> where <span class="math inline">\(M(x, a_n) =
+M_{a_n}(x)\)</span>. On the other hand the second definiton gives rise
+to <span class="math inline">\((U,(⟨M_1⟩,⟨M_2⟩,...))\)</span> where
+<span class="math inline">\(U\)</span> is the universal turing machine
+and <span class="math inline">\(&lt;M_i&gt;\)</span> is the description
+of Machine <span class="math inline">\(M_i\)</span> or <span
+class="math inline">\(U(x, &lt;M_{|x|}&gt;) = M_{|x|}(x)\)</span></p>
 <div class="important">
-<p><strong>Colloqial wisdom/meta theorem:</strong> Whatever can be achieved by probabilistic polynomial-time machines can be achieved by non-uniform polynomial-time “machines.”</p>
+<p><strong>Colloqial wisdom/meta theorem:</strong> Whatever can be
+achieved by probabilistic polynomial-time machines can be achieved by
+non-uniform polynomial-time “machines.”</p>
 </div>
-<h3 id="mathcalppoly"><span class="math inline">\(\mathcal{P}/poly\)</span></h3>
+<h3 id="mathcalppoly"><span
+class="math inline">\(\mathcal{P}/poly\)</span></h3>
 <div class="lemma">
-<p>The complexity class non-uniform polynomial time (denoted <span class="math inline">\(\mathcal{P}/poly\)</span>) is the class of languages <span class="math inline">\(L\)</span> that can be recognized by a non-uniform sequence of polynomial time “machines.” Namely, <span class="math inline">\(L \in \mathcal{P}/poly\)</span> if there exists an infinite sequence of machines $M_1, M_2, $ satisfying the following:</p>
+<p>The complexity class non-uniform polynomial time (denoted <span
+class="math inline">\(\mathcal{P}/poly\)</span>) is the class of
+languages <span class="math inline">\(L\)</span> that can be recognized
+by a non-uniform sequence of polynomial time “machines.” Namely, <span
+class="math inline">\(L \in \mathcal{P}/poly\)</span> if there exists an
+infinite sequence of machines $M_1, M_2, $ satisfying the following:</p>
 <ol type="1">
-<li><p><strong>The machines are poly in size</strong> i.e. There exists a polynomial <span class="math inline">\(p(·)\)</span> such that for every <span class="math inline">\(n\)</span>, the description of machine <span class="math inline">\(M_n\)</span> has length bounded above by <span class="math inline">\(p(n)\)</span>.</p></li>
-<li><p><strong>The machines are poly in time</strong> i.e There exists a polynomial <span class="math inline">\(q(·)\)</span> such that for every <span class="math inline">\(n\)</span>, the running time of machine <span class="math inline">\(M_n\)</span> on each input of length <span class="math inline">\(n\)</span> is bounded above by <span class="math inline">\(q(n)\)</span>.</p></li>
-<li>For every <span class="math inline">\(n\)</span> and every <span class="math inline">\(x \in {0,1}^n\)</span>, machine <span class="math inline">\(M_n\)</span> will accept x if and only if <span class="math inline">\(x \in L\)</span></li>
+<li><p><strong>The machines are poly in size</strong> i.e. There exists
+a polynomial <span class="math inline">\(p(·)\)</span> such that for
+every <span class="math inline">\(n\)</span>, the description of machine
+<span class="math inline">\(M_n\)</span> has length bounded above by
+<span class="math inline">\(p(n)\)</span>.</p></li>
+<li><p><strong>The machines are poly in time</strong> i.e There exists a
+polynomial <span class="math inline">\(q(·)\)</span> such that for every
+<span class="math inline">\(n\)</span>, the running time of machine
+<span class="math inline">\(M_n\)</span> on each input of length <span
+class="math inline">\(n\)</span> is bounded above by <span
+class="math inline">\(q(n)\)</span>.</p></li>
+<li><p>For every <span class="math inline">\(n\)</span> and every <span
+class="math inline">\(x \in {0,1}^n\)</span>, machine <span
+class="math inline">\(M_n\)</span> will accept x if and only if <span
+class="math inline">\(x \in L\)</span></p></li>
 </ol>
 </div>
-<p><br> <strong>REMARK: </strong> Definition said nothing about coins or randomness, however the following theorem is still true.</p>
+<p><br> <strong>REMARK: </strong> Definition said nothing about coins or
+randomness, however the following theorem is still true.</p>
 <h3 id="theorem">Theorem</h3>
 <div class="theorem">
-<p><span class="math inline">\(\mathcal{BPP} \subseteq \mathcal{P}/poly\)</span></p>
+<p><span class="math inline">\(\mathcal{BPP} \subseteq
+\mathcal{P}/poly\)</span></p>
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#bppSubsetEq">
 Proof
@@ -125,41 +294,145 @@ Proof
 <div id="bppSubsetEq" class="collapse">
 
 </div>
-<h2 id="non-uniform-circuit-families.">Non-Uniform Circuit Families.</h2>
-<p>A polynomial-size circuit family is an infinite sequence of Boolean circuits <span class="math inline">\(C_1, C_2, ...\)</span> such that for every <span class="math inline">\(n\)</span>, the circuit <span class="math inline">\(C_n\)</span> has <span class="math inline">\(n\)</span> input nodes and size <span class="math inline">\(p(n)\)</span>, where <span class="math inline">\(p(·)\)</span> is a polynomial (fixed for the entire family).</p>
-<p>The size of a circuit is the number of edges in the DAG of the circuit. (In this book the author assumes m&gt;2 fan in for a node).</p>
+<h2 id="non-uniform-circuit-families.">Non-Uniform Circuit
+Families.</h2>
+<p>A polynomial-size circuit family is an infinite sequence of Boolean
+circuits <span class="math inline">\(C_1, C_2, ...\)</span> such that
+for every <span class="math inline">\(n\)</span>, the circuit <span
+class="math inline">\(C_n\)</span> has <span
+class="math inline">\(n\)</span> input nodes and size <span
+class="math inline">\(p(n)\)</span>, where <span
+class="math inline">\(p(·)\)</span> is a polynomial (fixed for the
+entire family).</p>
+<p>The size of a circuit is the number of edges in the DAG of the
+circuit. (In this book the author assumes m&gt;2 fan in for a node).</p>
 Fact that I did not prove (or haven’t seen the proof of):
 <div class="important">
-<p>The computation of a Turing machine <span class="math inline">\(M\)</span> on inputs of length <span class="math inline">\(n\)</span> can be simulated by a single circuit (with <span class="math inline">\(n\)</span> input nodes) having size <span class="math inline">\(O((|⟨M⟩| + n + t(n))^2)\)</span>, where <span class="math inline">\(t(n)\)</span> is a bound on the running time of <span class="math inline">\(M\)</span> on inputs of length <span class="math inline">\(n\)</span> and <span class="math inline">\(|⟨M⟩|\)</span> is the description of the turing machine.</p>
+<p>The computation of a Turing machine <span
+class="math inline">\(M\)</span> on inputs of length <span
+class="math inline">\(n\)</span> can be simulated by a single circuit
+(with <span class="math inline">\(n\)</span> input nodes) having size
+<span class="math inline">\(O((|⟨M⟩| + n + t(n))^2)\)</span>, where
+<span class="math inline">\(t(n)\)</span> is a bound on the running time
+of <span class="math inline">\(M\)</span> on inputs of length <span
+class="math inline">\(n\)</span> and <span
+class="math inline">\(|⟨M⟩|\)</span> is the description of the turing
+machine.</p>
 </div>
-<p>Thus, a non-uniform sequence of polynomial-time machines can be simulated by a non-uniform family of polynomial-size circuits.</p>
+<p>Thus, a non-uniform sequence of polynomial-time machines can be
+simulated by a non-uniform family of polynomial-size circuits.</p>
 <h2 id="intractability-assumptions">Intractability Assumptions</h2>
-<p>We shall consider as intractable those tasks that cannot be performed by probabilistic polynomial-time machines.</p>
-<p>However, the adversarial tasks in which we shall be interested (“breaking an encryption scheme,” “forging signatures,” etc.) can be performed by non-deterministic polynomial-time machines (because the solutions, once found, can be easily tested for validity).</p>
-<p>Thus, the computational approach to modern cryptography (and, in particular, most of the material in these notes) is interesting only if <span class="math inline">\(\mathcal{NP}\)</span> is not contained in <span class="math inline">\(\mathcal{BPP}\)</span> (which certainly implies <span class="math inline">\(\mathcal{P} \neq \mathcal{NP}\)</span>).</p>
-<p>In most places where we state that <code>if ⟨intractability assumption⟩: then ⟨useful consequence⟩,</code> it will be the case that ⟨useful consequence⟩ either implies ⟨intractability assumption⟩ or implies some weaker form of it, which in turn implies <span class="math inline">\(\mathcal{NP} \ \mathcal{BPP} \neq \emptyset\)</span>. <em>Thus, in light of the current state of knowledge in complexity theory, we cannot hope to assert ⟨useful consequence⟩ without any intractability assumption.</em></p>
+<p>We shall consider as intractable those tasks that cannot be performed
+by probabilistic polynomial-time machines.</p>
+<p>However, the adversarial tasks in which we shall be interested
+(“breaking an encryption scheme,” “forging signatures,” etc.) can be
+performed by non-deterministic polynomial-time machines (because the
+solutions, once found, can be easily tested for validity).</p>
+<p>Thus, the computational approach to modern cryptography (and, in
+particular, most of the material in these notes) is interesting only if
+<span class="math inline">\(\mathcal{NP}\)</span> is not contained in
+<span class="math inline">\(\mathcal{BPP}\)</span> (which certainly
+implies <span class="math inline">\(\mathcal{P} \neq
+\mathcal{NP}\)</span>).</p>
+<p>In most places where we state that
+<code>if ⟨intractability assumption⟩: then ⟨useful consequence⟩,</code>
+it will be the case that ⟨useful consequence⟩ either implies
+⟨intractability assumption⟩ or implies some weaker form of it, which in
+turn implies <span class="math inline">\(\mathcal{NP} \ \mathcal{BPP}
+\neq \emptyset\)</span>. <em>Thus, in light of the current state of
+knowledge in complexity theory, we cannot hope to assert ⟨useful
+consequence⟩ without any intractability assumption.</em></p>
 <h2 id="oracle-machines">Oracle Machines</h2>
-<p>Loosely speaking, an oracle machine is a machine that is augmented so that it can ask questions to the outside via some function <span class="math inline">\(f\)</span>. We consider the case in which these questions (called queries) are answered consistently by some function <span class="math inline">\(f : \{0, 1\}^* \rightarrow \{0, 1\}^*\)</span> , called the oracle. That is, if the machine makes a query <span class="math inline">\(q\)</span>, then the answer it obtains is <span class="math inline">\(f(q)\)</span>. In such a case, we say that the oracle machine is given access to the oracle <span class="math inline">\(f\)</span>.</p>
+<p>Loosely speaking, an oracle machine is a machine that is augmented so
+that it can ask questions to the outside via some function <span
+class="math inline">\(f\)</span>. We consider the case in which these
+questions (called queries) are answered consistently by some function
+<span class="math inline">\(f : \{0, 1\}^* \rightarrow \{0,
+1\}^*\)</span> , called the oracle. That is, if the machine makes a
+query <span class="math inline">\(q\)</span>, then the answer it obtains
+is <span class="math inline">\(f(q)\)</span>. In such a case, we say
+that the oracle machine is given access to the oracle <span
+class="math inline">\(f\)</span>.</p>
 <p>The formal description is quite painful but here it is:</p>
 <div class="lemma">
-<p>A (deterministic/probabilistic) oracle ma- chine is a (deterministic/probabilistic) Turing machine with an additional tape, called the oracle tape and two additional states: * oracle invocation * oracle appeared</p>
-<p><strong>The computation of the deterministic oracle machine <span class="math inline">\(M\)</span> on input <span class="math inline">\(x\)</span> and with access</strong> to the oracle <span class="math inline">\(f : \{0, 1\}^* \rightarrow \{0, 1\}^*\)</span> <strong>is defined by the successive-configuration relation.</strong></p>
-<p><em>For configurations with states different from oracle invocation, the next configuration is defined as usual. Let <span class="math inline">\(\gamma\)</span> be a configuration in which the state is oracle invocation and the content of the oracle tape is <span class="math inline">\(q\)</span> . Then the configuration following <span class="math inline">\(\gamma\)</span> is identical to <span class="math inline">\(\gamma\)</span> , except that the state is oracle appeared, and the content of the oracle tape is <span class="math inline">\(f(q)\)</span></em></p>
-<p>The string <span class="math inline">\(q\)</span> is called M’s query, and <span class="math inline">\(f(q)\)</span> is called the oracle reply. The computation of a probabilistic oracle machine is defined analogously.</p>
+<p>A (deterministic/probabilistic) oracle ma- chine is a
+(deterministic/probabilistic) Turing machine with an additional tape,
+called the oracle tape and two additional states: * oracle invocation *
+oracle appeared</p>
+<p><strong>The computation of the deterministic oracle machine <span
+class="math inline">\(M\)</span> on input <span
+class="math inline">\(x\)</span> and with access</strong> to the oracle
+<span class="math inline">\(f : \{0, 1\}^* \rightarrow \{0,
+1\}^*\)</span> <strong>is defined by the successive-configuration
+relation.</strong></p>
+<p><em>For configurations with states different from oracle invocation,
+the next configuration is defined as usual. Let <span
+class="math inline">\(\gamma\)</span> be a configuration in which the
+state is oracle invocation and the content of the oracle tape is <span
+class="math inline">\(q\)</span> . Then the configuration following
+<span class="math inline">\(\gamma\)</span> is identical to <span
+class="math inline">\(\gamma\)</span> , except that the state is oracle
+appeared, and the content of the oracle tape is <span
+class="math inline">\(f(q)\)</span></em></p>
+<p>The string <span class="math inline">\(q\)</span> is called M’s
+query, and <span class="math inline">\(f(q)\)</span> is called the
+oracle reply. The computation of a probabilistic oracle machine is
+defined analogously.</p>
 </div>
-<p><br> We stress that the running time of an oracle machine is the number of steps made during its computation and that the oracle’s reply to each query is obtained in a single step.</p>
+<p><br> We stress that the running time of an oracle machine is the
+number of steps made during its computation and that the oracle’s reply
+to each query is obtained in a single step.</p>
 <h2 id="exercises">Exercises</h2>
 <ol type="1">
-<li><p>Let <span class="math inline">\(X\)</span> be a random variable such that <span class="math inline">\(\mathbb{E}(X) = \mu\)</span> and <span class="math inline">\(X \leq 2\mu\)</span>. Give an upper bound on <span class="math inline">\(Pr[X \leq \frac{\mu}{2}]\)</span>.</p></li>
-<li><p>Let <span class="math inline">\(0 &lt; \epsilon\)</span> and <span class="math inline">\(\delta &lt; 1\)</span>, and let <span class="math inline">\(Y\)</span> be a random variable ranging in the interval <span class="math inline">\([0,1]\)</span> such that <span class="math inline">\(\mathbb{E}(Y) = \delta + \epsilon\)</span>. Give a lower bound on <span class="math inline">\(Pr[Y \geq \delta + 2\epsilon ]\)</span>.</p></li>
-<li><p>Consider the following algorithm: On input a graph <span class="math inline">\(G = (V, E)\)</span> and two vertices, <span class="math inline">\(s\)</span> and <span class="math inline">\(t\)</span>, we take a random walk of length <span class="math inline">\(O(|V | · |E|)\)</span>, starting at vertex <span class="math inline">\(s\)</span>, and test at each step whether or not vertex <span class="math inline">\(t\)</span> is encountered. If vertex <span class="math inline">\(t\)</span> is ever encountered, then the algorithm will accept; otherwise, it will reject. By a random walk we mean that at each step we uniformly select one of the edges incident at the current vertex and traverse this edge to the other endpoint. *show that if <span class="math inline">\(s\)</span> is connected to <span class="math inline">\(t\)</span> in the graph <span class="math inline">\(G\)</span>, then, with probability at least <span class="math inline">\(\frac{2}{3}\)</span>, vertex <span class="math inline">\(t\)</span> will be encountered in a random walk starting at <span class="math inline">\(s\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(X\)</span> be a random variable
+such that <span class="math inline">\(\mathbb{E}(X) = \mu\)</span> and
+<span class="math inline">\(X \leq 2\mu\)</span>. Give an upper bound on
+<span class="math inline">\(Pr[X \leq \frac{\mu}{2}]\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(0 &lt; \epsilon\)</span> and
+<span class="math inline">\(\delta &lt; 1\)</span>, and let <span
+class="math inline">\(Y\)</span> be a random variable ranging in the
+interval <span class="math inline">\([0,1]\)</span> such that <span
+class="math inline">\(\mathbb{E}(Y) = \delta + \epsilon\)</span>. Give a
+lower bound on <span class="math inline">\(Pr[Y \geq \delta + 2\epsilon
+]\)</span>.</p></li>
+<li><p>Consider the following algorithm: On input a graph <span
+class="math inline">\(G = (V, E)\)</span> and two vertices, <span
+class="math inline">\(s\)</span> and <span
+class="math inline">\(t\)</span>, we take a random walk of length <span
+class="math inline">\(O(|V | · |E|)\)</span>, starting at vertex <span
+class="math inline">\(s\)</span>, and test at each step whether or not
+vertex <span class="math inline">\(t\)</span> is encountered. If vertex
+<span class="math inline">\(t\)</span> is ever encountered, then the
+algorithm will accept; otherwise, it will reject. By a random walk we
+mean that at each step we uniformly select one of the edges incident at
+the current vertex and traverse this edge to the other endpoint. *show
+that if <span class="math inline">\(s\)</span> is connected to <span
+class="math inline">\(t\)</span> in the graph <span
+class="math inline">\(G\)</span>, then, with probability at least <span
+class="math inline">\(\frac{2}{3}\)</span>, vertex <span
+class="math inline">\(t\)</span> will be encountered in a random walk
+starting at <span class="math inline">\(s\)</span>.</p></li>
 <li><p>Chernoff Bound Problem</p></li>
-<li><p>Equivalent definition of BPP. Part 1: Prove that Definition of <span class="math inline">\(\mathcal{BPP}\)</span> is robust when <span class="math inline">\(\frac{2}{3}\)</span> is replaced by <span class="math inline">\(\frac{1}{2} + \frac{1}{p(|x|)}\)</span> for every positive polynomial <span class="math inline">\(p(·)\)</span>. Namely, show that <span class="math inline">\(L \in \mathcal{BPP}\)</span> if there exists a polynomial <span class="math inline">\(p(·)\)</span> and a probabilistic polynomial-time machine <span class="math inline">\(M\)</span> such that</p>
+<li><p>Equivalent definition of BPP. Part 1: Prove that Definition of
+<span class="math inline">\(\mathcal{BPP}\)</span> is robust when <span
+class="math inline">\(\frac{2}{3}\)</span> is replaced by <span
+class="math inline">\(\frac{1}{2} + \frac{1}{p(|x|)}\)</span> for every
+positive polynomial <span class="math inline">\(p(·)\)</span>. Namely,
+show that <span class="math inline">\(L \in \mathcal{BPP}\)</span> if
+there exists a polynomial <span class="math inline">\(p(·)\)</span> and
+a probabilistic polynomial-time machine <span
+class="math inline">\(M\)</span> such that</p>
 <ul>
-<li>for every <span class="math inline">\(x \in L\)</span> it holds that <span class="math inline">\(P[M(x)=1] \geq \frac{1}{2} + \frac{1}{p(|x|)}\)</span></li>
-<li>Non false positiveness: for every <span class="math inline">\(x \notin L\)</span> it holds that <span class="math inline">\(P[M(x)=0] \geq \frac{1}{2} + \frac{1}{p(|x|)}\)</span></li>
+<li>for every <span class="math inline">\(x \in L\)</span> it holds that
+<span class="math inline">\(P[M(x)=1] \geq \frac{1}{2} +
+\frac{1}{p(|x|)}\)</span></li>
+<li>Non false positiveness: for every <span class="math inline">\(x
+\notin L\)</span> it holds that <span class="math inline">\(P[M(x)=0]
+\geq \frac{1}{2} + \frac{1}{p(|x|)}\)</span></li>
 </ul></li>
-<li><p>Now do the same again: but replace <span class="math inline">\(\frac{2}{3}\)</span> by <span class="math inline">\(1 + \frac{1}{2^{p(|x|)}}\)</span></p></li>
+<li><p>Now do the same again: but replace <span
+class="math inline">\(\frac{2}{3}\)</span> by <span
+class="math inline">\(1 + \frac{1}{2^{p(|x|)}}\)</span></p></li>
 </ol>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#ex1">
 Solutions to all problems
@@ -169,30 +442,70 @@ Solutions to all problems
 <h4>
 Problem 6
 </h4>
-<p><a href="http://ce.sharif.edu/courses/94-95/2/ce675-1/resources/root/AmplificationLemma1.pdf">Used as aid</a></p>
-<p>Assume <span class="math inline">\(L \in \mathcal{BPP}\)</span>, this implies that there exists some probabilistic polynomial time turing macine <span class="math inline">\(M\)</span> such that</p>
-<p><span class="math inline">\(P\Big[ M(x) = 1 | x \in L \Big] \geq 2/3\)</span>.</p>
-<p>Define <span class="math inline">\(r_1, \dots, r_{t(n)}\)</span> as randomv variables sampled uniformly at random from <span class="math inline">\(U^n\)</span>. For the sake convenience we will write <span class="math inline">\(t(n) = t\)</span>. Define <span class="math inline">\(X_i = 1\)</span> if <span class="math inline">\(M_{r_i}(x) = I[x \in L]\)</span>. Simply put if <span class="math inline">\(X_i=1\)</span>, then <span class="math inline">\(M_{r}\)</span> predicted correctly.</p>
-<p>Let <span class="math inline">\(S_t = X_1 + \dots + X_{r_t}\)</span>. Define a turing machine <span class="math inline">\(\hat{M}\)</span> such that <span class="math inline">\(\hat{M}(x) = 1\)</span> if <span class="math inline">\(S_t \geq \frac{t}{2}\)</span>. In other words, <span class="math inline">\(\hat{M}\)</span> selects the marjority from the predictions of the random machines. Note each <span class="math inline">\(X_i\)</span> is a bernoulli random variable with <span class="math inline">\(P\Big[X_i = 1 | x\in L\Big] = p \geq \frac{2}{3}\)</span></p>
-<p>Reminder, the chernoff bound, for a sum of <span class="math inline">\(t\)</span> bernoulli variables with mean <span class="math inline">\(q\)</span> is</p>
-<span class="math display">\[\begin{align*}
+<p><a
+href="http://ce.sharif.edu/courses/94-95/2/ce675-1/resources/root/AmplificationLemma1.pdf">Used
+as aid</a></p>
+<p>Assume <span class="math inline">\(L \in \mathcal{BPP}\)</span>, this
+implies that there exists some probabilistic polynomial time turing
+macine <span class="math inline">\(M\)</span> such that</p>
+<p><span class="math inline">\(P\Big[ M(x) = 1 | x \in L \Big] \geq
+2/3\)</span>.</p>
+<p>Define <span class="math inline">\(r_1, \dots, r_{t(n)}\)</span> as
+randomv variables sampled uniformly at random from <span
+class="math inline">\(U^n\)</span>. For the sake convenience we will
+write <span class="math inline">\(t(n) = t\)</span>. Define <span
+class="math inline">\(X_i = 1\)</span> if <span
+class="math inline">\(M_{r_i}(x) = I[x \in L]\)</span>. Simply put if
+<span class="math inline">\(X_i=1\)</span>, then <span
+class="math inline">\(M_{r}\)</span> predicted correctly.</p>
+<p>Let <span class="math inline">\(S_t = X_1 + \dots + X_{r_t}\)</span>.
+Define a turing machine <span class="math inline">\(\hat{M}\)</span>
+such that <span class="math inline">\(\hat{M}(x) = 1\)</span> if <span
+class="math inline">\(S_t \geq \frac{t}{2}\)</span>. In other words,
+<span class="math inline">\(\hat{M}\)</span> selects the marjority from
+the predictions of the random machines. Note each <span
+class="math inline">\(X_i\)</span> is a bernoulli random variable with
+<span class="math inline">\(P\Big[X_i = 1 | x\in L\Big] = p \geq
+\frac{2}{3}\)</span></p>
+<p>Reminder, the chernoff bound, for a sum of <span
+class="math inline">\(t\)</span> bernoulli variables with mean <span
+class="math inline">\(q\)</span> is</p>
+<p><span class="math display">\[\begin{align*}
 P[S_t \leq (1 - \delta)qt] \leq \text{exp}\{- \frac{\delta^2p}{2}\}
-\end{align*}\]</span>
-<p>Now <span class="math inline">\(\hat{M}\)</span> makes a mistake if <span class="math inline">\(x \in L\)</span> but <span class="math inline">\(S_t \leq t/2\)</span> <span class="math display">\[\begin{align*}
-P[\hat{M} \text{ makes a mistake}] &amp;= P\Big[ S_t \leq \frac{t}{2} \text{ | } x \in L \Big] \\
- &amp;= P\Big[ S_t \leq (1 - (1 - \frac{1}{2p}))pt \text{ | } x \in L \Big] \\
- &amp;\leq \exp\{- t\frac{(p - 1/2)^2}{2p}\} \\
- &amp;= \exp\{- f(p)\frac{t}{2}\} \tag{1}\label{3}
 \end{align*}\]</span></p>
-<p><span class="math inline">\(\ref{3}: f(p) = \frac{(p - 1/2)^2}{p}\)</span> is an increasing function in <span class="math inline">\((1/2, \infty)\)</span>, therefore <span class="math inline">\(e^{-f(p)}\)</span> is decreasing. We have <span class="math inline">\(p \geq 2/3\)</span>, therefore <span class="math inline">\(e^{-f(p)} \leq e^{-f(2/3)} = e^{-\frac{1}{24}}\)</span>. Using this,</p>
-<span class="math display">\[\begin{align*}
-P[\hat{M} \text{ makes a mistake}] &amp;= P\Big[ S_t \leq \frac{t}{2} \text{ | } x \in L \Big] \\
+<p>Now <span class="math inline">\(\hat{M}\)</span> makes a mistake if
+<span class="math inline">\(x \in L\)</span> but <span
+class="math inline">\(S_t \leq t/2\)</span> <span
+class="math display">\[\begin{align*}
+P[\hat{M} \text{ makes a mistake}] &amp;= P\Big[ S_t \leq \frac{t}{2}
+\text{ | } x \in L \Big] \\
+&amp;= P\Big[ S_t \leq (1 - (1 - \frac{1}{2p}))pt \text{ | } x \in L
+\Big] \\
+&amp;\leq \exp\{- t\frac{(p - 1/2)^2}{2p}\} \\
+&amp;= \exp\{- f(p)\frac{t}{2}\} \tag{1}\label{3}
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{3}: f(p) = \frac{(p -
+1/2)^2}{p}\)</span> is an increasing function in <span
+class="math inline">\((1/2, \infty)\)</span>, therefore <span
+class="math inline">\(e^{-f(p)}\)</span> is decreasing. We have <span
+class="math inline">\(p \geq 2/3\)</span>, therefore <span
+class="math inline">\(e^{-f(p)} \leq e^{-f(2/3)} =
+e^{-\frac{1}{24}}\)</span>. Using this,</p>
+<p><span class="math display">\[\begin{align*}
+P[\hat{M} \text{ makes a mistake}] &amp;= P\Big[ S_t \leq \frac{t}{2}
+\text{ | } x \in L \Big] \\
 &amp;= \exp\{- f(p)\frac{t}{2}\} \\
 &amp;= \exp\{- \frac{1}{24}\frac{t}{2}\} \\
 &amp;\leq 2^{-p(n)}
-\end{align*}\]</span>
-<p>If <span class="math inline">\(t(n) \geq (48 \ln(2))p(n) \approx O(n)\)</span>, then <span class="math inline">\(\hat{M}\)</span> is poly turing machine that does the job</p>
-<p>The other side is trivial, in that, pick <span class="math inline">\(p(n) \geq -\ln(1/3)\)</span> and assume <span class="math inline">\(P\Big[ M(x) = 1 | x \in L \Big] \geq 1 - 2^{-p(n)}\)</span>. Then <span class="math inline">\(P\Big[ M(x) = 1 | x \in L \Big] \geq \frac{2}{3}\)</span>.</p>
+\end{align*}\]</span></p>
+<p>If <span class="math inline">\(t(n) \geq (48 \ln(2))p(n) \approx
+O(n)\)</span>, then <span class="math inline">\(\hat{M}\)</span> is poly
+turing machine that does the job</p>
+<p>The other side is trivial, in that, pick <span
+class="math inline">\(p(n) \geq -\ln(1/3)\)</span> and assume <span
+class="math inline">\(P\Big[ M(x) = 1 | x \in L \Big] \geq 1 -
+2^{-p(n)}\)</span>. Then <span class="math inline">\(P\Big[ M(x) = 1 | x
+\in L \Big] \geq \frac{2}{3}\)</span>.</p>
 <p>All logs in this document are base 2.</p>
 </div>
 <p><br></p>
@@ -200,50 +513,76 @@ P[\hat{M} \text{ makes a mistake}] &amp;= P\Big[ S_t \leq \frac{t}{2} \text{ | }
 <h4>
 Problem 5
 </h4>
-<p>Same idea as above but using Chebychev’s instead of Chernoff. Did not want to write latex so uploading picture of solution.</p>
-<p><img src="./pngs/problem5a.png" width="95%"></img> <img src="./pngs/problem5b.png" width="95%"></img> <img src="./pngs/problem5c.png" width="95%"></img></p>
+<p>Same idea as above but using Chebychev’s instead of Chernoff. Did not
+want to write latex so uploading picture of solution.</p>
+<p><img src="./pngs/problem5a.png" width="95%"></img>
+<img src="./pngs/problem5b.png" width="95%"></img>
+<img src="./pngs/problem5c.png" width="95%"></img></p>
 </div>
 <p><br></p>
 <div class="solution">
 <h4>
 Problem 4
 </h4>
-<p>This comes quite directly from Hoeffding’s inequality. <span class="math inline">\(A\)</span> samples <span class="math inline">\(s_1, s_2, \dots, s_{p(n)}\)</span> where <span class="math inline">\(s_i \sim Uniform(\{0, 1\}^n)\)</span> and computes <span class="math inline">\(f(s_1), \dots, f(s_{p(n)})\)</span> which are identical i.i.d random variables each bounded in <span class="math inline">\([0,1]\)</span>. Let <span class="math inline">\(A_{p(n)} = f(s_1) + \dots + f(s_{p(n)})\)</span></p>
+<p>This comes quite directly from Hoeffding’s inequality. <span
+class="math inline">\(A\)</span> samples <span
+class="math inline">\(s_1, s_2, \dots, s_{p(n)}\)</span> where <span
+class="math inline">\(s_i \sim Uniform(\{0, 1\}^n)\)</span> and computes
+<span class="math inline">\(f(s_1), \dots, f(s_{p(n)})\)</span> which
+are identical i.i.d random variables each bounded in <span
+class="math inline">\([0,1]\)</span>. Let <span
+class="math inline">\(A_{p(n)} = f(s_1) + \dots +
+f(s_{p(n)})\)</span></p>
 <p>By Hoeffding:</p>
-<span class="math display">\[\begin{align*}
+<p><span class="math display">\[\begin{align*}
 P\Big[ | E[A_{p(n)}] - A_{p(n)} | \geq 1\Big] \leq 2^{-n}
-\end{align*}\]</span>
-<p>Log bases can be easily converted from one to the other, in this document all bases are <span class="math inline">\(\log_2\)</span>.</p>
+\end{align*}\]</span></p>
+<p>Log bases can be easily converted from one to the other, in this
+document all bases are <span class="math inline">\(\log_2\)</span>.</p>
 </div>
 <p><br></p>
 <div class="solution">
 <h4>
 Problem 3
 </h4>
-<p><strong>I have not yet been able to solve this problem. TODO with Daniel.</strong></p>
+<p><strong>I have not yet been able to solve this problem. TODO with
+Daniel.</strong></p>
 </div>
 <p><br></p>
 <div class="solution">
 <h4>
 Problem 2
 </h4>
-<p>Another auxilliary transformation is needed but we will use the proof style of markov as recommended in the guide.</p>
-<p>First note if <span class="math inline">\(\delta + \frac{\epsilon}{2} &gt; 1\)</span>, then <span class="math inline">\(P[Y \geq \delta + \frac{\epsilon}{2}] = 0\)</span> since <span class="math inline">\(Y \in [0,1]\)</span>. So we can assume <span class="math inline">\(\delta + \frac{\epsilon}{2} \leq 1\)</span>.</p>
-<p>Similarly, if <span class="math inline">\(\delta + \frac{\epsilon}{2} &lt; 0\)</span>, then <span class="math inline">\(P[Y \geq \delta + \frac{\epsilon}{2}] = 1\)</span></p>
-<span class="math display">\[\begin{align*}
+<p>Another auxilliary transformation is needed but we will use the proof
+style of markov as recommended in the guide.</p>
+<p>First note if <span class="math inline">\(\delta + \frac{\epsilon}{2}
+&gt; 1\)</span>, then <span class="math inline">\(P[Y \geq \delta +
+\frac{\epsilon}{2}] = 0\)</span> since <span class="math inline">\(Y \in
+[0,1]\)</span>. So we can assume <span class="math inline">\(\delta +
+\frac{\epsilon}{2} \leq 1\)</span>.</p>
+<p>Similarly, if <span class="math inline">\(\delta + \frac{\epsilon}{2}
+&lt; 0\)</span>, then <span class="math inline">\(P[Y \geq \delta +
+\frac{\epsilon}{2}] = 1\)</span></p>
+<p><span class="math display">\[\begin{align*}
 E[Y] &amp;= \int_{0}^1 yf(y)dy \\
-&amp;= \int_{0}^{\delta + \frac{\epsilon}{2}} yf(y)dy + \int_{\delta + \frac{\epsilon}{2}}^1 yf(y)dy \\
+&amp;= \int_{0}^{\delta + \frac{\epsilon}{2}} yf(y)dy + \int_{\delta +
+\frac{\epsilon}{2}}^1 yf(y)dy \\
 &amp;\geq \int_{\delta + \frac{\epsilon}{2}}^1 yf(y)dy \\
-&amp;\geq \delta + \frac{\epsilon}{2}\int_{\delta + \frac{\epsilon}{2}}^1 f(y)dy \\
-\end{align*}\]</span>
-<p>Therefore, <span class="math inline">\(P[Y \geq \delta + \frac{\epsilon}{2}] \leq \frac{\epsilon + \delta}{\delta + \frac{\epsilon}{2}}\)</span>.</p>
+&amp;\geq \delta + \frac{\epsilon}{2}\int_{\delta +
+\frac{\epsilon}{2}}^1 f(y)dy \\
+\end{align*}\]</span></p>
+<p>Therefore, <span class="math inline">\(P[Y \geq \delta +
+\frac{\epsilon}{2}] \leq \frac{\epsilon + \delta}{\delta +
+\frac{\epsilon}{2}}\)</span>.</p>
 </div>
 <p><br></p>
 <div class="solution">
 <h4>
 Problem 1
 </h4>
-<p>A little transformation of random variables to get a non negative RV. Define <span class="math inline">\(Y = 2\mu - X \geq 0\)</span> <span class="math display">\[\begin{align*}
+<p>A little transformation of random variables to get a non negative RV.
+Define <span class="math inline">\(Y = 2\mu - X \geq 0\)</span> <span
+class="math display">\[\begin{align*}
 P[X \leq \frac{\mu}{2}] &amp;= P[2\mu - Y \leq \frac{\mu}{2}] \\
 &amp;= P[Y \geq 2\mu - \frac{\mu}{2}] \\
 &amp;\leq \frac{E[Y]}{1.5\mu}\tag{a}\label{markov1} \\
@@ -255,7 +594,9 @@ P[X \leq \frac{\mu}{2}] &amp;= P[2\mu - Y \leq \frac{\mu}{2}] \\
 </div>
 <h1 id="references">References</h1>
 <ol type="1">
-<li><a href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368">Foundations of Cryptography V1</a></li>
+<li><a
+href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368">Foundations
+of Cryptography V1</a></li>
 </ol>
 </div>
 <div id="footer">
