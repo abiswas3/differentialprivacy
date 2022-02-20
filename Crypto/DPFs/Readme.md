@@ -59,7 +59,7 @@ By further dividing the seed in each node to a public part that is common betwee
 
 The heavy hitters section makes calls to the subset sum problem, thus there is $\lambda n^2$ communication complexity. They have a construction that is more efficient and still uses $\lambda n$ but this is only needed for private heavy hitters, which I have not read in full detail.
 
-For specific details see this talk by [Henry]
+For specific details see this talk by [Henry Corrigan Gibbs - part II](https://www.youtube.com/watch?v=JP9CNjC2iUo&list=PL8Vt-7cSFnw1F7bBFws2kWA-7JVFkqKTy&index=5).
 </div>
 
 
