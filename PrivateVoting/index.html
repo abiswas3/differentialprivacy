@@ -33,7 +33,7 @@
 <div class="container">
 <h1 id="differentially-private-secure-voting-protocols">Differentially Private Secure Voting Protocols</h1>
 <p><strong>Work in progress</strong></p>
-<p><u>Authors:</u> Ari B, Graham C.</p>
+<!-- <u>Authors:</u> Ari B, Graham C. -->
 <h2 id="the-non-private-protocol">The non private protocol</h2>
 <p>There are <span class="math inline">\(M\)</span> candidates in an election and <span class="math inline">\(n\)</span> voters. Each voter is required to vote for at most 1 candidate once once. A central aggregator collects these votes, aggregates them and declares the winner by computing the index of the candidate that received the most votes. Such an election is known as a plurality election.</p>
 <p><img src="pngs/notation.png" width="90%"></img> <img src="pngs/non_private_vote.png" width="90%"></img></p>
@@ -93,7 +93,7 @@
 </ol>
 <h3 id="an-new-privacy-model-gossipy-servers">An new privacy model: Gossipy Servers</h3>
 <div class="important">
-<p>There could a formal term for this model, I am not sure. I made this is up so we should discuss this. I am not sure if this is practical – but this is model prevents central noise addition, so we can use distributed DP.</p>
+<p>There could be a formal term for this model, I am not sure. I made this is up so we should discuss this. I am not sure if this is practical – but this is model prevents central noise addition, so we can use distributed DP.</p>
 </div>
 <p>We assume that servers are semi-honest i.e. they follow the protocols as required. For correctness of protocol we will require all the servers are semi honest and for privacy we will require at least 1 server is semi honest. Thus far this gives the same level of security as the above section. We add to this set of assumptions another constraint. We assume that at least one of the servers is gossipy and not properly implemented. They are subject to data breaches, spy-wares or and man in the middle attacks. See figure below for an illustration.</p>
 <p><img src="pngs/gossip.png" width="90%"></img></p>

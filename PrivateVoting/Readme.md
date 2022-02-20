@@ -4,7 +4,7 @@
 
 **Work in progress**
 
-<u>Authors:</u> Ari B, Graham C.
+<!-- <u>Authors:</u> Ari B, Graham C. -->
 
 ## The non private protocol
 
@@ -153,7 +153,7 @@ In the lightweight heavy hitters problem, Poplar has some small leakage of infor
 
 ### An new privacy model: Gossipy Servers
 
-<div class="important"> There could a formal term for this model, I am
+<div class="important"> There could be a formal term for this model, I am
 not sure. I made this is up so we should discuss this. I am not sure
 if this is practical -- but this is model prevents central noise
 addition, so we can use distributed DP.
