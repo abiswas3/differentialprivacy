@@ -6,6 +6,6 @@ cd Crypto && ./build.sh && cd ../
 cd conferences && ./build && cd ../
 cd GraduateSchoolCourses/ && ./build.sh && cd ../ 
 # cd Scratch/ && ./build && cd ../
-# cd PrivateVoting  && ./build && cd ../
+cd PrivateVoting  && ./build && cd ../
 
 

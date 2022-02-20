@@ -78,9 +78,9 @@ guarantee $(\epsilon, 0)$ DP.
 The central server still has to be trusted to act honestly and it can
 see who voted for whom
 
-#### Communication Complexity
+#### Communication Complexity with Server.
 
-TODO
+Clients can use $\log M$ bits to communicate preference and the server does the rest. This is the most efficient protocol.
 
 ### Semi honest clients and servers 
 
@@ -104,7 +104,7 @@ clients.**
 
 #### Communication Complexity
 
-TODO 
+The communication complexity of this model is quite bad -- each client essentially sets up a peer to peer network via the server. So its $O(n^2)$ where $n$ is number of clients. This has been improved in [future work that Graham sent me](https://dl.acm.org/doi/10.1145/3372297.3417885) and they claim $polylog$ communication complexity. **TODO: details of this paper**
 
 ### Malicious clients and **all** semi-honest servers (or at least 1 semi honest server) 
 
@@ -133,7 +133,13 @@ re-derive the protocol and have another think. My intuition is -- it
 cannot, but POPLAR can so I guess it doesn't matter too much.
 </div> 
 
-#### How is Poplar better than PRIO?
+#### How is Poplar (Lightweight heavy hitter paper) different from PRIO?
+
+PRIO and Poplar use almost completely different protocols. PRIO defends against bad clients via a distributed zero knowledge proof. The client-server communication complexity scales with with the number of $MULT$ gates in the validation circuit. For MPC over very sparse vectors, PRIO does not offer any space savings. In our case the communication complexity of Poplar and Prio are the exact same, as voting clients are not required to specify a vote count for all $2^{M-1}$ candidate arrangements.
+
+The security properties of the subset sum protocol (which is the same thing as plurality voting) are the exact same as PRIO. In poplar, the communication complexity grows $\log M$ where $M$ is the domain size of the point function. 
+
+In the lightweight heavy hitters problem, Poplar has some small leakage of information. I have not deeply understood Poplar's heavy hitter protocol but the idea is very similar to the Federated Trie Heavy hitters work we studied at the beginning. They 
 
 #### Comments
 
@@ -214,13 +220,26 @@ illustration.
    would not block this, however the final de-biasing algorithm will
    be incorrect with high probability.
 
+
 <div class="lemma">
 <h4> OPEN PROBLEM: </h4>    
 Can we come up with a distributed DP algorithm with "good" accuracy
 guarantees but where we can also detect ballot stuffing.  
 </div>
 
-## References
+**NOTE:** Poplar claims to solve this problem for the heavy hitter problem in 2 server case. They assume one of the servers is not trusted and one of them is honest. Both servers add Laplace noise independently to ensure privacy. The protocol is very very similar to the original Federated Heavy hitters paper by Brendan McMahan where the algorithm is equivalent to growing a Trie and pruning it. This is a binary tree instead. The algorithm is not satisfying for two reasons: 
+
+(1) In our new model, the server might know they are corrupted. It is impossible to detect if the right noise has been added by the dishonest server or the honest server. 
+
+(2) We still have not solved how to do all of this with local randomisers. I am working on this right now.
+
+
+<div class="lemma">
+<h4> OPEN PROBLEM: </h4>    
+Still not clear how to efficiently compute condorcet winners -- those methods require clients to submit a full ranking and then servers to do secure comparisons.  
+</div>
+
+
 
 
 </div>

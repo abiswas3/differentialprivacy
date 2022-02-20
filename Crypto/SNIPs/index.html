@@ -5,386 +5,136 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../crypto.css" />
+  <link rel="stylesheet" href="../crypto.css">
+  <script src="../../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-
-
+  
+  
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My Notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>  
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
-
-  <script src="../../code/es5/tex-chtml.js"
-  type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
+
 <div class="container">
-<h1 id="shared-non-interactive-proofs-snips">Shared Non Interactive
-Proofs (SNIPs)</h1>
-<p><strong>NOTE:</strong> In this document we use the terms voter,
-client and prover interchangeably. We also use the words verifier and
-servers interchangeably. All computation is done in <span
-class="math inline">\(\mathbb{Z}_p\)</span> where <span
-class="math inline">\(p\)</span> is large prime. Much larger than <span
-class="math inline">\(M\)</span>, the number of candidates in an
-election.</p>
+<h1 id="shared-non-interactive-proofs-snips">Shared Non Interactive Proofs (SNIPs)</h1>
+<p><strong>NOTE:</strong> In this document we use the terms voter, client and prover interchangeably. We also use the words verifier and servers interchangeably. All computation is done in <span class="math inline">\(\mathbb{Z}_p\)</span> where <span class="math inline">\(p\)</span> is large prime. Much larger than <span class="math inline">\(M\)</span>, the number of candidates in an election.</p>
 <h2 id="recap-of-voting-protocol">Recap of voting protocol</h2>
 <p>See slides I sent Graham.</p>
 <h2 id="what-is-a-proof-system">What is a proof system</h2>
-<p>According to Wikipedia a proof system is an abstract machine that
-models computation as the exchange of messages between two parties: a
-prover and a verifier. The parties interact by exchanging messages in
-order to ascertain whether a given string belongs to a language or not
-i.e. the prover has some string <span class="math inline">\(x\)</span>
-and the language can be described by all <span
-class="math inline">\(x\)</span> such that <span
-class="math inline">\(f(x) = 1\)</span></p>
-<p>In a non interactive system, there is just one round of interaction
-between the prover and the verifier. Traditionally proof systems have a
-single prover and a single verifier.</p>
+<p>According to Wikipedia a proof system is an abstract machine that models computation as the exchange of messages between two parties: a prover and a verifier. The parties interact by exchanging messages in order to ascertain whether a given string belongs to a language or not i.e. the prover has some string <span class="math inline">\(x\)</span> and the language can be described by all <span class="math inline">\(x\)</span> such that <span class="math inline">\(f(x) = 1\)</span></p>
+<p>In a non interactive system, there is just one round of interaction between the prover and the verifier. Traditionally proof systems have a single prover and a single verifier.</p>
 <h2 id="zero-knowledge">Zero Knowledge</h2>
-<p>A zero-knowledge proof is special proof system, by which one party
-(the prover) can prove to another party (the verifier) that a given
-statement is true while the prover avoids conveying any additional
-information apart from the fact that the statement is indeed true.</p>
+<p>A zero-knowledge proof is special proof system, by which one party (the prover) can prove to another party (the verifier) that a given statement is true while the prover avoids conveying any additional information apart from the fact that the statement is indeed true.</p>
 <p>Formally a zero knowledge proof must satisfy three properties:</p>
 <ul>
-<li><p>Completeness: If <span class="math inline">\(x\)</span> is in the
-language (i.e. <span class="math inline">\(f(x)=1\)</span> or simply,
-the statement being proved is true), an honest verifier will be
-convinced of this fact by a honest prover.</p></li>
-<li><p>Soundness: If the statement is false, no cheating prover
-(<strong><em>even if they have super polynomial compute
-power</em></strong>) can convince the honest verifier that it is true,
-except with some very small probability.</p></li>
-<li><p>Zero Knowledge: If the statement is true, no verifier (honest or
-otherwise) learns anything other than the fact that the statement is
-true. This is formalized by showing that every verifier has some
-simulator that, given only the statement to be proved (and no access to
-the prover), can produce a transcript that “looks like” an interaction
-between the honest prover and the verifier in question. There is an even
-more formal definition using Turing machines and probabilistic
-polynomial time, but it is not needed for this write-up.</p>
+<li><p>Completeness: If <span class="math inline">\(x\)</span> is in the language (i.e. <span class="math inline">\(f(x)=1\)</span> or simply, the statement being proved is true), an honest verifier will be convinced of this fact by a honest prover.</p></li>
+<li><p>Soundness: If the statement is false, no cheating prover (<strong><em>even if they have super polynomial compute power</em></strong>) can convince the honest verifier that it is true, except with some very small probability.</p></li>
+<li>Zero Knowledge: If the statement is true, no verifier (honest or otherwise) learns anything other than the fact that the statement is true. This is formalized by showing that every verifier has some simulator that, given only the statement to be proved (and no access to the prover), can produce a transcript that “looks like” an interaction between the honest prover and the verifier in question. There is an even more formal definition using Turing machines and probabilistic polynomial time, but it is not needed for this write-up.
 <div class="intuition">
-One can think of zero knowledge simply as follows: In doing the proof
-protocol, the verifier learns as much about the provers input <span
-class="math inline">\(x\)</span> as they would if the prover had sent
-the verifier nothing at all.
+One can think of zero knowledge simply as follows: In doing the proof protocol, the verifier learns as much about the provers input <span class="math inline">\(x\)</span> as they would if the prover had sent the verifier nothing at all.
 </div></li>
 </ul>
-<h2 id="what-is-different-about-snips">What is different about
-SNIPs</h2>
-<p>Instead of 1 verifier that are <span class="math inline">\(k\)</span>
-verifiers. Furthermore, for our proofs to be useful, we need every
-verifier to be trusted and honest. Otherwise the users input is
-compromised. However, if the verifiers are honest, then we will get all
-the properties of a zero knowledge proof.</p>
+<h2 id="what-is-different-about-snips">What is different about SNIPs</h2>
+<p>Instead of 1 verifier that are <span class="math inline">\(k\)</span> verifiers. Furthermore, for our proofs to be useful, we need every verifier to be trusted and honest. Otherwise the users input is compromised. However, if the verifiers are honest, then we will get all the properties of a zero knowledge proof.</p>
 <h2 id="preliminaries">Preliminaries</h2>
 <h3 id="arithmetic-circuit">Arithmetic circuit</h3>
-<p>In computational complexity theory, arithmetic circuits are the
-standard model for computing polynomials. Informally, an arithmetic
-circuit takes as inputs either variables or numbers, and is allowed to
-either add or multiply two expressions it has already computed.
-Additionally any arithmetic circuit for a polynomial of degree <span
-class="math inline">\(n\)</span> can be expressed by <span
-class="math inline">\(n\)</span> add operations on the input and <span
-class="math inline">\(n\)</span> multiplication operations. Let <span
-class="math inline">\(p(x)\)</span> be an polynomial of degree <span
-class="math inline">\(n\)</span> in <span
-class="math inline">\(\mathbb{Z}_p\)</span> and <span
-class="math inline">\(x_1, \dots, x_n\)</span> be the roots. We can
-always write <span class="math inline">\(p(x)\)</span> as <span
-class="math inline">\((x-x_1)(x-x_2)\dots(x-x_n)\)</span></p>
+<p>In computational complexity theory, arithmetic circuits are the standard model for computing polynomials. Informally, an arithmetic circuit takes as inputs either variables or numbers, and is allowed to either add or multiply two expressions it has already computed. Additionally any arithmetic circuit for a polynomial of degree <span class="math inline">\(n\)</span> can be expressed by <span class="math inline">\(n\)</span> add operations on the input and <span class="math inline">\(n\)</span> multiplication operations. Let <span class="math inline">\(p(x)\)</span> be an polynomial of degree <span class="math inline">\(n\)</span> in <span class="math inline">\(\mathbb{Z}_p\)</span> and <span class="math inline">\(x_1, \dots, x_n\)</span> be the roots. We can always write <span class="math inline">\(p(x)\)</span> as <span class="math inline">\((x-x_1)(x-x_2)\dots(x-x_n)\)</span></p>
 <h3 id="polynomials">Polynomials</h3>
 <div class="lemma">
-<p><strong>Lemma a:</strong> If we have M distinct points in <span
-class="math inline">\(\mathbb{Z}_p\)</span>, we can always find a
-polynomial of degree <span class="math inline">\(M-1\)</span> that
-passes through all those points. Furthermore, this polynomial is unique
-i.e. there is only one polynomial that passes through all M points.</p>
+<p><strong>Lemma a:</strong> If we have M distinct points in <span class="math inline">\(\mathbb{Z}_p\)</span>, we can always find a polynomial of degree <span class="math inline">\(M-1\)</span> that passes through all those points. Furthermore, this polynomial is unique i.e. there is only one polynomial that passes through all M points.</p>
 </div>
 <p><br> Another way of saying the above lemma is</p>
 <div class="lemma">
-<p><strong>Lemma b:</strong> If two polynomials <span
-class="math inline">\(p\)</span> and <span
-class="math inline">\(q\)</span> with degree <span
-class="math inline">\(t\)</span>, agree of <span
-class="math inline">\(t+1\)</span> points i.e <span
-class="math inline">\(p(x)=q(x)\)</span> for <span
-class="math inline">\(x_0, \dots, x_{t+1}\)</span>, then <span
-class="math inline">\(p(x) = q(x) \forall x \in
-\mathbb{Z}_p\)</span></p>
+<p><strong>Lemma b:</strong> If two polynomials <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> with degree <span class="math inline">\(t\)</span>, agree of <span class="math inline">\(t+1\)</span> points i.e <span class="math inline">\(p(x)=q(x)\)</span> for <span class="math inline">\(x_0, \dots, x_{t+1}\)</span>, then <span class="math inline">\(p(x) = q(x) \forall x \in \mathbb{Z}_p\)</span></p>
 </div>
 <p><br></p>
-<p>A polynomial <span class="math inline">\(p(x)\)</span> of degree M
-can be described by a vector <span class="math inline">\(M+1\)</span>
-numbers <span class="math inline">\(\in \mathbb{Z}_p\)</span>, <span
-class="math inline">\(p=[p_0, \dots, p_{M}]\)</span> such that: <span
-class="math inline">\(p(x) = p_{M}x^{M-1} + \dots + p_1x +
-p_0\)</span></p>
-<p>For any polynomial <span class="math inline">\(p = [p_0, \dots,
-p_{t}]\)</span> of degree <span class="math inline">\(t\)</span>, when
-we say we create <span class="math inline">\(k\)</span> shares of <span
-class="math inline">\(p\)</span>, we generate <span
-class="math inline">\(k\)</span> polynomials <span
-class="math inline">\([p]_1, \dots, [p]_k\)</span> such that <span
-class="math inline">\(p(x) = \sum_{j=1}^k [p]_{j}(x)\)</span> where
-<span class="math inline">\([p]_j \in \mathbb{Z}_p^{t+1}\)</span></p>
+<p>A polynomial <span class="math inline">\(p(x)\)</span> of degree M can be described by a vector <span class="math inline">\(M+1\)</span> numbers <span class="math inline">\(\in \mathbb{Z}_p\)</span>, <span class="math inline">\(p=[p_0, \dots, p_{M}]\)</span> such that: <span class="math inline">\(p(x) = p_{M}x^{M-1} + \dots + p_1x + p_0\)</span></p>
+<p>For any polynomial <span class="math inline">\(p = [p_0, \dots, p_{t}]\)</span> of degree <span class="math inline">\(t\)</span>, when we say we create <span class="math inline">\(k\)</span> shares of <span class="math inline">\(p\)</span>, we generate <span class="math inline">\(k\)</span> polynomials <span class="math inline">\([p]_1, \dots, [p]_k\)</span> such that <span class="math inline">\(p(x) = \sum_{j=1}^k [p]_{j}(x)\)</span> where <span class="math inline">\([p]_j \in \mathbb{Z}_p^{t+1}\)</span></p>
 <h3 id="additive-secret-sharing">Additive secret sharing</h3>
-<p>For any <span class="math inline">\(x \in \mathbb{Z}_p^{M}\)</span>,
-the function <span class="math inline">\(share(x, k)\)</span>, generates
-<span class="math inline">\(k\)</span> shares of <span
-class="math inline">\(x\)</span> such that <span class="math inline">\(x
-= \sum_{j=1}^k [x]_{j}\)</span>, where <span
-class="math inline">\([x]_j\)</span> is the <span
-class="math inline">\(j\)</span>’th share of <span
-class="math inline">\(x\)</span>.</p>
+<p>For any <span class="math inline">\(x \in \mathbb{Z}_p^{M}\)</span>, the function <span class="math inline">\(share(x, k)\)</span>, generates <span class="math inline">\(k\)</span> shares of <span class="math inline">\(x\)</span> such that <span class="math inline">\(x = \sum_{j=1}^k [x]_{j}\)</span>, where <span class="math inline">\([x]_j\)</span> is the <span class="math inline">\(j\)</span>’th share of <span class="math inline">\(x\)</span>.</p>
 <br>
 <div class="lemma">
 <h5>
 Linearity of Secret sharing:
 </h5>
-<p>Let q be any linear map. If we have <span class="math inline">\(x =
-\sum_{i=1}^k[x]_i\)</span>, then <span class="math inline">\(q(x) =
-q(\sum_{i=1}^k [x]_i)) = \sum_{i=1}^k q([x]_i)\)</span></p>
+<p>Let q be any linear map. If we have <span class="math inline">\(x = \sum_{i=1}^k[x]_i\)</span>, then <span class="math inline">\(q(x) = q(\sum_{i=1}^k [x]_i)) = \sum_{i=1}^k q([x]_i)\)</span></p>
 </div>
 <h2 id="validation-circuit">Validation Circuit</h2>
-<p>Using SNIPs a prover would like to convince <span
-class="math inline">\(k\)</span> verifiers that their vote <span
-class="math inline">\(x \in \mathbb{Z}_p^{M}\)</span> is well formed. To
-determine if an input is well formed, there is some public circuit <span
-class="math inline">\(Valid\)</span>, validates if a clients input is
-well formed. The public circuit which allows a voter to prove the
-validity of their input is as follows:</p>
-<p>Let <span class="math inline">\(x \in \mathbb{Z}_p^{M} = [x_1, \dots,
-x_M]\)</span> be the voters input.</p>
-<p><span class="math display">\[\begin{equation}
+<p>Using SNIPs a prover would like to convince <span class="math inline">\(k\)</span> verifiers that their vote <span class="math inline">\(x \in \mathbb{Z}_p^{M}\)</span> is well formed. To determine if an input is well formed, there is some public circuit <span class="math inline">\(Valid\)</span>, validates if a clients input is well formed. The public circuit which allows a voter to prove the validity of their input is as follows:</p>
+<p>Let <span class="math inline">\(x \in \mathbb{Z}_p^{M} = [x_1, \dots, x_M]\)</span> be the voters input.</p>
+<span class="math display">\[\begin{equation}
 valid_0(x) = \Big(\sum_{i=1}^M x_i)\Big) == 1
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
 valid_i(x_i) = \Big((x_i - 1)x_i\Big) == 0
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
 valid_{M+1}(x) = \Big[\prod_{i=1}^{M} valid_i(x_i)\Big] == 1
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
 Valid(x) = \Bigg(valid_0(x) \times valid_{M+1} == 1\Bigg)
-\end{equation}\]</span></p>
-The left hand product ensures that the a voters input sums to 1 and the
-right hand side ensures that inputs are either 1 or 0. For a users input
-<span class="math inline">\(x\)</span> to be valid they must convince
-the <span class="math inline">\(k\)</span> verifiers that they pass all
-<span class="math inline">\(M+3\)</span> valid circuits.
+\end{equation}\]</span>
+The left hand product ensures that the a voters input sums to 1 and the right hand side ensures that inputs are either 1 or 0. For a users input <span class="math inline">\(x\)</span> to be valid they must convince the <span class="math inline">\(k\)</span> verifiers that they pass all <span class="math inline">\(M+3\)</span> valid circuits.
 <div class="intuition">
-As we have multiple arithmetic circuits, <span
-class="math inline">\(valid_i\)</span> returns 0 on success instead of
-1. It will become clear why this is useful.
+As we have multiple arithmetic circuits, <span class="math inline">\(valid_i\)</span> returns 0 on success instead of 1. It will become clear why this is useful.
 </div>
 <h2 id="voters-proof-construction">Voters proof construction</h2>
 <h5>
 Intuition:
 </h5>
-<p>If the verifiers had access to <span
-class="math inline">\(x\)</span>, they could just run <span
-class="math inline">\(Valid(x)\)</span> and they would be good. But that
-violates the point of the secure protocol to begin with. Instead each
-verifier only has a share of the input. They must be able to verify if
-the shares combine to generate the right output. Observe that if the
-validation circuit was an arithmetic circuit made up of just addition
-gates, the only information the verifiers need is the input shares. See
-below:</p>
+<p>If the verifiers had access to <span class="math inline">\(x\)</span>, they could just run <span class="math inline">\(Valid(x)\)</span> and they would be good. But that violates the point of the secure protocol to begin with. Instead each verifier only has a share of the input. They must be able to verify if the shares combine to generate the right output. Observe that if the validation circuit was an arithmetic circuit made up of just addition gates, the only information the verifiers need is the input shares. See below:</p>
 <div class="lemma">
 <h5>
-If a circuit has just add operations, then the proof construction is
-trivial. We first describe this so we can use this information to build
-to any arbitrary circuit.
+If a circuit has just add operations, then the proof construction is trivial. We first describe this so we can use this information to build to any arbitrary circuit.
 </h5>
-<p>The proof vector that the voter sends to each server is just additive
-shares of the input <span class="math inline">\(x\)</span>. Let the
-<span class="math inline">\(q\)</span> be linear map on <span
-class="math inline">\(x\)</span> that describes all the additive
-operations. The output of the circuit is <span
-class="math inline">\(q(x)\)</span>. Each server has access to a share
-<span class="math inline">\([x]_j\)</span> and compute <span
-class="math inline">\(q([x]_j)\)</span> and broadcast this value to the
-other servers. After one round broadcasting, each server computes <span
-class="math inline">\(\sum_{i=1}^k q([x]_j) = q(x)\)</span> by linearity
-of additive secret sharing.</p>
+<p>The proof vector that the voter sends to each server is just additive shares of the input <span class="math inline">\(x\)</span>. Let the <span class="math inline">\(q\)</span> be linear map on <span class="math inline">\(x\)</span> that describes all the additive operations. The output of the circuit is <span class="math inline">\(q(x)\)</span>. Each server has access to a share <span class="math inline">\([x]_j\)</span> and compute <span class="math inline">\(q([x]_j)\)</span> and broadcast this value to the other servers. After one round broadcasting, each server computes <span class="math inline">\(\sum_{i=1}^k q([x]_j) = q(x)\)</span> by linearity of additive secret sharing.</p>
 </div>
-<p><br> A general arithmetic circuit will have multiplication gates.
-Multiplication is not linear, so the prover will have to provide some
-additional help to the verifiers to be able to generate the final
-output. <em>The proof is just the help the prover gives the verifiers to
-compute the circuit.</em></p>
+<p><br> A general arithmetic circuit will have multiplication gates. Multiplication is not linear, so the prover will have to provide some additional help to the verifiers to be able to generate the final output. <em>The proof is just the help the prover gives the verifiers to compute the circuit.</em></p>
 <h3 id="any-general-circuit">Any general circuit</h3>
-<p>A single prover wants to convince <span
-class="math inline">\(k\)</span> verifiers that <span
-class="math inline">\(valid_i(x) == c\)</span> for some public constant
-<span class="math inline">\(c \in \mathbb{Z}_p\)</span>. In order to do
-this, they send each verifier <span class="math inline">\(j\)</span> a
-proof <span class="math inline">\(\pi_j\)</span>. Any arithmetic circuit
-<span class="math inline">\(C\)</span> describes a polynomial, and a
-polynomial of degree <span class="math inline">\(n\)</span> can be
-described by <span class="math inline">\(n\)</span> input addition
-operations followed by <span class="math inline">\(n\)</span> sequential
-multiplications, as described earlier.</p>
-<p>Let <span class="math inline">\(G\)</span> be the number of
-multiplication gates in our arithmetic circuit C. Let <span
-class="math inline">\(q\)</span> represent the linear operations on the
-input before feeding into the left wire of the first multiplication
-gate. Similarly let <span class="math inline">\(p\)</span> represent the
-linear operation for the right wire of the first multiplication gate.
-What this means is that if the prover sends each server <span
-class="math inline">\([x]_j\)</span>, each server is able to compute
-<span class="math inline">\(p([x]_j)\)</span> and <span
-class="math inline">\(q([x]_j)\)</span> which now feed into the
-multiplication gate.</p>
-<p>Let the input wire values to the <span
-class="math inline">\(t\)</span>’th multiplication gate, in topological
-order from inputs to outputs, be <span
-class="math inline">\(u_t\)</span> and <span
-class="math inline">\(v_t\)</span>, <span class="math inline">\(\forall
-1 \leq t \leq G\)</span>. Similarly let the output be <span
-class="math inline">\(w_t\)</span>. Define <span
-class="math inline">\(f\)</span> and <span
-class="math inline">\(g\)</span> to be the lowest degree polynomials of
-degree at most <span class="math inline">\(G-1\)</span>, such that <span
-class="math inline">\(u_t = f(t)\)</span> and <span
-class="math inline">\(v_t=g(t)\)</span>. <span class="math inline">\(u_1
-= q(x)\)</span> and <span class="math inline">\(v_1 = p(x)\)</span>.</p>
-<p><strong>NOTE:</strong> We have G points for <span
-class="math inline">\(u_t\)</span> and G points for <span
-class="math inline">\(v_t\)</span>. Using the polynomial lemma stated
-above, the prover can compute polynomials <span
-class="math inline">\(f\)</span> and <span
-class="math inline">\(g\)</span> via lagrange interpolation – where
-<span class="math inline">\(f\)</span> and <span
-class="math inline">\(g\)</span> are unique. Define <span
-class="math inline">\(h(x) := f(x)g(x)\)</span>. As the prover knows
-<span class="math inline">\(f\)</span> and <span
-class="math inline">\(g\)</span> they can compute <span
-class="math inline">\(h\)</span> exactly. Furthermore <span
-class="math inline">\(h(t)=w_t \forall 1 \leq t \leq G\)</span></p>
-<p>The prover now splits the polynomial coefficients of <span
-class="math inline">\(h \in \mathbb{Z}_p^{2G - 2}\)</span> into <span
-class="math inline">\(k\)</span> shares using additive secret shares
-<span class="math inline">\([h]_1, \dots, [h]_k\)</span>. Additionally,
-The prover picks 3 values <span class="math inline">\(a, b, c \in
-Z\)</span> such that <span class="math inline">\(ab = c\)</span>. It
-splits each of these values using additive secret sharing, and sends to
-verifier <span class="math inline">\(j\)</span>, <span
-class="math inline">\([a]_j, [b]_j\)</span> and <span
-class="math inline">\([c]_j\)</span></p>
-<h2 id="proof-verification-at-the-servers">Proof verification at the
-servers</h2>
-<p>Since we have <span class="math inline">\(k\)</span> honest
-verifiers, some of the verification steps are computed locally and then
-these computations are broadcasted and aggregated. If we did not need
-communication, we would be back in the 1 verifier setting, so SNIPs
-require that the verifiers communicate with each other. We need servers
-to be honest. If they are all dishonest, then server <span
-class="math inline">\(j\)</span> could broadcast <span
-class="math inline">\([x]_j\)</span>. They could all compute <span
-class="math inline">\(x=\sum_{j=1}^k [x]_j\)</span>, revealing x, thus
-breaking the zero knowledge assumption.</p>
-<p>Before the start of the verification of a single circuit, one server
-picks a random <span class="math inline">\(r \in \ZP\)</span> and shared
-it with everyone. The prover does not know <span
-class="math inline">\(r\)</span>. <strong>It is very important that the
-prover does not know <span
-class="math inline">\(r\)</span></strong>.</p>
-<h3 id="local-computations-at-verifier">Local computations at
-Verifier</h3>
-<p>We consider the actions of verifier <span
-class="math inline">\(j\)</span> for <span class="math inline">\(1 \leq
-j \leq k\)</span>. All other verifiers mimic the same process with their
-inputs.</p>
+<p>A single prover wants to convince <span class="math inline">\(k\)</span> verifiers that <span class="math inline">\(valid_i(x) == c\)</span> for some public constant <span class="math inline">\(c \in \mathbb{Z}_p\)</span>. In order to do this, they send each verifier <span class="math inline">\(j\)</span> a proof <span class="math inline">\(\pi_j\)</span>. Any arithmetic circuit <span class="math inline">\(C\)</span> describes a polynomial, and a polynomial of degree <span class="math inline">\(n\)</span> can be described by <span class="math inline">\(n\)</span> input addition operations followed by <span class="math inline">\(n\)</span> sequential multiplications, as described earlier.</p>
+<p>Let <span class="math inline">\(G\)</span> be the number of multiplication gates in our arithmetic circuit C. Let <span class="math inline">\(q\)</span> represent the linear operations on the input before feeding into the left wire of the first multiplication gate. Similarly let <span class="math inline">\(p\)</span> represent the linear operation for the right wire of the first multiplication gate. What this means is that if the prover sends each server <span class="math inline">\([x]_j\)</span>, each server is able to compute <span class="math inline">\(p([x]_j)\)</span> and <span class="math inline">\(q([x]_j)\)</span> which now feed into the multiplication gate.</p>
+<p>Let the input wire values to the <span class="math inline">\(t\)</span>’th multiplication gate, in topological order from inputs to outputs, be <span class="math inline">\(u_t\)</span> and <span class="math inline">\(v_t\)</span>, <span class="math inline">\(\forall 1 \leq t \leq G\)</span>. Similarly let the output be <span class="math inline">\(w_t\)</span>. Define <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> to be the lowest degree polynomials of degree at most <span class="math inline">\(G-1\)</span>, such that <span class="math inline">\(u_t = f(t)\)</span> and <span class="math inline">\(v_t=g(t)\)</span>. <span class="math inline">\(u_1 = q(x)\)</span> and <span class="math inline">\(v_1 = p(x)\)</span>.</p>
+<p><strong>NOTE:</strong> We have G points for <span class="math inline">\(u_t\)</span> and G points for <span class="math inline">\(v_t\)</span>. Using the polynomial lemma stated above, the prover can compute polynomials <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> via lagrange interpolation – where <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are unique. Define <span class="math inline">\(h(x) := f(x)g(x)\)</span>. As the prover knows <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> they can compute <span class="math inline">\(h\)</span> exactly. Furthermore <span class="math inline">\(h(t)=w_t \forall 1 \leq t \leq G\)</span></p>
+<p>The prover now splits the polynomial coefficients of <span class="math inline">\(h \in \mathbb{Z}_p^{2G - 2}\)</span> into <span class="math inline">\(k\)</span> shares using additive secret shares <span class="math inline">\([h]_1, \dots, [h]_k\)</span>. Additionally, The prover picks 3 values <span class="math inline">\(a, b, c \in Z\)</span> such that <span class="math inline">\(ab = c\)</span>. It splits each of these values using additive secret sharing, and sends to verifier <span class="math inline">\(j\)</span>, <span class="math inline">\([a]_j, [b]_j\)</span> and <span class="math inline">\([c]_j\)</span></p>
+<h2 id="proof-verification-at-the-servers">Proof verification at the servers</h2>
+<p>Since we have <span class="math inline">\(k\)</span> honest verifiers, some of the verification steps are computed locally and then these computations are broadcasted and aggregated. If we did not need communication, we would be back in the 1 verifier setting, so SNIPs require that the verifiers communicate with each other. We need servers to be honest. If they are all dishonest, then server <span class="math inline">\(j\)</span> could broadcast <span class="math inline">\([x]_j\)</span>. They could all compute <span class="math inline">\(x=\sum_{j=1}^k [x]_j\)</span>, revealing x, thus breaking the zero knowledge assumption.</p>
+<p>Before the start of the verification of a single circuit, one server picks a random <span class="math inline">\(r \)</span> and shared it with everyone. The prover does not know <span class="math inline">\(r\)</span>. <strong>It is very important that the prover does not know <span class="math inline">\(r\)</span></strong>.</p>
+<h3 id="local-computations-at-verifier">Local computations at Verifier</h3>
+<p>We consider the actions of verifier <span class="math inline">\(j\)</span> for <span class="math inline">\(1 \leq j \leq k\)</span>. All other verifiers mimic the same process with their inputs.</p>
 <div class="lemma">
 <h5>
 What does server <span class="math inline">\(j\)</span> have access to:
 </h5>
-<p>They receive a polynomial <span class="math inline">\([h]_j\)</span>
-and input share <span class="math inline">\([x]_j\)</span>. They have
-access to the all circuits <span class="math inline">\(Valid\)</span>.
-They also have access to <span class="math inline">\(r\)</span> and
-<span class="math inline">\([a]_j, [b]_j\)</span> and <span
-class="math inline">\([c]_j\)</span>.</p>
+<p>They receive a polynomial <span class="math inline">\([h]_j\)</span> and input share <span class="math inline">\([x]_j\)</span>. They have access to the all circuits <span class="math inline">\(Valid\)</span>. They also have access to <span class="math inline">\(r\)</span> and <span class="math inline">\([a]_j, [b]_j\)</span> and <span class="math inline">\([c]_j\)</span>.</p>
 </div>
-<p><br> Each server just computes <span
-class="math inline">\(p([x]_j)\)</span> and <span
-class="math inline">\(q([x]_j)\)</span> to input it into the first
-multiplication gate. Let <span class="math inline">\(u_1\)</span> and
-<span class="math inline">\(v_1\)</span> be the inputs to this gate in
-topological order and <span class="math inline">\(w_1\)</span> be the
-output. The verifier sets <span class="math inline">\(w_1 =
-[h]_j(1)\)</span> using the polynomial share they received from the
-prover. <strong>They needed the prover to help them with this value as
-they cannot just compute it from the input shares</strong>. This process
-is repeated for the next <span class="math inline">\(G-1\)</span>
-multiplication gates. Let <span class="math inline">\(u_t\)</span> and
-<span class="math inline">\(v_t\)</span> be the inputs to multiplication
-gate <span class="math inline">\(t\)</span>, and <span
-class="math inline">\(w_t\)</span> be the output. Verifier <span
-class="math inline">\(j\)</span> sets <span class="math inline">\(w_t =
-[h]_j(t)\)</span> for all <span class="math inline">\(1 \leq t \leq
-G\)</span>. The final output for server <span
-class="math inline">\(j\)</span> is <span
-class="math inline">\([h]_j(G)\)</span>.</p>
-<p>At this point for each server, all input and output wire have a value
-assigned. Thus there are <span class="math inline">\(G\)</span> distinct
-values for <span class="math inline">\(u_t\)</span> and <span
-class="math inline">\(v_t\)</span>, the server uses polynomial
-interpolation to compute two polynomials <span
-class="math inline">\([\hat{f}]_j\)</span> and <span
-class="math inline">\([\hat{g}]_j\)</span>, such that <span
-class="math inline">\([\hat{f}]_j(t) = u_t\)</span>, <span
-class="math inline">\([\hat{g}]_j(t) = v_t\)</span> for all <span
-class="math inline">\(1 \leq t \leq G\)</span>.</p>
-<p>At this point verifier <span class="math inline">\(j\)</span> has
-access to three polynomials :</p>
+<p><br> Each server just computes <span class="math inline">\(p([x]_j)\)</span> and <span class="math inline">\(q([x]_j)\)</span> to input it into the first multiplication gate. Let <span class="math inline">\(u_1\)</span> and <span class="math inline">\(v_1\)</span> be the inputs to this gate in topological order and <span class="math inline">\(w_1\)</span> be the output. The verifier sets <span class="math inline">\(w_1 = [h]_j(1)\)</span> using the polynomial share they received from the prover. <strong>They needed the prover to help them with this value as they cannot just compute it from the input shares</strong>. This process is repeated for the next <span class="math inline">\(G-1\)</span> multiplication gates. Let <span class="math inline">\(u_t\)</span> and <span class="math inline">\(v_t\)</span> be the inputs to multiplication gate <span class="math inline">\(t\)</span>, and <span class="math inline">\(w_t\)</span> be the output. Verifier <span class="math inline">\(j\)</span> sets <span class="math inline">\(w_t = [h]_j(t)\)</span> for all <span class="math inline">\(1 \leq t \leq G\)</span>. The final output for server <span class="math inline">\(j\)</span> is <span class="math inline">\([h]_j(G)\)</span>.</p>
+<p>At this point for each server, all input and output wire have a value assigned. Thus there are <span class="math inline">\(G\)</span> distinct values for <span class="math inline">\(u_t\)</span> and <span class="math inline">\(v_t\)</span>, the server uses polynomial interpolation to compute two polynomials <span class="math inline">\([\hat{f}]_j\)</span> and <span class="math inline">\([\hat{g}]_j\)</span>, such that <span class="math inline">\([\hat{f}]_j(t) = u_t\)</span>, <span class="math inline">\([\hat{g}]_j(t) = v_t\)</span> for all <span class="math inline">\(1 \leq t \leq G\)</span>.</p>
+<p>At this point verifier <span class="math inline">\(j\)</span> has access to three polynomials :</p>
 <ul>
-<li><span class="math inline">\([h]_j\)</span>: This was sent to them by
-prover.</li>
-<li><span class="math inline">\([\hat{f}]_j\)</span>: They computed this
-using interpolation after filling the circuit with input values and
-polynomial evaluations.</li>
-<li><span class="math inline">\([\hat{g}]_j\)</span>: They computed this
-using interpolation after filling the circuit with input values and
-polynomial evaluations.</li>
+<li><span class="math inline">\([h]_j\)</span>: This was sent to them by prover.</li>
+<li><span class="math inline">\([\hat{f}]_j\)</span>: They computed this using interpolation after filling the circuit with input values and polynomial evaluations.</li>
+<li><span class="math inline">\([\hat{g}]_j\)</span>: They computed this using interpolation after filling the circuit with input values and polynomial evaluations.</li>
 </ul>
-Define <span class="math inline">\(\hat{fg}(x) = \sum_{j=1}^k
-[\hat{fg}]_j(x)\)</span>. The <span class="math inline">\(j\)</span>’th
-server is only in possession of polynomials <span
-class="math inline">\([\hat{f}]_j\)</span> and <span
-class="math inline">\([\hat{g}]_j\)</span>. It does not possess the
-polynomial <span class="math inline">\(\hat{fg}(x)\)</span>. Despite not
-having the polynomial, assume there is a magical way by which they can
-generate a share <span class="math inline">\([\hat{fg}]_j(r)\)</span> of
-the value <span class="math inline">\(\hat{fg}(r)\)</span>, from <span
-class="math inline">\([\hat{f}]_j(r)\)</span> and <span
-class="math inline">\([\hat{g}]_j(r)\)</span>.
+Define <span class="math inline">\(\hat{fg}(x) = \sum_{j=1}^k [\hat{fg}]_j(x)\)</span>. The <span class="math inline">\(j\)</span>’th server is only in possession of polynomials <span class="math inline">\([\hat{f}]_j\)</span> and <span class="math inline">\([\hat{g}]_j\)</span>. It does not possess the polynomial <span class="math inline">\(\hat{fg}(x)\)</span>. Despite not having the polynomial, assume there is a magical way by which they can generate a share <span class="math inline">\([\hat{fg}]_j(r)\)</span> of the value <span class="math inline">\(\hat{fg}(r)\)</span>, from <span class="math inline">\([\hat{f}]_j(r)\)</span> and <span class="math inline">\([\hat{g}]_j(r)\)</span>.
 <div class="intuition">
-This magic trick is called Beaver’s method for secure multiplication, it
-is described in the appendix.
+This magic trick is called Beaver’s method for secure multiplication, it is described in the appendix.
 </div>
-<p>The server runs the magic protocol to get shares <span
-class="math inline">\([\hat{fg}]_j(r)\)</span> of <span
-class="math inline">\(\hat{fg}(r)\)</span>.</p>
+<p>The server runs the magic protocol to get shares <span class="math inline">\([\hat{fg}]_j(r)\)</span> of <span class="math inline">\(\hat{fg}(r)\)</span>.</p>
 <div class="lemma">
 <h5>
 What does each server publish:
@@ -392,207 +142,69 @@ What does each server publish:
 <p>Each server publishes :</p>
 <ul>
 <li><p><span class="math inline">\([h]_j(G)\)</span></p></li>
-<li><p><span class="math inline">\(\sigma_j = [\hat{fg}]_j(r) -
-[h]_j(r)\)</span></p></li>
+<li><p><span class="math inline">\(\sigma_j = [\hat{fg}]_j(r) - [h]_j(r)\)</span></p></li>
 </ul>
 </div>
 <h3 id="global-computations">Global Computations</h3>
-<p>All servers have broadcasted <span
-class="math inline">\(\sigma_j\)</span> for <span
-class="math inline">\(1 \leq j \leq k\)</span>. Each server now computes
-<span class="math inline">\(\sigma = \sum_{j=1}^k \sigma_j\)</span>. If
-<span class="math inline">\(\sigma = 0\)</span> and the output <span
-class="math inline">\((\sum_{j=1}^k [h]_j(G)) = c\)</span>, the server
-accepts provers input <span class="math inline">\(x\)</span> otherwise
-it rejects it.</p>
+<p>All servers have broadcasted <span class="math inline">\(\sigma_j\)</span> for <span class="math inline">\(1 \leq j \leq k\)</span>. Each server now computes <span class="math inline">\(\sigma = \sum_{j=1}^k \sigma_j\)</span>. If <span class="math inline">\(\sigma = 0\)</span> and the output <span class="math inline">\((\sum_{j=1}^k [h]_j(G)) = c\)</span>, the server accepts provers input <span class="math inline">\(x\)</span> otherwise it rejects it.</p>
 <h2 id="security-properties-of-snips">Security properties of SNIPS</h2>
-<p>Having described the protocols, we are ready to analyse if SNIPs does
-indeed provide properties of a zero knowledge proof protocol.</p>
+<p>Having described the protocols, we are ready to analyse if SNIPs does indeed provide properties of a zero knowledge proof protocol.</p>
 <h3 id="completeness">Completeness</h3>
-<p>Completeness requires an honest prover. An honest prover will follow
-the client proof protocol by the letter.</p>
-<p>The output of a circuit is the output of the last multiplication
-gate, <span class="math inline">\(h(G)\)</span>. We have <span
-class="math inline">\(\sum_{j=1}^k [h]_j(G) = h(G)\)</span>. So by
-combining the outputs of their values, the verifiers were able to
-validate the input.</p>
-<p>For the verifiers to accept <span class="math inline">\(x\)</span>
-they still need <span class="math inline">\(\sigma=0\)</span>. Now we
-show that if the prover is honest i.e.they have not mucked about and
-sent the verifiers some garbage <span class="math inline">\(h\)</span>,
-then we will always have <span
-class="math inline">\(\sigma=0\)</span></p>
-<p>To see why, observer that the input to the <span
-class="math inline">\(t\)</span>’th multiplication gate can be:</p>
+<p>Completeness requires an honest prover. An honest prover will follow the client proof protocol by the letter.</p>
+<p>The output of a circuit is the output of the last multiplication gate, <span class="math inline">\(h(G)\)</span>. We have <span class="math inline">\(\sum_{j=1}^k [h]_j(G) = h(G)\)</span>. So by combining the outputs of their values, the verifiers were able to validate the input.</p>
+<p>For the verifiers to accept <span class="math inline">\(x\)</span> they still need <span class="math inline">\(\sigma=0\)</span>. Now we show that if the prover is honest i.e.they have not mucked about and sent the verifiers some garbage <span class="math inline">\(h\)</span>, then we will always have <span class="math inline">\(\sigma=0\)</span></p>
+<p>To see why, observer that the input to the <span class="math inline">\(t\)</span>’th multiplication gate can be:</p>
 <ul>
-<li><p>A linear operation of the input wire and these inputs were
-created using additive secret sharing. Let the left input be <span
-class="math inline">\(u_t\)</span> and right input be <span
-class="math inline">\(v_t\)</span>. We have <span
-class="math inline">\(\hat{f}(t) = \sum_{j=1}^k [\hat{f}]_j(t) =
-\sum_{j=1}^k [u_t]_j = u_t = f(t)\)</span>. Likewise we have <span
-class="math inline">\(\hat{g}(t) = g(t)\)</span>. Since <span
-class="math inline">\(h(t) = g(t)f(t)\)</span>, we have <span
-class="math inline">\(h(t) = \hat{f}(t)\hat{g}(t)\)</span>. Note: This
-analysis still holds if the input is the output of a linear map on the
-input shares by linearity of secret sharing.</p></li>
-<li><p>An input that is not a linear map of the input wires is the
-output a previous multiplication gate <span class="math inline">\(t_0
-&lt; t\)</span>. So we get, <span class="math inline">\(\hat{f}(t) =
-\sum_{j=1}^k [\hat{f}]_j(t) = \sum_{j=1}^k [h]_j(t_0) = h(t_0) =
-f(t)\)</span>. Likewise <span class="math inline">\(g(t) =
-\hat{g}(t)\)</span>.</p></li>
+<li><p>A linear operation of the input wire and these inputs were created using additive secret sharing. Let the left input be <span class="math inline">\(u_t\)</span> and right input be <span class="math inline">\(v_t\)</span>. We have <span class="math inline">\(\hat{f}(t) = \sum_{j=1}^k [\hat{f}]_j(t) = \sum_{j=1}^k [u_t]_j = u_t = f(t)\)</span>. Likewise we have <span class="math inline">\(\hat{g}(t) = g(t)\)</span>. Since <span class="math inline">\(h(t) = g(t)f(t)\)</span>, we have <span class="math inline">\(h(t) = \hat{f}(t)\hat{g}(t)\)</span>. Note: This analysis still holds if the input is the output of a linear map on the input shares by linearity of secret sharing.</p></li>
+<li><p>An input that is not a linear map of the input wires is the output a previous multiplication gate <span class="math inline">\(t_0 &lt; t\)</span>. So we get, <span class="math inline">\(\hat{f}(t) = \sum_{j=1}^k [\hat{f}]_j(t) = \sum_{j=1}^k [h]_j(t_0) = h(t_0) = f(t)\)</span>. Likewise <span class="math inline">\(g(t) = \hat{g}(t)\)</span>.</p></li>
 </ul>
-<p>There were a total of <span class="math inline">\(G\)</span>
-multiplication gates in the circuit. <span class="math inline">\(f,
-\hat{f}\)</span> agree on <span class="math inline">\(G\)</span> points
-and are of degree at most <span class="math inline">\(G - 1\)</span>. By
-polynomial lemma, <span class="math inline">\(\hat{f} = f\)</span>.
-Likewise <span class="math inline">\(\hat{g} = g\)</span>. Using this
-property, we get <span class="math inline">\(h(r) = f(r)g(r) =
-\hat{f}(r)\hat{g}(r) = \sum_{j=1}^k [\hat{fg}]_j(r)\)</span></p>
+<p>There were a total of <span class="math inline">\(G\)</span> multiplication gates in the circuit. <span class="math inline">\(f, \hat{f}\)</span> agree on <span class="math inline">\(G\)</span> points and are of degree at most <span class="math inline">\(G - 1\)</span>. By polynomial lemma, <span class="math inline">\(\hat{f} = f\)</span>. Likewise <span class="math inline">\(\hat{g} = g\)</span>. Using this property, we get <span class="math inline">\(h(r) = f(r)g(r) = \hat{f}(r)\hat{g}(r) = \sum_{j=1}^k [\hat{fg}]_j(r)\)</span></p>
 <h3 id="soundness">Soundness</h3>
-<p>We have a malicious prover. The goal of a malicious prover is try and
-trick the verifiers i.e. the verifiers output <span
-class="math inline">\(Valid(x)=1\)</span>, when in reality <span
-class="math inline">\(Valid(x) \neq 1\)</span>. To make this happen, a
-prover must do at least one of the following:</p>
+<p>We have a malicious prover. The goal of a malicious prover is try and trick the verifiers i.e. the verifiers output <span class="math inline">\(Valid(x)=1\)</span>, when in reality <span class="math inline">\(Valid(x) \neq 1\)</span>. To make this happen, a prover must do at least one of the following:</p>
 <ul>
-<li>Send a <span class="math inline">\(\hat{h} \neq h\)</span> to the
-the servers.</li>
-<li>Pick a bad beaver triple, <span class="math inline">\(a, b, c \in
-Z\)</span> such that <span class="math inline">\(ab = c +
-\alpha\)</span></li>
+<li>Send a <span class="math inline">\(\hat{h} \neq h\)</span> to the the servers.</li>
+<li>Pick a bad beaver triple, <span class="math inline">\(a, b, c \in Z\)</span> such that <span class="math inline">\(ab = c + \alpha\)</span></li>
 </ul>
-<p>The verifiers can gossip between each other and calculate <span
-class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>
-and <span class="math inline">\(c\)</span>. Doing so reveals nothing
-about <span class="math inline">\(x\)</span> so it does not harm the
-zero knowledge protocol. This way the verifiers find out that <span
-class="math inline">\(ab = c + \alpha\)</span> for <span
-class="math inline">\(\alpha \in \mathbb{Z}_p\)</span>. Now they just
-output, <span class="math inline">\(\sigma_j = [(\hat{fg}(r) + \alpha) -
-\hat{r}]\)</span> instead or just change <span
-class="math inline">\(c\)</span> to <span class="math inline">\(c +
-\alpha\)</span> and the same as before. Both are equivalent. So, this
-attack by the prover is harmless.</p>
-<p>Now we look at what happens when <span class="math inline">\(\hat{h}
-\neq h\)</span>.</p>
+<p>The verifiers can gossip between each other and calculate <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> and <span class="math inline">\(c\)</span>. Doing so reveals nothing about <span class="math inline">\(x\)</span> so it does not harm the zero knowledge protocol. This way the verifiers find out that <span class="math inline">\(ab = c + \alpha\)</span> for <span class="math inline">\(\alpha \in \mathbb{Z}_p\)</span>. Now they just output, <span class="math inline">\(\sigma_j = [(\hat{fg}(r) + \alpha) - \hat{r}]\)</span> instead or just change <span class="math inline">\(c\)</span> to <span class="math inline">\(c + \alpha\)</span> and the same as before. Both are equivalent. So, this attack by the prover is harmless.</p>
+<p>Now we look at what happens when <span class="math inline">\(\hat{h} \neq h\)</span>.</p>
 <div class="lemma">
 <h5>
-Claim: If a client wishes to pass a test for an illegal <span
-class="math inline">\(x\)</span>, they must pick <span
-class="math inline">\(\hat{h}\)</span> such that there exists <strong>at
-least one</strong> <span class="math inline">\(t \in \{1, \dots, G
-\}\)</span> such that <span class="math inline">\(h(t) \neq
-\hat{t}\)</span>
+Claim: If a client wishes to pass a test for an illegal <span class="math inline">\(x\)</span>, they must pick <span class="math inline">\(\hat{h}\)</span> such that there exists <strong>at least one</strong> <span class="math inline">\(t \in \{1, \dots, G \}\)</span> such that <span class="math inline">\(h(t) \neq \hat{t}\)</span>
 </h5>
-<p><strong>Proof:</strong> Assume they align for all <span
-class="math inline">\(G\)</span> values. Remember that, <span
-class="math inline">\(h\)</span> represents the true outputs of
-multiplication gates in the circuit for a given <span
-class="math inline">\(x\)</span>. If <span
-class="math inline">\(Valid(x) \neq 1\)</span>, then <span
-class="math inline">\(h(G) \neq 1\)</span>, then the client will not
-pass the test anyway. Their malicious behaviour would be pointless. Thus
-its safe to assume the above claim for all <span
-class="math inline">\(\hat{h}\)</span></p>
+<p><strong>Proof:</strong> Assume they align for all <span class="math inline">\(G\)</span> values. Remember that, <span class="math inline">\(h\)</span> represents the true outputs of multiplication gates in the circuit for a given <span class="math inline">\(x\)</span>. If <span class="math inline">\(Valid(x) \neq 1\)</span>, then <span class="math inline">\(h(G) \neq 1\)</span>, then the client will not pass the test anyway. Their malicious behaviour would be pointless. Thus its safe to assume the above claim for all <span class="math inline">\(\hat{h}\)</span></p>
 </div>
 <p><br></p>
-<p>Let <span class="math inline">\(t_0\)</span> be the smallest such
-<span class="math inline">\(t \in \{1, \dots, G \}\)</span> such that
-<span class="math inline">\(h(t_0) \neq \hat{t_0}\)</span>.</p>
-<p>Since <span class="math inline">\(t_0\)</span> was the smallest, for
-all gates before this, we have <span class="math inline">\(\hat{fg}(t) =
-fg(t)\)</span> for <span class="math inline">\(1 \leq t \leq
-t_0\)</span>, by the same argument we used to prove completeness.
-Therefore for a bad proof vector <span
-class="math inline">\(\hat{h}\)</span>, we will have <span
-class="math inline">\(\hat{fg}(t_0) = fg(t_0) = h(t_0) \neq
-\hat{h}(t_0)\)</span>. What this is saying, is that if a client sent in
-a bad proof, the server reconstructed polynomial <span
-class="math inline">\(\hat{fg} \neq \hat{h}\)</span>. The prover would
-fail the polynomial identity test for <span
-class="math inline">\(\hat{fg} - \hat{h} == 0\)</span> with very high
-probability.</p>
+<p>Let <span class="math inline">\(t_0\)</span> be the smallest such <span class="math inline">\(t \in \{1, \dots, G \}\)</span> such that <span class="math inline">\(h(t_0) \neq \hat{t_0}\)</span>.</p>
+<p>Since <span class="math inline">\(t_0\)</span> was the smallest, for all gates before this, we have <span class="math inline">\(\hat{fg}(t) = fg(t)\)</span> for <span class="math inline">\(1 \leq t \leq t_0\)</span>, by the same argument we used to prove completeness. Therefore for a bad proof vector <span class="math inline">\(\hat{h}\)</span>, we will have <span class="math inline">\(\hat{fg}(t_0) = fg(t_0) = h(t_0) \neq \hat{h}(t_0)\)</span>. What this is saying, is that if a client sent in a bad proof, the server reconstructed polynomial <span class="math inline">\(\hat{fg} \neq \hat{h}\)</span>. The prover would fail the polynomial identity test for <span class="math inline">\(\hat{fg} - \hat{h} == 0\)</span> with very high probability.</p>
 <div class="lemma">
 <h5>
 When can a a malicious client still pass the identity test.
 </h5>
-<p>Our test is to check if <span class="math inline">\(\hat{fg}(r) -
-\hat{r} = 0\)</span>. If <span class="math inline">\(r\)</span> was a
-root for polynomials <span class="math inline">\(\hat{fg}(r) -
-\hat{r}\)</span> we would get 0 even though the polynomials may not be
-equal. There are <span class="math inline">\(p\)</span> elements in our
-finite field. The <span class="math inline">\(\hat{fg}(r) -
-\hat{r}\)</span> is a polynomial with at most <span
-class="math inline">\(2M - 2\)</span> roots. The worst case probability
-of the servers picking a <span class="math inline">\(r\)</span> such
-that <span class="math inline">\(r\)</span> is a root for both
-polynomials is <span class="math inline">\(1 - \frac{2M -
-2}{p}\)</span>. For secret voting <span class="math inline">\(M &lt;
-100\)</span> and we have <span class="math inline">\(p\)</span> to be a
-<span class="math inline">\(128\)</span> or <span
-class="math inline">\(256\)</span> bit number. Note if we did the test
-<span class="math inline">\(s\)</span> times with a different <span
-class="math inline">\(r_1, \dots, r_s\)</span>, the probability of a
-false positive would be <span class="math inline">\(1 - \Big(\frac{2M -
-2}{p}\Big)^s\)</span></p>
+<p>Our test is to check if <span class="math inline">\(\hat{fg}(r) - \hat{r} = 0\)</span>. If <span class="math inline">\(r\)</span> was a root for polynomials <span class="math inline">\(\hat{fg}(r) - \hat{r}\)</span> we would get 0 even though the polynomials may not be equal. There are <span class="math inline">\(p\)</span> elements in our finite field. The <span class="math inline">\(\hat{fg}(r) - \hat{r}\)</span> is a polynomial with at most <span class="math inline">\(2M - 2\)</span> roots. The worst case probability of the servers picking a <span class="math inline">\(r\)</span> such that <span class="math inline">\(r\)</span> is a root for both polynomials is <span class="math inline">\(1 - \frac{2M - 2}{p}\)</span>. For secret voting <span class="math inline">\(M &lt; 100\)</span> and we have <span class="math inline">\(p\)</span> to be a <span class="math inline">\(128\)</span> or <span class="math inline">\(256\)</span> bit number. Note if we did the test <span class="math inline">\(s\)</span> times with a different <span class="math inline">\(r_1, \dots, r_s\)</span>, the probability of a false positive would be <span class="math inline">\(1 - \Big(\frac{2M - 2}{p}\Big)^s\)</span></p>
 </div>
 <h3 id="many-valid-circuits">Many valid circuits</h3>
-<p>To ensure a vote is valid, the input must pass <span
-class="math inline">\(M+3\)</span> circuit evaluations. For efficiency
-we require that on success, each valid gate outputs 0 instead of 1. Then
-the final check requires all the circuits to be 0, thus to accept we
-need <span class="math inline">\(\Big(\sum_{i=1}^{M+3}
-\sigma(r_i)W_i\Big) == 0\)</span>, where <span
-class="math inline">\(W_i\)</span> is the output of <span
-class="math inline">\(valid_i\)</span> and <span
-class="math inline">\(r_i\)</span> is the random value picked for the
-polynomial identity test for circuit <span
-class="math inline">\(i\)</span>.</p>
+<p>To ensure a vote is valid, the input must pass <span class="math inline">\(M+3\)</span> circuit evaluations. For efficiency we require that on success, each valid gate outputs 0 instead of 1. Then the final check requires all the circuits to be 0, thus to accept we need <span class="math inline">\(\Big(\sum_{i=1}^{M+3} \sigma(r_i)W_i\Big) == 0\)</span>, where <span class="math inline">\(W_i\)</span> is the output of <span class="math inline">\(valid_i\)</span> and <span class="math inline">\(r_i\)</span> is the random value picked for the polynomial identity test for circuit <span class="math inline">\(i\)</span>.</p>
 <h3 id="zero-knowledge-1">Zero Knowledge</h3>
 <p>TODO</p>
 <h2 id="beavers-multiplication">Beavers Multiplication</h2>
-<p>Each server <span class="math inline">\(j\)</span> has computes <span
-class="math inline">\([d]_j = [\hat{f}]_j(r) - [a]_j\)</span> and <span
-class="math inline">\([e]_j = [\hat{g}]_j(r) - [b]_j\)</span> and
-broadcasts <span class="math inline">\([d]_j\)</span> and <span
-class="math inline">\([e]_j\)</span> to other servers, thereby keeping
-<span class="math inline">\([\hat{f}]_j(r)\)</span> and <span
-class="math inline">\([\hat{g}]_j(r)\)</span> secret.</p>
-<p>Each server j computes <span class="math inline">\([\hat{fg}]_j(r) =
-de/s + d[b]_j + e[a]_j + [c]_j\)</span> where <span
-class="math inline">\(d = \sum_{j=1}^s [d]_j\)</span> and <span
-class="math inline">\(e = \sum_{j=1}^s [e]_j\)</span>. To see that <span
-class="math inline">\([\hat{fg}]_j(r)\)</span> is a share of <span
-class="math inline">\(\hat{fg}(r)\)</span>, note that</p>
-<p><span class="math display">\[\begin{align*}
-\sum_{j=1}^s [\hat{fg}]_j(r) &amp;= \sum_{j=1}^s de/s + d_[b]j + e[a]_j
-+ [c]_j \\
+<p>Each server <span class="math inline">\(j\)</span> has computes <span class="math inline">\([d]_j = [\hat{f}]_j(r) - [a]_j\)</span> and <span class="math inline">\([e]_j = [\hat{g}]_j(r) - [b]_j\)</span> and broadcasts <span class="math inline">\([d]_j\)</span> and <span class="math inline">\([e]_j\)</span> to other servers, thereby keeping <span class="math inline">\([\hat{f}]_j(r)\)</span> and <span class="math inline">\([\hat{g}]_j(r)\)</span> secret.</p>
+<p>Each server j computes <span class="math inline">\([\hat{fg}]_j(r) = de/s + d[b]_j + e[a]_j + [c]_j\)</span> where <span class="math inline">\(d = \sum_{j=1}^s [d]_j\)</span> and <span class="math inline">\(e = \sum_{j=1}^s [e]_j\)</span>. To see that <span class="math inline">\([\hat{fg}]_j(r)\)</span> is a share of <span class="math inline">\(\hat{fg}(r)\)</span>, note that</p>
+<span class="math display">\[\begin{align*}
+\sum_{j=1}^s [\hat{fg}]_j(r) &amp;= \sum_{j=1}^s de/s + d_[b]j + e[a]_j + [c]_j \\
 &amp;= de + db + ea + c \\
-&amp;= (\hat{f}(r) - a)(\hat{g}(r) - a) + (\hat{f}(r) - a)b +
-(\hat{g}(r) - b)a + ab \\
+&amp;= (\hat{f}(r) - a)(\hat{g}(r) - a) + (\hat{f}(r) - a)b + (\hat{g}(r) - b)a + ab \\
 &amp;= \hat{f}(r)\hat{g}(r) \\
 &amp;= \hat{fg}(r)
-\end{align*}\]</span></p>
-<h2 id="worked-out-example-in-python3">Worked out Example in
-Python3</h2>
-<p>This is not production quality code. Just a worked out example with
-all the circuits to show that the experiment backs up the claims stated
-above.</p>
+\end{align*}\]</span>
+<h2 id="worked-out-example-in-python3">Worked out Example in Python3</h2>
+<p>This is not production quality code. Just a worked out example with all the circuits to show that the experiment backs up the claims stated above.</p>
 <p><embed type="text/html" src="./SNIPS_Voting.html" width="100%" height="600"></p>
 <h1 id="references">References</h1>
 <ol type="1">
-<li><a
-href="https://dl.acm.org/doi/pdf/10.1145/3133956.3133982">Practical
-Methods for Secure Aggregation</a></li>
+<li><a href="https://dl.acm.org/doi/pdf/10.1145/3133956.3133982">Practical Methods for Secure Aggregation</a></li>
 </ol>
 <ol start="2" type="1">
-<li><a
-href="https://crypto.stanford.edu/~dabo/pubs/abstracts/prio.html">Prio:
-Private, Robust, and Scalable Computation of Aggregate
-Statistics</a></li>
+<li><a href="https://crypto.stanford.edu/~dabo/pubs/abstracts/prio.html">Prio: Private, Robust, and Scalable Computation of Aggregate Statistics</a></li>
 </ol>
 </div>
 <div id="footer">

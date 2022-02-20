@@ -33,6 +33,11 @@
 <p><strong>Some notation</strong>: <span class="math inline">\(F\)</span> is always a finite field <span class="math inline">\(\mathbb{Z}_p\)</span> where <span class="math inline">\(p\)</span> is a very very large prime. <span class="math inline">\(\mathbb{G}\)</span> is always some abelian group.</p>
 <h1 id="function-secret-sharing">Function Secret Sharing</h1>
 <h2 id="notation-and-prelims">Notation and prelims</h2>
+<p>Use same notation as these write-ups. They all copy from one another.</p>
+<ol type="1">
+<li><a href="https://eprint.iacr.org/2019/1095.pdf">The latest DPF paper</a></li>
+<li><a href="https://cs.idc.ac.il/~elette/HSS_FSS-Survey.pdf">FSS and HSS survey</a></li>
+</ol>
 <h2 id="distributed-point-functions">Distributed Point Functions</h2>
 <div class="lemma">
 <h4>
@@ -54,11 +59,17 @@ Definition
 </ol>
 <p><img src="./pngs/protocol.png" width="90%"></img></p>
 <ol start="2" type="1">
-<li>It also sends each server a correction word <span class="math inline">\(CW_{0}\)</span>. The clients follow the protocol described in the picture above.</li>
+<li><p>It also sends each server a correction word <span class="math inline">\(CW_{1}\)</span>. The clients follow the protocol described in the picture above. At this point, each server should have constructed a tree of with 3 nodes. The root and it’s children.</p></li>
+<li><p>For the 2nd level onwards, the client sends the servers one correcting vector <span class="math inline">\(CW_{i}\)</span> per level <span class="math inline">\(i\)</span> and follows the protocol described below</p></li>
 </ol>
-<h2 id="incremental-dpf">Incremental DPF</h2>
-<h2 id="extractable-dpf">Extractable DPF</h2>
-<h1 id="references">References</h1>
+<p><img src="./pngs/continue.png" width="90%"></img></p>
+<h3 id="a-worked-out-toy-example.">A worked out toy example.</h3>
+<p><strong>TODO ari: worked out example in code in GoLang</strong> as that is what Henry Gibbs writes most of his code in. Will be able to reproduce their work and compare with PRIO.</p>
+<h2 id="extractable-dpf-summarised">Extractable DPF (summarised)</h2>
+<p>By further dividing the seed in each node to a public part that is common between two servers and a private part that for each server, the Poplar paper shows that is nearly impossible for a malicious client to come up with an input that is non zero at more than 1 location and still have a common public part. This was done to prevent clients from sending inputs that are not invalid but are not included in the Subset <span class="math inline">\(S\)</span>. This does not really matter for the voting problem as if they are not in <span class="math inline">\(S\)</span> then those votes won’t count anyway.</p>
+<h2 id="incremental-dpf-summarised">Incremental DPF (summarised)</h2>
+<p>The heavy hitters section makes calls to the subset sum problem, thus there is <span class="math inline">\(\lambda n^2\)</span> communication complexity. They have a construction that is more efficient and still uses <span class="math inline">\(\lambda n\)</span> but this is only needed for private heavy hitters, which I have not read in full detail.</p>
+<p>For specific details see this talk by [Henry]</p>
 </div>
 </div>
 <div id="footer">
