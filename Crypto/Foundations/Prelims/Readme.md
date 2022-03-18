@@ -5,6 +5,9 @@
 \newcommand{\NP}{\mathcal{NP}}
 \newcommand{\P}{\mathcal{P}}
 \newcommand{\BPP}{\mathcal{BPP}}
+---
+title: Preliminaries
+...
 
 <div class="container"> 
 # Background material

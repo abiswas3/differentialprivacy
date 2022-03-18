@@ -1,4 +1,8 @@
 <div class="container">
+---
+title: Foundations Volume I notes
+...
+
 # Lecture Notes in Cryptography
 
 **Disclaimer:** I have no formal education in cryptography or complexity theory, but
@@ -9,8 +13,9 @@ me only and are likely full of typos.
 
 ## Table of Contents
 
-* [Background](./Prelims/)
-* [One way functions](./OneWayFunctions/)
-* [Pseduo Random generators](./PseudoRandomStuff/)
+* [Chapter I: Background](./Prelims/)
+* [Chapter II: One way functions](./OneWayFunctions/)
+<!-- * [Chapter III: Pseduo Random generators](./PseudoRandomStuff/) -->
+* [Chapter IV: Zero Knowledge Proofs](./ZK_Proofs/)
 
 </div>

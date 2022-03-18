@@ -4,6 +4,10 @@
 \newcommand{\P}{\mathcal{P}}
 \newcommand{\BPP}{\mathcal{BPP}}
 \newcommand{\genF}{f : \{0, 1\}^* \rightarrow \{0, 1\}^*}
+---
+title: One way functions
+...
+
 
 <div class="container"> 
 

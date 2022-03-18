@@ -5,264 +5,403 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>main</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
-  <link rel="stylesheet" href="../../blog.css">
-  <script src="../../../code/es5/tex-chtml.js" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="../../blog.css" />
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-  
-  
+
+
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My Notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>    
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
+
+  <script src="../../../code/es5/tex-chtml.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-
 <div class="container">
-<p>Notes based on Lectures 1-5 of youtube series and chapters of 1-5 of Asymptotia by Spencer.</p>
+<p>Notes based on Lectures 1-5 of youtube series and chapters of 1-5 of
+Asymptotia by Spencer.</p>
 <h1 id="asymptotics-lec-2">Asymptotics (Lec 2)</h1>
-<p><strong>Why:</strong> Sometimes we encounter really ugly looking functions like <span class="math inline">\(f(n) = 7n^{5/2} + 18n^2\ln^3n\)</span> and this is hard to analyse. However, if we only care about the function for very large values of n, then we can ignore certain terms and focus on the important ones. Then we simpify the important bits into standard forms we can understand. This writeup is about the formal language of simplifying functions to be able to compare them for really large values of their input. As an example, in this world functions like <span class="math inline">\(f(n)= n^2\)</span> and <span class="math inline">\(g(n)= n^2 + n\)</span> are roughly the same and can be treated as such.</p>
-<p><strong>Another why:</strong> I have a research problem trying to connect sampling and privacy to sum privacy which might need a lot of these tools. In particular my probability mass function has a lot of binomial coefficients. I am hoping at the time of writing I will both learn the material and be able to use it in a novel way.</p>
+<p><strong>Why:</strong> Sometimes we encounter really ugly looking
+functions like <span class="math inline">\(f(n) = 7n^{5/2} +
+18n^2\ln^3n\)</span> and this is hard to analyse. However, if we only
+care about the function for very large values of n, then we can ignore
+certain terms and focus on the important ones. Then we simpify the
+important bits into standard forms we can understand. This writeup is
+about the formal language of simplifying functions to be able to compare
+them for really large values of their input. As an example, in this
+world functions like <span class="math inline">\(f(n)= n^2\)</span> and
+<span class="math inline">\(g(n)= n^2 + n\)</span> are roughly the same
+and can be treated as such.</p>
+<p><strong>Another why:</strong> I have a research problem trying to
+connect sampling and privacy to sum privacy which might need a lot of
+these tools. In particular my probability mass function has a lot of
+binomial coefficients. I am hoping at the time of writing I will both
+learn the material and be able to use it in a novel way.</p>
 <h2 id="standard-form">Standard form</h2>
-<p>Before we analyse how a function behaves for very large values, we want to write them down in simple or standard form. A function <span class="math inline">\(f(n)\)</span> is in standard form if it is the product of:</p>
+<p>Before we analyse how a function behaves for very large values, we
+want to write them down in simple or standard form. A function <span
+class="math inline">\(f(n)\)</span> is in standard form if it is the
+product of:</p>
 <ul>
-<li>Constants such as <span class="math inline">\(6, \sqrt{2\pi}, e\)</span></li>
-<li>Constant powers of <span class="math inline">\(\ln n\)</span> such as <span class="math inline">\(\sqrt{\ln n}, \left(\ln n \right)^{-1}\)</span></li>
-<li>Constant powers of <span class="math inline">\(n\)</span> such as <span class="math inline">\(n^{\frac{3}{5}, n^2, n^{-5}}\)</span></li>
-<li>Exponentials such as <span class="math inline">\(e^{-n}, 2^n\)</span></li>
-<li><span class="math inline">\(n^{cn}\)</span> for constant <span class="math inline">\(c\)</span></li>
+<li>Constants such as <span class="math inline">\(6, \sqrt{2\pi},
+e\)</span></li>
+<li>Constant powers of <span class="math inline">\(\ln n\)</span> such
+as <span class="math inline">\(\sqrt{\ln n}, \left(\ln n
+\right)^{-1}\)</span></li>
+<li>Constant powers of <span class="math inline">\(n\)</span> such as
+<span class="math inline">\(n^{\frac{3}{5}, n^2, n^{-5}}\)</span></li>
+<li>Exponentials such as <span class="math inline">\(e^{-n},
+2^n\)</span></li>
+<li><span class="math inline">\(n^{cn}\)</span> for constant <span
+class="math inline">\(c\)</span></li>
 </ul>
-<p>Example, Stirlings formula given by <span class="math inline">\(n^n e^{-n}\sqrt{2\pi n}\)</span>, is a complex looking thing in standard form.</p>
-<h3 id="list-of-asymptotic-notations-that-we-frequently-see-in-academic-papers-and-what-they-mean">List of asymptotic notations that we frequently see in academic papers and what they mean</h3>
+<p>Example, Stirlings formula given by <span class="math inline">\(n^n
+e^{-n}\sqrt{2\pi n}\)</span>, is a complex looking thing in standard
+form.</p>
+<h3
+id="list-of-asymptotic-notations-that-we-frequently-see-in-academic-papers-and-what-they-mean">List
+of asymptotic notations that we frequently see in academic papers and
+what they mean</h3>
 <div class="definition">
 <h4>
 <u>Equivalence of function </u>
 </h4>
-<p>We write <span class="math inline">\(f(n) \sim g(n)\)</span> and say <span class="math inline">\(f(n)\)</span> is asymptotic to <span class="math inline">\(g(n)\)</span> when</p>
-<span class="math display">\[\begin{align}
-\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;= 1 \tag{1}\label{eq:equivalence}
-\end{align}\]</span>
+<p>We write <span class="math inline">\(f(n) \sim g(n)\)</span> and say
+<span class="math inline">\(f(n)\)</span> is asymptotic to <span
+class="math inline">\(g(n)\)</span> when</p>
+<p><span class="math display">\[\begin{align}
+\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;= 1
+\tag{1}\label{eq:equivalence}
+\end{align}\]</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Big O: <span class="math inline">\(O\)</span></u>
 </h4>
-<p>We write <span class="math inline">\(f(n) = O(g(n))\)</span> and say <span class="math inline">\(f(n)\)</span> is big oh of <span class="math inline">\(g(n)\)</span> when there is a positive constant <span class="math inline">\(C\)</span> such that for all sufficiently large <span class="math inline">\(n\)</span> i.e. <span class="math inline">\(n &gt; n_0\)</span> for some <span class="math inline">\(n_0 \in \mathbb{N}\)</span></p>
-<span class="math display">\[\begin{align}
+<p>We write <span class="math inline">\(f(n) = O(g(n))\)</span> and say
+<span class="math inline">\(f(n)\)</span> is big oh of <span
+class="math inline">\(g(n)\)</span> when there is a positive constant
+<span class="math inline">\(C\)</span> such that for all sufficiently
+large <span class="math inline">\(n\)</span> i.e. <span
+class="math inline">\(n &gt; n_0\)</span> for some <span
+class="math inline">\(n_0 \in \mathbb{N}\)</span></p>
+<p><span class="math display">\[\begin{align}
 f(n) &amp;\leq Cg(n) \tag{2.a}\label{eq:bigOh1}
-\end{align}\]</span>
-<p>or equivalently</p>
-<span class="math display">\[\begin{align}
-\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;&lt; \infty \tag{2.b}\label{eq:bigOh2}
-\end{align}\]</span>
+\end{align}\]</span> or equivalently</p>
+<p><span class="math display">\[\begin{align}
+\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;&lt; \infty
+\tag{2.b}\label{eq:bigOh2}
+\end{align}\]</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Big Omega: <span class="math inline">\(\Omega\)</span></u>
 </h4>
-<p>We write <span class="math inline">\(f(n) = \Omega(g(n))\)</span> and say <span class="math inline">\(f(n)\)</span> is omega of <span class="math inline">\(g(n)\)</span> when there is a positive constant <span class="math inline">\(\epsilon\)</span> such that for all sufficiently large <span class="math inline">\(n\)</span></p>
-<span class="math display">\[\begin{align}
+<p>We write <span class="math inline">\(f(n) = \Omega(g(n))\)</span> and
+say <span class="math inline">\(f(n)\)</span> is omega of <span
+class="math inline">\(g(n)\)</span> when there is a positive constant
+<span class="math inline">\(\epsilon\)</span> such that for all
+sufficiently large <span class="math inline">\(n\)</span></p>
+<p><span class="math display">\[\begin{align}
 f(n) &amp;\geq \epsilon g(n)\tag{3a}\label{eq:bigOmega1}
-\end{align}\]</span>
-<p>or equivalently</p>
-<span class="math display">\[\begin{align}
-\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;&gt; 0 \tag{3b}\label{eq:bigOmega2}
-\end{align}\]</span>
+\end{align}\]</span> or equivalently</p>
+<p><span class="math display">\[\begin{align}
+\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;&gt; 0
+\tag{3b}\label{eq:bigOmega2}
+\end{align}\]</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Big Theta <span class="math inline">\(\Theta\)</span></u>
 </h4>
-<p>We write <span class="math inline">\(f(n) = \theta(g(n))\)</span> and say <span class="math inline">\(f(n)\)</span> is theta of <span class="math inline">\(g(n)\)</span> when there exist positive constants <span class="math inline">\(C, ε\)</span> so that for n sufficiently large</p>
-<span class="math display">\[\begin{align}
+<p>We write <span class="math inline">\(f(n) = \theta(g(n))\)</span> and
+say <span class="math inline">\(f(n)\)</span> is theta of <span
+class="math inline">\(g(n)\)</span> when there exist positive constants
+<span class="math inline">\(C, ε\)</span> so that for n sufficiently
+large</p>
+<p><span class="math display">\[\begin{align}
 \epsilon g(n)  &amp;\leq f(n) \leq C g(n) \tag{4a}\label{eq:theta1}
-\end{align}\]</span>
-<p>or equivalently</p>
-<span class="math display">\[\begin{align}
-\Omega\Big(g(n)\Big)   &amp;= f(n) = O\Big(g(n)\Big) \tag{4b}\label{eq:theta2}
-\end{align}\]</span>
+\end{align}\]</span> or equivalently</p>
+<p><span class="math display">\[\begin{align}
+\Omega\Big(g(n)\Big)   &amp;= f(n) = O\Big(g(n)\Big)
+\tag{4b}\label{eq:theta2}
+\end{align}\]</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Small O: </u>
 </h4>
-<p>We write <span class="math inline">\(f(n) = o(g(n))\)</span> and say <span class="math inline">\(f(n)\)</span> is little oh of <span class="math inline">\(g(n)\)</span> if</p>
-<span class="math display">\[\begin{align}
-\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;= 0\tag{5}\label{eq:smallO}
-\end{align}\]</span>
-<p>Sometimes we write <span class="math inline">\(f(n) \ll g(n)\)</span></p>
+<p>We write <span class="math inline">\(f(n) = o(g(n))\)</span> and say
+<span class="math inline">\(f(n)\)</span> is little oh of <span
+class="math inline">\(g(n)\)</span> if</p>
+<p><span class="math display">\[\begin{align}
+\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;=
+0\tag{5}\label{eq:smallO}
+\end{align}\]</span></p>
+<p>Sometimes we write <span class="math inline">\(f(n) \ll
+g(n)\)</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Small omega: <span class="math inline">\(\omega\)</span> </u>
 </h4>
-<p>We write <span class="math inline">\(f(n) = \omega(g(n))\)</span> and say <span class="math inline">\(f(n)\)</span> is little omega of <span class="math inline">\(g(n)\)</span> if</p>
-<span class="math display">\[\begin{align}
-\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;= \infty\tag{6}\label{eq:smallOmega}
-\end{align}\]</span>
-<p>Sometimes we write <span class="math inline">\(f(n) \gg g(n)\)</span></p>
+<p>We write <span class="math inline">\(f(n) = \omega(g(n))\)</span> and
+say <span class="math inline">\(f(n)\)</span> is little omega of <span
+class="math inline">\(g(n)\)</span> if</p>
+<p><span class="math display">\[\begin{align}
+\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)} &amp;=
+\infty\tag{6}\label{eq:smallOmega}
+\end{align}\]</span></p>
+<p>Sometimes we write <span class="math inline">\(f(n) \gg
+g(n)\)</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Poly<span class="math inline">\((g(x))\)</span></u>
 </h4>
-<p>A function f(n) is said to be polynomial <span class="math inline">\(g(n)\)</span> if</p>
-<span class="math display">\[\begin{align}
+<p>A function f(n) is said to be polynomial <span
+class="math inline">\(g(n)\)</span> if</p>
+<p><span class="math display">\[\begin{align}
 f(n) &amp;= g(n)^{O(1)} \tag{7}\label{poly}
-\end{align}\]</span>
-<p><span class="math inline">\(O(1)\)</span> is an anonymous function upper bounded by some constant <span class="math inline">\(C\)</span>.</p>
+\end{align}\]</span></p>
+<p><span class="math inline">\(O(1)\)</span> is an anonymous function
+upper bounded by some constant <span
+class="math inline">\(C\)</span>.</p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Polylog<span class="math inline">\((f(n))\)</span></u>
 </h4>
-<p>A function <span class="math inline">\(f(n)\)</span> is said to be polylog if <span class="math inline">\(f(n) = Θ\)</span> for some positive constant <span class="math inline">\(c\)</span></p>
-<span class="math display">\[\begin{align}
+<p>A function <span class="math inline">\(f(n)\)</span> is said to be
+polylog if <span class="math inline">\(f(n) = Θ\)</span> for some
+positive constant <span class="math inline">\(c\)</span></p>
+<p><span class="math display">\[\begin{align}
 f(n) &amp;= \theta(\ln^c n) \tag{8}\label{polylog}
-\end{align}\]</span>
+\end{align}\]</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
 <u>Lazy Big O: <span class="math inline">\(\widetilde{O}\)</span></u>
 </h4>
-<p>We say <span class="math inline">\(f(n) = \widetilde{O}(g(n))\)</span> when</p>
-<span class="math display">\[\begin{align}
+<p>We say <span class="math inline">\(f(n) =
+\widetilde{O}(g(n))\)</span> when</p>
+<p><span class="math display">\[\begin{align}
 f(n) &amp;= g(n)\text{poly}(\ln g(n)) \tag{9}\label{lazyO}
-\end{align}\]</span>
-<p>as <span class="math inline">\(n \rightarrow \infty\)</span></p>
+\end{align}\]</span> as <span class="math inline">\(n \rightarrow
+\infty\)</span></p>
 </div>
 <p><br></p>
 <div class="definition">
 <h4>
-<u>Lazy Omega: <span class="math inline">\(\widetilde{\Omega}\)</span></u>
+<u>Lazy Omega: <span
+class="math inline">\(\widetilde{\Omega}\)</span></u>
 </h4>
-<p>For small values <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we say <span class="math inline">\(f(\epsilon) = \widetilde{\Omega}\big(g(\epsilon)\big)\)</span> when</p>
-<span class="math display">\[\begin{align}
-f(\epsilon) &amp;= \frac{g(\epsilon)}{\text{poly}(\ln g(\epsilon))} \tag{10}\label{lazyOmega}
-\end{align}\]</span>
+<p>For small values <span class="math inline">\(\epsilon \rightarrow
+0\)</span>, we say <span class="math inline">\(f(\epsilon) =
+\widetilde{\Omega}\big(g(\epsilon)\big)\)</span> when</p>
+<p><span class="math display">\[\begin{align}
+f(\epsilon) &amp;= \frac{g(\epsilon)}{\text{poly}(\ln g(\epsilon))}
+\tag{10}\label{lazyOmega}
+\end{align}\]</span></p>
 </div>
 <p><br></p>
-<p>Ideally for our really ugly function <span class="math inline">\(f(n)\)</span> we want a <span class="math inline">\(g(n)\)</span> such that they are equivalent. This is sometimes hard, so instead we upper bound and lower bound with standard form functions. If the same <span class="math inline">\(g(n)\)</span> is an upper bound and a lower bound then we say we have found a tight bound i.e. <span class="math inline">\(f(n) = \theta\big(g(n)\big)\)</span>. Saying <span class="math inline">\(f(n) = \theta\big(g(n)\big)\)</span> means that <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> are within some unknown constant factor of each other. When <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are equivalent, we have identified the constant but we can ignore lower order terms.</p>
+<p>Ideally for our really ugly function <span
+class="math inline">\(f(n)\)</span> we want a <span
+class="math inline">\(g(n)\)</span> such that they are equivalent. This
+is sometimes hard, so instead we upper bound and lower bound with
+standard form functions. If the same <span
+class="math inline">\(g(n)\)</span> is an upper bound and a lower bound
+then we say we have found a tight bound i.e. <span
+class="math inline">\(f(n) = \theta\big(g(n)\big)\)</span>. Saying <span
+class="math inline">\(f(n) = \theta\big(g(n)\big)\)</span> means that
+<span class="math inline">\(g\)</span> and <span
+class="math inline">\(f\)</span> are within some unknown constant factor
+of each other. When <span class="math inline">\(f\)</span> and <span
+class="math inline">\(g\)</span> are equivalent, we have identified the
+constant but we can ignore lower order terms.</p>
 <p><u>Example:</u></p>
-<span class="math display">\[\begin{align}
+<p><span class="math display">\[\begin{align}
 \sum_{i=1}^n i &amp;= \frac{n(n + 1)}{2} \\
 &amp;= \frac{n^2(1 + \frac{1}{n})}{2} \\
 &amp;= \frac{n^2(1 + o(1))}{2} \\
 &amp;\sim \frac{n^2}{2}
-\end{align}\]</span>
+\end{align}\]</span></p>
 <div class="important">
-<p>Alternatively, we can say that when <span class="math inline">\(f(n) \sim g(n)\)</span>, then <span class="math inline">\(f(n) = g(n)\Big(1 + o(1)\Big)\)</span>. Examples of functions that are o(1) are <span class="math inline">\(\frac{1}{n}, \frac{1}{n^2}\)</span>, or any function that tends to <span class="math inline">\(0\)</span> as <span class="math inline">\(n\)</span> tends to infinity.</p>
+<p>Alternatively, we can say that when <span class="math inline">\(f(n)
+\sim g(n)\)</span>, then <span class="math inline">\(f(n) = g(n)\Big(1 +
+o(1)\Big)\)</span>. Examples of functions that are o(1) are <span
+class="math inline">\(\frac{1}{n}, \frac{1}{n^2}\)</span>, or any
+function that tends to <span class="math inline">\(0\)</span> as <span
+class="math inline">\(n\)</span> tends to infinity.</p>
 </div>
-<h3 id="a-case-study-in-using-the-above-langauge-to-bound-an-ugly-function">A case study in using the above langauge to bound an ugly function</h3>
-<p>Consider the sum of <span class="math inline">\(n\)</span> harmonic numbers <span class="math inline">\(H(n)\)</span> (shows up in the Coupon Collector problem)</p>
-<span class="math display">\[\begin{align}
+<h3
+id="a-case-study-in-using-the-above-langauge-to-bound-an-ugly-function">A
+case study in using the above langauge to bound an ugly function</h3>
+<p>Consider the sum of <span class="math inline">\(n\)</span> harmonic
+numbers <span class="math inline">\(H(n)\)</span> (shows up in the
+Coupon Collector problem)</p>
+<p><span class="math display">\[\begin{align}
 H(n) &amp;= \sum_{i=1}^n \frac{1}{i} \\
 &amp;= 1 + \frac{1}{2} + \frac{1}{3} \dots + \frac{1}{n}
-\end{align}\]</span>
-<p><strong>Task:</strong> We need to find an upper bound and lower bound for this function in standard form.</p>
-<span class="math display">\[\begin{align}
+\end{align}\]</span></p>
+<p><strong>Task:</strong> We need to find an upper bound and lower bound
+for this function in standard form.</p>
+<p><span class="math display">\[\begin{align}
 H(n) &amp;= \sum_{i=1}^n \frac{1}{i} \\
 &amp;= 1 + \frac{1}{2} + \frac{1}{3} \dots + \frac{1}{n} \\
-&amp;\leq 1 + \frac{1}{2} + \frac{1}{2} + \frac{1}{4} + \frac{1}{4} \dots + \frac{1}{8} \dots \\
+&amp;\leq 1 + \frac{1}{2} + \frac{1}{2} + \frac{1}{4} + \frac{1}{4}
+\dots + \frac{1}{8} \dots \\
 &amp;= 1 + \left\lfloor \ln n \right\rfloor \\
 &amp;= O(\ln n) \\
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>Similarly</p>
-<span class="math display">\[\begin{align}
+<p><span class="math display">\[\begin{align}
 H(n) &amp;= \sum_{i=1}^n \frac{1}{i} \\
 &amp;= 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4}\dots + \frac{1}{n} \\
-&amp;\geq 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{4} + \frac{1}{8} \dots \\
+&amp;\geq 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{4} + \frac{1}{8}
+\dots \\
 &amp;= 1 + \frac{1}{2}\left\lceil \ln n \right\rceil \\
 &amp;= \Omega(\ln n) \\
-\end{align}\]</span>
-<p>Therefore, <span class="math inline">\(H(n) = \Theta(\ln n)\)</span>.</p>
-<p><strong>Task:</strong> We have approximated it up to a constant factor. But we wish to identify the constant factors. (We rarely need to do this)</p>
-<p>Want to show <span class="math inline">\(H(n) \sim \ln n\)</span> and to do this we use the <u id="integral_trick">Integral trick</u></p>
-<p>See picture below (which I borrowed from the <a href="https://www.cs.cmu.edu/~odonnell/papers/cs-theory-toolkit-lecture-notes.pdf">course notes</a>)</p>
+\end{align}\]</span></p>
+<p>Therefore, <span class="math inline">\(H(n) = \Theta(\ln
+n)\)</span>.</p>
+<p><strong>Task:</strong> We have approximated it up to a constant
+factor. But we wish to identify the constant factors. (We rarely need to
+do this)</p>
+<p>Want to show <span class="math inline">\(H(n) \sim \ln n\)</span> and
+to do this we use the <u id="integral_trick">Integral trick</u></p>
+<p>See picture below (which I borrowed from the <a
+href="https://www.cs.cmu.edu/~odonnell/papers/cs-theory-toolkit-lecture-notes.pdf">course
+notes</a>)</p>
 <p><img src="./pngs/integral_trick.png"></img></p>
-<span class="math display">\[\begin{align}
+<p><span class="math display">\[\begin{align}
 H(n) &amp;= \text{ Area of grey rects} \\
 &amp;\leq 1 + \int_{1}^{n} \frac{1}{t}dt \\
 &amp;= 1 + \ln n
-\end{align}\]</span>
-<span class="math display">\[\begin{align}
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
 H(n) &amp;= \text{ Area of yellow rects} \\
 &amp;\geq  \int_{1}^{n+1} \frac{1}{t}dt \\
 &amp;= \ln(n+1)
-\end{align}\]</span>
-<p>This should be enough to show that <span class="math inline">\(H(n) \sim \ln n\)</span> but to be fully formal we derive this explicitly. To do so we need the Taylors series.</p>
+\end{align}\]</span></p>
+<p>This should be enough to show that <span class="math inline">\(H(n)
+\sim \ln n\)</span> but to be fully formal we derive this explicitly. To
+do so we need the Taylors series.</p>
 <h3 id="taylors-series">Taylors Series</h3>
 <p>A good taylors series recap can be found <a href="">here</a></p>
-<p><strong>TODO from Asymptotia: Some theorems about Taylors series</strong></p>
+<p><strong>TODO from Asymptotia: Some theorems about Taylors
+series</strong></p>
 <div class="important">
 <p>This approximation shows up in papers all the time.</p>
 <p>For small <span class="math inline">\(x\)</span>,</p>
 <p><span class="math display">\[e^x = 1 + x\]</span></p>
 </div>
 <p><br></p>
-<p>Other important approximations that come from Taylors series approximations of function values <span class="math inline">\(f(n)\)</span> when <span class="math inline">\(n\)</span> is close to 0:</p>
+<p>Other important approximations that come from Taylors series
+approximations of function values <span
+class="math inline">\(f(n)\)</span> when <span
+class="math inline">\(n\)</span> is close to 0:</p>
 <ul>
-<li><p><span class="math inline">\(\frac{1}{1 - \epsilon} = 1 + \epsilon + O(\epsilon^2)\)</span></p></li>
-<li><p><span class="math inline">\(\sqrt{1 + \epsilon} = 1 + \frac{1}{2}\epsilon + O(\epsilon^2)\)</span></p></li>
+<li><p><span class="math inline">\(\frac{1}{1 - \epsilon} = 1 + \epsilon
++ O(\epsilon^2)\)</span></p></li>
+<li><p><span class="math inline">\(\sqrt{1 + \epsilon} = 1 +
+\frac{1}{2}\epsilon + O(\epsilon^2)\)</span></p></li>
 </ul>
 <h4 id="excercises">Excercises</h4>
-<p>Asymptotics of <span class="math inline">\(\sqrt{n-1} - \sqrt{n}\)</span>: How does this function grow?</p>
-<p>Asymptotics of <span class="math inline">\(\log_2(\frac{1}{1/2 - \epsilon})\)</span>: How does this function grow?</p>
-<p>From above analysis both <span class="math inline">\(1 +\ln n\)</span> and <span class="math inline">\(\ln (n+1)\)</span> are equivalent to <span class="math inline">\(\ln n\)</span> but which one grows more similart to it?</p>
+<p>Asymptotics of <span class="math inline">\(\sqrt{n-1} -
+\sqrt{n}\)</span>: How does this function grow?</p>
+<p>Asymptotics of <span class="math inline">\(\log_2(\frac{1}{1/2 -
+\epsilon})\)</span>: How does this function grow?</p>
+<p>From above analysis both <span class="math inline">\(1 +\ln
+n\)</span> and <span class="math inline">\(\ln (n+1)\)</span> are
+equivalent to <span class="math inline">\(\ln n\)</span> but which one
+grows more similart to it?</p>
 <h3 id="inverting-functions">Inverting Functions</h3>
-<p>Consider a relation such as <span class="math inline">\(y = x \ln x\)</span> for <span class="math inline">\(x \geq 1\)</span>. This is an increasing function of <span class="math inline">\(x\)</span> and so there is a unique inverse function <span class="math inline">\(x = f(y)\)</span> for <span class="math inline">\(y \geq 0\)</span>. However, there is no compact way to write <span class="math inline">\(f(y)\)</span> precisely. However, if we were to consider only the asymptotic behaviour of these functions – this problem disappears.</p>
-<p>For very large <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>,</p>
-<span class="math display">\[\begin{align}
+<p>Consider a relation such as <span class="math inline">\(y = x \ln
+x\)</span> for <span class="math inline">\(x \geq 1\)</span>. This is an
+increasing function of <span class="math inline">\(x\)</span> and so
+there is a unique inverse function <span class="math inline">\(x =
+f(y)\)</span> for <span class="math inline">\(y \geq 0\)</span>.
+However, there is no compact way to write <span
+class="math inline">\(f(y)\)</span> precisely. However, if we were to
+consider only the asymptotic behaviour of these functions – this problem
+disappears.</p>
+<p>For very large <span class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span>,</p>
+<p><span class="math display">\[\begin{align}
 \ln y &amp;= \ln(x) + \ln \ln(x)
-\end{align}\]</span>
-<p>As <span class="math inline">\(\ln \ln(x)\)</span> is grows really slowly, we can say</p>
-<span class="math display">\[\begin{align}
-x &amp;= \frac{y}{\ln(x)} 
-&amp;\sim \frac{y}{\ln(y)} 
-\end{align}\]</span>
-<p>Using this intuition, from Asymptotia by Spencer we state the following theorem:</p>
+\end{align}\]</span></p>
+<p>As <span class="math inline">\(\ln \ln(x)\)</span> is grows really
+slowly, we can say</p>
+<p><span class="math display">\[\begin{align}
+x &amp;= \frac{y}{\ln(x)}
+&amp;\sim \frac{y}{\ln(y)}
+\end{align}\]</span></p>
+<p>Using this intuition, from Asymptotia by Spencer we state the
+following theorem:</p>
 <div class="theorem">
 <h4>
 Theorem:
 </h4>
-<p>If <span class="math inline">\(y=\Theta(x^a\ln^b x)\)</span>, then <span class="math inline">\(x=\Theta(y^{\frac{1}{a}} \ln^{\frac{-b}{a}}y)\)</span></p>
+<p>If <span class="math inline">\(y=\Theta(x^a\ln^b x)\)</span>, then
+<span class="math inline">\(x=\Theta(y^{\frac{1}{a}}
+\ln^{\frac{-b}{a}}y)\)</span></p>
 </div>
 <h2 id="birthday-paradox-problem">Birthday Paradox Problem</h2>
-<p>This is a concrete example of how using asympotics helps us understand complicated functions and it will lead us to more tricks to bound factorials and binomial coefficients which show up in all kinds of counting problems.</p>
+<p>This is a concrete example of how using asympotics helps us
+understand complicated functions and it will lead us to more tricks to
+bound factorials and binomial coefficients which show up in all kinds of
+counting problems.</p>
 <div class="important">
-<p><strong>FACT: </strong> If we have 23 people in a room, there is a 50% chance that 2 people with the same birthday.</p>
+<p><strong>FACT: </strong> If we have 23 people in a room, there is a
+50% chance that 2 people with the same birthday.</p>
 </div>
 <h3 id="general-form">General form</h3>
-<p>In general, if we have <span class="math inline">\(m\)</span> bins and <span class="math inline">\(n\)</span> balls. We play a game by tossing the balls into the bins one after the other without replacement. We are interested in knowing for a fixed <span class="math inline">\(m\)</span> how does the probability of a collision grow with <span class="math inline">\(n\)</span>. Define <span class="math inline">\(p_{m,n}:=\)</span> as the probablity of seeing no collisions.</p>
-<span class="math display">\[\begin{align}
+<p>In general, if we have <span class="math inline">\(m\)</span> bins
+and <span class="math inline">\(n\)</span> balls. We play a game by
+tossing the balls into the bins one after the other without replacement.
+We are interested in knowing for a fixed <span
+class="math inline">\(m\)</span> how does the probability of a collision
+grow with <span class="math inline">\(n\)</span>. Define <span
+class="math inline">\(p_{m,n}:=\)</span> as the probablity of seeing no
+collisions.</p>
+<p><span class="math display">\[\begin{align}
 p_{m,n} &amp;= 1(1-\frac{1}{m})(1-\frac{2}{m})\dots(1-\frac{n-11}{m}) \\
 &amp;\leq e^{-1/m}e^{-2/m}\dots e^{-n+1/m} \tag{a}\label{tBound} \\
 &amp;= exp\{-\frac{n(n-1)}{2m}\}\\
 &amp;= exp\{-\frac{n^2}{m}\}exp\{\frac{n}{m}\}\\
-&amp;\leq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\tag{b}\label{tBound2}
-\end{align}\]</span>
-<p><span class="math inline">\(\ref{tBound}: 1 - x \leq e^{-x}\)</span> <span class="math inline">\(\forall x \geq 0\)</span> using Taylors series for <span class="math inline">\(\ln( 1-x)\)</span></p>
-<p><span class="math inline">\(\ref{tBound2}: 1 + x \leq e^{x}\)</span> <span class="math inline">\(\forall x \geq 0\)</span></p>
+&amp;\leq exp\{-\frac{n^2}{m}\}\Big( 1 +
+O(\frac{n}{m})\Big)\tag{b}\label{tBound2}
+\end{align}\]</span></p>
+<p><span class="math inline">\(\ref{tBound}: 1 - x \leq e^{-x}\)</span>
+<span class="math inline">\(\forall x \geq 0\)</span> using Taylors
+series for <span class="math inline">\(\ln( 1-x)\)</span></p>
+<p><span class="math inline">\(\ref{tBound2}: 1 + x \leq e^{x}\)</span>
+<span class="math inline">\(\forall x \geq 0\)</span></p>
 <div class="lemma">
 <h4>
 <strong>FACT:</strong>
@@ -270,36 +409,62 @@ p_{m,n} &amp;= 1(1-\frac{1}{m})(1-\frac{2}{m})\dots(1-\frac{n-11}{m}) \\
 <p><span class="math inline">\(1 + x \geq exp\{x + Cx^2\}\)</span></p>
 </div>
 <p>Using the above fact we have</p>
-<span class="math display">\[\begin{align}
+<p><span class="math display">\[\begin{align}
 p_{m,n} &amp;= 1(1-\frac{1}{m})(1-\frac{2}{m})\dots(1-\frac{n-11}{m}) \\
-&amp;\geq exp\{-\frac{1}{m} - C\frac{1}{m^2}\}exp\{-\frac{2^2}{m} - C\frac{2}{m^2}\}\dots exp\{-\frac{n-1}{m} - C\frac{(n-1)^2}{m^2}\} \\
-&amp;= exp\{-\frac{n(n-1)}{2m}\}exp\{-C\frac{O(n^3)}{m^2}\} \tag{a}\label{sSquares}\\
-&amp;= exp\{-\frac{n(n-1)}{2m}\}\Big( 1 - O(\frac{n^3}{m^2})\Big) \tag{b}\label{tBound3}\\
-&amp;\geq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 - O(\frac{n^3}{m^2})\Big)
-\end{align}\]</span>
-<p>Note: This lower bound is trivial if <span class="math inline">\(n^3\)</span> is greater than <span class="math inline">\(m^2\)</span>, making it a negative number. All probabilities are greater than negative numbers. <strong>So assume <span class="math inline">\(n^3 \leq m^3\)</span></strong></p>
-<p><span class="math inline">\(\ref{sSquares}:\)</span> Upper bounding sum of squares</p>
-<p><span class="math inline">\(\ref{tBound3}: 1 + x \leq e^{x}\)</span> <span class="math inline">\(\forall x \geq 0\)</span> and we are lower bounding so multiplying by a smaller number only decreases lower bound.</p>
+&amp;\geq exp\{-\frac{1}{m} - C\frac{1}{m^2}\}exp\{-\frac{2^2}{m} -
+C\frac{2}{m^2}\}\dots exp\{-\frac{n-1}{m} - C\frac{(n-1)^2}{m^2}\} \\
+&amp;= exp\{-\frac{n(n-1)}{2m}\}exp\{-C\frac{O(n^3)}{m^2}\}
+\tag{a}\label{sSquares}\\
+&amp;= exp\{-\frac{n(n-1)}{2m}\}\Big( 1 - O(\frac{n^3}{m^2})\Big)
+\tag{b}\label{tBound3}\\
+&amp;\geq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 -
+O(\frac{n^3}{m^2})\Big)
+\end{align}\]</span></p>
+<p>Note: This lower bound is trivial if <span
+class="math inline">\(n^3\)</span> is greater than <span
+class="math inline">\(m^2\)</span>, making it a negative number. All
+probabilities are greater than negative numbers. <strong>So assume <span
+class="math inline">\(n^3 \leq m^3\)</span></strong></p>
+<p><span class="math inline">\(\ref{sSquares}:\)</span> Upper bounding
+sum of squares</p>
+<p><span class="math inline">\(\ref{tBound3}: 1 + x \leq e^{x}\)</span>
+<span class="math inline">\(\forall x \geq 0\)</span> and we are lower
+bounding so multiplying by a smaller number only decreases lower
+bound.</p>
 <p>Finally we have that</p>
-<span class="math display">\[\begin{align}
-exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 - O(\frac{n^3}{m^2})\Big) &amp;\leq p_{m.n}\\
+<p><span class="math display">\[\begin{align}
+exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 -
+O(\frac{n^3}{m^2})\Big) &amp;\leq p_{m.n}\\
 &amp;\leq exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>which means we can write the above results as</p>
-<span class="math display">\[\begin{align}
- p_{m.n} &amp;= exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1 - O(\frac{n^3}{m^2})\Big)
-\end{align}\]</span>
-<p>We have two error terms : <span class="math inline">\(\Big( 1 + O(\frac{n}{m})\Big)\)</span> and <span class="math inline">\(\Big( 1 - O(\frac{n^3}{m^2})\Big)\)</span>. Both of them approach constants, so we can set $p_{m.n} exp{-} giving us</p>
-<span class="math display">\[\begin{align}
- p_{m.n} &amp;\approx exp\{-\frac{n^2}{m}\}\\
- n &amp;= \sqrt{m\ln (1/p_{m,m})}
-\end{align}\]</span>
-<p>Also note, magically at <span class="math inline">\(n=\sqrt{m}\)</span>, we have <span class="math inline">\(\frac{n^3}{m} = \frac{n}{m}\)</span> so both error terms contribute equally.</p>
-<p>A little numerical experiment to verify how tight this is bound is</p>
-<h1 id="factorials-and-binomial-coefficients-lec-3">Factorials and Binomial Coefficients (Lec 3)</h1>
-<p>At the end of this section, we will see how these tricks are directly used in a paper published in ICML 2020, on shuffle privacy.</p>
-<h1 id="central-limit-theorem-and-gaussian-random-variables-lec-4">Central Limit Theorem and Gaussian Random Variables (Lec 4)</h1>
-<h1 id="concentration-of-measure-lec-5">Concentration of measure (Lec 5)</h1>
+<p><span class="math display">\[\begin{align}
+p_{m.n} &amp;= exp\{-\frac{n^2}{m}\}\Big( 1 + O(\frac{n}{m})\Big)\Big( 1
+- O(\frac{n^3}{m^2})\Big)
+\end{align}\]</span></p>
+<p>We have two error terms : <span class="math inline">\(\Big( 1 +
+O(\frac{n}{m})\Big)\)</span> and <span class="math inline">\(\Big( 1 -
+O(\frac{n^3}{m^2})\Big)\)</span>. Both of them approach constants, so we
+can set $p_{m.n} exp{-} giving us</p>
+<p><span class="math display">\[\begin{align}
+p_{m.n} &amp;\approx exp\{-\frac{n^2}{m}\}\\
+n &amp;= \sqrt{m\ln (1/p_{m,m})}
+\end{align}\]</span></p>
+<p>Also note, magically at <span
+class="math inline">\(n=\sqrt{m}\)</span>, we have <span
+class="math inline">\(\frac{n^3}{m} = \frac{n}{m}\)</span> so both error
+terms contribute equally.</p>
+<p>A little numerical experiment to verify how tight this is bound
+is</p>
+<h1 id="factorials-and-binomial-coefficients-lec-3">Factorials and
+Binomial Coefficients (Lec 3)</h1>
+<p>At the end of this section, we will see how these tricks are directly
+used in a paper published in ICML 2020, on shuffle privacy.</p>
+<h1
+id="central-limit-theorem-and-gaussian-random-variables-lec-4">Central
+Limit Theorem and Gaussian Random Variables (Lec 4)</h1>
+<h1 id="concentration-of-measure-lec-5">Concentration of measure (Lec
+5)</h1>
 </div>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann

@@ -5,70 +5,152 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
-  <link rel="stylesheet" href="../blog.css">
-  <script src="../../code/es5/tex-chtml.js" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="../blog.css" />
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-  
-  
+
+
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>    
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
+
+  <script src="../../code/es5/tex-chtml.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-
-<div class="container">
-<h1 id="separating-local-and-shuffle-privacy">Separating local and Shuffle Privacy</h1>
+<section id="separating-local-and-shuffle-privacy" class="container">
+<h1>Separating local and Shuffle Privacy</h1>
 <div class="question">
-Is there a major difference between mean estimation for histograms and regular mean estimation of a discrete population? [<a href="https://arxiv.org/pdf/2109.13158.pdf" title="Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message">5</a>] does the same problem as this paper but not for histograms. Therefore histograms as they are bucketted, must be easier?
+Is there a major difference between mean estimation for histograms and
+regular mean estimation of a discrete population? [<a
+href="https://arxiv.org/pdf/2109.13158.pdf"
+title="Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message">5</a>]
+does the same problem as this paper but not for histograms. Therefore
+histograms as they are bucketted, must be easier?
 </div>
 <h2 id="main-takeaways">Main Takeaways</h2>
-<p>The authors propose a protocol for computing sums for histograms with error independent of the domain size/number of bins <span class="math inline">\(d\)</span> given a fixed privacy budget. This implies an arbitrarily large gap in sample complexity between the shuffled and local models. The problem was motivated by the following observation:</p>
+<p>The authors propose a protocol for computing sums for histograms with
+error independent of the domain size/number of bins <span
+class="math inline">\(d\)</span> given a fixed privacy budget. This
+implies an arbitrarily large gap in sample complexity between the
+shuffled and local models. The problem was motivated by the following
+observation:</p>
 <p><code>a locally private d-bin histogram has, on some bin, error scaling with √log d. But when users trust the analyzer with their raw data (the central model), there is an algorithm that achieves error independent of d on every bin.</code></p>
-<p>The best known sample complexity for the local model can be found in [<a href="https://arxiv.org/pdf/1504.04686.pdf" title="Local, Private, Efficient Protocols for Succinct Histograms">3</a>] and for the central model in [<a href="https://arxiv.org/pdf/1511.08552.pdf" title="Simultaneous Private Learning of Multiple Concepts">4</a>].</p>
+<p>The best known sample complexity for the local model can be found in
+[<a href="https://arxiv.org/pdf/1504.04686.pdf"
+title="Local, Private, Efficient Protocols for Succinct Histograms">3</a>]
+and for the central model in [<a
+href="https://arxiv.org/pdf/1511.08552.pdf"
+title="Simultaneous Private Learning of Multiple Concepts">4</a>].</p>
 <h2 id="background-material">Background Material</h2>
-<p>This is material that we need to be able to derive the proofs in the paper. Researchers in [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>] identified a class of distributions and argue that, if <span class="math inline">\(\eta\)</span> is sampled from such a distribution, adding <span class="math inline">\(\eta\)</span> to any output of a 1-sensitive function ensures differential privacy of that sum. Histogram sums where records differ by one count are 1-sensitive functions; thus adding a noise drawn from such a distribution will get you diffential privacy.</p>
+<p>This is material that we need to be able to derive the proofs in the
+paper. Researchers in [<a href="https://arxiv.org/pdf/1908.11358.pdf"
+title="On the power of multiple anonymous messages">1</a>] identified a
+class of distributions and argue that, if <span
+class="math inline">\(\eta\)</span> is sampled from such a distribution,
+adding <span class="math inline">\(\eta\)</span> to any output of a
+1-sensitive function ensures differential privacy of that sum. Histogram
+sums where records differ by one count are 1-sensitive functions; thus
+adding a noise drawn from such a distribution will get you diffential
+privacy.</p>
 <h3 id="definition-smooth">Smooth Distributions</h3>
-<p>Source: [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>]</p>
-<p>A distribution <span class="math inline">\(\mathbb{D}\)</span> is smooth over <span class="math inline">\(\mathbb{Z}\)</span> is <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth, if <span class="math inline">\(\forall k&#39; \in [-k, k]\)</span> if the event E</p>
-<p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E \geq e^{|k&#39;|\epsilon}\Big] \leq \delta\]</span> or</p>
-<p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E &lt; e^{|k&#39;|\epsilon}\Big] &gt; 1 - \delta\]</span></p>
+<p>Source: [<a href="https://arxiv.org/pdf/1908.11358.pdf"
+title="On the power of multiple anonymous messages">1</a>]</p>
+<p>A distribution <span class="math inline">\(\mathbb{D}\)</span> is
+smooth over <span class="math inline">\(\mathbb{Z}\)</span> is <span
+class="math inline">\((\epsilon, \delta, k)\)</span> smooth, if <span
+class="math inline">\(\forall k&#39; \in [-k, k]\)</span> if the event
+E</p>
+<p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E
+\geq e^{|k&#39;|\epsilon}\Big] \leq \delta\]</span> or</p>
+<p><span class="math display">\[\mathbb{P}_{Y \sim \mathbb{D}}\Big[E
+&lt; e^{|k&#39;|\epsilon}\Big] &gt; 1 - \delta\]</span></p>
 <div class="intuition">
-<p>The second equation looks a lot like a concentration inequality i.e. it is saying that the value of the event being concentrated within the window is quite high.</p>
-This already looks a lot like Differential Privacy, which says, for DP to hold the ratio of the probabilities of a function outputting the same value on neigbhouring datasets is bounded by an exponential function as shown above with probability 1 - <span class="math inline">\(\delta\)</span>
+<p>The second equation looks a lot like a concentration inequality
+i.e. it is saying that the value of the event being concentrated within
+the window is quite high.</p>
+This already looks a lot like Differential Privacy, which says, for DP
+to hold the ratio of the probabilities of a function outputting the same
+value on neigbhouring datasets is bounded by an exponential function as
+shown above with probability 1 - <span
+class="math inline">\(\delta\)</span>
 </div>
-<p>The Event <span class="math inline">\(E\)</span> is defined as the following</p>
-<p><span class="math display">\[E=\frac{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim D}\Big[Y&#39;=Y+k&#39;\Big]}\]</span></p>
-<p>It’s saying if I draw a random variable from <span class="math inline">\(Y \sim \mathbb{D}\)</span>; the probability of drawing another variable <span class="math inline">\(Y&#39; \sim \mathbb{D}\)</span> within a window of [Y-k’, Y+k’] is quite close to the original probability of drawing <span class="math inline">\(Y\)</span> to begin with.</p>
+<p>The Event <span class="math inline">\(E\)</span> is defined as the
+following</p>
+<p><span class="math display">\[E=\frac{\mathbb{P}_{Y&#39; \sim
+D}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim
+D}\Big[Y&#39;=Y+k&#39;\Big]}\]</span></p>
+<p>It’s saying if I draw a random variable from <span
+class="math inline">\(Y \sim \mathbb{D}\)</span>; the probability of
+drawing another variable <span class="math inline">\(Y&#39; \sim
+\mathbb{D}\)</span> within a window of [Y-k’, Y+k’] is quite close to
+the original probability of drawing <span
+class="math inline">\(Y\)</span> to begin with.</p>
 <!-- [Heading IDs](#custom-id)
 -->
-<h3 id="lemma-smooth">Lemma 2: Adding Noise from smooth distributions is a DP mechanism</h3>
-<p>Let <span class="math inline">\(f: X^n \rightarrow \mathbb{Z}^m\)</span> be a k-incremental function such that it is <span class="math inline">\(\Delta\)</span> sensitive i.e. <span class="math inline">\(|f(x) - f(x&#39;)| \leq \Delta\)</span> for all <span class="math inline">\(x \sim x&#39;\)</span>. Let <span class="math inline">\(\mathbb{D}\)</span> be a <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth distribution. Then the algorithm that M takes <span class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span class="math inline">\(f(x) + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> is <span class="math inline">\((\epsilon&#39;, \delta&#39;)\)</span> DP, where <span class="math inline">\((\epsilon&#39; = \epsilon\times\Delta, \delta&#39;\times\Delta)\)</span></p>
+<h3 id="lemma-smooth">Lemma 2: Adding Noise from smooth distributions is
+a DP mechanism</h3>
+<p>Let <span class="math inline">\(f: X^n \rightarrow
+\mathbb{Z}^m\)</span> be a k-incremental function such that it is <span
+class="math inline">\(\Delta\)</span> sensitive i.e. <span
+class="math inline">\(|f(x) - f(x&#39;)| \leq \Delta\)</span> for all
+<span class="math inline">\(x \sim x&#39;\)</span>. Let <span
+class="math inline">\(\mathbb{D}\)</span> be a <span
+class="math inline">\((\epsilon, \delta, k)\)</span> smooth
+distribution. Then the algorithm that M takes <span
+class="math inline">\(x \sim \mathbb{Z}^n\)</span>, and outputs <span
+class="math inline">\(f(x) + \eta\)</span> where <span
+class="math inline">\(\eta \sim D\)</span> is <span
+class="math inline">\((\epsilon&#39;, \delta&#39;)\)</span> DP, where
+<span class="math inline">\((\epsilon&#39; = \epsilon\times\Delta,
+\delta&#39;\times\Delta)\)</span></p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#smmothNoiseIsDp">
 Proof
 </button>
 <div id="smmothNoiseIsDp" class="collapse">
-<p>Proof follows directly as a consequence of smootheness, independence and the union bound. A k-incremental function is defined as following: <span class="math inline">\(\forall X, X&#39; || f(X) - f(X&#39;)||_{\infty} \leq k\)</span>. Binary sums for neighbouring datasets are 1-incremental. Since <span class="math inline">\(f\)</span> is k incremental, for any <span class="math inline">\(j \in \left\lfloor m \right\rfloor\)</span> we have <span class="math inline">\(f(X&#39;)_j - f(X)_j = k_j \leq k\)</span></p>
-<p>We have <span class="math inline">\(M(X)_j = f(X)_j + \eta\)</span> where <span class="math inline">\(\eta \sim D\)</span> and <span class="math inline">\(M(X&#39;)_j = f(X&#39;)_j + \eta_j = f(X)_j + k + \eta_j\)</span>. Since <span class="math inline">\(f\)</span> is deterministic, the randomness in the two methods comes from <span class="math inline">\(\eta_j\)</span></p>
-<span class="math display">\[\begin{align*}
-\mathbb{P}_{\eta \sim D}\Big[\frac{M(X)}{M(X&#39;)}\Big] &amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{M(X)_j}{M(X&#39;)_j}\Big] \\
-&amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j+k_j\Big]}\Big] \tag{1}\label{1}\\
-\end{align*}\]</span>
-<p><span class="math inline">\(\ref{1}:\)</span> As defined as f is k-incremental.</p>
-<p>From smoothness we get <span class="math inline">\(\mathbb{P}_{\eta_j \sim D}\Big[\frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j+k_j\Big]} \geq e^{\epsilon&#39;|k_j|/\Delta} \Big] \leq \frac{\delta&#39;}{\Delta}\)</span></p>
+<p>Proof follows directly as a consequence of smootheness, independence
+and the union bound. A k-incremental function is defined as following:
+<span class="math inline">\(\forall X, X&#39; || f(X) -
+f(X&#39;)||_{\infty} \leq k\)</span>. Binary sums for neighbouring
+datasets are 1-incremental. Since <span class="math inline">\(f\)</span>
+is k incremental, for any <span class="math inline">\(j \in \left\lfloor
+m \right\rfloor\)</span> we have <span class="math inline">\(f(X&#39;)_j
+- f(X)_j = k_j \leq k\)</span></p>
+<p>We have <span class="math inline">\(M(X)_j = f(X)_j + \eta\)</span>
+where <span class="math inline">\(\eta \sim D\)</span> and <span
+class="math inline">\(M(X&#39;)_j = f(X&#39;)_j + \eta_j = f(X)_j + k +
+\eta_j\)</span>. Since <span class="math inline">\(f\)</span> is
+deterministic, the randomness in the two methods comes from <span
+class="math inline">\(\eta_j\)</span></p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}_{\eta \sim D}\Big[\frac{M(X)}{M(X&#39;)}\Big] &amp;=
+\mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m
+\frac{M(X)_j}{M(X&#39;)_j}\Big] \\
+&amp;= \mathbb{P}_{\eta \sim D}\Big[\prod_{j=1}^m \frac{\mathbb{P}_{Y
+\sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y \sim
+D}\Big[Y=\eta_j+k_j\Big]}\Big] \tag{1}\label{1}\\
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{1}:\)</span> As defined as f is
+k-incremental.</p>
+<p>From smoothness we get <span class="math inline">\(\mathbb{P}_{\eta_j
+\sim D}\Big[\frac{\mathbb{P}_{Y \sim D}\Big[Y=\eta_j\Big]}{\mathbb{P}_{Y
+\sim D}\Big[Y=\eta_j+k_j\Big]} \geq e^{\epsilon&#39;|k_j|/\Delta} \Big]
+\leq \frac{\delta&#39;}{\Delta}\)</span></p>
 </div>
 <!-- B
 
@@ -79,94 +161,208 @@ Proof
 
 $\ref{2}:$ sensitivity of $f$
  -->
-<h3 id="lemma-3-the-binomial-distribution-is-smooth">Lemma 3: The binomial distribution is smooth</h3>
-<p>For any positive integer n, and <span class="math inline">\(\gamma \in [0,1/2], \alpha \in [0,1]\)</span> and any <span class="math inline">\(k \leq \alpha\gamma/2\)</span>, <span class="math inline">\(Binomian(n, \gamma)\)</span> is <span class="math inline">\((\epsilon, \delta, k)\)</span> smooth with</p>
-<p><span class="math display">\[\epsilon = \log\big( \frac{1 + \alpha}{1 - \alpha}\big)\]</span> and</p>
-<p><span class="math display">\[\delta= exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha})\]</span></p>
+<h3 id="lemma-3-the-binomial-distribution-is-smooth">Lemma 3: The
+binomial distribution is smooth</h3>
+<p>For any positive integer n, and <span class="math inline">\(\gamma
+\in [0,1/2], \alpha \in [0,1]\)</span> and any <span
+class="math inline">\(k \leq \alpha\gamma/2\)</span>, <span
+class="math inline">\(Binomian(n, \gamma)\)</span> is <span
+class="math inline">\((\epsilon, \delta, k)\)</span> smooth with</p>
+<p><span class="math display">\[\epsilon = \log\big( \frac{1 + \alpha}{1
+- \alpha}\big)\]</span> and</p>
+<p><span class="math display">\[\delta= exp(-\frac{\alpha^2\gamma n}{8})
++ exp(-\frac{\alpha^2\gamma n}{8+2\alpha})\]</span></p>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#binIsSmooth">
 Proof
 </button>
 <div id="binIsSmooth" class="collapse">
-<p>If we look at the definition of smooth distributions, they look an awful lot like concentration inequalities. It should come as no surprise that to show that the binomial distribution is <span class="math inline">\((\epsilon, \delta, k)\)</span> - smooth we use the multiplicative chernoff bound along with some algebra.</p>
-<p>Define <span class="math inline">\(Event(Y):= \frac{\mathbb{P}_{Y&#39; \sim Binomial(n, \gamma)}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim Binomial(n, \gamma)}\Big[Y&#39;=Y+k&#39;\Big]}\)</span> for <span class="math inline">\(n \in \mathbb{N}\)</span>, <span class="math inline">\(\gamma \in [0, 1/2]\)</span>, <span class="math inline">\(-k \leq k&#39; \leq k\)</span> and <span class="math inline">\(\mu = n\gamma\)</span>.</p>
-<p>We want to show that <span class="math inline">\(\mathbb{P}_{Y \sim Binomial(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon}\Big] \leq \delta\)</span>.</p>
-<p>Define interval <span class="math inline">\(G := [ (1 - \alpha)\mu + k, (1 + \alpha)\mu - k ]\)</span>. (<strong>Looks a lot like CHERNOFF</strong>) for <span class="math inline">\(\alpha \in [0,1]\)</span></p>
-<p>If <span class="math inline">\(k \leq \frac{\alpha\mu}{2}\)</span>, then <span class="math inline">\(G\)</span> is a subset of <span class="math inline">\([(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]\)</span>. This inequality is constructed artificially to remove the <span class="math inline">\(k\)</span> dependence and directly apply the chernoff bound. They simply doubled the range of <span class="math inline">\(G\)</span> and found conditions in which for any value of <span class="math inline">\(k\)</span>, we would still fit <span class="math inline">\(G\)</span> in the range. The math is simple: <span class="math inline">\((1 - \alpha)\mu + k = (1 - \alpha/2)\mu\)</span>, if you solve for <span class="math inline">\(k\)</span> you get the inequality.</p>
-<p>Since <span class="math inline">\(G \subseteq [(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]\)</span> and <span class="math inline">\(Y \sim Binomial(n, \gamma)\)</span> is the sum of <span class="math inline">\(n\)</span> Bernoulli random variables, we can directly apply the multicative chernoff bounds for sums of bernoulli random variables. We have</p>
-<p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \geq (1 + \alpha/2)\mu\Big] \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}}\)</span> and</p>
-<p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \leq (1 - \alpha/2)\mu\Big] \leq e^{-\frac{\alpha^2\mu}{8}}\)</span></p>
-<p>Combining we get, <span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n, \gamma)}\Big[Y&#39; \notin G\Big] \leq e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span>. Now back to what we want to show:</p>
-<span class="math display">\[\begin{align*}
-\mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon}\Big] &amp;\leq \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] +  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Y \notin G\Big] \tag{1}\label{totProb}\\
-&amp;\leq  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] + e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}} \tag{2}\label{chernoff}\\
+<p>If we look at the definition of smooth distributions, they look an
+awful lot like concentration inequalities. It should come as no surprise
+that to show that the binomial distribution is <span
+class="math inline">\((\epsilon, \delta, k)\)</span> - smooth we use the
+multiplicative chernoff bound along with some algebra.</p>
+<p>Define <span class="math inline">\(Event(Y):=
+\frac{\mathbb{P}_{Y&#39; \sim Binomial(n,
+\gamma)}\Big[Y&#39;=Y\Big]}{\mathbb{P}_{Y&#39; \sim Binomial(n,
+\gamma)}\Big[Y&#39;=Y+k&#39;\Big]}\)</span> for <span
+class="math inline">\(n \in \mathbb{N}\)</span>, <span
+class="math inline">\(\gamma \in [0, 1/2]\)</span>, <span
+class="math inline">\(-k \leq k&#39; \leq k\)</span> and <span
+class="math inline">\(\mu = n\gamma\)</span>.</p>
+<p>We want to show that <span class="math inline">\(\mathbb{P}_{Y \sim
+Binomial(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon}\Big] \leq
+\delta\)</span>.</p>
+<p>Define interval <span class="math inline">\(G := [ (1 - \alpha)\mu +
+k, (1 + \alpha)\mu - k ]\)</span>. (<strong>Looks a lot like
+CHERNOFF</strong>) for <span class="math inline">\(\alpha \in
+[0,1]\)</span></p>
+<p>If <span class="math inline">\(k \leq \frac{\alpha\mu}{2}\)</span>,
+then <span class="math inline">\(G\)</span> is a subset of <span
+class="math inline">\([(1 - \alpha/2)\mu , (1 + \alpha/2)\mu]\)</span>.
+This inequality is constructed artificially to remove the <span
+class="math inline">\(k\)</span> dependence and directly apply the
+chernoff bound. They simply doubled the range of <span
+class="math inline">\(G\)</span> and found conditions in which for any
+value of <span class="math inline">\(k\)</span>, we would still fit
+<span class="math inline">\(G\)</span> in the range. The math is simple:
+<span class="math inline">\((1 - \alpha)\mu + k = (1 -
+\alpha/2)\mu\)</span>, if you solve for <span
+class="math inline">\(k\)</span> you get the inequality.</p>
+<p>Since <span class="math inline">\(G \subseteq [(1 - \alpha/2)\mu , (1
++ \alpha/2)\mu]\)</span> and <span class="math inline">\(Y \sim
+Binomial(n, \gamma)\)</span> is the sum of <span
+class="math inline">\(n\)</span> Bernoulli random variables, we can
+directly apply the multicative chernoff bounds for sums of bernoulli
+random variables. We have</p>
+<p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n,
+\gamma)}\Big[Y&#39; \geq (1 + \alpha/2)\mu\Big] \leq
+e^{-\frac{\alpha^2\mu}{8 + 2\alpha}}\)</span> and</p>
+<p><span class="math inline">\(\mathbb{P}_{Y&#39; \sim Bin(n,
+\gamma)}\Big[Y&#39; \leq (1 - \alpha/2)\mu\Big] \leq
+e^{-\frac{\alpha^2\mu}{8}}\)</span></p>
+<p>Combining we get, <span class="math inline">\(\mathbb{P}_{Y&#39; \sim
+Bin(n, \gamma)}\Big[Y&#39; \notin G\Big] \leq e^{-\frac{\alpha^2\mu}{8 +
+2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span>. Now back to what we
+want to show:</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq
+e^{|k&#39;|\epsilon}\Big] &amp;\leq \mathbb{P}_{Y \sim Bin(n,
+\gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big]
++  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Y \notin G\Big]
+\tag{1}\label{totProb}\\
+&amp;\leq  \mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq
+e^{|k&#39;|\epsilon} \Big| Y \in G\Big] + e^{-\frac{\alpha^2\mu}{8 +
+2\alpha}} + e^{-\frac{\alpha^2\mu}{8}} \tag{2}\label{chernoff}\\
 &amp;\leq \delta
-\end{align*}\]</span>
-<p><span class="math inline">\(\ref{totProb}:\)</span> Using the law of total probability</p>
-<p><span class="math inline">\(\ref{chernoff}:\)</span> Chernoff bound from above</p>
-<p>Now if we show <span class="math inline">\(\mathbb{P}_{Y \sim Bin(n, \gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] = 0\)</span>, then we can set <span class="math inline">\(\delta=e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} + e^{-\frac{\alpha^2\mu}{8}}\)</span> as in the lemma and solve for <span class="math inline">\(\epsilon\)</span>. So the game simply becomes, for what <span class="math inline">\(\epsilon\)</span> do we zero out that probability.</p>
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{totProb}:\)</span> Using the law of
+total probability</p>
+<p><span class="math inline">\(\ref{chernoff}:\)</span> Chernoff bound
+from above</p>
+<p>Now if we show <span class="math inline">\(\mathbb{P}_{Y \sim Bin(n,
+\gamma)}\Big[Event(Y) \geq e^{|k&#39;|\epsilon} \Big| Y \in G\Big] =
+0\)</span>, then we can set <span
+class="math inline">\(\delta=e^{-\frac{\alpha^2\mu}{8 + 2\alpha}} +
+e^{-\frac{\alpha^2\mu}{8}}\)</span> as in the lemma and solve for <span
+class="math inline">\(\epsilon\)</span>. So the game simply becomes, for
+what <span class="math inline">\(\epsilon\)</span> do we zero out that
+probability.</p>
 <div class="question">
-<p>I am copying this next bit from the paper: but I don’t know where the last inequality comes from, I could not derive it.</p>
-<p><span class="math inline">\(Event(y) = \frac{(1-\gamma)^{k&#39;}}{y^{k&#39;}}\times\frac{(y+1)...(y+k&#39;)}{(n-y)...(n-y-k&#39;+1)}\)</span></p>
-<p>Next they claim, since <span class="math inline">\(y \in G\)</span>, when <span class="math inline">\(k&#39; \leq 0\)</span>,</p>
-<p><span class="math inline">\(Event(y) = \frac{y^{|k&#39;|}}{(1-\gamma)^{|k&#39;|}}\frac{(n-y+1)...(n-y +|k&#39;|)}{y(y-1)...(y-|k&#39;|)} \leq (\frac{1 + \alpha}{1 - \alpha})^{|k&#39;|} = e^{\epsilon|k|}\)</span></p>
-<p>When <span class="math inline">\(k&#39; \geq 0\)</span> we get <span class="math inline">\(\frac{(1-\gamma)^{k&#39;}}{y^{k&#39;}}\frac{(y+1)...(y+k&#39;)}{(n-y)...(n-y-k&#39;+1)} \leq (1+\alpha)^{k&#39;} \leq (\frac{1 + \alpha}{1 - \alpha})^{k&#39;} = e^{\epsilon |k|}\)</span></p>
-<p>So if we set <span class="math inline">\(\epsilon = ln(\frac{1 + \alpha}{1 - \alpha})\)</span> we get everything we want. How they go from products to <span class="math inline">\(\alpha\)</span> inequalities are unclear to me!</p>
+<p>I am copying this next bit from the paper: but I don’t know where the
+last inequality comes from, I could not derive it.</p>
+<p><span class="math inline">\(Event(y) =
+\frac{(1-\gamma)^{k&#39;}}{y^{k&#39;}}\times\frac{(y+1)...(y+k&#39;)}{(n-y)...(n-y-k&#39;+1)}\)</span></p>
+<p>Next they claim, since <span class="math inline">\(y \in G\)</span>,
+when <span class="math inline">\(k&#39; \leq 0\)</span>,</p>
+<p><span class="math inline">\(Event(y) =
+\frac{y^{|k&#39;|}}{(1-\gamma)^{|k&#39;|}}\frac{(n-y+1)...(n-y
++|k&#39;|)}{y(y-1)...(y-|k&#39;|)} \leq (\frac{1 + \alpha}{1 -
+\alpha})^{|k&#39;|} = e^{\epsilon|k|}\)</span></p>
+<p>When <span class="math inline">\(k&#39; \geq 0\)</span> we get <span
+class="math inline">\(\frac{(1-\gamma)^{k&#39;}}{y^{k&#39;}}\frac{(y+1)...(y+k&#39;)}{(n-y)...(n-y-k&#39;+1)}
+\leq (1+\alpha)^{k&#39;} \leq (\frac{1 + \alpha}{1 - \alpha})^{k&#39;} =
+e^{\epsilon |k|}\)</span></p>
+<p>So if we set <span class="math inline">\(\epsilon = ln(\frac{1 +
+\alpha}{1 - \alpha})\)</span> we get everything we want. How they go
+from products to <span class="math inline">\(\alpha\)</span>
+inequalities are unclear to me!</p>
 </div>
 </div>
 <h2 id="introduction">Introduction</h2>
-<p>There has been a lot of work on local privacy. See here <strong>TODO</strong>. A new paradigm of privacy is shuffle privacy. In this paper, the authors try and understand the guarantees of shuffle privacy with respect to local privacy for the histogram sum estimation problem. There are two major findings:</p>
+<p>There has been a lot of work on local privacy. See here
+<strong>TODO</strong>. A new paradigm of privacy is shuffle privacy. In
+this paper, the authors try and understand the guarantees of shuffle
+privacy with respect to local privacy for the histogram sum estimation
+problem. There are two major findings:</p>
 <ol type="1">
-<li>The authors present a protocol in the shuffled model that estimates histograms with error independent of the domain size. This implies an arbitrarily large gap in sample complexity between the shuffled and local models.
+<li>The authors present a protocol in the shuffled model that estimates
+histograms with error independent of the domain size. This implies an
+arbitrarily large gap in sample complexity between the shuffled and
+local models.
 <div class="question">
-I have not verified myself what the accuracy guarantees of known local models are. Perhaps this is something I should do. But Grahams survey paper does this
+I have not verified myself what the accuracy guarantees of known local
+models are. Perhaps this is something I should do. But Grahams survey
+paper does this
 </div></li>
-<li>Local and shuffle privacy are equivalent when we impose the constraints of pure differential privacy and single-message randomizers. Not anymore:
+<li>Local and shuffle privacy are equivalent when we impose the
+constraints of pure differential privacy and single-message randomizers.
+Not anymore:
 <div class="question">
-<a href="/ShuffleSumMeanEstimateRasmus/">Now there (Sep 2021)</a> there is a paper that gives near central guarantees for shuffle DP with near constant message complexity. Howo does this affect this papers findings?
+<a href="/ShuffleSumMeanEstimateRasmus/">Now there (Sep 2021)</a> there
+is a paper that gives near central guarantees for shuffle DP with near
+constant message complexity. Howo does this affect this papers findings?
 </div></li>
 </ol>
 <h2 id="the-binary-histogram">The binary histogram</h2>
-<p>Before estimating all histograms, the authors look at the binary histogram or binary sums where the cells of the histogram are constrained to have values in <span class="math inline">\(\{0, 1\}\)</span>.</p>
+<p>Before estimating all histograms, the authors look at the binary
+histogram or binary sums where the cells of the histogram are
+constrained to have values in <span class="math inline">\(\{0,
+1\}\)</span>.</p>
 <p><strong>PUT PICTURE</strong></p>
-<h3 id="an-algorithm-for-binary-sums-that-satisfies-shuffle-privacy">An algorithm for binary sums that satisfies shuffle privacy</h3>
+<h3 id="an-algorithm-for-binary-sums-that-satisfies-shuffle-privacy">An
+algorithm for binary sums that satisfies shuffle privacy</h3>
 <div class="algorithm">
-<p><strong>RANDOMISER:</strong> <span class="math inline">\(\textit{R}_{\epsilon, \delta}^{zsum}\)</span></p>
+<p><strong>RANDOMISER:</strong> <span
+class="math inline">\(\textit{R}_{\epsilon, \delta}^{zsum}\)</span></p>
 <p>Input:</p>
 <ul>
 <li><span class="math inline">\(x \in \{0,1\}\)</span></li>
-<li><span class="math inline">\((\epsilon, \delta) \in [0,1]\)</span></li>
+<li><span class="math inline">\((\epsilon, \delta) \in
+[0,1]\)</span></li>
 </ul>
 <p>Method:</p>
 <ol type="1">
-<li><span class="math inline">\(1 - p = \frac{50}{\epsilon^2 n}\log(\frac{2}{\delta})\)</span></li>
+<li><span class="math inline">\(1 - p = \frac{50}{\epsilon^2
+n}\log(\frac{2}{\delta})\)</span></li>
 <li><span class="math inline">\(z \sim Bernoulli(p)\)</span></li>
 </ol>
 <p>Output:</p>
 <ol start="3" type="1">
 <li>Output x+z copies of 1s (At the most 2 bits)</li>
 </ol>
-<p><strong>ANANLYSER: </strong><span class="math inline">\(\textit{A}_{\epsilon, \delta}^{zsum}\)</span></p>
+<p><strong>ANANLYSER: </strong><span
+class="math inline">\(\textit{A}_{\epsilon, \delta}^{zsum}\)</span></p>
 <p>Input:</p>
 <ul>
-<li><span class="math inline">\(n\)</span> outputs of <span class="math inline">\(\textit{R}_{\epsilon, \delta}^{zsum}\)</span>: which is a steam of 1’s i.e <span class="math inline">\(y \in \{ 1\}^*\)</span></li>
-<li><span class="math inline">\((\epsilon, \delta) \in [0,1]\)</span></li>
+<li><span class="math inline">\(n\)</span> outputs of <span
+class="math inline">\(\textit{R}_{\epsilon, \delta}^{zsum}\)</span>:
+which is a steam of 1’s i.e <span class="math inline">\(y \in \{
+1\}^*\)</span></li>
+<li><span class="math inline">\((\epsilon, \delta) \in
+[0,1]\)</span></li>
 </ul>
 <p>Method:</p>
 <ol type="1">
-<li><span class="math inline">\(1 - p = \frac{50}{\epsilon^2 n}\log(\frac{2}{\delta})\)</span></li>
-<li><span class="math inline">\(c^* = \frac{1}{n}|y|\)</span> where |.| is the length of a stream</li>
+<li><span class="math inline">\(1 - p = \frac{50}{\epsilon^2
+n}\log(\frac{2}{\delta})\)</span></li>
+<li><span class="math inline">\(c^* = \frac{1}{n}|y|\)</span> where |.|
+is the length of a stream</li>
 </ol>
 <p>Output:</p>
 <ol start="3" type="1">
 <li>if c* &gt; 1 : return (c* - p) else: return 0</li>
 </ol>
 </div>
-<h3 id="theorem-binHistDP">Theorem: The above proptocol is DP for the shuffled model</h3>
-<p>For any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span>, the protocol <span class="math inline">\((\textit{P}_{\epsilon, \delta}^{zsum}= \textit{R}_{\epsilon, \delta}^{zsum}, \textit{A}_{\epsilon, \delta}^{zsum})\)</span> has the following properties:</p>
+<h3 id="theorem-binHistDP">Theorem: The above proptocol is DP for the
+shuffled model</h3>
+<p>For any <span class="math inline">\(\epsilon, \delta \in
+[0,1]\)</span> and any <span class="math inline">\(n \in
+\mathbb{N}\)</span> such that <span class="math inline">\(n \geq
+\frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span>, the protocol
+<span class="math inline">\((\textit{P}_{\epsilon, \delta}^{zsum}=
+\textit{R}_{\epsilon, \delta}^{zsum}, \textit{A}_{\epsilon,
+\delta}^{zsum})\)</span> has the following properties:</p>
 <ol type="1">
-<li><p><span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> is <span class="math inline">\((\epsilon, \delta)\)</span>-differentially private in the shuffled model.</p></li>
-<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>, the error <span class="math inline">\(|\textit{P}_{\epsilon, \delta}^{zsum}(X) - \frac{1}{n}\sum_{i=1}^n x_i| \leq \alpha\)</span> with probability <span class="math inline">\(1 - \beta\)</span></p></li>
-<li>If <span class="math inline">\(X=(0,...0)\)</span>, then <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span> i.e. we have 0 error.
+<li><p><span class="math inline">\(\textit{P}_{\epsilon,
+\delta}^{zsum}\)</span> is <span class="math inline">\((\epsilon,
+\delta)\)</span>-differentially private in the shuffled model.</p></li>
+<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>,
+the error <span class="math inline">\(|\textit{P}_{\epsilon,
+\delta}^{zsum}(X) - \frac{1}{n}\sum_{i=1}^n x_i| \leq \alpha\)</span>
+with probability <span class="math inline">\(1 - \beta\)</span></p></li>
+<li><p>If <span class="math inline">\(X=(0,...0)\)</span>, then <span
+class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(X)=0\)</span>
+i.e. we have 0 error.</p>
 <div class="question">
 
 </div></li>
@@ -175,17 +371,55 @@ I have not verified myself what the accuracy guarantees of known local models ar
 Proof
 </button>
 <div id="binHistProof" class="collapse">
-<h3 id="part-i-proving-dp-needs-slight-re-write-ive-finally-understood-the-game">Part I : Proving DP (Needs slight re-write – I’ve finally understood the game)</h3>
-<p>Part I of this proof comes from background material section. The first question of concern is under what conditions, is sampling from a binomial distribution <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth. Then all that remains to be shown is that, the above algorithm is basically adding noise drawn from a binomial to the exact binary sum, which by Lemma 2 is DP.</p>
-<h4 id="under-what-conditions-is-the-binomial-1-smooth">Under what conditions is the Binomial 1-smooth</h4>
-<p>By Lemma 3, We know a binomial is k-smooth if <span class="math inline">\(\epsilon = \log\big( \frac{1 + \alpha}{1 - \alpha}\big)\)</span> and <span class="math inline">\(\delta= exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha})\)</span> for any <span class="math inline">\(\alpha \in [0,1]\)</span></p>
-<p>Note that for <span class="math inline">\(\alpha &lt; 1\)</span>, we have <span class="math inline">\(exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma n}{8+2\alpha}) &lt; exp(-\frac{\alpha^2\gamma n}{10}) + exp(-\frac{\alpha^2\gamma n}{10}) = 2exp(-\frac{\alpha^2\gamma n}{10})\)</span></p>
-Now if we restrict <span class="math inline">\(\alpha \in [\epsilon/\sqrt{5}, 1)\)</span> and set <span class="math inline">\(\alpha = \frac{e^\epsilon - 1}{e^\epsilon + 1}\)</span>, then we get the following bound from <span class="math inline">\(\delta\)</span>
+<h3
+id="part-i-proving-dp-needs-slight-re-write-ive-finally-understood-the-game">Part
+I : Proving DP (Needs slight re-write – I’ve finally understood the
+game)</h3>
+<p>Part I of this proof comes from background material section. The
+first question of concern is under what conditions, is sampling from a
+binomial distribution <span class="math inline">\((\epsilon, \delta,
+1)\)</span> smooth. Then all that remains to be shown is that, the above
+algorithm is basically adding noise drawn from a binomial to the exact
+binary sum, which by Lemma 2 is DP.</p>
+<h4 id="under-what-conditions-is-the-binomial-1-smooth">Under what
+conditions is the Binomial 1-smooth</h4>
+<p>By Lemma 3, We know a binomial is k-smooth if <span
+class="math inline">\(\epsilon = \log\big( \frac{1 + \alpha}{1 -
+\alpha}\big)\)</span> and <span class="math inline">\(\delta=
+exp(-\frac{\alpha^2\gamma n}{8}) + exp(-\frac{\alpha^2\gamma
+n}{8+2\alpha})\)</span> for any <span class="math inline">\(\alpha \in
+[0,1]\)</span></p>
+<p>Note that for <span class="math inline">\(\alpha &lt; 1\)</span>, we
+have <span class="math inline">\(exp(-\frac{\alpha^2\gamma n}{8}) +
+exp(-\frac{\alpha^2\gamma n}{8+2\alpha}) &lt; exp(-\frac{\alpha^2\gamma
+n}{10}) + exp(-\frac{\alpha^2\gamma n}{10}) = 2exp(-\frac{\alpha^2\gamma
+n}{10})\)</span></p>
+Now if we restrict <span class="math inline">\(\alpha \in
+[\epsilon/\sqrt{5}, 1)\)</span> and set <span
+class="math inline">\(\alpha = \frac{e^\epsilon - 1}{e^\epsilon +
+1}\)</span>, then we get the following bound from <span
+class="math inline">\(\delta\)</span>
 <div class="question">
-It is not immediately clear why they picked square root of 5: but here is my understanding
+It is not immediately clear why they picked square root of 5: but here
+is my understanding
 </div>
 <div class="intuition">
-Given <span class="math inline">\(\alpha\)</span> is already defined in terms of <span class="math inline">\(\epsilon\)</span>. The authors want to find a simpler lower bound for <span class="math inline">\(\alpha^2\)</span> in termss of <span class="math inline">\(\epsilon\)</span>. As there is a squared, they picked the smallest integer such that <span class="math inline">\(\alpha &gt; 0\)</span> for all values of <span class="math inline">\(\epsilon \in [0,1]\)</span> Shown below are plots for <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{5}}\)</span> and <span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{4}}\)</span>. Clearly, <span class="math inline">\(\frac{\epsilon}{\sqrt{5}} \geq \alpha\)</span> <span class="math inline">\(\forall \epsilon \in [0,1]\)</span>. Now that they have lower bounded <span class="math inline">\(\alpha\)</span> by a simple <span class="math inline">\(\epsilon\)</span> we can just use it in the <span class="math inline">\(\delta\)</span> bound.
+Given <span class="math inline">\(\alpha\)</span> is already defined in
+terms of <span class="math inline">\(\epsilon\)</span>. The authors want
+to find a simpler lower bound for <span
+class="math inline">\(\alpha^2\)</span> in termss of <span
+class="math inline">\(\epsilon\)</span>. As there is a squared, they
+picked the smallest integer such that <span class="math inline">\(\alpha
+&gt; 0\)</span> for all values of <span class="math inline">\(\epsilon
+\in [0,1]\)</span> Shown below are plots for <span
+class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{5}}\)</span> and
+<span class="math inline">\(\alpha - \frac{\epsilon}{\sqrt{4}}\)</span>.
+Clearly, <span class="math inline">\(\frac{\epsilon}{\sqrt{5}} \geq
+\alpha\)</span> <span class="math inline">\(\forall \epsilon \in
+[0,1]\)</span>. Now that they have lower bounded <span
+class="math inline">\(\alpha\)</span> by a simple <span
+class="math inline">\(\epsilon\)</span> we can just use it in the <span
+class="math inline">\(\delta\)</span> bound.
 </div>
 <div class="row">
 <div class="col-md-6">
@@ -198,85 +432,174 @@ Given <span class="math inline">\(\alpha\)</span> is already defined in terms of
 
 </div>
 </div>
-<span class="math display">\[\begin{align}
-2exp(-\frac{\alpha^2\gamma n}{10}) &amp;\leq 2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1} \\
+<p><span class="math display">\[\begin{align}
+2exp(-\frac{\alpha^2\gamma n}{10}) &amp;\leq
+2\exp(-\frac{\epsilon^2\gamma n}{50})  \label{eq1}\tag{1} \\
     &amp;= \delta \\
-\frac{\gamma\epsilon^2n}{50} &amp;= \log(\frac{2}{\delta}) \label{eq2}\tag{2}\\
+\frac{\gamma\epsilon^2n}{50} &amp;= \log(\frac{2}{\delta})
+\label{eq2}\tag{2}\\
 \gamma &amp;= \frac{50}{\epsilon^2n}\log(\frac{2}{\delta})
-\end{align}\]</span>
-<p><span class="math inline">\(\ref{eq1}\)</span> Substituiting the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span></p>
-<p><span class="math inline">\(\ref{eq2}\)</span> Re-arranging terms to get a value for <span class="math inline">\(\gamma\)</span></p>
+\end{align}\]</span></p>
+<p><span class="math inline">\(\ref{eq1}\)</span> Substituiting the
+smallest value of <span class="math inline">\(\alpha =
+\epsilon/\sqrt{5}\)</span></p>
+<p><span class="math inline">\(\ref{eq2}\)</span> Re-arranging terms to
+get a value for <span class="math inline">\(\gamma\)</span></p>
 <p>But we really need is 1-smooth, so we need</p>
 <p><span class="math display">\[ n\alpha\gamma \geq 2 \]</span></p>
-<p>We are interested in the smallest value of <span class="math inline">\(n\alpha\gamma\)</span>, which we get trivially by plugging it the smallest value of <span class="math inline">\(\alpha = \epsilon/\sqrt{5}\)</span>, the theorem definition states <span class="math inline">\(n= \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> and from the above derivation we get <span class="math inline">\(\gamma =\frac{50}{\epsilon^2n}\log(\frac{2}{\delta})\)</span></p>
-<span class="math display">\[\begin{align}
-n\alpha \gamma &amp;= \frac{50}{\epsilon^2}\log(\frac{2}{\delta})\frac{\epsilon}{\sqrt{5}} \\
+<p>We are interested in the smallest value of <span
+class="math inline">\(n\alpha\gamma\)</span>, which we get trivially by
+plugging it the smallest value of <span class="math inline">\(\alpha =
+\epsilon/\sqrt{5}\)</span>, the theorem definition states <span
+class="math inline">\(n=
+\frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> and from the above
+derivation we get <span class="math inline">\(\gamma
+=\frac{50}{\epsilon^2n}\log(\frac{2}{\delta})\)</span></p>
+<p><span class="math display">\[\begin{align}
+n\alpha \gamma &amp;=
+\frac{50}{\epsilon^2}\log(\frac{2}{\delta})\frac{\epsilon}{\sqrt{5}} \\
 &amp;=\frac{10\sqrt{5}}{\epsilon}\log(\frac{2}{\delta}) \\
 &amp;\geq \frac{10\sqrt{5}}{1}\log(\frac{2}{1}) \label{eq3}\tag{3} \\
 &amp;\geq 2
-\end{align}\]</span>
-<p><span class="math inline">\(\ref{eq3}\)</span> by plugging in the largest values for <span class="math inline">\(\epsilon, \delta = 1, 1\)</span></p>
-<p>In conclusion – the conditions of seting any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> makes sampling from the <span class="math inline">\(Binmonial(n, \gamma)\)</span> 1-smmoth. Now all that remains is to show is that the algorithm described above just adds binomial noise to a 1-sensitive function.</p>
-<h4 id="the-above-algorithm-just-adds-noise-drawn-from-a-binomial-distribution-to-the-true-sum">The above algorithm just adds noise drawn from a binomial distribution to the true sum</h4>
-<p>If we let <span class="math inline">\(z_i \sim Bernoulli(1 - \gamma)\)</span> be the random bit (heads or tails) generated by the i-th user, the total number of messages is <span class="math inline">\(|y| = \sum_{i=1}^n x_i + z_i\)</span>. Here <span class="math inline">\(\gamma=1-p\)</span> as defined in the algorithm above and re-derived in the proof above. Observe that learning <span class="math inline">\(|y|\)</span> is sufficient to represent the output of shuffler since all messages have the same value i.e. they are all 1s. We can say the above algorithm is equivalent to the following</p>
-<span class="math display">\[\begin{align*}
+\end{align}\]</span></p>
+<p><span class="math inline">\(\ref{eq3}\)</span> by plugging in the
+largest values for <span class="math inline">\(\epsilon, \delta = 1,
+1\)</span></p>
+<p>In conclusion – the conditions of seting any <span
+class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span
+class="math inline">\(n \in \mathbb{N}\)</span> such that <span
+class="math inline">\(n \geq
+\frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span> makes sampling
+from the <span class="math inline">\(Binmonial(n, \gamma)\)</span>
+1-smmoth. Now all that remains is to show is that the algorithm
+described above just adds binomial noise to a 1-sensitive function.</p>
+<h4
+id="the-above-algorithm-just-adds-noise-drawn-from-a-binomial-distribution-to-the-true-sum">The
+above algorithm just adds noise drawn from a binomial distribution to
+the true sum</h4>
+<p>If we let <span class="math inline">\(z_i \sim Bernoulli(1 -
+\gamma)\)</span> be the random bit (heads or tails) generated by the
+i-th user, the total number of messages is <span
+class="math inline">\(|y| = \sum_{i=1}^n x_i + z_i\)</span>. Here <span
+class="math inline">\(\gamma=1-p\)</span> as defined in the algorithm
+above and re-derived in the proof above. Observe that learning <span
+class="math inline">\(|y|\)</span> is sufficient to represent the output
+of shuffler since all messages have the same value i.e. they are all 1s.
+We can say the above algorithm is equivalent to the following</p>
+<p><span class="math display">\[\begin{align*}
 |y| &amp;= \sum_{i=1}^n x_i + z_i \\
     &amp;= \sum_{i=1}^n x_i + \sum_{i=1}^n z_i \\
     &amp;= \sum_{i=1}^n x_i + Binomial(n, 1 - \gamma) \\
     &amp;= \sum_{i=1}^n x_i + n - Binomial(n, \gamma) \\
     &amp;= -\Big (-\sum_{i=1}^n x_i  + Binomial(n, \gamma) \Big) + n \\
     &amp;= -\Big (M_{neg}(X) \Big) + n \\   
-\end{align*}\]</span>
-<p>If show the output of <span class="math inline">\(M_{neg}(X)\)</span> is DP, then it follows by the deterministic post processing rule of DP that the full algorithmis DP.</p>
-<p>For neighbouring detasets <span class="math inline">\(X \sim X&#39;\)</span>, <span class="math inline">\(\sum_{i=1}^n x_i\)</span> is a 1-sensitive function. Thus we are adding noise drawn from a <span class="math inline">\((\epsilon, \delta, 1)\)</span> smooth binomial distrubution to a 1-sensitive function. Thus the output of the shuffler <span class="math inline">\((S \circ R)(X)\)</span> is DP making the algorithm shuffle DP.</p>
-<h3 id="the-accuracy-of-the-protocol-part-ii">The accuracy of the protocol (part II)</h3>
-Now onto part ii of the theorem. We have shown it is private but how much information do we lose?
+\end{align*}\]</span></p>
+<p>If show the output of <span class="math inline">\(M_{neg}(X)\)</span>
+is DP, then it follows by the deterministic post processing rule of DP
+that the full algorithmis DP.</p>
+<p>For neighbouring detasets <span class="math inline">\(X \sim
+X&#39;\)</span>, <span class="math inline">\(\sum_{i=1}^n x_i\)</span>
+is a 1-sensitive function. Thus we are adding noise drawn from a <span
+class="math inline">\((\epsilon, \delta, 1)\)</span> smooth binomial
+distrubution to a 1-sensitive function. Thus the output of the shuffler
+<span class="math inline">\((S \circ R)(X)\)</span> is DP making the
+algorithm shuffle DP.</p>
+<h3 id="the-accuracy-of-the-protocol-part-ii">The accuracy of the
+protocol (part II)</h3>
+Now onto part ii of the theorem. We have shown it is private but how
+much information do we lose?
 <div class="question">
-This section in the paper has many typos. I am going to try and re-derive them myself.
+This section in the paper has many typos. I am going to try and
+re-derive them myself.
 </div>
 <h3 id="no-error-guarantee-part-iii">No error guarantee (part III)</h3>
-<p>If <span class="math inline">\(X = (0,...,0)\)</span>, then <span class="math inline">\(|y|\)</span> is drawn from <span class="math inline">\(0+ Binomial(n,p)\)</span>, which implies <span class="math inline">\(c^* \leq 1\)</span> with probability 1. Hence, <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(⃗X) = 0\)</span></p>
+<p>If <span class="math inline">\(X = (0,...,0)\)</span>, then <span
+class="math inline">\(|y|\)</span> is drawn from <span
+class="math inline">\(0+ Binomial(n,p)\)</span>, which implies <span
+class="math inline">\(c^* \leq 1\)</span> with probability 1. Hence,
+<span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}(⃗X) =
+0\)</span></p>
 </div>
-<h2 id="histogram-summing-the-full-version">Histogram summing the full version</h2>
-<p>The full version of the histogram just uses <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> for each coordinate <span class="math inline">\(j \in [d]\)</span> where <span class="math inline">\(d\)</span> is the dimension of the histogram.</p>
-<h3 id="an-algorithm-for-histogram-sums-on-integers-that-satisfies-shuffle-privacy">An algorithm for histogram sums on integers that satisfies shuffle privacy</h3>
+<h2 id="histogram-summing-the-full-version">Histogram summing the full
+version</h2>
+<p>The full version of the histogram just uses <span
+class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> for
+each coordinate <span class="math inline">\(j \in [d]\)</span> where
+<span class="math inline">\(d\)</span> is the dimension of the
+histogram.</p>
+<h3
+id="an-algorithm-for-histogram-sums-on-integers-that-satisfies-shuffle-privacy">An
+algorithm for histogram sums on integers that satisfies shuffle
+privacy</h3>
 <div class="algorithm">
-<p><strong>RANDOMISER:</strong> <span class="math inline">\(\textit{R}_{\epsilon, \delta}^{hist}(x \in [d])\)</span></p>
+<p><strong>RANDOMISER:</strong> <span
+class="math inline">\(\textit{R}_{\epsilon, \delta}^{hist}(x \in
+[d])\)</span></p>
 <p>Input:</p>
 <ul>
 <li><span class="math inline">\(x \in [d]\)</span></li>
-<li><span class="math inline">\((\epsilon, \delta) \in [0,1]\)</span></li>
+<li><span class="math inline">\((\epsilon, \delta) \in
+[0,1]\)</span></li>
 </ul>
 <p>Method:</p>
 <ol type="1">
-<li>For each <span class="math inline">\(j \in [d]\)</span>, <span class="math inline">\(b_j = \mathbb{1}(x=j)\)</span> and compute the scalar product <span class="math inline">\(m_j=j.\textit{R}_{\epsilon, \delta}^{zsum}(b_j)\)</span></li>
+<li>For each <span class="math inline">\(j \in [d]\)</span>, <span
+class="math inline">\(b_j = \mathbb{1}(x=j)\)</span> and compute the
+scalar product <span class="math inline">\(m_j=j.\textit{R}_{\epsilon,
+\delta}^{zsum}(b_j)\)</span></li>
 </ol>
 <p>Output:</p>
 <ol start="2" type="1">
-<li>Output the concatenation of the <span class="math inline">\(m_j\)</span>’s</li>
+<li>Output the concatenation of the <span
+class="math inline">\(m_j\)</span>’s</li>
 </ol>
-<p><strong>ANANLYSER: </strong><span class="math inline">\(\textit{A}_{\epsilon, \delta}^{hist}\)</span></p>
+<p><strong>ANANLYSER: </strong><span
+class="math inline">\(\textit{A}_{\epsilon, \delta}^{hist}\)</span></p>
 <p>Input:</p>
 <ul>
 <li><span class="math inline">\(y \in [d]^*\)</span></li>
-<li><span class="math inline">\((\epsilon, \delta) \in [0,1]\)</span></li>
+<li><span class="math inline">\((\epsilon, \delta) \in
+[0,1]\)</span></li>
 </ul>
 <p>Method:</p>
 <ol type="1">
-<li>For each <span class="math inline">\(j \in [d]\)</span>, let <span class="math inline">\(y_j\)</span> be all the 1 bits from the randomiser with value <span class="math inline">\(j\)</span>. <span class="math inline">\(\tilde{c_j}=\textit{A}_{\epsilon, \delta}^{zsum}(y_j)\)</span></li>
-<li>Output <span class="math inline">\((\tilde{c_1}, \tilde{c_2}, \dots, \tilde{c_d})\)</span></li>
+<li>For each <span class="math inline">\(j \in [d]\)</span>, let <span
+class="math inline">\(y_j\)</span> be all the 1 bits from the randomiser
+with value <span class="math inline">\(j\)</span>. <span
+class="math inline">\(\tilde{c_j}=\textit{A}_{\epsilon,
+\delta}^{zsum}(y_j)\)</span></li>
+<li>Output <span class="math inline">\((\tilde{c_1}, \tilde{c_2}, \dots,
+\tilde{c_d})\)</span></li>
 </ol>
 <p>Output:</p>
 <ol start="3" type="1">
 <li>if c* &gt; 1 : return (c* - p) else: return 0</li>
 </ol>
 </div>
-<h3 id="theorem-HistDP">Theorem: The above proptocol is DP for the shuffled model</h3>
-<p>For any <span class="math inline">\(\epsilon, \delta \in [0,1]\)</span> and any <span class="math inline">\(n \in \mathbb{N}\)</span> such that <span class="math inline">\(n \geq \frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span>, the protocol <span class="math inline">\((\textit{P}_{\epsilon, \delta}^{hist}= \textit{R}_{\epsilon, \delta}^{hist}, \textit{A}_{\epsilon, \delta}^{hist})\)</span> has the following properties:</p>
+<h3 id="theorem-HistDP">Theorem: The above proptocol is DP for the
+shuffled model</h3>
+<p>For any <span class="math inline">\(\epsilon, \delta \in
+[0,1]\)</span> and any <span class="math inline">\(n \in
+\mathbb{N}\)</span> such that <span class="math inline">\(n \geq
+\frac{100}{\epsilon^2}\log(\frac{2}{\delta})\)</span>, the protocol
+<span class="math inline">\((\textit{P}_{\epsilon, \delta}^{hist}=
+\textit{R}_{\epsilon, \delta}^{hist}, \textit{A}_{\epsilon,
+\delta}^{hist})\)</span> has the following properties:</p>
 <ol type="1">
-<li><p><span class="math inline">\(\textit{P}_{\epsilon, \delta}^{hist}\)</span> is <span class="math inline">\(2(\epsilon, \delta)\)</span>-differentially private in the shuffled model.</p></li>
-<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>, <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{hist}\)</span> has <span class="math inline">\((\alpha, \beta)\)</span> accuracy for <span class="math inline">\(\alpha = O(\frac{1}{\epsilon^2n}\ln(\frac{1}{\delta}))\)</span></p></li>
-<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>, <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{hist}\)</span> has <span class="math inline">\((\alpha, \beta)\)</span> simultaneous accuracy for <span class="math inline">\(\alpha = O(\frac{1}{\epsilon^2n}\ln(\frac{1}{\delta}))\)</span></p></li>
+<li><p><span class="math inline">\(\textit{P}_{\epsilon,
+\delta}^{hist}\)</span> is <span class="math inline">\(2(\epsilon,
+\delta)\)</span>-differentially private in the shuffled model.</p></li>
+<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>,
+<span class="math inline">\(\textit{P}_{\epsilon,
+\delta}^{hist}\)</span> has <span class="math inline">\((\alpha,
+\beta)\)</span> accuracy for <span class="math inline">\(\alpha =
+O(\frac{1}{\epsilon^2n}\ln(\frac{1}{\delta}))\)</span></p></li>
+<li><p>For <span class="math inline">\(\beta &gt; \delta^{25}\)</span>,
+<span class="math inline">\(\textit{P}_{\epsilon,
+\delta}^{hist}\)</span> has <span class="math inline">\((\alpha,
+\beta)\)</span> simultaneous accuracy for <span
+class="math inline">\(\alpha =
+O(\frac{1}{\epsilon^2n}\ln(\frac{1}{\delta}))\)</span></p></li>
 <li><p>Each user sends at most d+1 messages.</p></li>
 </ol>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#histProof">
@@ -284,110 +607,254 @@ Proof
 </button>
 <div id="histProof" class="collapse">
 <h4 id="part-i">Part (i)</h4>
-<p>Consider two neighbouring datasets <span class="math inline">\(X \sim X&#39;\)</span> i.e. they differ by one record only. So one person in <span class="math inline">\(X\)</span> has value <span class="math inline">\(j\)</span> and one person in <span class="math inline">\(X&#39;\)</span> has <span class="math inline">\(j&#39;\)</span>.</p>
-<p>Let <span class="math inline">\(y \sim (S \circ \textit{R}_{\epsilon, \delta}^{hist})(X)\)</span> and <span class="math inline">\(y \sim (S \circ \textit{R}_{\epsilon, \delta}^{hist})(X&#39;)\)</span>. For any <span class="math inline">\(j \neq j&#39;\)</span>, the count of <span class="math inline">\(j\)</span> in the shuffler is independent of <span class="math inline">\(j&#39;\)</span> as they run in independent trials of <span class="math inline">\(\textit{R}_{\epsilon, \delta}^{zsum}\)</span>. Let <span class="math inline">\(y_j\)</span> be all the 1 bits from the randomiser with value <span class="math inline">\(j\)</span> like in part 1 of <span class="math inline">\(\textit{A}_{\epsilon, \delta}^{hist}(X)\)</span> and <span class="math inline">\(y_j&#39;\)</span> be the same for <span class="math inline">\(\textit{A}_{\epsilon, \delta}^{hist}(X&#39;)\)</span>. For any <span class="math inline">\(j \in [d]\)</span>, if <span class="math inline">\(c_j(X) = c_j(X&#39;)\)</span> then <span class="math inline">\(y_j\)</span> and <span class="math inline">\(y_j&#39;\)</span> are identically distributed so they trivially satisfy DP. When <span class="math inline">\(c_j(X) \neq c_j(X&#39;)\)</span> we can show that are still close in likelihood. Let <span class="math inline">\(r, r&#39; \in \{ 0, 1\}^n\)</span> such that <span class="math inline">\(r_i = \mathbb{1}(x_i=j)\)</span></p>
+<p>Consider two neighbouring datasets <span class="math inline">\(X \sim
+X&#39;\)</span> i.e. they differ by one record only. So one person in
+<span class="math inline">\(X\)</span> has value <span
+class="math inline">\(j\)</span> and one person in <span
+class="math inline">\(X&#39;\)</span> has <span
+class="math inline">\(j&#39;\)</span>.</p>
+<p>Let <span class="math inline">\(y \sim (S \circ \textit{R}_{\epsilon,
+\delta}^{hist})(X)\)</span> and <span class="math inline">\(y \sim (S
+\circ \textit{R}_{\epsilon, \delta}^{hist})(X&#39;)\)</span>. For any
+<span class="math inline">\(j \neq j&#39;\)</span>, the count of <span
+class="math inline">\(j\)</span> in the shuffler is independent of <span
+class="math inline">\(j&#39;\)</span> as they run in independent trials
+of <span class="math inline">\(\textit{R}_{\epsilon,
+\delta}^{zsum}\)</span>. Let <span class="math inline">\(y_j\)</span> be
+all the 1 bits from the randomiser with value <span
+class="math inline">\(j\)</span> like in part 1 of <span
+class="math inline">\(\textit{A}_{\epsilon, \delta}^{hist}(X)\)</span>
+and <span class="math inline">\(y_j&#39;\)</span> be the same for <span
+class="math inline">\(\textit{A}_{\epsilon,
+\delta}^{hist}(X&#39;)\)</span>. For any <span class="math inline">\(j
+\in [d]\)</span>, if <span class="math inline">\(c_j(X) =
+c_j(X&#39;)\)</span> then <span class="math inline">\(y_j\)</span> and
+<span class="math inline">\(y_j&#39;\)</span> are identically
+distributed so they trivially satisfy DP. When <span
+class="math inline">\(c_j(X) \neq c_j(X&#39;)\)</span> we can show that
+are still close in likelihood. Let <span class="math inline">\(r, r&#39;
+\in \{ 0, 1\}^n\)</span> such that <span class="math inline">\(r_i =
+\mathbb{1}(x_i=j)\)</span></p>
 <p>By defintion:</p>
-<p><span class="math inline">\(y_j \sim (S \circ \textit{R}_{\epsilon, \delta}^{zsum})(r)\)</span> and <span class="math inline">\(y_j&#39; \sim (S \circ \textit{R}_{\epsilon, \delta}^{zsum})(r&#39;)\)</span>. Thus we know, from the binary histogram protocol part (i) that</p>
-<p><span class="math display">\[\mathbb{P}_{y_j \sim (S \circ \textit{R}_{\epsilon, \delta}^{zsum})(r)}\Big[y_j \in T\Big] \leq e^{\epsilon}\mathbb{P}_{y_j&#39; \sim (S \circ \textit{R}_{\epsilon, \delta}^{zsum})(r&#39;)}\Big[y_j&#39;
+<p><span class="math inline">\(y_j \sim (S \circ \textit{R}_{\epsilon,
+\delta}^{zsum})(r)\)</span> and <span class="math inline">\(y_j&#39;
+\sim (S \circ \textit{R}_{\epsilon, \delta}^{zsum})(r&#39;)\)</span>.
+Thus we know, from the binary histogram protocol part (i) that</p>
+<p><span class="math display">\[\mathbb{P}_{y_j \sim (S \circ
+\textit{R}_{\epsilon, \delta}^{zsum})(r)}\Big[y_j \in T\Big] \leq
+e^{\epsilon}\mathbb{P}_{y_j&#39; \sim (S \circ \textit{R}_{\epsilon,
+\delta}^{zsum})(r&#39;)}\Big[y_j&#39;
 \in T\Big] + \delta\]</span></p>
-<p>Since the two datasets differ at two indices, by the composition theorem we get <span class="math inline">\((2\epsilon, 2\delta)\)</span> for the full protocol.</p>
+<p>Since the two datasets differ at two indices, by the composition
+theorem we get <span class="math inline">\((2\epsilon, 2\delta)\)</span>
+for the full protocol.</p>
 <h4 id="part-ii">Part (ii)</h4>
-<p>This comes for free from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (ii) accuracy bound. Note each <span class="math inline">\(\tilde{c_j} = \textit{P}_{\epsilon, \delta}^{zsum}(\{b_{ij}\}_{i \in [n]})\)</span>. We know <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> gives us <span class="math inline">\((\alpha, \beta)\)</span> accuracy.</p>
+<p>This comes for free from <span
+class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part
+(ii) accuracy bound. Note each <span class="math inline">\(\tilde{c_j} =
+\textit{P}_{\epsilon, \delta}^{zsum}(\{b_{ij}\}_{i \in [n]})\)</span>.
+We know <span class="math inline">\(\textit{P}_{\epsilon,
+\delta}^{zsum}\)</span> gives us <span class="math inline">\((\alpha,
+\beta)\)</span> accuracy.</p>
 <h4 id="part-iii">Part (iii)</h4>
-<p>To bound simultaneous error, we leverage the property that when  = 0, the counting protocol will report a nonzero value with probability 0. Let Q be the set of non zero indices in the dataset such that <span class="math inline">\(Q = \{ j \in [d] | c_j(x) &gt; 0\}\)</span></p>
-<p>From part (ii) we have with probability <span class="math inline">\(\beta/n\)</span> there exists an index <span class="math inline">\(j\)</span> st <span class="math inline">\((\tilde{c_j(x)} - c(x)) \leq \alpha\)</span> with <span class="math inline">\(\alpha\)</span> as defined in the binary histogram protocol.</p>
-<span class="math display">\[\begin{align*}
-\mathbb{P}\Big( \exists j \in [d] \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) 
-&amp;\leq \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) + \mathbb{P}\Big( \exists j \notin Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha \Big) \\
-&amp;= \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq4}\tag{4} \\
-&amp;\leq \sum_{j \in Q} \mathbb{P}\Big( \tilde{c_j}(x) - c_j(x) \leq \alpha\Big) \label{eq5}\tag{5} \\
+<p>To bound simultaneous error, we leverage the property that when = 0,
+the counting protocol will report a nonzero value with probability 0.
+Let Q be the set of non zero indices in the dataset such that <span
+class="math inline">\(Q = \{ j \in [d] | c_j(x) &gt; 0\}\)</span></p>
+<p>From part (ii) we have with probability <span
+class="math inline">\(\beta/n\)</span> there exists an index <span
+class="math inline">\(j\)</span> st <span
+class="math inline">\((\tilde{c_j(x)} - c(x)) \leq \alpha\)</span> with
+<span class="math inline">\(\alpha\)</span> as defined in the binary
+histogram protocol.</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}\Big( \exists j \in [d] \tilde{c_j}(x) - c_j(x) \leq
+\alpha\Big)
+&amp;\leq \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) -
+c_j(x) \leq \alpha\Big) + \mathbb{P}\Big( \exists j \notin Q \text{ }
+\tilde{c_j}(x) - c_j(x) \leq \alpha \Big) \\
+&amp;= \mathbb{P}\Big( \exists j \in Q \text{ } \tilde{c_j}(x) - c_j(x)
+\leq \alpha\Big) \label{eq4}\tag{4} \\
+&amp;\leq \sum_{j \in Q} \mathbb{P}\Big( \tilde{c_j}(x) - c_j(x) \leq
+\alpha\Big) \label{eq5}\tag{5} \\
 &amp;\leq \beta/n \label{eq6}\tag{6} \\
 &amp;= \beta
-\end{align*}\]</span>
-<p><span class="math inline">\(\ref{eq4}\)</span> : comes from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (iii) for all 0 input.</p>
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{eq4}\)</span> : comes from <span
+class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part
+(iii) for all 0 input.</p>
 <p><span class="math inline">\(\ref{eq5}\)</span> : Union bound</p>
-<p><span class="math inline">\(\ref{eq6}\)</span> : comes from <span class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part (ii) accuracy bound.</p>
+<p><span class="math inline">\(\ref{eq6}\)</span> : comes from <span
+class="math inline">\(\textit{P}_{\epsilon, \delta}^{zsum}\)</span> part
+(ii) accuracy bound.</p>
 <h4 id="part-iv">Part (iv)</h4>
-<p>For the j’th index which is 1 there can be at the most 2 bits. One from the bernoulli and one from the input. All other indices can have at the most 1 bit from the bernoulli. So There are <span class="math inline">\(d\)</span> indices, thus d + 1 messages/bits/1’s maximum.</p>
+<p>For the j’th index which is 1 there can be at the most 2 bits. One
+from the bernoulli and one from the input. All other indices can have at
+the most 1 bit from the bernoulli. So There are <span
+class="math inline">\(d\)</span> indices, thus d + 1 messages/bits/1’s
+maximum.</p>
 </div>
 <h2 id="pure-shuffle-privacy">Pure Shuffle Privacy</h2>
 <p><strong>TODO: EDIT THIS</strong></p>
-<p>It can be shown that if we restricted to pure differential privacy i.e. a deterministic concentration inequality Shuffle privacygives us the same guarantees as local privacy for single message communicatiom.</p>
-<p>The authors claim that any single-message shuffled protocol that satisfies <span class="math inline">\(\epsilon\)</span>-differential privacy can be simulated by a local protocol under the same privacy constraint.</p>
-<h3 id="notLocalNotShuffleLemma">If not local DP =&gt; Not Shuffle DP either</h3>
+<p>It can be shown that if we restricted to pure differential privacy
+i.e. a deterministic concentration inequality Shuffle privacygives us
+the same guarantees as local privacy for single message
+communicatiom.</p>
+<p>The authors claim that any single-message shuffled protocol that
+satisfies <span class="math inline">\(\epsilon\)</span>-differential
+privacy can be simulated by a local protocol under the same privacy
+constraint.</p>
+<h3 id="notLocalNotShuffleLemma">If not local DP =&gt; Not Shuffle DP
+either</h3>
 <div class="lemma">
-<p>Let <span class="math inline">\(P = (R,A)\)</span> be any single-message shuffled protocol that satisfies <span class="math inline">\(\epsilon\)</span>-differential privacy. Then <span class="math inline">\(R\)</span> is an <span class="math inline">\(\epsilon\)</span>-differentially private algorithm.</p>
+<p>Let <span class="math inline">\(P = (R,A)\)</span> be any
+single-message shuffled protocol that satisfies <span
+class="math inline">\(\epsilon\)</span>-differential privacy. Then <span
+class="math inline">\(R\)</span> is an <span
+class="math inline">\(\epsilon\)</span>-differentially private
+algorithm.</p>
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#notLocalNotShuffle">
 Proof: not local =&gt; not shuffle
 </button>
 <div id="notLocalNotShuffle" class="collapse">
 <p>Proof the contrapositive.</p>
-<p><span class="math inline">\(R\)</span> is the randomiser and the local randomiser spits out <span class="math inline">\(R(x) \in T \subseteq [m,n]\)</span>. All the above is saying is that the randomisers output is in some bounded interval <span class="math inline">\(T\)</span>.</p>
-<p>Consider two datasets <span class="math inline">\(X\)</span> and <span class="math inline">\(X’\)</span> such that <span class="math inline">\(X\)</span> contains <span class="math inline">\(n\)</span> copies of element <span class="math inline">\(x\)</span>, and <span class="math inline">\(X’\)</span> contains <span class="math inline">\(n-1\)</span> copies of <span class="math inline">\(x\)</span> and 1 copy of <span class="math inline">\(x&#39;\)</span>. Without loss of generality say, the n’th element of both datasets is different.</p>
-<span class="math display">\[\begin{align*}
-\mathbb{P}[(S \circ R)(X) \in T^n] &amp;= \prod_{i=1}^n\mathbb{P}[R(x_i) \in T_i] \tag{1}\label{7}\\
-&amp;= \mathbb{P}[R(x) \in T_n]\prod_{i=1}^{n-1}\mathbb{P}[R(x_i) \in T_i] \\
-&amp;&gt; e^{\epsilon}\mathbb{P}[R(x&#39;) \in T_n]\prod_{i=1}^{n-1}\mathbb{P}[R(x_i) \in T_i] \tag{2}\label{8} \\
+<p><span class="math inline">\(R\)</span> is the randomiser and the
+local randomiser spits out <span class="math inline">\(R(x) \in T
+\subseteq [m,n]\)</span>. All the above is saying is that the
+randomisers output is in some bounded interval <span
+class="math inline">\(T\)</span>.</p>
+<p>Consider two datasets <span class="math inline">\(X\)</span> and
+<span class="math inline">\(X’\)</span> such that <span
+class="math inline">\(X\)</span> contains <span
+class="math inline">\(n\)</span> copies of element <span
+class="math inline">\(x\)</span>, and <span
+class="math inline">\(X’\)</span> contains <span
+class="math inline">\(n-1\)</span> copies of <span
+class="math inline">\(x\)</span> and 1 copy of <span
+class="math inline">\(x&#39;\)</span>. Without loss of generality say,
+the n’th element of both datasets is different.</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}[(S \circ R)(X) \in T^n] &amp;= \prod_{i=1}^n\mathbb{P}[R(x_i)
+\in T_i] \tag{1}\label{7}\\
+&amp;= \mathbb{P}[R(x) \in T_n]\prod_{i=1}^{n-1}\mathbb{P}[R(x_i) \in
+T_i] \\
+&amp;&gt; e^{\epsilon}\mathbb{P}[R(x&#39;) \in
+T_n]\prod_{i=1}^{n-1}\mathbb{P}[R(x_i) \in T_i] \tag{2}\label{8} \\
 &amp;= e^{\epsilon}\mathbb{P}[(S \circ R)(X&#39;) \in T^n]
-\end{align*}\]</span>
-<p><span class="math inline">\(\ref{7}:\)</span> By independence of distributed mechanism.</p>
-<p><span class="math inline">\(\ref{8}:\)</span> We assumed no local privacy, <span class="math inline">\(\mathbb{P}( R(x) \in T) &gt; e^{\epsilon} \mathbb{P}( R(x&#39;) \in T)\)</span></p>
-<p>What we have shown is that when the local randomiser doesn’t satisfy privacy, then the anoymised distributed version of that local randomiser fails to satisfy central privacy all the time as well.</p>
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{7}:\)</span> By independence of
+distributed mechanism.</p>
+<p><span class="math inline">\(\ref{8}:\)</span> We assumed no local
+privacy, <span class="math inline">\(\mathbb{P}( R(x) \in T) &gt;
+e^{\epsilon} \mathbb{P}( R(x&#39;) \in T)\)</span></p>
+<p>What we have shown is that when the local randomiser doesn’t satisfy
+privacy, then the anoymised distributed version of that local randomiser
+fails to satisfy central privacy all the time as well.</p>
 </div>
-<h3 id="single-message-shuffle-there-exists-equivalent-local">Single Message Shuffle =&gt; There exists equivalent local</h3>
+<h3 id="single-message-shuffle-there-exists-equivalent-local">Single
+Message Shuffle =&gt; There exists equivalent local</h3>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#shuffleHasLocalCounterpart">
 Proof
 </button>
 <div id="shuffleHasLocalCounterpart" class="collapse">
-Assume there is an Aggregator <span class="math inline">\(A_L\)</span> that takes the output of the local randomisers and applies a uniform shuffling and then executes <span class="math inline">\(A\)</span> from the Shuffle model.
+Assume there is an Aggregator <span class="math inline">\(A_L\)</span>
+that takes the output of the local randomisers and applies a uniform
+shuffling and then executes <span class="math inline">\(A\)</span> from
+the Shuffle model.
 <div class="intuition">
-Note this only works because they are single bit messages. As to why see roadblocks section
+Note this only works because they are single bit messages. As to why see
+roadblocks section
 </div>
-<p>In this case <span class="math inline">\(P_L =( R, A_L)\)</span> has the same distribution as the shuffle model <span class="math inline">\(P\)</span> for all <span class="math inline">\(x\)</span> i.e <span class="math inline">\(P(X) \approx P_L(X)\)</span> <span class="math inline">\(\forall X \in X^n\)</span>. By the previous lemma <span class="math inline">\(R\)</span> is differentially private – which is what I needed for local DP.</p>
+<p>In this case <span class="math inline">\(P_L =( R, A_L)\)</span> has
+the same distribution as the shuffle model <span
+class="math inline">\(P\)</span> for all <span
+class="math inline">\(x\)</span> i.e <span class="math inline">\(P(X)
+\approx P_L(X)\)</span> <span class="math inline">\(\forall X \in
+X^n\)</span>. By the previous lemma <span
+class="math inline">\(R\)</span> is differentially private – which is
+what I needed for local DP.</p>
 </div>
-<h2 id="multi-message-shuffle-privacy-does-not-play-so-well">Multi Message Shuffle Privacy does not play so well</h2>
+<h2 id="multi-message-shuffle-privacy-does-not-play-so-well">Multi
+Message Shuffle Privacy does not play so well</h2>
 <h3 id="shuffle-but-not-local">Shuffle ==&gt; but not local</h3>
 <div class="lemma">
-There exists a multi-message shuffled protocol that is <span class="math inline">\(\epsilon\)</span>-differentially private for all <span class="math inline">\(\epsilon \geq 0\)</span> but its randomiser is not DP for any <span class="math inline">\(\epsilon\)</span>.
+There exists a multi-message shuffled protocol that is <span
+class="math inline">\(\epsilon\)</span>-differentially private for all
+<span class="math inline">\(\epsilon \geq 0\)</span> but its randomiser
+is not DP for any <span class="math inline">\(\epsilon\)</span>.
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#multishuffleLocalBreaks">
 Proof
 </button>
 <div id="multishuffleLocalBreaks" class="collapse">
-Consider <span class="math inline">\(R\)</span> on input <span class="math inline">\(x \in \{0, 1\}\)</span> such that it outputs two messages x and 1-x. The Shuffle output <span class="math inline">\((S \circ R)(X)\)</span> consists of n 0’s and n 1’s in any possible order. So for two <span class="math inline">\(X\)</span> and <span class="math inline">\(X&#39;\)</span> the ouputs are indistinguishable. However R(x) reveals the input value and is not local DP at all.
+Consider <span class="math inline">\(R\)</span> on input <span
+class="math inline">\(x \in \{0, 1\}\)</span> such that it outputs two
+messages x and 1-x. The Shuffle output <span class="math inline">\((S
+\circ R)(X)\)</span> consists of n 0’s and n 1’s in any possible order.
+So for two <span class="math inline">\(X\)</span> and <span
+class="math inline">\(X&#39;\)</span> the ouputs are indistinguishable.
+However R(x) reveals the input value and is not local DP at all.
 </div>
 <h3 id="shuffle-randomiser-not-dp">Shuffle ==&gt; Randomiser not DP</h3>
-<p>We note that it is without loss of accuracy or privacy to suppose that a randomizer shuffles its messages prior to sending them to the shuffler. We call these pre-shuffle randomizers. Observe that the pre-shuffle version of R defined above, satisfied <span class="math inline">\(0-DP\)</span>. One might conjecture Claim 4.2 holds for pre-shuffle randomizers and thus generalize Theorem 4.1. But that too is not the case</p>
+<p>We note that it is without loss of accuracy or privacy to suppose
+that a randomizer shuffles its messages prior to sending them to the
+shuffler. We call these pre-shuffle randomizers. Observe that the
+pre-shuffle version of R defined above, satisfied <span
+class="math inline">\(0-DP\)</span>. One might conjecture Claim 4.2
+holds for pre-shuffle randomizers and thus generalize Theorem 4.1. But
+that too is not the case</p>
 <div class="lemma">
-There exists a multi-message shuffled protocol that is <span class="math inline">\(\epsilon\)</span>-differentially private for some finite <span class="math inline">\(\epsilon\)</span> but its pre-shuffle randomizer is not <span class="math inline">\(\epsilon\)</span>-differentially private for any finite <span class="math inline">\(\epsilon\)</span>.
+There exists a multi-message shuffled protocol that is <span
+class="math inline">\(\epsilon\)</span>-differentially private for some
+finite <span class="math inline">\(\epsilon\)</span> but its pre-shuffle
+randomizer is not <span
+class="math inline">\(\epsilon\)</span>-differentially private for any
+finite <span class="math inline">\(\epsilon\)</span>.
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#multishuffleLocalBreaks2">
 Proof
 </button>
 <div id="multishuffleLocalBreaks2" class="collapse">
-<p>Consider the randomiser <span class="math inline">\(R^{gap}\)</span> which takes in input <span class="math inline">\(x \in \{0 , 1 \}\)</span> and outputs 4 binary messages/bits. If the input is 0 all 16 values are possible. If the input is 1, then the output cannot have 2 1’s in the output. Note that if we saw output (0,1,1,0) we would know the input value. Thus <span class="math inline">\(R^{gap}\)</span> cannot be DP. However for <span class="math inline">\(n \geq 2\)</span>, the shuffle output <span class="math inline">\((S \circ R)(x)\)</span> can generate all possible values in <span class="math inline">\(\{0,1 \}^4n\)</span>, thereby giving us perfect shuffle privacy for some <span class="math inline">\(\epsilon &gt; 0\)</span>.</p>
+<p>Consider the randomiser <span class="math inline">\(R^{gap}\)</span>
+which takes in input <span class="math inline">\(x \in \{0 , 1
+\}\)</span> and outputs 4 binary messages/bits. If the input is 0 all 16
+values are possible. If the input is 1, then the output cannot have 2
+1’s in the output. Note that if we saw output (0,1,1,0) we would know
+the input value. Thus <span class="math inline">\(R^{gap}\)</span>
+cannot be DP. However for <span class="math inline">\(n \geq 2\)</span>,
+the shuffle output <span class="math inline">\((S \circ R)(x)\)</span>
+can generate all possible values in <span class="math inline">\(\{0,1
+\}^4n\)</span>, thereby giving us perfect shuffle privacy for some <span
+class="math inline">\(\epsilon &gt; 0\)</span>.</p>
 <div class="question">
-<p>I do not fully understand why yet – but they did give a reason. On the train I can work it out.</p>
+<p>I do not fully understand why yet – but they did give a reason. On
+the train I can work it out.</p>
 </div>
 </div>
 <h2 id="important-papers">Important Papers</h2>
 <ol type="1">
-<li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of multiple anonymous messages</a></li>
+<li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of
+multiple anonymous messages</a></li>
 </ol>
 <ol start="2" type="1">
-<li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn privately</a></li>
+<li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn
+privately</a></li>
 </ol>
 <ol start="3" type="1">
-<li><a href="https://arxiv.org/pdf/1504.04686.pdf">Local, Private, Efficient Protocols for Succinct Histograms</a></li>
+<li><a href="https://arxiv.org/pdf/1504.04686.pdf">Local, Private,
+Efficient Protocols for Succinct Histograms</a></li>
 </ol>
 <ol start="4" type="1">
-<li><a href="https://arxiv.org/pdf/1511.08552.pdf">Simultaneous Private Learning of Multiple Concepts</a></li>
+<li><a href="https://arxiv.org/pdf/1511.08552.pdf">Simultaneous Private
+Learning of Multiple Concepts</a></li>
 </ol>
 <ol start="5" type="1">
-<li><a href="https://arxiv.org/pdf/2109.13158.pdf">Differentially Private Aggregation in the Shuffle Model: Almost Central Accuracy in Almost a Single Message</a></li>
+<li><a href="https://arxiv.org/pdf/2109.13158.pdf">Differentially
+Private Aggregation in the Shuffle Model: Almost Central Accuracy in
+Almost a Single Message</a></li>
 </ol>
-</div>
+</section>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
 </div>

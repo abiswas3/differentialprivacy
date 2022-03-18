@@ -1,5 +1,8 @@
 \newcommand{\ZP}[1]{\mathbb{Z}_p^{#1}}
 \newcommand{\Z}{\mathbb{Z}_p}
+---
+title: Notes on SNIPs
+...
 
 
 <div class="container"> 

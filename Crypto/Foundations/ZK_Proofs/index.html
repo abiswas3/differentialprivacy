@@ -39,8 +39,10 @@ href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/052103
 title="Foundations of Cryptography V1">1</a>]. At the time of writing, I
 wanted to understand and re-derive the proofs for Poplar and Prio, so I
 could write my own paper.</p>
-<h2 id="understanding-zero-knowledge-proofs">Understanding Zero
-Knowledge Proofs</h2>
+<h2 id="basics-of-zero-knowledge-proofs">Basics of Zero Knowledge
+proofs</h2>
+<p><em>These are quite scrappy and needs consolidation over
+time</em></p>
 <h2 id="knowledge-vs-information">Knowledge Vs Information</h2>
 <p><em>Knowledge is related to computational difficulty, whereas
 information is not</em>. Assume that Alice and Bob have access have
@@ -225,7 +227,8 @@ knowledge proof.</p>
 shown a non trivial case where all the requirements are satisfied. So we
 define a relaxation by allowing the simulator to fail to come up with an
 answer with probability at most <span
-class="math inline">\(\frac{1}{2}\)</span>.</p>
+class="math inline">\(\frac{1}{2}\)</span>. This relaxation is just
+allowing the simulator to fail to say anything at times.</p>
 <div class="theorem">
 <p>For a given interactive proof system <span
 class="math inline">\(\langle P,V \rangle\)</span> and common input
@@ -257,7 +260,8 @@ class="math inline">\(m^*(x)\)</span> be identically distributed.</li>
 simulator for the interaction of <span
 class="math inline">\(V^*\)</span> with P.</p>
 </div>
-<h2 id="definition-computational-zk">Definition: Computational ZK</h2>
+<h2 id="practical-definition-of-zero-knowledge">Practical definition of
+Zero Knowledge</h2>
 <p>We observe (based on some bits in chapter 3) that for practical
 purposes there is no need to be able to “perfectly simulate” the output
 of <span class="math inline">\(V^*\)</span> after it interacts with
@@ -278,7 +282,12 @@ long <span class="math inline">\(x \in L\)</span>, it holds that</p>
 S_x)=1\Big]\Bigg| &amp;&lt; \frac{1}{p(|x|)}
 \end{align*}\]</span></p>
 </div>
-<br>
+<p><br></p>
+<h3 id="computational-zero-knowledge">Computational Zero Knowledge</h3>
+<p>Note that computational zero knowledge is weaker than statistical
+distance. Two ensembles might be statistically very far but if no
+probabilistic polynomial time distinguisher/algorithm can differentiate
+between the two then we are fine.</p>
 <div class="theorem">
 <p>Let <span class="math inline">\((P, V)\)</span> be an interactive
 proof system for some language <span class="math inline">\(L\)</span>.
@@ -339,10 +348,9 @@ definition guarantees the first definition and is usually easier to work
 with (<strong>and also seen in most papers</strong>). It can be also
 shown that the two definitions are equivalent (because of the
 <strong>every</strong> condition in the verifier definition)</p>
-<h2 id="almost-perfect-statistical-zero-knowledge">Almost Perfect
-(Statistical) Zero Knowledge</h2>
-<p>Same as computational ZK definition but uses statistical
-difference.</p>
+<h2 id="graph-isomorphism-in-perfect-zero-knowledge-mathcalpzk">Graph
+Isomorphism in Perfect Zero Knowledge <span
+class="math inline">\(\mathcal{PZK}\)</span></h2>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a

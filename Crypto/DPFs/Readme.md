@@ -1,4 +1,7 @@
 <div class="container"> 
+---
+title: Notes on Distriuted point functions
+...
 
 **Some notation**: $F$ is always a finite field $\mathbb{Z}_p$ where $p$ is a very very large prime. $\mathbb{G}$ is always some abelian  group.
 

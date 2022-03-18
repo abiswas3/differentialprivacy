@@ -8,11 +8,17 @@
 \newcommand{\AngleBracket}[1]{\langle #1 \rangle}
 \newcommand{\genF}{f : \{0, 1\}^* \rightarrow \{0, 1\}^*}
 \newcommand{\PZK}{\mathcal{PZK}}
+---
+title: Notes on Zero Knowledge
+...
+
 <div class="container"> 
 
 **Why:**These notes are based on Chapter 4 of [[1][1]]. At the time of writing, I wanted to understand and re-derive the proofs for Poplar and Prio, so I could write my own paper.
 
-## Understanding Zero Knowledge Proofs
+## Basics of Zero Knowledge proofs
+
+*These are quite scrappy and needs consolidation over time* 
 
 ## Knowledge Vs Information
 
@@ -113,7 +119,7 @@ Trivially, any language in $\BPP$ has a perfect zero knowledge proof.
 
 ### Definition: Relaxed (practical) perfect ZK
 
-Unfortunately, the above definition is too strict. No one has yet shown a non trivial case where all the requirements are satisfied. So we define a relaxation by allowing the simulator to fail to come up with an answer with probability at most $\frac{1}{2}$. 
+Unfortunately, the above definition is too strict. No one has yet shown a non trivial case where all the requirements are satisfied. So we define a relaxation by allowing the simulator to fail to come up with an answer with probability at most $\frac{1}{2}$. This relaxation is just allowing the simulator to fail to say anything at times. 
 
 <div class="theorem">
 For a given interactive proof system $\AngleBracket{P,V}$ and common input $x$, $P$ is perfectly zero knowledge if for **every** probabilistic poly time verifier $V^*$, there exists an ppt algorithm $M^*$ such that for ever $x \in L$ the following random conditions hold: 
@@ -127,7 +133,7 @@ Machine $M^{*}$ is called a simulator for the interaction of $V^*$ with P.
 </div>
 
 
-## Definition: Computational ZK
+## Practical definition of Zero Knowledge
 
 We observe (based on some bits in chapter 3) that for practical purposes there is no need to be able to “perfectly simulate” the output of $V^*$ after it interacts with $P$. Instead, it suffices to generate a probability distribution that is computationally indistinguishable from the output of $V^*$ after it interacts with $P$.
 
@@ -141,8 +147,20 @@ Ensembles $\{ R_x\}_{x \in L}$ and $\{ S_x\}_{x \in L}$	are computationally indi
 \end{align*}
 </div>	
 <br>
-<div class="theorem">
-Let $(P, V)$ be an interactive proof system for some language $L$. We say that $(P, V)$ is computationally zero knowledge or just simply zero knowledge if for **every** probabilistic poly time verifier $V^*$, there exists a probabilistic ppt algorithm $M^*$ such that the following two ensembles are computationally indistinguishable:
+
+### Computational Zero Knowledge
+
+Note that computational zero knowledge is weaker than statistical
+distance. Two ensembles might be statistically very far but if no
+probabilistic polynomial time distinguisher/algorithm can
+differentiate between the two then we are fine.
+
+<div class="theorem"> Let $(P, V)$ be an interactive proof system for
+some language $L$. We say that $(P, V)$ is computationally zero
+knowledge or just simply zero knowledge if for **every** probabilistic
+poly time verifier $V^*$, there exists a probabilistic ppt algorithm
+$M^*$ such that the following two ensembles are computationally
+indistinguishable:
 
 1. $\{\AngleBracket{P,V^*}(x)\}_{x \in L}$: Output of interactive verifier.
 2. $\{M^*(x)\}_{x \in L}$: Just the output of $M^*$ on x.
@@ -156,19 +174,46 @@ Machine $M^{*}$ is called a simulator for the interaction of $V^*$ with P.
 
 ## Alternate: ZK
 
-An alternative formulation of zero-knowledge considers the verifier’s view of the inter- action with the prover, rather than only the output of the verifier after such an interaction. By the “verifier’s view of the interaction” we mean the entire sequence of the local configurations of the verifier during an interaction execution) with the prover.
+An alternative formulation of zero-knowledge considers the verifier’s
+view of the inter- action with the prover, rather than only the output
+of the verifier after such an interaction. By the “verifier’s view of
+the interaction” we mean the entire sequence of the local
+configurations of the verifier during an interaction execution) with
+the prover.
 
-It suffices to consider only the content of the random tape of the verifier and the sequence of messages that the verifier has received from the prover during the execution (since the entire sequence of local configurations and the final output are determined by those objects).
+It suffices to consider only the content of the random tape of the
+verifier and the sequence of messages that the verifier has received
+from the prover during the execution (since the entire sequence of
+local configurations and the final output are determined by those
+objects).
 
 
-<div class="theorem">
-Let $(P, V), L$ and $V^*$ be as defined above. Denote $\text{view}^P_{V^*}$ as the random variable describing the contents of random tape $V^*$ and the messages $V^*$ receives from $P$ during a joint computation on common input $x$. We say that $(P,V)$ is ZK if for **every** ppt interactive verifier $V^*$ there exists a probabilistic ppt algorithm $M^*$ such that $\{\text{view}^P_{V^*}\}_{x \in L}$ and $\{M^*\}_{x \in L}$ are computationally indistinguishable. 
-</div>
-<br>
+<div class="theorem"> Let $(P, V), L$ and $V^*$ be as defined
+above. Denote $\text{view}^P_{V^*}$ as the random variable describing
+the contents of random tape $V^*$ and the messages $V^*$ receives from
+$P$ during a joint computation on common input $x$. We say that
+$(P,V)$ is ZK if for **every** ppt interactive verifier $V^*$ there
+exists a probabilistic ppt algorithm $M^*$ such that
+$\{\text{view}^P_{V^*}\}_{x \in L}$ and $\{M^*\}_{x \in L}$ are
+computationally indistinguishable.  </div> <br>
 
-Computational ZK and View based ZK differ in that one requires the output of the verifier to be indistinguishable from the simulator output and the other requires the view. Clearly the output can be computed using the view using a deterministic poly-time algorithm but the view cannot always be computed using just the output. Thus the second definition guarantees the first definition and is usually easier to work with (**and also seen in most papers**). It can be also shown that the two definitions are equivalent (because of the **every** condition in the verifier definition)
+Computational ZK and View based ZK differ in that one requires the
+output of the verifier to be indistinguishable from the simulator
+output and the other requires the view. Clearly the output can be
+computed using the view using a deterministic poly-time algorithm but
+the view cannot always be computed using just the output. Thus the
+second definition guarantees the first definition and is usually
+easier to work with (**and also seen in most papers**). It can be also
+shown that the two definitions are equivalent (because of the
+**every** condition in the verifier definition)
 
 ## Graph Isomorphism in Perfect Zero Knowledge $\PZK$
+
+To do using Alessandro Chiesa's notes.
+
+## Bit Commitment Scheme
+
+
 
 # References 
 

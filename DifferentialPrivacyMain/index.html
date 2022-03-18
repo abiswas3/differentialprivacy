@@ -5,53 +5,77 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Readme</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
-  <link rel="stylesheet" href="./blog.css">
-  <script src="../code/es5/tex-chtml.js" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="./blog.css" />
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-  
-  
+
+
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>    
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
+
+  <script src="../code/es5/tex-chtml.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-
 <div class="container">
-
 <h2 id="background">Background</h2>
 <ul>
-<li><a href="Definitions/">Differential Privacy Cheat sheet</a>: I define central differential privacy, local differential privacy and shuffle privacy. Introduce well the laplace mechanism - what it is and why it works. Simulation code to understand <span class="math inline">\((\alpha, \beta)\)</span> accuracy guarantees for the laplace mehanism is provided.</li>
-<li><a href="../GraduateSchoolCourses/TCS_Toolkit-Ryan_ODonell/AsymptoticsAndGaussians/">Notes on Computation Complexity</a>: Borrowed from Ryan O’Donnells TCS toolkit course</li>
+<li><a href="Definitions/">Differential Privacy Cheat sheet</a>: I
+define central differential privacy, local differential privacy and
+shuffle privacy. Introduce well the laplace mechanism - what it is and
+why it works. Simulation code to understand <span
+class="math inline">\((\alpha, \beta)\)</span> accuracy guarantees for
+the laplace mehanism is provided.</li>
+<li><a
+href="../GraduateSchoolCourses/TCS_Toolkit-Ryan_ODonell/AsymptoticsAndGaussians/">Notes
+on Computation Complexity</a>: Borrowed from Ryan O’Donnells TCS toolkit
+course</li>
 <li><a href="RRSurvey/">A survey on randomised response</a></li>
-<li><a href="../ConcentrationInequalities/">Concentration Inequalities</a>: Borrowed from multiple sources. Lots of online resources for this topic.</li>
+<li><a href="../ConcentrationInequalities/">Concentration
+Inequalities</a>: Borrowed from multiple sources. Lots of online
+resources for this topic.</li>
 <li><a href="">Composition Theorems</a>: <strong>TODO</strong></li>
 </ul>
 <h2 id="population-mean-estimation">Population mean estimation</h2>
 <ul>
-<li><a href="PureProtocols/">Local Privacy upper and lower bounds</a>: Upper bound for Randomised Response for mean estimation under local privacy and general lower bound for all locally private algorithms.</li>
-<li><a href="CheuShuffleRR/">Shuffle Privacy From Shuffling</a>: Examining Randomised Response from the lens of central privacy.</li>
-<li><a href="ShufflePrivacy/index.html">Separating Shuffle and Local Privacy: Albert Cheu</a>:</li>
-<li><a href="ShuffleSumBinaryRasmus/">Shuffle: Binary sums with no communication</a><br />
+<li><a href="PureProtocols/">Local Privacy upper and lower bounds</a>:
+Upper bound for Randomised Response for mean estimation under local
+privacy and general lower bound for all locally private algorithms.</li>
+<li><a href="CheuShuffleRR/">Shuffle Privacy From Shuffling</a>:
+Examining Randomised Response from the lens of central privacy.</li>
+<li><a href="ShufflePrivacy/index.html">Separating Shuffle and Local
+Privacy: Albert Cheu</a>:</li>
+<li><a href="ShuffleSumBinaryRasmus/">Shuffle: Binary sums with no
+communication</a><br />
 </li>
-<li><a href="ShuffleSumMeanEstimateRasmus/">Shuffle: Almost Central Almost no communication</a></li>
+<li><a href="ShuffleSumMeanEstimateRasmus/">Shuffle: Almost Central
+Almost no communication</a></li>
 </ul>
-<h2 id="exponential-mechanism-and-friends">Exponential Mechanism and friends</h2>
+<h2 id="exponential-mechanism-and-friends">Exponential Mechanism and
+friends</h2>
 <ul>
-<li><a href="ExponentialMechanism/">Exponential Mechanism</a>: A theoretical technique developed for when the utility of outputs being considered are very sensitive to perturbation. Examples include auction prices or voting counts. A little bit of noise could alter the final outcome drastically. I describe the theoretical framework with a few simple non practical examples. <strong>TODO</strong></li>
+<li><a href="ExponentialMechanism/">Exponential Mechanism</a>: A
+theoretical technique developed for when the utility of outputs being
+considered are very sensitive to perturbation. Examples include auction
+prices or voting counts. A little bit of noise could alter the final
+outcome drastically. I describe the theoretical framework with a few
+simple non practical examples. <strong>TODO</strong></li>
 </ul>
 <!-- * [Simultaneous Private Learning of Multiple Concepts](LearningMultiConcepts/)
 * [Frequency Estimation with  local privacy: A survey](FrequencyEstimationSurvey/index.html)
@@ -59,7 +83,9 @@
 <!-- * [Succint Histogram Problem -- local privacy](SuccintHist-Bassily/index.html) -->
 <h2 id="survey-styled-writeups">Survey styled writeups</h2>
 <ul>
-<li><a href="PrivateMeanEstimation/">Private Mean Estimation under distributed privacy</a> <!-- * [Private Password Lists](PrivatePassowrds): Application of the exponential mechanism (first I have seen so far) **TODO**
+<li><a href="PrivateMeanEstimation/">Private Mean Estimation under
+distributed privacy</a>
+<!-- * [Private Password Lists](PrivatePassowrds): Application of the exponential mechanism (first I have seen so far) **TODO**
   * [Password Frequency list I](https://jbonneau.com/doc/BDB16-NDSS-pw_list_differential_privacy.pdf)
 
   * [Private Anonymous histograms](https://arxiv.org/abs/1910.03553)
@@ -67,7 +93,8 @@
   * [Differentially Private Rank Aggregation](https://cs.colgate.edu/~mhay/assets/publications/hay2017differentially.pdf)
  --></li>
 </ul>
-<h3 id="n-gram-extraction-private-set-union">N-gram extraction / private set union</h3>
+<h3 id="n-gram-extraction-private-set-union">N-gram extraction / private
+set union</h3>
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -97,7 +124,16 @@ Authors
 <td class="tg-0lax">
 </td>
 <td class="tg-0lax">
-Differentially private set union : A datasets of n user, each with their own <br>set <span class="math inline">\(W_i \subset U\)</span>, where U is a very large universe of items (possibly <br>unbounded). The basic laplace mechanism needs to much noise due to <br>high worst case sensitivity. They present an adaptive algorithm that keeps<br>sensitivity small for the laplace/gaussian mechanism. Once this is done, it’s just <br>the well understood additive noise mechanism. <br><br><strong>Areas of improvement: </strong> (1) Algorithm is sequential and thus a federated version does not exist. (2) There are no utility guarantees presented.
+Differentially private set union : A datasets of n user, each with their
+own <br>set <span class="math inline">\(W_i \subset U\)</span>, where U
+is a very large universe of items (possibly <br>unbounded). The basic
+laplace mechanism needs to much noise due to <br>high worst case
+sensitivity. They present an adaptive algorithm that
+keeps<br>sensitivity small for the laplace/gaussian mechanism. Once this
+is done, it’s just <br>the well understood additive noise mechanism.
+<br><br><strong>Areas of improvement: </strong> (1) Algorithm is
+sequential and thus a federated version does not exist. (2) There are no
+utility guarantees presented.
 </td>
 <td class="tg-0lax">
 ICML 2020
@@ -110,7 +146,14 @@ Gopi, Gulhane, Kulkarni, Shen, Shokouhi, Yekhanin
 <td class="tg-0lax">
 </td>
 <td class="tg-0lax">
-Differentially private n gram<br>extraction: The setup is very similar as the previous problem. Now. instead of items users<br>have sequences with each element from a very large universe. They iteratively use set union,<br>to construct a private ngram extraction method.<br><br><strong>Areas of improvement: </strong> (1) Cannot be distributed (2) How does McMahan and Grahams <br>trie heavy hitter algorithm compare to this. Once again it will allow us to compare sampling vs<br>additive noise.
+Differentially private n gram<br>extraction: The setup is very similar
+as the previous problem. Now. instead of items users<br>have sequences
+with each element from a very large universe. They iteratively use set
+union,<br>to construct a private ngram extraction
+method.<br><br><strong>Areas of improvement: </strong> (1) Cannot be
+distributed (2) How does McMahan and Grahams <br>trie heavy hitter
+algorithm compare to this. Once again it will allow us to compare
+sampling vs<br>additive noise.
 </td>
 <td class="tg-0lax">
 NIPS 2021
@@ -132,7 +175,8 @@ Kim, Gopi, Kulkarni, Yekhanin
 </tbody>
 </table>
 <h2 id="my-work">My work</h2>
-<p>From meeting on <strong>INSERT</strong> there are two threads that have emerged.</p>
+<p>From meeting on <strong>INSERT</strong> there are two threads that
+have emerged.</p>
 <ol type="1">
 <li>End to End to secure voting with a malicicious adversary</li>
 <li>A circuit styled approach to DP.</li>
