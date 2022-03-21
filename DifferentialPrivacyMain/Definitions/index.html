@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Readme</title>
+  <title>Differential Privacy why?</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -33,8 +33,14 @@
   <![endif]-->
 </head>
 <body>
-<section id="privacy-definitions-cheat-sheet" class="container">
-<h1>Privacy definitions cheat sheet</h1>
+<header id="title-block-header">
+<h1 class="title">Differential Privacy why?</h1>
+</header>
+<div class="container">
+<p><strong>TODO: Re-write this whole thing again based on Vadhans
+notes</strong></p>
+<h1 id="privacy-definitions-cheat-sheet">Privacy definitions cheat
+sheet</h1>
 <h2 id="definition-centralDP">Central Differential Privacy</h2>
 <p>An algorithm <span class="math inline">\(M : X^n \rightarrow
 Z\)</span> satisfies <span
@@ -119,7 +125,7 @@ class="math inline">\(P=(R,A)\)</span> on input <span
 class="math inline">\(x\)</span> is</p>
 <p><span class="math display">\[P(x) = (A \circ S \circ R)(x) =
 A\Big(S\big[R(x_1), \dots, R(x_n)\big]\Big)\]</span></p>
-<h2 id="definition-shuffleDP">Shuffle Privacy</h2>
+<h2 id="shuffle-privacy">Shuffle Privacy</h2>
 <p>A shuffled protocol <span class="math inline">\(P = (R,A)\)</span>
 satisfies <span class="math inline">\((\epsilon,
 \delta)\)</span>-differential privacy for <span
@@ -135,7 +141,7 @@ class="math inline">\(\delta\)</span>.</p>
 <p>The hope is the following: Because we have this shuffle phase,
 perhaps we can add a little less noise to the local randomisers thereby
 getting a little bit more accuracy.</p>
-<h2 id="definition-shuffleDP">L1 Sensitivity</h2>
+<h2 id="l1-sensitivity">L1 Sensitivity</h2>
 <p>The <span class="math inline">\(l_1\)</span>-sensitivity of a
 function <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow
 \mathbb{R}^k\)</span> is defined as</p>
@@ -310,7 +316,7 @@ multiple anonymous messages</a></li>
 <li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn
 privately</a></li>
 </ol>
-</section>
+</div>
 <div id="footer">
   “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
 </div>

@@ -24,10 +24,12 @@ h1 a, h2 a, h3 a, h4 a, h5 a {
     /* text-decoration: none; */
     /* color: #218001; */
 }
-h1, h2, h3, h4, h5 { font-family: verdana;
-		     font-weight: bold;
-		     /* border-bottom: 1px dotted black; */
-		     color: #000000; }
+
+.container{
+
+    border:  solid;
+}
+
 h1 {
     font-size: 130%;
 }
@@ -41,8 +43,7 @@ h3 {
 }
 
 h4 {
-    font-size: 85%;
-    font-style: italic;
+    font-size: 80%;
 }
 
 h5 {
@@ -90,6 +91,32 @@ dd p {
   background-color: #111;
 }
 
+.navbar {
+    background-color: #dddddd;
+    border:1px solid black;
+    border-bottom: 3px solid black;
+    list-style-type: none;
+    /* margin: 0; */
+    /* padding: 0; */
+    /* overflow: hidden; */
+      
+}
+.navbar-list-item {
+    float: left;
+    fontsize: 22px;
+    border-right:2px solid #bbb;
+    padding-right:10px;
+    display: block;
+    fontsize: 22px;
+    text-align: center;
+
+}
+
+.navbar-list-item:last-child {
+    border-right: none;
+    padding-left: 20px;
+    float: left;
+}
 
 #footer {
     padding-top: 1em;
@@ -98,36 +125,41 @@ dd p {
     text-align: center;
 }
 
-h2[id^="definition"] {
-    color: blue;
-}
-h2[id^="theorem"] {
-    color:  #218001;
-}
-h2[id^="lemma"] {
-    color: orange;
+.important{
+  z-index: 1;
+  padding-left: 10px;
+  border: 1px solid #900;
+  background-color: #d6ffe1;
+  /*opacity: 20%;    */
 }
 
-h3[id^="definition"] {
-    color: blue;
-}
-h3[id^="theorem"] {
-    color:  #218001;
-}
-h3[id^="lemma"] {
-    color: orange;
+.solution{
+  padding-left: 10px;
+  border: 1px solid #900;   
+  background-color: #d9ffe3;
+  width: 100%;
 }
 
 .lemma{
-    color: orange;
+  z-index: 1;
+  padding-left: 10px;
+  border: 1px solid #900;
+  background-color: #fdd;
 }
 
 .theorem{
-    color:  #218001;    
+    color:  #f7efda;    
+    background-color: #4d4b49;
+    border:1px solid black;
+    margin-left: 5px;
+    padding-left: 5px;
+
 }
 
 .algorithm{
     border:1px solid black;
+    margin-left: 5px;
+    padding-left: 5px;
 }
 .intuition{
     color: purple;
@@ -138,12 +170,24 @@ h3[id^="lemma"] {
 }
 
 .new{
-    color: #03fc49;
+    color: #06591e;
 }
 
 .collapse{
-    background-color: #ABBAEA;
-    border:1px solid black;
+    background-color: #fffafa;
+    border:1px solid black;        
+    z-index: 1;
+    padding-left: 10px;
+
 }
 
-    	
+.collapseSolutions{
+    border:1px solid black;        
+    z-index: 1;
+    padding-left: 10px;
+
+
+.row > div {
+  flex: 1;
+  border: 1px solid grey;
+}

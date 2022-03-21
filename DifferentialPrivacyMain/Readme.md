@@ -12,6 +12,9 @@
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+---
+title: Notes on Differential Privacy
+...
 
 <div class="container">
 

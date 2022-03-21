@@ -10,8 +10,13 @@
 \newcommand{\PBinHist}{\textit{P}_{\epsilon, \delta}^{zsum}}
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
-
+---
+title: "Differential Privacy why?"
+...
 <div class=container>
+
+**TODO: Re-write this whole thing again based on Vadhans notes**
+
 # Privacy definitions cheat sheet
 
 ## Central Differential Privacy {#definition-centralDP}
@@ -88,7 +93,7 @@ The evaluation of the protocol $P=(R,A)$ on input $x$ is
 
 $$P(x) = (A \circ S \circ R)(x) = A\Big(S\big[R(x_1), \dots, R(x_n)\big]\Big)$$
 
-## Shuffle Privacy {#definition-shuffleDP}
+## Shuffle Privacy
 
 A shuffled protocol $P = (R,A)$ satisfies $\epsDelta$-differential
 privacy for $n$ users if the algorithm $(S \circ R) : X^n \rightarrow
@@ -104,7 +109,7 @@ we can add a little less noise to the local randomisers thereby
 getting a little bit more accuracy. 
 
 
-## L1 Sensitivity {#definition-shuffleDP}
+## L1 Sensitivity 
 
 The $l_1$-sensitivity of a function $f: \N^{|X|} \rightarrow \R^k$ is defined as 
 
