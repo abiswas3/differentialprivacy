@@ -36,7 +36,7 @@ $$P_{u\sim U^n, r \sim U^m}\Big[A'(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq \frac
 where $r$ represents the internal coin flips and $m=poly(n)$.
 </div>
 
-The second condition says that on average $f$ is hard to invert. Also any pre-image of $f(u)$ is bad not just the one that was used to create $f(u)$. The axillary input $1^n$ is given to tell the $A^{'}$ the size of the output, in the case $f$ shrunk the input.
+The second condition says that on average $f$ is hard to invert. Also any pre-image of $f(u)$ is bad not just the one that was used to create $f(u)$. The axillary input $1^n$ is given to tell the $A^{'}$ the size of the input, in the case $f$ shrunk the input.
 
 
 **THERE are two more examples that I would like to understand more before moving on**
@@ -47,7 +47,7 @@ The second condition says that on average $f$ is hard to invert. Also any pre-im
 A function $\genF$ is called **weakly one-way** if the following two conditions hold:
 
 1. **Easy to compute:** There exists a (deterministic) polynomial-time algorithm $A$ such that on input $x$ algorithm $A$ outputs $f(x)$ (i.e., $A(x) = f (x)$).
-2. **Kinda Hard to invert:** <u>There exists positive polynomial</u> $p(·)$ such that for every probabilistic polynomial-time algorithm $A′$, and all sufficiently large $n$’s,
+2. **Kinda Hard to invert:** <u>There exists positive polynomial</u> $p(·)$ such that for every probabilistic polynomial-time algorithm $A^′$, and all sufficiently large $n$’s,
 
 $$P_{u\sim U^n, r \sim U^m}\Big[A'(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq \frac{1}{p(n)}$$
 

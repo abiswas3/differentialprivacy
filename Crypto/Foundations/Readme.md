@@ -11,11 +11,14 @@ page and its children pages are my notes from studying different
 concepts in modern cryptography. They are designed to be consumed by
 me only and are likely full of typos. 
 
-## Table of Contents
+## Vol I: Notes
 
 * [Chapter I: Background](./Prelims/)
 * [Chapter II: One way functions](./OneWayFunctions/)
 <!-- * [Chapter III: Pseduo Random generators](./PseudoRandomStuff/) -->
 * [Chapter IV: Zero Knowledge Proofs](./ZK_Proofs/)
 
+## Misc
+
+* [Security Defintions](./RealVsIdeal/)
 </div>
