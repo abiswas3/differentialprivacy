@@ -1,8 +1,10 @@
-\newcommand{\P}[3]{\mathbb{P}_{#2 \sim #3}\Big[#1\Big]}
+\newcommand{\Pr}[1]{\mathbb{P}\Big[#1\Big]}
 \newcommand{\D}{\mathbb{D}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\half}{\frac{1}{2}}
 \newcommand{\max}{\text{max}}
 \newcommand{\S}[1]{\Delta #1}
 \newcommand{\RBinHist}{\textit{R}_{\epsilon, \delta}^{zsum}}
@@ -10,6 +12,7 @@
 \newcommand{\PBinHist}{\textit{P}_{\epsilon, \delta}^{zsum}}
 \newcommand{\localP}{\textit{P} = (\textit{R}, \textit{A})}
 \newcommand{\epsDelta}{(\epsilon, \delta)}
+\newcommand{\nbr}{x \sim x'}
 ---
 title: "Differential Privacy why?"
 ...
@@ -17,30 +20,99 @@ title: "Differential Privacy why?"
 
 **TODO: Re-write this whole thing again based on Vadhans notes**
 
-# Privacy definitions cheat sheet
+# What does it mean to be differentially private
 
-## Central Differential Privacy {#definition-centralDP}
+**Draw picture for model**
 
-An algorithm $M : X^n \rightarrow Z$ satisfies
-$(\epsilon,\delta)$-differential privacy if
+## Counting queries
 
-$$ \P{M(x) \in T}{x}{X^n} \leq e^{\epsilon}\P{M(x') \in T}{x'}{X^n} + \delta$$
+The definition of differential privacy requires that no individual’s data has much effect on what an adversary sees. If we have two datasets $x \sim x'$ of size $n$ records that differ by just 1 record, then the outputs of $q(x)$ and $q(x')$, released via mechanism $M$ should have a *similar* distribution. 
 
-$\forall x \sim x'$ and $\forall T \subseteq Z$. Two datasets are $x
-\sim x'$ if they differ by one row or record. Note: For DP to apply,
-the above in equality must hold for **all** subsets of the range of
-the alorithm. Another way of viewing the above inequality is in terms
-of concentration measures:
+<div class="lemma">
+For $\epsilon \geq 0$, we say mechanism $M$ is $\epsilon$ differentially private if **for all** neighbouring datasets $\nbr$, and for every query $q \in Q$ and $\forall T \subseteq Y$ we have 
 
-With probablity 1 - $\delta$. 
+\begin{align*}
+\Pr{M(x, q) \in T} \leq (1 + \epsilon)\Pr{M(x', q) \in T}
+\end{align*} 
+</div>
+<br>
+For a small value $\epsilon$, it is saying that $|\Pr{M(x, q) \in T} - \Pr{M(x\, q) \in T}|$ is close to 0. By Taylors Theorem $1 + \epsilon \leq e^{\epsilon}$ $\forall \epsilon \geq 0$, so the defintion that is used in practice is as exponents are easier to manipulate.
+
+<div class="lemma">
+For $\epsilon \geq 0$, we say mechanism $M$ is $\epsilon$ differentially private if **for all** neighbouring datasets $\nbr$, and for every query $q \in Q$ and $\forall T \subseteq Y$ we have 
+
+\begin{align*}
+\Pr{M(x, q) \in T} &\leq e^{\epsilon}\Pr{M(x', q) \in T}
+\end{align*} 
+</div>
+<br>
+
+<div class="important">
+**From Page 6 if [[1][1]]**
+
+Here we typically take $\epsilon$ as small, but non-negligible (not cryptographically small); for example, a small constant, such as $\epsilon= 0.1$. Smaller = 0.1 provides better privacy, but as we will see, the definition is no longer useful when $\epsilon < 1/n$.
+
+</div>
+
+
+## Why not use statistical distances ?
+
+The first defintion looks a lot like some sort sort of statistical distance. One could ask why not use a defintion based on stastical distance such as total variation distance and the answer is two fold:
+
+**Total Variation Distance between two distributions**  
+
+\begin{align*}
+SD_q(M(x), M(x')) := \text{max}_{T \subseteq Y} \Bigg| \Pr{M(x, q) \in T} - \Pr{M(x', q) \in T}\Bigg| \leq \delta
+\end{align*} 
+
+
+Firstly, the current defintion of differential privacy implies statistical privacy, but the converse is not true. Assume we have $\epsilon$-DP. Setting $\delta = 1 - e^{-\epsilon} \leq \epsilon$ we get bounded statistical distance:
+
+\begin{align*}
+\text{max}_{T \subseteq Y} \Bigg| \Pr{M(x, q) \in T} - \Pr{M(x', q) \in T}\Bigg| &\leq 1 - e^{-\epsilon} \\
+&\leq \epsilon + 1\tag{1}\label{1} \\
+&\leq e^{\epsilon} \tag{2}\label{2} \\
+\end{align*} 
+
+$\ref{1}$ and  $\ref{2}$ come from Taylors theorem, see [course notes from Ryan O Donnels class for more details](../../GraduateSchoolCourses/TCS_Toolkit-Ryan_ODonell/AsymptoticsAndGaussians/). Thus this defintion is a stronger statement of closeness.
+
+Secondly, depending on the setting of $\delta$, the defintion is either too private or not private at all. See below:
+
+* **Too private $\delta \leq \frac{1}{2n}$**: There is some hybrid argument I do not fully understand, but one can show that output of the mechanism is independent of dataset -- making the mechanism useless for finding properties about data. Read more about [hybrid arguments here](https://eprint.iacr.org/2021/088.pdf)
+
+
+* **Not private at all $\delta \geq \frac{1}{2n}$: **  Assume two neighbouring datasets $\nbr$ and $y \in \X$ is the record missing in $x'$. Consider the mechanism that picks a random row from the dataset and outputs it with probability $\half$. Then $\Pr{M(x, q) = y} = \frac{1}{2n}$ and $\Pr{M(x', q) = y} = 0$. Therefore, $SD(M(x, q), M(x', q)) \geq \Bigg| \Pr{M(x, q) =y} - \Pr{M(x', q) = y }\Bigg| = \frac{1}{2n}$, **which satisfies our requirement of statistical privacy**. However, we just revealed a dataset in public.
+
+## Relaxations
+
+## How do we get pure differential privacy
+
+### Laplace mechanism 
+
+### Randomised Response 
+
+
+## Robustness to Post Processing
+
+## Group privacy
+
+## Composition Lemmas 
+
+### Basic composition
+
+### Advanced Composition
+
+### Arbitrary many counting queries
+
+<!-- With probablity 1 - $\delta$. 
 
 $$ \frac{ \P{M(x) \in T}{x}{X^n}}{ \P{M(x') \in T}{x'}{X^n}} \leq e^{\epsilon}$$
 
 Usually $\delta = o(1/n)$ is accepted as workable or efficient. This
 is saying if datasets are neighbouring, central DP gurantees that the
 algorithm outputs are concentrated near each other with high probability.
-
-## Local Models  {#definition-localModel}
+ -->
+<!-- ## Local Models  {#definition-localModel}
 
 First introduced in [[2][2]]
 
@@ -58,6 +130,8 @@ $\textit{R}$ and $\textit{A}$. Let $x \in X^n$. The evaluation of the
 protocol \textit{P} on input $x$
 
 $$P(x) = (A \circ R)(x) = A\Big(R(x_1), \dots, R(x_n)\Big)$$
+
+
 
 
 ## Local Differential Privacy {#definition-localDP}
@@ -282,7 +356,7 @@ data-target="#expMechIsPrivate">Proof</button>
 
 </div>
 
-
+ -->
 ## Important Papers
 
 [1]: https://arxiv.org/pdf/1908.11358.pdf "On the power of multiple anonymous messages"

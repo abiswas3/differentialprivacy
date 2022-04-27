@@ -39,274 +39,386 @@
 <div class="container">
 <p><strong>TODO: Re-write this whole thing again based on Vadhans
 notes</strong></p>
-<h1 id="privacy-definitions-cheat-sheet">Privacy definitions cheat
-sheet</h1>
-<h2 id="definition-centralDP">Central Differential Privacy</h2>
-<p>An algorithm <span class="math inline">\(M : X^n \rightarrow
-Z\)</span> satisfies <span
-class="math inline">\((\epsilon,\delta)\)</span>-differential privacy
-if</p>
-<p><span class="math display">\[ \mathbb{P}_{x \sim X^n}\Big[M(x) \in
-T\Big] \leq e^{\epsilon}\mathbb{P}_{x&#39; \sim X^n}\Big[M(x&#39;) \in
-T\Big] + \delta\]</span></p>
-<p><span class="math inline">\(\forall x \sim x&#39;\)</span> and <span
-class="math inline">\(\forall T \subseteq Z\)</span>. Two datasets are
-<span class="math inline">\(x \sim x&#39;\)</span> if they differ by one
-row or record. Note: For DP to apply, the above in equality must hold
-for <strong>all</strong> subsets of the range of the alorithm. Another
-way of viewing the above inequality is in terms of concentration
-measures:</p>
-<p>With probablity 1 - <span class="math inline">\(\delta\)</span>.</p>
-<p><span class="math display">\[ \frac{ \mathbb{P}_{x \sim X^n}\Big[M(x)
-\in T\Big]}{ \mathbb{P}_{x&#39; \sim X^n}\Big[M(x&#39;) \in T\Big]} \leq
-e^{\epsilon}\]</span></p>
-<p>Usually <span class="math inline">\(\delta = o(1/n)\)</span> is
-accepted as workable or efficient. This is saying if datasets are
-neighbouring, central DP gurantees that the algorithm outputs are
-concentrated near each other with high probability.</p>
-<h2 id="definition-localModel">Local Models</h2>
-<p>First introduced in [<a href="https://arxiv.org/pdf/0803.0924.pdf"
-title="What can we learn privately">2</a>]</p>
-<p>A protocol P in the (non-interactive) local model consists of two
-randomized algorithms:</p>
-<ul>
-<li>A randomiser <span class="math inline">\(\textit{R}: X \rightarrow
-Y\)</span> that takes as input a single user’s data and outputs a
-message.</li>
-<li>An analyser <span class="math inline">\(\textit{A}: Y^* \rightarrow
-Z\)</span> that takes as input all user messages and computes the output
-of the protocol.</li>
-</ul>
-<p>We denote the protocol <span class="math inline">\(\textit{P} =
-(\textit{R}, \textit{A})\)</span>. We assume that the number of users n
-is public and available to both <span
-class="math inline">\(\textit{R}\)</span> and <span
-class="math inline">\(\textit{A}\)</span>. Let <span
-class="math inline">\(x \in X^n\)</span>. The evaluation of the protocol
-on input <span class="math inline">\(x\)</span></p>
-<p><span class="math display">\[P(x) = (A \circ R)(x) = A\Big(R(x_1),
-\dots, R(x_n)\Big)\]</span></p>
-<h2 id="definition-localDP">Local Differential Privacy</h2>
-<p>A local protocol <span class="math inline">\(\textit{P} =
-(\textit{R}, \textit{A})\)</span> satisfies <span
-class="math inline">\((\epsilon, \delta)\)</span>-differential privacy
-for n users if its randomizer <span class="math inline">\(R : X
-\rightarrow Y\)</span> is <span class="math inline">\((\epsilon,
-\delta)\)</span>-differentially private (for datasets of size one). In
-other words, the output of the randomiser for any two inputs must be
-concentrated with high probability 1 - <span
-class="math inline">\(\delta\)</span></p>
-<p><span class="math display">\[ \frac{ \mathbb{P}_{x \sim X}\Big[R(x)
-\in T\Big]}{ \mathbb{P}_{x&#39; \sim X}\Big[R(x&#39;) \in T\Big]} \leq
-e^{\epsilon}\]</span> for all subsets <span class="math inline">\(T
-\subseteq Y\)</span></p>
-<h2 id="definition-shuffleModel">Shuffled Model</h2>
-<p>A protocol <span class="math inline">\(P\)</span> in the shuffled
-model consists of three randomized algorithms. The first and last
-algorithm is identical to the local model. There is a middle shuffle
-phase. Formally,</p>
-<ul>
-<li>A randomiser <span class="math inline">\(\textit{R}: X \rightarrow
-Y\)</span> that takes as input a single user’s data and outputs a
-message.</li>
-<li>A shuffler <span class="math inline">\(S : Y^* \rightarrow
-Y^*\)</span>. that concatenates all message vectors and then applies a
-uniformly random permutation to (the order of) the concatenated vector.
-For example, when there are three users each sending two messages, there
-are 6! permutations and all are equally likely to be the output of the
-shuffler.<strong>NOTE: There is no special shuffling algorithm. It’s
-always uniformly random on all permutations</strong></li>
-<li>An analyser <span class="math inline">\(\textit{A}: Y^* \rightarrow
-Z\)</span> that takes as input the shuffled messages and computes the
-output of the protocol.</li>
-</ul>
-<p>The evaluation of the protocol <span
-class="math inline">\(P=(R,A)\)</span> on input <span
-class="math inline">\(x\)</span> is</p>
-<p><span class="math display">\[P(x) = (A \circ S \circ R)(x) =
-A\Big(S\big[R(x_1), \dots, R(x_n)\big]\Big)\]</span></p>
-<h2 id="shuffle-privacy">Shuffle Privacy</h2>
-<p>A shuffled protocol <span class="math inline">\(P = (R,A)\)</span>
-satisfies <span class="math inline">\((\epsilon,
-\delta)\)</span>-differential privacy for <span
-class="math inline">\(n\)</span> users if the algorithm <span
-class="math inline">\((S \circ R) : X^n \rightarrow Y^∗\)</span> is
-<span class="math inline">\((\epsilon, \delta)\)</span>-differentially
-private.</p>
-<p>This is saying, for two neighbouring datasets <span
-class="math inline">\(x \sim x&#39;\)</span>, the probability of seeing
-the same permutation after shuffling the outputs of all the local
-randomisers is concentrated with high probability 1 - <span
-class="math inline">\(\delta\)</span>.</p>
-<p>The hope is the following: Because we have this shuffle phase,
-perhaps we can add a little less noise to the local randomisers thereby
-getting a little bit more accuracy.</p>
-<h2 id="l1-sensitivity">L1 Sensitivity</h2>
-<p>The <span class="math inline">\(l_1\)</span>-sensitivity of a
-function <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow
-\mathbb{R}^k\)</span> is defined as</p>
-<p><span class="math display">\[\Delta f = \text{max}_{|| x - x&#39;
-||_1 \leq 1} || f(x) - f(x&#39;)||_1\]</span></p>
-<p>for any <span class="math inline">\(x, x&#39; \in
-\mathbb{N}^{|X|}\)</span>.</p>
-<p>Simply put, for neighbouring datasets<span class="math inline">\(x,
-x&#39;\)</span>, what is the maximum this function can differ by. High
-sensitive functions are not good differential privacy, as by changing
-just one input we see big differences in outputs – thereby providing
-information about the unique input to the function.</p>
-<h2 id="theorem-lapIsPrivate">Laplace Mechanism</h2>
-<p>** FIX TYPOS in notation of proof. Using same variables over and
-over** Given <span class="math inline">\(f: \mathbb{N}^{|X|} \rightarrow
-\mathbb{R}^k\)</span>, then the laplace mechanism is defined as</p>
-<p><span class="math display">\[M_L\Big(x, f(.), \epsilon \Big) = f(x) +
-(Y_1, \dots, Y_k)\]</span> where <span class="math inline">\(Y_i \sim
-Lap(\frac{\Delta(f)}{\epsilon})\)</span>. <strong>The laplace mechanism
-preserves pure differential privacy</strong></p>
-<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#laplaceMech">
-Proof
-</button>
-<div id="laplaceMech" class="collapse">
-<p>Let <span class="math inline">\(f_x(z)\)</span> be the density
-function for <span class="math inline">\(M_L\Big(x, f(.), \epsilon
-\Big)\)</span>. We want to show that <span
-class="math inline">\(\frac{f_x(z)}{f_x&#39;(z)} \leq
-e^{\epsilon}\)</span> where <span class="math inline">\(x,
-x&#39;\)</span> differ by one element only.</p>
-<p>We have <span class="math inline">\(z_i= f_i(x) + Y_i\)</span>, the
-only randomness is from <span class="math inline">\(Y_i\)</span>, thus
-we have just scaled the noise <span class="math inline">\(Y_i\)</span>
-by a constant. Thus <span class="math inline">\(f_x(z)\)</span> is just
-a laplace random variable with mean <span
-class="math inline">\(f_i(x)\)</span>.</p>
+<h1 id="what-does-it-mean-to-be-differentially-private">What does it
+mean to be differentially private</h1>
+<p><strong>Draw picture for model</strong></p>
+<h2 id="counting-queries">Counting queries</h2>
+<p>The definition of differential privacy requires that no individual’s
+data has much effect on what an adversary sees. If we have two datasets
+<span class="math inline">\(x \sim x&#39;\)</span> of size <span
+class="math inline">\(n\)</span> records that differ by just 1 record,
+then the outputs of <span class="math inline">\(q(x)\)</span> and <span
+class="math inline">\(q(x&#39;)\)</span>, released via mechanism <span
+class="math inline">\(M\)</span> should have a <em>similar</em>
+distribution.</p>
+<div class="lemma">
+<p>For <span class="math inline">\(\epsilon \geq 0\)</span>, we say
+mechanism <span class="math inline">\(M\)</span> is <span
+class="math inline">\(\epsilon\)</span> differentially private if
+<strong>for all</strong> neighbouring datasets <span
+class="math inline">\(x \sim x&#39;\)</span>, and for every query <span
+class="math inline">\(q \in Q\)</span> and <span
+class="math inline">\(\forall T \subseteq Y\)</span> we have</p>
 <p><span class="math display">\[\begin{align*}
-\frac{f_x(z)}{f_x&#39;(z)} &amp;= \prod_{i=1}^k
-\frac{\frac{exp\{-|f_i(x) - z_i|\epsilon}{\Delta
-f}\}}{\frac{exp\{-|f_i(x&#39;) - z_i|\epsilon}{\Delta f}\}} \\
-&amp;= \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}\Big(|f_i(x&#39;) -
-z_i| - |z_i - f_i(x)| \Big)\} \\
-&amp;\leq \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}|f_i(x&#39;) -
-f_i(x)| \} \label{eq1}\tag{1}\\
-&amp;= exp \{ \frac{\epsilon}{\Delta f}\sum_{i=1}^k|f_i(x&#39;) -
-f_i(x)| \}\\
-&amp;= exp \{ \frac{\epsilon}{\Delta f}||f(x&#39;) - f(x)||_1 \} \\
-&amp;\leq exp \{ \frac{\epsilon}{\Delta f} \Delta f \}
-\label{eq2}\tag{2} \\
-&amp;= exp(\epsilon)
+\mathbb{P}\Big[M(x, q) \in T\Big] \leq (1 +
+\epsilon)\mathbb{P}\Big[M(x&#39;, q) \in T\Big]
 \end{align*}\]</span></p>
-<p><span class="math inline">\(\ref{eq1}\)</span>: Triangle inequality:
-<span class="math inline">\(|A - C| \leq |A - B| + |B - C|\)</span></p>
-<p><span class="math inline">\(\ref{eq2}\)</span>: Definitition of <span
-class="math inline">\(l_1\)</span>-sensitivity</p>
 </div>
-<h4
-id="binary-sums-or-real-valued-sums-counting-and-histogram-queries">Binary
-sums or real valued sums (counting and histogram queries)</h4>
-<p>Consider the example where each member of the popuplation <span
-class="math inline">\(x \in X\)</span> holds a value in <span
-class="math inline">\(\{ 0, 1\}\)</span> or in some bounded set of
-integers. We want to estimate the sum of values for the population. Then
-the sensitivity for this sum query function is either 1 for binary
-values or the suprenum value of the population of integers. To report
-sums differentially privately, the noise needed is <span
-class="math inline">\(O(\frac{\Delta f}{\epsilon})\)</span>. In the case
-of two neighbouring histograms, the sensitivity is given by the maximum
-difference between two cell values.</p>
-<h3 id="theorem-lapAcc">Accuracy of the Laplace Mechanism</h3>
-<p><span class="math inline">\(\alpha, \beta\)</span> accuracy</p>
-<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#lapAcc">
-Proof
-</button>
-<div id="lapAcc" class="collapse">
+<p><br> For a small value <span class="math inline">\(\epsilon\)</span>,
+it is saying that <span class="math inline">\(|\mathbb{P}\Big[M(x, q)
+\in T\Big] - \mathbb{P}\Big[M(x\, q) \in T\Big]|\)</span> is close to 0.
+By Taylors Theorem <span class="math inline">\(1 + \epsilon \leq
+e^{\epsilon}\)</span> <span class="math inline">\(\forall \epsilon \geq
+0\)</span>, so the defintion that is used in practice is as exponents
+are easier to manipulate.</p>
+<div class="lemma">
+<p>For <span class="math inline">\(\epsilon \geq 0\)</span>, we say
+mechanism <span class="math inline">\(M\)</span> is <span
+class="math inline">\(\epsilon\)</span> differentially private if
+<strong>for all</strong> neighbouring datasets <span
+class="math inline">\(x \sim x&#39;\)</span>, and for every query <span
+class="math inline">\(q \in Q\)</span> and <span
+class="math inline">\(\forall T \subseteq Y\)</span> we have</p>
+<p><span class="math display">\[\begin{align*}
+\mathbb{P}\Big[M(x, q) \in T\Big] &amp;\leq
+e^{\epsilon}\mathbb{P}\Big[M(x&#39;, q) \in T\Big]
+\end{align*}\]</span></p>
+</div>
+<p><br></p>
+<div class="important">
+<p><strong>From Page 6 if [<a
+href="https://arxiv.org/pdf/1908.11358.pdf"
+title="On the power of multiple anonymous messages">1</a>]</strong></p>
+<p>Here we typically take <span class="math inline">\(\epsilon\)</span>
+as small, but non-negligible (not cryptographically small); for example,
+a small constant, such as <span class="math inline">\(\epsilon=
+0.1\)</span>. Smaller = 0.1 provides better privacy, but as we will see,
+the definition is no longer useful when <span
+class="math inline">\(\epsilon &lt; 1/n\)</span>.</p>
+</div>
+<h2 id="why-not-use-statistical-distances">Why not use statistical
+distances ?</h2>
+<p>The first defintion looks a lot like some sort sort of statistical
+distance. One could ask why not use a defintion based on stastical
+distance such as total variation distance and the answer is two
+fold:</p>
+<p><strong>Total Variation Distance between two
+distributions</strong></p>
+<p><span class="math display">\[\begin{align*}
+SD_q(M(x), M(x&#39;)) := \text{max}_{T \subseteq Y} \Bigg|
+\mathbb{P}\Big[M(x, q) \in T\Big] - \mathbb{P}\Big[M(x&#39;, q) \in
+T\Big]\Bigg| \leq \delta
+\end{align*}\]</span></p>
+<p>Firstly, the current defintion of differential privacy implies
+statistical privacy, but the converse is not true. Assume we have <span
+class="math inline">\(\epsilon\)</span>-DP. Setting <span
+class="math inline">\(\delta = 1 - e^{-\epsilon} \leq \epsilon\)</span>
+we get bounded statistical distance:</p>
+<p><span class="math display">\[\begin{align*}
+\text{max}_{T \subseteq Y} \Bigg| \mathbb{P}\Big[M(x, q) \in T\Big] -
+\mathbb{P}\Big[M(x&#39;, q) \in T\Big]\Bigg| &amp;\leq 1 - e^{-\epsilon}
+\\
+&amp;\leq \epsilon + 1\tag{1}\label{1} \\
+&amp;\leq e^{\epsilon} \tag{2}\label{2} \\
+\end{align*}\]</span></p>
+<p><span class="math inline">\(\ref{1}\)</span> and <span
+class="math inline">\(\ref{2}\)</span> come from Taylors theorem, see <a
+href="../../GraduateSchoolCourses/TCS_Toolkit-Ryan_ODonell/AsymptoticsAndGaussians/">course
+notes from Ryan O Donnels class for more details</a>. Thus this
+defintion is a stronger statement of closeness.</p>
+<p>Secondly, depending on the setting of <span
+class="math inline">\(\delta\)</span>, the defintion is either too
+private or not private at all. See below:</p>
+<ul>
+<li><p><strong>Too private <span class="math inline">\(\delta \leq
+\frac{1}{2n}\)</span></strong>: There is some hybrid argument I do not
+fully understand, but one can show that output of the mechanism is
+independent of dataset – making the mechanism useless for finding
+properties about data. Read more about <a
+href="https://eprint.iacr.org/2021/088.pdf">hybrid arguments
+here</a></p></li>
+<li><p><strong>Not private at all <span class="math inline">\(\delta
+\geq \frac{1}{2n}\)</span>: </strong> Assume two neighbouring datasets
+<span class="math inline">\(x \sim x&#39;\)</span> and <span
+class="math inline">\(y \in \mathcal{X}\)</span> is the record missing
+in <span class="math inline">\(x&#39;\)</span>. Consider the mechanism
+that picks a random row from the dataset and outputs it with probability
+<span class="math inline">\(\frac{1}{2}\)</span>. Then <span
+class="math inline">\(\mathbb{P}\Big[M(x, q) = y\Big] =
+\frac{1}{2n}\)</span> and <span
+class="math inline">\(\mathbb{P}\Big[M(x&#39;, q) = y\Big] = 0\)</span>.
+Therefore, <span class="math inline">\(SD(M(x, q), M(x&#39;, q)) \geq
+\Bigg| \mathbb{P}\Big[M(x, q) =y\Big] - \mathbb{P}\Big[M(x&#39;, q) = y
+\Big]\Bigg| = \frac{1}{2n}\)</span>, <strong>which satisfies our
+requirement of statistical privacy</strong>. However, we just revealed a
+dataset in public.</p></li>
+</ul>
+<h2 id="relaxations">Relaxations</h2>
+<h2 id="how-do-we-get-pure-differential-privacy">How do we get pure
+differential privacy</h2>
+<h3 id="laplace-mechanism">Laplace mechanism</h3>
+<h3 id="randomised-response">Randomised Response</h3>
+<h2 id="robustness-to-post-processing">Robustness to Post
+Processing</h2>
+<h2 id="group-privacy">Group privacy</h2>
+<h2 id="composition-lemmas">Composition Lemmas</h2>
+<h3 id="basic-composition">Basic composition</h3>
+<h3 id="advanced-composition">Advanced Composition</h3>
+<h3 id="arbitrary-many-counting-queries">Arbitrary many counting
+queries</h3>
+<!-- With probablity 1 - $\delta$. 
+
+$$ \frac{ \P{M(x) \in T}{x}{X^n}}{ \P{M(x') \in T}{x'}{X^n}} \leq e^{\epsilon}$$
+
+Usually $\delta = o(1/n)$ is accepted as workable or efficient. This
+is saying if datasets are neighbouring, central DP gurantees that the
+algorithm outputs are concentrated near each other with high probability.
+ -->
+<!-- ## Local Models  {#definition-localModel}
+
+First introduced in [[2][2]]
+
+A protocol P in the (non-interactive) local model consists of two
+randomized algorithms:
+
+* A randomiser $\textit{R}: X \rightarrow Y$ that takes as input a
+  single user’s data and outputs a message.
+* An analyser $\textit{A}: Y^* \rightarrow Z$ that takes as input all
+  user messages and computes the output of the protocol.
+
+We denote the protocol $\textit{P} = (\textit{R}, \textit{A})$. We
+assume that the number of users n is public and available to both
+$\textit{R}$ and $\textit{A}$. Let $x \in X^n$. The evaluation of the
+protocol \textit{P} on input $x$
+
+$$P(x) = (A \circ R)(x) = A\Big(R(x_1), \dots, R(x_n)\Big)$$
+
+
+
+
+## Local Differential Privacy {#definition-localDP}
+
+A local protocol $\localP$ satisfies $\epsDelta$-differential privacy
+for n users if its randomizer $R : X \rightarrow Y$ is
+$\epsDelta$-differentially private (for datasets of size one). In
+other words, the output of the randomiser for any two inputs must be
+concentrated with high probability 1 - $\delta$
+
+$$ \frac{ \P{R(x) \in T}{x}{X}}{ \P{R(x') \in T}{x'}{X}} \leq
+e^{\epsilon}$$ for all subsets $T \subseteq Y$
+
+## Shuffled Model {#definition-shuffleModel}
+
+A protocol $P$ in the shuffled model consists of three randomized
+algorithms. The first and last algorithm is identical to the local
+model. There is a middle shuffle phase. Formally,
+
+* A randomiser $\textit{R}: X \rightarrow Y$ that takes as input a
+  single user’s data and outputs a message.
+* A shuffler $S : Y^* \rightarrow Y^*$. that concatenates all message
+  vectors and then applies a uniformly random permutation to (the
+  order of) the concatenated vector. For example, when there are three
+  users each sending two messages, there are 6! permutations and all
+  are equally likely to be the output of the shuffler.**NOTE: There is
+  no special shuffling algorithm. It's always uniformly random on all
+  permutations**
+* An analyser $\textit{A}: Y^* \rightarrow Z$ that takes as input the
+  shuffled messages and computes the output of the protocol.
+
+The evaluation of the protocol $P=(R,A)$ on input $x$ is
+
+$$P(x) = (A \circ S \circ R)(x) = A\Big(S\big[R(x_1), \dots, R(x_n)\big]\Big)$$
+
+## Shuffle Privacy
+
+A shuffled protocol $P = (R,A)$ satisfies $\epsDelta$-differential
+privacy for $n$ users if the algorithm $(S \circ R) : X^n \rightarrow
+Y^∗$ is $\epsDelta$-differentially private.
+
+This is saying, for two neighbouring datasets $x \sim x'$, the
+probability of seeing the same permutation after shuffling the outputs
+of all the local randomisers is concentrated with high probability 1 -
+$\delta$.
+
+The hope is the following: Because we have this shuffle phase, perhaps
+we can add a little less noise to the local randomisers thereby
+getting a little bit more accuracy. 
+
+
+## L1 Sensitivity 
+
+The $l_1$-sensitivity of a function $f: \N^{|X|} \rightarrow \R^k$ is defined as 
+
+$$\Delta f = \text{max}_{|| x - x' ||_1 \leq 1} || f(x) - f(x')||_1$$
+
+for any $x, x' \in \N^{|X|}$. 
+
+
+Simply put, for neighbouring datasets$x, x'$, what is the maximum this function can differ by. High
+sensitive functions are not good differential privacy, as by changing
+just one input we see big differences in outputs -- thereby providing
+information about the unique input to the function.
+
+
+## Laplace Mechanism {#theorem-lapIsPrivate}
+
+** FIX TYPOS in notation of proof. Using same variables over and over** 
+Given $f: \N^{|X|} \rightarrow \R^k$, then the laplace mechanism is
+defined as 
+
+$$M_L\Big(x, f(.), \epsilon \Big) = f(x) + (Y_1, \dots, Y_k)$$ where
+$Y_i \sim Lap(\frac{\Delta(f)}{\epsilon})$. **The laplace mechanism
+preserves pure differential privacy**
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#laplaceMech">Proof</button>
+<div class=collapse id=laplaceMech>
+
+Let $f_x(z)$ be the density function for $M_L\Big(x, f(.), \epsilon
+\Big)$. We want to show that $\frac{f_x(z)}{f_x'(z)} \leq
+e^{\epsilon}$ where $x, x'$ differ by one element only.
+
+We have $z_i= f_i(x) + Y_i$, the only randomness is from $Y_i$, thus
+we have just scaled the noise $Y_i$ by a constant. Thus $f_x(z)$ is
+just a laplace random variable with mean $f_i(x)$.
+
+
+\begin{align*}
+\frac{f_x(z)}{f_x'(z)} &= \prod_{i=1}^k \frac{\frac{exp\{-|f_i(x) - z_i|\epsilon}{\Delta f}\}}{\frac{exp\{-|f_i(x') - z_i|\epsilon}{\Delta f}\}} \\
+&= \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}\Big(|f_i(x') - z_i| - |z_i - f_i(x)| \Big)\} \\
+&\leq \prod_{i=1}^k exp \{ \frac{\epsilon}{\Delta f}|f_i(x') - f_i(x)| \} \label{eq1}\tag{1}\\
+&= exp \{ \frac{\epsilon}{\Delta f}\sum_{i=1}^k|f_i(x') - f_i(x)| \}\\
+&= exp \{ \frac{\epsilon}{\Delta f}||f(x') - f(x)||_1 \} \\
+&\leq exp \{ \frac{\epsilon}{\Delta f} \Delta f \} \label{eq2}\tag{2} \\
+&= exp(\epsilon)
+\end{align*}
+
+$\ref{eq1}$: Triangle inequality: $|A - C| \leq |A - B| + |B - C|$
+
+$\ref{eq2}$: Definitition of $l_1$-sensitivity
+</div>
+
+#### Binary sums or real valued sums (counting and histogram queries)
+
+Consider the example where each member of the popuplation $x \in X$
+holds a value in $\{ 0, 1\}$ or in some bounded set of integers. We
+want to estimate the sum of values for the population. Then the
+sensitivity for this sum query function is either 1 for binary values
+or the suprenum value of the population of integers. To report sums
+differentially privately, the noise needed is $O(\frac{\Delta
+f}{\epsilon})$. In the case of two neighbouring histograms, the
+sensitivity is given by the maximum difference between two cell
+values.
+
+### Accuracy of the Laplace Mechanism {#theorem-lapAcc}
+
+$\alpha, \beta$ accuracy
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#lapAcc">Proof</button>
+<div class=collapse id=lapAcc>
 
 </div>
-<h3 id="exponential-noise">Exponential noise</h3>
-<p>Similar bounds to Laplace</p>
-<p><span class="math display">\[\begin{align*}
-\mathbb{P}\Big[ \frac{M(D) \in T}{M(D&#39;) \in T}\Big] &amp;=
-e^{-\lambda(|f(X) - f(X&#39;))} \\
-&amp;\geq e^{-\lambda(\Delta f)} \\
-&amp;\geq e^{-\epsilon}
-\end{align*}\]</span></p>
-<p>where <span class="math inline">\(\epsilon = \lambda \times \Delta
-f\)</span> and <span class="math inline">\(\lambda\)</span> is the rate
-parameter of the noise distribution. The variance of the distribution is
-<span class="math inline">\(\frac{1}{\lambda^2} =
-O(\frac{1}{\epsilon^2})\)</span></p>
-<h3 id="an-experiment-validating-the-theoretical-bound">An experiment
-validating the theoretical bound</h3>
-<p>Writing a computer program to validate the above theory. The
-concentration inequality says that if I performed the laplace mechanism
-once then - the likelihood one of my dimensions is off by <span
-class="math inline">\(\log \frac{k}{\beta}\frac{\Delta
-f}{\epsilon}\)</span> is <span class="math inline">\(\beta\)</span>. Put
-in otherwords, say I did the laplace mechanism a gazillion times on my
-output. Only <span class="math inline">\(\beta\)</span> fraction of
-times will I get a bad event. A bad event is when the laplace mechanism
-leads to an output very far from the truth. So as an experiment, I
-generated many noisy but private outputs and observed how often the
-infinity norm went outside the boundary of the theorem. Was it more than
-theory claimed or less. It turns out when the number trials is large
-i.e. empirical means are close to actual means, the bound is quite
-tight.</p>
-<p><embed type="text/html" src="code/sample.html" width="800" height="600"></p>
-<h3 id="why-do-smooth-distributions-with-fatty-tails-work">Why do smooth
-distributions with fatty tails work</h3>
-<h2 id="exponential-mechanism">Exponential Mechanism</h2>
-<strong>This is a theoretical introduction of exponential mechanism. A
+
+
+### Exponential noise 
+
+Similar bounds to Laplace
+
+\begin{align*}
+\mathbb{P}\Big[ \frac{M(D) \in T}{M(D') \in T}\Big] &= e^{-\lambda(|f(X) - f(X'))} \\
+&\geq e^{-\lambda(\Delta f)} \\
+&\geq e^{-\epsilon}
+\end{align*}
+
+where $\epsilon = \lambda \times \Delta f$ and $\lambda$ is the rate parameter of the noise distribution. The variance of the distribution is $\frac{1}{\lambda^2} = O(\frac{1}{\epsilon^2})$
+
+### An experiment validating the theoretical bound
+
+Writing a computer program to validate the above theory. The
+concentration inequality says that if I performed the laplace
+mechanism once then - the likelihood one of my dimensions is off by
+$\log \frac{k}{\beta}\frac{\Delta f}{\epsilon}$ is $\beta$. Put in
+otherwords, say I did the laplace mechanism a gazillion times on my
+output. Only $\beta$ fraction of times will I get a bad event. A bad
+event is when the laplace mechanism leads to an output very far from
+the truth. So as an experiment, I generated many noisy but private
+outputs and observed how often the infinity norm went outside the
+boundary of the theorem. Was it more than theory claimed or less. It
+turns out when the number trials is large i.e. empirical means are
+close to actual means, the bound is quite tight.
+
+ <embed type="text/html" src="code/sample.html" width="800" height="600"> 
+ 
+### Why do smooth distributions with fatty tails work
+
+
+
+## Exponential Mechanism
+
+**This is a theoretical introduction of exponential mechanism. A
 practical application of such an idea can be found in making password
-lists private.</strong>
-<div class="intuition">
-While final result of <a href="../passwordLists/">the password list
-problem</a> is relatively uninteresting to me, the mathematics in the
-papers is quite interesting to me.
-</div>
-<p>Consider case where output of a function is very sensitive. Outputs
-like voting counts or auction prices. Adding noise to these values could
-damaging results. Take for example predicting the winner of the Balon
-D’or football prize. Say 30 voters voted for Cristiano Ronaldo, and 29
-voters voted for Lionel Messi. The fair action of concern is to award
-Ronaldo the prize. No one really cares how close we were in
+lists private.** <div class=intuition>While final result of [the
+password list problem](../passwordLists/) is relatively uninteresting
+to me, the mathematics in the papers is quite interesting to me.</div>
+
+
+Consider case where output of a function is very sensitive. Outputs
+like voting counts or auction prices. Adding noise to these values
+could damaging results. Take for example predicting the winner of the
+Balon D'or football prize. Say 30 voters voted for Cristiano Ronaldo,
+and 29 voters voted for Lionel Messi. The fair action of concern is to
+award Ronaldo the prize. No one really cares how close we were in
 approximating the number votes in terms of infinity norm to the actual
 value, as long as the right player wins. In cases like this, adding
-noise is not a viable solution as there is a significant chance that we
-get a terrible outcome.</p>
-<p>What happens when an algorithm outputs values in an arbitrary range
-<span class="math inline">\(R\)</span> that is not <span
-class="math inline">\(\mathbb{R}^k\)</span> for <span
-class="math inline">\(k \geq 1\)</span>. This is what the exponential
-mechanism was designed for. Given some arbitrary range <span
-class="math inline">\(R\)</span>, the exponential mechanism is defined
-with respect to some utility function <span class="math inline">\(u:
-\mathbb{N}^{|X|} \times R \rightarrow \mathbb{R}\)</span>.</p>
-<strong>Do not really understand</strong> we care only about the
-sensitivity of u with respect to its database argument; it can be
-arbitrarily sensitive in its range argument.
-<div class="intuition">
-What they mean is that the <span class="math inline">\(r\)</span> is
-somewhat of a free parameter. Given two neighbouring datasets <span
-class="math inline">\(x, x&#39;\)</span> the sensitivity is the maximum
-difference in their utility: considering all values of the range those
-database arguments map to.
-</div>
-<p><span class="math display">\[\Delta u := \text{max}_{r \in
-R}\text{max}_{|| x - x&#39;||_1 \leq 1} | u(x,r) - u(x&#39;,
-r)|\]</span></p>
-<h3 id="definition--expMech">The mechanism</h3>
-<p>The basic idea is given some utility function, for a given <span
-class="math inline">\(x \in \mathbb{N}^{|X|}\)</span>, we want to the
-mechanism to output <span class="math inline">\(r \in R \propto exp
-\Big( \frac{\epsilon}{2\Delta u}u(x, r)\Big)\)</span></p>
-<h3 id="exponential-mechanism-is-purely-private">Exponential Mechanism
-is purely private</h3>
-<p>The exponential mechanism satisfies <span
-class="math inline">\((\epsilon, 0)\)</span> privacy. Thus there is
-never a chance of a bad event in the privacy sphere.</p>
-<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#expMechIsPrivate">
-Proof
-</button>
-<div id="expMechIsPrivate" class="collapse">
+noise is not a viable solution as there is a significant chance that
+we get a terrible outcome.
+
+
+What happens when an algorithm outputs values in an arbitrary range
+$R$ that is not $\R^k$ for $k \geq 1$. This is what the exponential
+mechanism was designed for. Given some arbitrary range $R$, the
+exponential mechanism is defined with respect to some utility function
+$u: \N^{|X|} \times R \rightarrow \R$.
+
+**Do not really understand** we care only about the sensitivity of u
+with respect to its database argument; it can be arbitrarily sensitive
+in its range argument. <div class=intuition>What they mean is that the
+$r$ is somewhat of a free parameter. Given two neighbouring datasets
+$x, x'$ the sensitivity is the maximum difference in their utility:
+considering all values of the range those database arguments map
+to.</div>
+
+
+$$\S{u} := \max_{r \in R}\max_{|| x - x'||_1 \leq 1} | u(x,r) - u(x',
+r)|$$
+
+
+### The mechanism {#definition--expMech}
+
+The basic idea is given some utility function, for a given $x \in
+\N^{|X|}$, we want to the mechanism to output $r \in R \propto exp
+\Big( \frac{\epsilon}{2\S{u}}u(x, r)\Big)$
+
+### Exponential Mechanism is purely private
+
+The exponential mechanism satisfies $(\epsilon, 0)$ privacy. Thus
+there is never a chance of a bad event in the privacy sphere.
+
+<button type="button" 
+class="btn btn-info" 
+data-toggle="collapse" 
+data-target="#expMechIsPrivate">Proof</button>
+<div class=collapse id=expMechIsPrivate>
+
 
 </div>
+
+ -->
 <h2 id="important-papers">Important Papers</h2>
 <ol type="1">
 <li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of
