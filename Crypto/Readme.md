@@ -23,15 +23,45 @@ title: Notes on cryptography
 
 * [Foundations](./Foundations/)
 * [MPC notes](): Need to transfer from notebook to digital.
-* [How To Simulate It – A Tutorial on the Simulation Proof Technique](https://eprint.iacr.org/2016/046.pdf): Information theoretic security, semantic security, simulator security. What is this mallarky? 
 * [Distributed Point Functions](./DPFs/):
-* [Function secret sharing and homomorphic secret sharing]():
+<!-- * [Function secret sharing and homomorphic secret sharing](): -->
 
 ## Proof Systems
 
-* [General Proof System Notes](): TOOD
+<!-- * [General Proof System Notes](): TOOD -->
 * [SNIPs](./SNIPs/)
-* [Poplar](./Poplar/)
+* [Poplar's DPF sharing](./Poplar/)
+
+
+## Seminal Crypto Papers
+
+* [The GMW protocol + Zero Knowledge proofs for active security](): There is a list of official papers but better to read Vol 2 of his textbook.
+* [How different security defintions relate which each other](https://www.di.ens.fr/david.pointcheval/Documents/Papers/1998_crypto.pdf)
+
+
+## Tutorials
+
+* [Goldreich's MPC tutorial](https://www.wisdom.weizmann.ac.il/~oded/PSX/prot.pdf)
+* [Goldreich's Short tutorial on ZK]()
+* [Vadhan's phD thesis]
+* [How To Simulate It – A Tutorial on the Simulation Proof
+  Technique](https://eprint.iacr.org/2016/046.pdf): Information
+  theoretic security, semantic security, simulator security. What is
+  this mallarky?
+
+### BIU Winter School Material 
+
+* [3rd Winter School]()
+* [5th Winter School]()
+* [9th Winter School]()
+* [10th Winter School](https://www.youtube.com/watch?v=X547xFB8H2k&list=PL8Vt-7cSFnw1u2tedFU04Z4U-mJUMRtzW):
+* [11th Winter School]()
+* [12th Winter School]()
+
+## MISC 
+
+* [Nigel Smarts advice on things to know to do crypto
+  research](https://web.archive.org/web/20180219103124/http://www.cs.bris.ac.uk/Research/CryptographySecurity/knowledge.html)
 
 
 </div>
