@@ -24,13 +24,13 @@ title: Notes on cryptography
 * [Foundations](./Foundations/)
 * [MPC notes](): Need to transfer from notebook to digital.
 * [Distributed Point Functions](./DPFs/):
-* [Function secret sharing and homomorphic secret sharing]():
+<!-- * [Function secret sharing and homomorphic secret sharing](): -->
 
 ## Proof Systems
 
-* [General Proof System Notes](): TOOD
+<!-- * [General Proof System Notes](): TOOD -->
 * [SNIPs](./SNIPs/)
-* [Poplar](./Poplar/)
+* [Poplar's DPF sharing](./Poplar/)
 
 
 ## Seminal Crypto Papers
@@ -49,12 +49,14 @@ title: Notes on cryptography
   theoretic security, semantic security, simulator security. What is
   this mallarky?
 
-## BIU Winter School Material 
+### BIU Winter School Material 
 
+* [3rd Winter School]()
+* [5th Winter School]()
 * [9th Winter School]()
-* [10th Winter
-  School](https://www.youtube.com/watch?v=X547xFB8H2k&list=PL8Vt-7cSFnw1u2tedFU04Z4U-mJUMRtzW):
-  MPC
+* [10th Winter School](https://www.youtube.com/watch?v=X547xFB8H2k&list=PL8Vt-7cSFnw1u2tedFU04Z4U-mJUMRtzW):
+* [11th Winter School]()
+* [12th Winter School]()
 
 ## MISC 
 
