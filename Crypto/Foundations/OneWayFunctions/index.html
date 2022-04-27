@@ -5,150 +5,71 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>One way functions</title>
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../../crypto.css" />
+  <link rel="stylesheet" href="../../crypto.css">
+  <script src="../../../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-
-
+  
+  
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My Notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>  
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
-
-  <script src="../../../code/es5/tex-chtml.js"
-  type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
-<header id="title-block-header">
+<header>
 <h1 class="title">One way functions</h1>
 </header>
+
 <div class="container">
-<p><strong>Why:</strong>These notes are based on Chapter 2 of [<a
-href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368"
-title="Foundations of Cryptography V1">1</a>]. At the time of writing, I
-was interested in studying function secret sharing. All the work in
-function secret sharing needs some understanding of what one way
-functions are. Thus I was forced to make these notes.</p>
+<p><strong>Why:</strong>These notes are based on Chapter 2 of [<a href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368" title="Foundations of Cryptography V1">1</a>]. At the time of writing, I was interested in studying function secret sharing. All the work in function secret sharing needs some understanding of what one way functions are. Thus I was forced to make these notes.</p>
 <h1 id="one-way-functions">One Way functions</h1>
-<p>Loosely speaking, a one-way function is a function that is easy to
-evaluate but hard to invert (in an average-case sense). Since modern
-cryptography is based on a gap between efficient algorithms provided for
-the legitimate users and the computational infeasibility of abusing or
-breaking these algorithms (via illegitimate adversarial actions), one
-way functions are one of the fundamental building blocks of modern
-cryptography.</p>
-<p><strong>Important:</strong> The existence of secure encryption
-schemes implies that there are tasks (e.g., “breaking” encryption
-schemes) that can be performed by non-deterministic polynomial-time
-machines, yet cannot be performed by deterministic (or even randomized)
-polynomial- time machines. In other words, a necessary condition for the
-existence of secure encryption schemes is that <span
-class="math inline">\(\mathcal{NP}\)</span> not be contained in <span
-class="math inline">\(\mathcal{BPP}\)</span> (and thus <span
-class="math inline">\(\mathcal{P}\neq \mathcal{NP}\)</span>).</p>
-<p>Although <span class="math inline">\(\mathcal{P}\neq
-\mathcal{NP}\)</span> is a necessary condition for modern cryptography,
-it is not a sufficient one. Suppose that the breaking of some encryption
-scheme is <span class="math inline">\(\mathcal{NP}\)</span>-complete.
-Then, <span class="math inline">\(\mathcal{P}\neq \mathcal{NP}\)</span>
-implies that this encryption scheme is hard to break in the
-<strong>worst case</strong>, but it does not rule out the possibility
-that the encryption scheme is easy to break almost always. Security
-requires hardness with high probability or the very least in the average
-case. Thus for security we need languages in <span
-class="math inline">\(\mathcal{NP}\)</span> that are hard on
-average.</p>
-<p>However, even that condition is not sufficient. If we just had hard
-languages they would be hard for everyone, even legitimate users. We
-need hard languages that along with axillary information can be computed
-efficiently.</p>
+<p>Loosely speaking, a one-way function is a function that is easy to evaluate but hard to invert (in an average-case sense). Since modern cryptography is based on a gap between efficient algorithms provided for the legitimate users and the computational infeasibility of abusing or breaking these algorithms (via illegitimate adversarial actions), one way functions are one of the fundamental building blocks of modern cryptography.</p>
+<p><strong>Important:</strong> The existence of secure encryption schemes implies that there are tasks (e.g., “breaking” encryption schemes) that can be performed by non-deterministic polynomial-time machines, yet cannot be performed by deterministic (or even randomized) polynomial- time machines. In other words, a necessary condition for the existence of secure encryption schemes is that <span class="math inline">\(\mathcal{NP}\)</span> not be contained in <span class="math inline">\(\mathcal{BPP}\)</span> (and thus <span class="math inline">\(\mathcal{P}\neq \mathcal{NP}\)</span>).</p>
+<p>Although <span class="math inline">\(\mathcal{P}\neq \mathcal{NP}\)</span> is a necessary condition for modern cryptography, it is not a sufficient one. Suppose that the breaking of some encryption scheme is <span class="math inline">\(\mathcal{NP}\)</span>-complete. Then, <span class="math inline">\(\mathcal{P}\neq \mathcal{NP}\)</span> implies that this encryption scheme is hard to break in the <strong>worst case</strong>, but it does not rule out the possibility that the encryption scheme is easy to break almost always. Security requires hardness with high probability or the very least in the average case. Thus for security we need languages in <span class="math inline">\(\mathcal{NP}\)</span> that are hard on average.</p>
+<p>However, even that condition is not sufficient. If we just had hard languages they would be hard for everyone, even legitimate users. We need hard languages that along with axillary information can be computed efficiently.</p>
 <h2 id="strong-one-way-functions">Strong One Way functions</h2>
 <div class="lemma">
-<p>A function <span class="math inline">\(f : \{0, 1\}^* \rightarrow
-\{0, 1\}^*\)</span> is called <strong>(strongly) one-way</strong> if the
-following two conditions hold:</p>
+<p>A function <span class="math inline">\(f : \{0, 1\}^* \rightarrow \{0, 1\}^*\)</span> is called <strong>(strongly) one-way</strong> if the following two conditions hold:</p>
 <ol type="1">
-<li><strong>Easy to compute:</strong> There exists a (deterministic)
-polynomial-time algorithm <span class="math inline">\(A\)</span> such
-that on input <span class="math inline">\(x\)</span> algorithm <span
-class="math inline">\(A\)</span> outputs <span
-class="math inline">\(f(x)\)</span> (i.e., <span
-class="math inline">\(A(x) = f (x)\)</span>).</li>
-<li><strong>Hard to invert:</strong> For every probabilistic
-polynomial-time algorithm <span class="math inline">\(A^′\)</span>,every
-positive polynomial <span class="math inline">\(p(·)\)</span>, and all
-sufficiently large <span class="math inline">\(n\)</span>’s,</li>
+<li><strong>Easy to compute:</strong> There exists a (deterministic) polynomial-time algorithm <span class="math inline">\(A\)</span> such that on input <span class="math inline">\(x\)</span> algorithm <span class="math inline">\(A\)</span> outputs <span class="math inline">\(f(x)\)</span> (i.e., <span class="math inline">\(A(x) = f (x)\)</span>).</li>
+<li><strong>Hard to invert:</strong> For every probabilistic polynomial-time algorithm <span class="math inline">\(A^′\)</span>,every positive polynomial <span class="math inline">\(p(·)\)</span>, and all sufficiently large <span class="math inline">\(n\)</span>’s,</li>
 </ol>
-<p><span class="math display">\[P_{u\sim U^n, r \sim
-U^m}\Big[A&#39;(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq
-\frac{1}{p(n)}\]</span></p>
-<p>where <span class="math inline">\(r\)</span> represents the internal
-coin flips and <span class="math inline">\(m=poly(n)\)</span>.</p>
+<p><span class="math display">\[P_{u\sim U^n, r \sim U^m}\Big[A&#39;(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq \frac{1}{p(n)}\]</span></p>
+<p>where <span class="math inline">\(r\)</span> represents the internal coin flips and <span class="math inline">\(m=poly(n)\)</span>.</p>
 </div>
-<p>The second condition says that on average <span
-class="math inline">\(f\)</span> is hard to invert. Also any pre-image
-of <span class="math inline">\(f(u)\)</span> is bad not just the one
-that was used to create <span class="math inline">\(f(u)\)</span>. The
-axillary input <span class="math inline">\(1^n\)</span> is given to tell
-the <span class="math inline">\(A^{&#39;}\)</span> the size of the
-input, in the case <span class="math inline">\(f\)</span> shrunk the
-input.</p>
-<p><strong>THERE are two more examples that I would like to understand
-more before moving on</strong></p>
+<p>The second condition says that on average <span class="math inline">\(f\)</span> is hard to invert. Also any pre-image of <span class="math inline">\(f(u)\)</span> is bad not just the one that was used to create <span class="math inline">\(f(u)\)</span>. The axillary input <span class="math inline">\(1^n\)</span> is given to tell the <span class="math inline">\(A^{&#39;}\)</span> the size of the input, in the case <span class="math inline">\(f\)</span> shrunk the input.</p>
+<p><strong>THERE are two more examples that I would like to understand more before moving on</strong></p>
 <h2 id="weak-one-way-function">Weak One way Function</h2>
 <div class="lemma">
-<p>A function <span class="math inline">\(f : \{0, 1\}^* \rightarrow
-\{0, 1\}^*\)</span> is called <strong>weakly one-way</strong> if the
-following two conditions hold:</p>
+<p>A function <span class="math inline">\(f : \{0, 1\}^* \rightarrow \{0, 1\}^*\)</span> is called <strong>weakly one-way</strong> if the following two conditions hold:</p>
 <ol type="1">
-<li><strong>Easy to compute:</strong> There exists a (deterministic)
-polynomial-time algorithm <span class="math inline">\(A\)</span> such
-that on input <span class="math inline">\(x\)</span> algorithm <span
-class="math inline">\(A\)</span> outputs <span
-class="math inline">\(f(x)\)</span> (i.e., <span
-class="math inline">\(A(x) = f (x)\)</span>).</li>
-<li><strong>Kinda Hard to invert:</strong> <u>There exists positive
-polynomial</u> <span class="math inline">\(p(·)\)</span> such that for
-every probabilistic polynomial-time algorithm <span
-class="math inline">\(A^′\)</span>, and all sufficiently large <span
-class="math inline">\(n\)</span>’s,</li>
+<li><strong>Easy to compute:</strong> There exists a (deterministic) polynomial-time algorithm <span class="math inline">\(A\)</span> such that on input <span class="math inline">\(x\)</span> algorithm <span class="math inline">\(A\)</span> outputs <span class="math inline">\(f(x)\)</span> (i.e., <span class="math inline">\(A(x) = f (x)\)</span>).</li>
+<li><strong>Kinda Hard to invert:</strong> <u>There exists positive polynomial</u> <span class="math inline">\(p(·)\)</span> such that for every probabilistic polynomial-time algorithm <span class="math inline">\(A^′\)</span>, and all sufficiently large <span class="math inline">\(n\)</span>’s,</li>
 </ol>
-<p><span class="math display">\[P_{u\sim U^n, r \sim
-U^m}\Big[A&#39;(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq
-\frac{1}{p(n)}\]</span></p>
-<p>where <span class="math inline">\(r\)</span> represents the internal
-coin flips and <span class="math inline">\(m=poly(n)\)</span>.</p>
+<p><span class="math display">\[P_{u\sim U^n, r \sim U^m}\Big[A&#39;(f(u), r, 1^n) \in f^{-}(f(u))\Big] \leq \frac{1}{p(n)}\]</span></p>
+<p>where <span class="math inline">\(r\)</span> represents the internal coin flips and <span class="math inline">\(m=poly(n)\)</span>.</p>
 </div>
-<p><strong>NOTE</strong>: There exists a single polynomial <span
-class="math inline">\(p(·)\)</span> such that <span
-class="math inline">\(\frac{1}{p(n)}\)</span> lower-bounds the failure
-probability of all probabilistic polynomial-time algorithms trying to
-invert <span class="math inline">\(f\)</span> on <span
-class="math inline">\(f(U^n)\)</span>.</p>
-<h3 id="functions-defined-only-some-lengths">Functions defined only some
-lengths</h3>
+<p><strong>NOTE</strong>: There exists a single polynomial <span class="math inline">\(p(·)\)</span> such that <span class="math inline">\(\frac{1}{p(n)}\)</span> lower-bounds the failure probability of all probabilistic polynomial-time algorithms trying to invert <span class="math inline">\(f\)</span> on <span class="math inline">\(f(U^n)\)</span>.</p>
+<h3 id="functions-defined-only-some-lengths">Functions defined only some lengths</h3>
 <h3 id="length-preserving-functions">Length preserving functions</h3>
-<h2 id="candidates-for-one-way-functions">Candidates for One way
-functions</h2>
+<h2 id="candidates-for-one-way-functions">Candidates for One way functions</h2>
 <h3 id="section"></h3>
 <h2 id="theorem">THEOREM</h2>
 <div class="theorem">
-<p>Existence of weak one way functions implies existence of strong one
-way functions</p>
+<p>Existence of weak one way functions implies existence of strong one way functions</p>
 </div>
 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#blah">
 Proof
@@ -159,9 +80,7 @@ Proof
 <p><br></p>
 <h1 id="references">References</h1>
 <ol type="1">
-<li><a
-href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368">Foundations
-of Cryptography V1</a></li>
+<li><a href="https://www.amazon.co.uk/Foundations-Cryptography-v1-Basic-Tools/dp/0521035368">Foundations of Cryptography V1</a></li>
 </ol>
 </div>
 <div id="footer">
