@@ -34,6 +34,24 @@
 </head>
 <body>
 <div class="container">
+<p><strong>EDIT: Want to change this document to examples of proving
+protocols are secure</strong></p>
+<h1 id="semi-honest-adversaries">Semi honest adversaries</h1>
+<p>Given input and and output, can generate the adversaries view of the
+protocol execution. <strong>IMPORTANT: </strong> Since all parties
+follow the protocol, the inputs are well defined. Go back to the ideal
+world, where <span class="math inline">\(f_{Ideal}\)</span> receives
+inputs and outputs the answer. The adversary can see only the
+input/output of the corrupted parties and the final output and
+<em>nothing else</em>. He has to attack this world. This adversary is
+the simulator. We have to show that the simulators view is
+indistinguishable from that of the real world adversary.</p>
+<p><img src="pngs/semi_honest.png" width="90%"></img></p>
+<p>The joint distribution of left and the joint distribution of the
+right has to look the same. <strong>WHY JOINT ?</strong></p>
+<p>In semi-honest : correctness, independence of inputs and fairness are
+non issues because everyone has to follow the protocols.</p>
+<p><strong>OLD</strong></p>
 <h1 id="security-models-for-multi-party-computation-mpc">Security Models
 for Multi Party Computation (MPC)</h1>
 <h2 id="secret-sharing">Secret Sharing</h2>
@@ -306,6 +324,10 @@ server</h3>
 <ol type="1">
 <li><a href="http://securecomputation.org/docs/pragmaticmpc.pdf">A
 Pragmatic Introduction to Secure Multi-Party Computation</a></li>
+</ol>
+<ol start="2" type="1">
+<li><a href="https://eprint.iacr.org/2004/175.pdf">A Proof of Security
+of Yao’s Protocol for Two-Party Computation</a></li>
 </ol>
 </div>
 <div id="footer">

@@ -16,6 +16,39 @@ title: Security Defintions
 
 <div class="container"> 
 
+**EDIT: Want to change this document to examples of proving protocols are secure**
+
+# Semi honest adversaries 
+
+Given input and and output, can generate the adversaries view of the protocol execution. **IMPORTANT: ** Since all parties follow the protocol, the inputs are well defined. Go back to the ideal world, where $f_{Ideal}$ receives inputs and outputs the answer. The adversary can see only the input/output of the corrupted parties and the final output and *nothing else*. He has to attack this world. This adversary is the simulator. We have to show that the simulators view is indistinguishable from that of the real world adversary.
+
+<img src="pngs/semi_honest.png" width="90%"></img>
+
+The joint distribution of left and the joint distribution of the right has to look the same.
+**WHY JOINT : Because of randomness - Lindell has a slide**
+
+However, if f is deterministic then we can compare just the bad guys output and the simulators output; can ignore all other party outputs. -- we can look at them independently.
+
+In semi-honest : correctness, independence of inputs and fairness are non issues because everyone has to follow the protocols.
+
+
+## Examples of Semi Honest Security Simulators
+
+### 1 out 2 oblivious transfer
+
+### GMW protocol
+
+
+
+# Malicious Adversaries
+
+Now this simulator doesn't have access to the A's inputs. It needs to be able to invent/extract/simulate them.
+
+Furthermore now,  correctness, independence of inputs and fairness are issues.
+
+
+**OLD** 
+
 # Security Models for Multi Party Computation (MPC)
 
 ## Secret Sharing
@@ -41,11 +74,11 @@ algorithms $(Shr, Rec)$ that satisfies the following two properties:
 </div>
 
 
-  In other words,$Shr(a)|_{k}$ and $Shr(b)|_{k}$ are perfectly
-  indistinguishable. Colloquially we can say that by looking at any
-  $v$ as defined above, it is impossible to gain any information about
-  the secret : as all values in the domain $D$ are equally likely to
-  be the secret. The best anyone can do is guess uniformly at random.
+In other words,$Shr(a)|_{k}$ and $Shr(b)|_{k}$ are perfectly
+indistinguishable. Colloquially we can say that by looking at any
+$v$ as defined above, it is impossible to gain any information about
+the secret : as all values in the domain $D$ are equally likely to
+be the secret. The best anyone can do is guess uniformly at random.
 
 ### Examples 
 
@@ -258,5 +291,8 @@ TODO
 
 [1]: http://securecomputation.org/docs/pragmaticmpc.pdf "A Pragmatic Introduction to Secure Multi-Party Computation"
 1. [A Pragmatic Introduction to Secure Multi-Party Computation](http://securecomputation.org/docs/pragmaticmpc.pdf)
+
+[2]: https://eprint.iacr.org/2004/175.pdf "A Proof of Security of Yao’s Protocol for Two-Party Computation"
+2. [A Proof of Security of Yao’s Protocol for Two-Party Computation](https://eprint.iacr.org/2004/175.pdf)
 
 </div>
