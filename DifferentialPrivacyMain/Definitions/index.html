@@ -5,167 +5,86 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Differential Privacy why?</title>
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <link rel="stylesheet" href="../blog.css" />
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../../code/es5/tex-chtml.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <link rel="stylesheet" href="/code/bootstrap.min.css">
   <script src="/code/jquery.min.js"></script>
   <script src="/code/bootstrap.min.js"></script>
-
-
+  
+  
   <ul class="bar">
     <li class="barli"><a class="active" href="/">Home</a></li>
     <li class="barli"><a href="/differentialprivacy/index.html">My notes</a></li>  
     <li class="barli"><a href="./..">Back</a></li>    
     <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
   </ul>
-
-  <script src="../../code/es5/tex-chtml.js"
-  type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
-<header id="title-block-header">
+<header>
 <h1 class="title">Differential Privacy why?</h1>
 </header>
+
 <div class="container">
-<p><strong>TODO: Re-write this whole thing again based on Vadhans
-notes</strong></p>
-<h1 id="what-does-it-mean-to-be-differentially-private">What does it
-mean to be differentially private</h1>
+<p><strong>TODO: Re-write this whole thing again based on Vadhans notes</strong></p>
+<h1 id="what-does-it-mean-to-be-differentially-private">What does it mean to be differentially private</h1>
 <p><strong>Draw picture for model</strong></p>
 <h2 id="counting-queries">Counting queries</h2>
-<p>The definition of differential privacy requires that no individual’s
-data has much effect on what an adversary sees. If we have two datasets
-<span class="math inline">\(x \sim x&#39;\)</span> of size <span
-class="math inline">\(n\)</span> records that differ by just 1 record,
-then the outputs of <span class="math inline">\(q(x)\)</span> and <span
-class="math inline">\(q(x&#39;)\)</span>, released via mechanism <span
-class="math inline">\(M\)</span> should have a <em>similar</em>
-distribution.</p>
+<p>The definition of differential privacy requires that no individual’s data has much effect on what an adversary sees. If we have two datasets <span class="math inline">\(x \sim x&#39;\)</span> of size <span class="math inline">\(n\)</span> records that differ by just 1 record, then the outputs of <span class="math inline">\(q(x)\)</span> and <span class="math inline">\(q(x&#39;)\)</span>, released via mechanism <span class="math inline">\(M\)</span> should have a <em>similar</em> distribution.</p>
 <div class="lemma">
-<p>For <span class="math inline">\(\epsilon \geq 0\)</span>, we say
-mechanism <span class="math inline">\(M\)</span> is <span
-class="math inline">\(\epsilon\)</span> differentially private if
-<strong>for all</strong> neighbouring datasets <span
-class="math inline">\(x \sim x&#39;\)</span>, and for every query <span
-class="math inline">\(q \in Q\)</span> and <span
-class="math inline">\(\forall T \subseteq Y\)</span> we have</p>
-<p><span class="math display">\[\begin{align*}
-\mathbb{P}\Big[M(x, q) \in T\Big] \leq (1 +
-\epsilon)\mathbb{P}\Big[M(x&#39;, q) \in T\Big]
-\end{align*}\]</span></p>
+<p>For <span class="math inline">\(\epsilon \geq 0\)</span>, we say mechanism <span class="math inline">\(M\)</span> is <span class="math inline">\(\epsilon\)</span> differentially private if <strong>for all</strong> neighbouring datasets <span class="math inline">\(x \sim x&#39;\)</span>, and for every query <span class="math inline">\(q \in Q\)</span> and <span class="math inline">\(\forall T \subseteq Y\)</span> we have</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}\Big[M(x, q) \in T\Big] \leq (1 + \epsilon)\mathbb{P}\Big[M(x&#39;, q) \in T\Big]
+\end{align*}\]</span>
 </div>
-<p><br> For a small value <span class="math inline">\(\epsilon\)</span>,
-it is saying that <span class="math inline">\(|\mathbb{P}\Big[M(x, q)
-\in T\Big] - \mathbb{P}\Big[M(x\, q) \in T\Big]|\)</span> is close to 0.
-By Taylors Theorem <span class="math inline">\(1 + \epsilon \leq
-e^{\epsilon}\)</span> <span class="math inline">\(\forall \epsilon \geq
-0\)</span>, so the defintion that is used in practice is as exponents
-are easier to manipulate.</p>
+<p><br> For a small value <span class="math inline">\(\epsilon\)</span>, it is saying that <span class="math inline">\(|\mathbb{P}\Big[M(x, q) \in T\Big] - \mathbb{P}\Big[M(x\, q) \in T\Big]|\)</span> is close to 0. By Taylors Theorem <span class="math inline">\(1 + \epsilon \leq e^{\epsilon}\)</span> <span class="math inline">\(\forall \epsilon \geq 0\)</span>, so the defintion that is used in practice is as exponents are easier to manipulate.</p>
 <div class="lemma">
-<p>For <span class="math inline">\(\epsilon \geq 0\)</span>, we say
-mechanism <span class="math inline">\(M\)</span> is <span
-class="math inline">\(\epsilon\)</span> differentially private if
-<strong>for all</strong> neighbouring datasets <span
-class="math inline">\(x \sim x&#39;\)</span>, and for every query <span
-class="math inline">\(q \in Q\)</span> and <span
-class="math inline">\(\forall T \subseteq Y\)</span> we have</p>
-<p><span class="math display">\[\begin{align*}
-\mathbb{P}\Big[M(x, q) \in T\Big] &amp;\leq
-e^{\epsilon}\mathbb{P}\Big[M(x&#39;, q) \in T\Big]
-\end{align*}\]</span></p>
+<p>For <span class="math inline">\(\epsilon \geq 0\)</span>, we say mechanism <span class="math inline">\(M\)</span> is <span class="math inline">\(\epsilon\)</span> differentially private if <strong>for all</strong> neighbouring datasets <span class="math inline">\(x \sim x&#39;\)</span>, and for every query <span class="math inline">\(q \in Q\)</span> and <span class="math inline">\(\forall T \subseteq Y\)</span> we have</p>
+<span class="math display">\[\begin{align*}
+\mathbb{P}\Big[M(x, q) \in T\Big] &amp;\leq e^{\epsilon}\mathbb{P}\Big[M(x&#39;, q) \in T\Big]
+\end{align*}\]</span>
 </div>
 <p><br></p>
 <div class="important">
-<p><strong>From Page 6 if [<a
-href="https://arxiv.org/pdf/1908.11358.pdf"
-title="On the power of multiple anonymous messages">1</a>]</strong></p>
-<p>Here we typically take <span class="math inline">\(\epsilon\)</span>
-as small, but non-negligible (not cryptographically small); for example,
-a small constant, such as <span class="math inline">\(\epsilon=
-0.1\)</span>. Smaller = 0.1 provides better privacy, but as we will see,
-the definition is no longer useful when <span
-class="math inline">\(\epsilon &lt; 1/n\)</span>.</p>
+<p><strong>From Page 6 if [<a href="https://arxiv.org/pdf/1908.11358.pdf" title="On the power of multiple anonymous messages">1</a>]</strong></p>
+<p>Here we typically take <span class="math inline">\(\epsilon\)</span> as small, but non-negligible (not cryptographically small); for example, a small constant, such as <span class="math inline">\(\epsilon= 0.1\)</span>. Smaller = 0.1 provides better privacy, but as we will see, the definition is no longer useful when <span class="math inline">\(\epsilon &lt; 1/n\)</span>.</p>
 </div>
-<h2 id="why-not-use-statistical-distances">Why not use statistical
-distances ?</h2>
-<p>The first defintion looks a lot like some sort sort of statistical
-distance. One could ask why not use a defintion based on stastical
-distance such as total variation distance and the answer is two
-fold:</p>
-<p><strong>Total Variation Distance between two
-distributions</strong></p>
-<p><span class="math display">\[\begin{align*}
-SD_q(M(x), M(x&#39;)) := \text{max}_{T \subseteq Y} \Bigg|
-\mathbb{P}\Big[M(x, q) \in T\Big] - \mathbb{P}\Big[M(x&#39;, q) \in
-T\Big]\Bigg| \leq \delta
-\end{align*}\]</span></p>
-<p>Firstly, the current defintion of differential privacy implies
-statistical privacy, but the converse is not true. Assume we have <span
-class="math inline">\(\epsilon\)</span>-DP. Setting <span
-class="math inline">\(\delta = 1 - e^{-\epsilon} \leq \epsilon\)</span>
-we get bounded statistical distance:</p>
-<p><span class="math display">\[\begin{align*}
-\text{max}_{T \subseteq Y} \Bigg| \mathbb{P}\Big[M(x, q) \in T\Big] -
-\mathbb{P}\Big[M(x&#39;, q) \in T\Big]\Bigg| &amp;\leq 1 - e^{-\epsilon}
-\\
+<h2 id="why-not-use-statistical-distances">Why not use statistical distances ?</h2>
+<p>The first defintion looks a lot like some sort sort of statistical distance. One could ask why not use a defintion based on stastical distance such as total variation distance and the answer is two fold:</p>
+<p><strong>Total Variation Distance between two distributions</strong></p>
+<span class="math display">\[\begin{align*}
+SD_q(M(x), M(x&#39;)) := \text{max}_{T \subseteq Y} \Bigg| \mathbb{P}\Big[M(x, q) \in T\Big] - \mathbb{P}\Big[M(x&#39;, q) \in T\Big]\Bigg| \leq \delta
+\end{align*}\]</span>
+<p>Firstly, the current defintion of differential privacy implies statistical privacy, but the converse is not true. Assume we have <span class="math inline">\(\epsilon\)</span>-DP. Setting <span class="math inline">\(\delta = 1 - e^{-\epsilon} \leq \epsilon\)</span> we get bounded statistical distance:</p>
+<span class="math display">\[\begin{align*}
+\text{max}_{T \subseteq Y} \Bigg| \mathbb{P}\Big[M(x, q) \in T\Big] - \mathbb{P}\Big[M(x&#39;, q) \in T\Big]\Bigg| &amp;\leq 1 - e^{-\epsilon} \\
 &amp;\leq \epsilon + 1\tag{1}\label{1} \\
 &amp;\leq e^{\epsilon} \tag{2}\label{2} \\
-\end{align*}\]</span></p>
-<p><span class="math inline">\(\ref{1}\)</span> and <span
-class="math inline">\(\ref{2}\)</span> come from Taylors theorem, see <a
-href="../../GraduateSchoolCourses/TCS_Toolkit-Ryan_ODonell/AsymptoticsAndGaussians/">course
-notes from Ryan O Donnels class for more details</a>. Thus this
-defintion is a stronger statement of closeness.</p>
-<p>Secondly, depending on the setting of <span
-class="math inline">\(\delta\)</span>, the defintion is either too
-private or not private at all. See below:</p>
+\end{align*}\]</span>
+<p><span class="math inline">\(\ref{1}\)</span> and <span class="math inline">\(\ref{2}\)</span> come from Taylors theorem, see <a href="../../GraduateSchoolCourses/TCS_Toolkit-Ryan_ODonell/AsymptoticsAndGaussians/">course notes from Ryan O Donnels class for more details</a>. Thus this defintion is a stronger statement of closeness.</p>
+<p>Secondly, depending on the setting of <span class="math inline">\(\delta\)</span>, the defintion is either too private or not private at all. See below:</p>
 <ul>
-<li><p><strong>Too private <span class="math inline">\(\delta \leq
-\frac{1}{2n}\)</span></strong>: There is some hybrid argument I do not
-fully understand, but one can show that output of the mechanism is
-independent of dataset – making the mechanism useless for finding
-properties about data. Read more about <a
-href="https://eprint.iacr.org/2021/088.pdf">hybrid arguments
-here</a></p></li>
-<li><p><strong>Not private at all <span class="math inline">\(\delta
-\geq \frac{1}{2n}\)</span>: </strong> Assume two neighbouring datasets
-<span class="math inline">\(x \sim x&#39;\)</span> and <span
-class="math inline">\(y \in \mathcal{X}\)</span> is the record missing
-in <span class="math inline">\(x&#39;\)</span>. Consider the mechanism
-that picks a random row from the dataset and outputs it with probability
-<span class="math inline">\(\frac{1}{2}\)</span>. Then <span
-class="math inline">\(\mathbb{P}\Big[M(x, q) = y\Big] =
-\frac{1}{2n}\)</span> and <span
-class="math inline">\(\mathbb{P}\Big[M(x&#39;, q) = y\Big] = 0\)</span>.
-Therefore, <span class="math inline">\(SD(M(x, q), M(x&#39;, q)) \geq
-\Bigg| \mathbb{P}\Big[M(x, q) =y\Big] - \mathbb{P}\Big[M(x&#39;, q) = y
-\Big]\Bigg| = \frac{1}{2n}\)</span>, <strong>which satisfies our
-requirement of statistical privacy</strong>. However, we just revealed a
-dataset in public.</p></li>
+<li><p><strong>Too private <span class="math inline">\(\delta \leq \frac{1}{2n}\)</span></strong>: There is some hybrid argument I do not fully understand, but one can show that output of the mechanism is independent of dataset – making the mechanism useless for finding properties about data. Read more about <a href="https://eprint.iacr.org/2021/088.pdf">hybrid arguments here</a></p></li>
+<li><p><strong>Not private at all <span class="math inline">\(\delta \geq \frac{1}{2n}\)</span>: </strong> Assume two neighbouring datasets <span class="math inline">\(x \sim x&#39;\)</span> and <span class="math inline">\(y \in \mathcal{X}\)</span> is the record missing in <span class="math inline">\(x&#39;\)</span>. Consider the mechanism that picks a random row from the dataset and outputs it with probability <span class="math inline">\(\frac{1}{2}\)</span>. Then <span class="math inline">\(\mathbb{P}\Big[M(x, q) = y\Big] = \frac{1}{2n}\)</span> and <span class="math inline">\(\mathbb{P}\Big[M(x&#39;, q) = y\Big] = 0\)</span>. Therefore, <span class="math inline">\(SD(M(x, q), M(x&#39;, q)) \geq \Bigg| \mathbb{P}\Big[M(x, q) =y\Big] - \mathbb{P}\Big[M(x&#39;, q) = y \Big]\Bigg| = \frac{1}{2n}\)</span>, <strong>which satisfies our requirement of statistical privacy</strong>. However, we just revealed a dataset in public.</p></li>
 </ul>
 <h2 id="relaxations">Relaxations</h2>
-<h2 id="how-do-we-get-pure-differential-privacy">How do we get pure
-differential privacy</h2>
+<h2 id="how-do-we-get-pure-differential-privacy">How do we get pure differential privacy</h2>
 <h3 id="laplace-mechanism">Laplace mechanism</h3>
 <h3 id="randomised-response">Randomised Response</h3>
-<h2 id="robustness-to-post-processing">Robustness to Post
-Processing</h2>
+<h2 id="robustness-to-post-processing">Robustness to Post Processing</h2>
 <h2 id="group-privacy">Group privacy</h2>
 <h2 id="composition-lemmas">Composition Lemmas</h2>
 <h3 id="basic-composition">Basic composition</h3>
 <h3 id="advanced-composition">Advanced Composition</h3>
-<h3 id="arbitrary-many-counting-queries">Arbitrary many counting
-queries</h3>
+<h3 id="arbitrary-many-counting-queries">Arbitrary many counting queries</h3>
 <!-- With probablity 1 - $\delta$. 
 
 $$ \frac{ \P{M(x) \in T}{x}{X^n}}{ \P{M(x') \in T}{x'}{X^n}} \leq e^{\epsilon}$$
@@ -421,12 +340,10 @@ data-target="#expMechIsPrivate">Proof</button>
  -->
 <h2 id="important-papers">Important Papers</h2>
 <ol type="1">
-<li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of
-multiple anonymous messages</a></li>
+<li><a href="https://arxiv.org/pdf/1908.11358.pdf">On the power of multiple anonymous messages</a></li>
 </ol>
 <ol start="2" type="1">
-<li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn
-privately</a></li>
+<li><a href="https://arxiv.org/pdf/0803.0924.pdf">What can we learn privately</a></li>
 </ol>
 </div>
 <div id="footer">
