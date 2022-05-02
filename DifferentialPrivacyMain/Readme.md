@@ -18,6 +18,10 @@ title: Notes on Differential Privacy
 
 <div class="container">
 
+## Seminal 
+
+* [Composition Theorem](https://arxiv.org/pdf/1311.0776.pdf)
+
 ## Background
 
 * [Differential Privacy Cheat sheet](Definitions/): I define central
