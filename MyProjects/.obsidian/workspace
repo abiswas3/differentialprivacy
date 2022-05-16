@@ -7,12 +7,8 @@
         "id": "416674df11a387e2",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "House Buying/How to Buy a house.md",
-            "mode": "source",
-            "source": true
-          }
+          "type": "graph",
+          "state": {}
         }
       }
     ],
@@ -53,7 +49,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 329
+    "width": 262
   },
   "right": {
     "id": "a74b996ea9b22e89",
@@ -69,7 +65,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "House Buying/How to Buy a house.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,11 +84,15 @@
   },
   "active": "416674df11a387e2",
   "lastOpenFiles": [
+    "Rust-Language/Rust Notes.md",
+    "Open Problems.md",
+    "JOBS/Interesting Companies.md",
+    "Differential Privacy/One bound to rule them all.md",
+    "TEMP.md",
     "House Buying/How to Buy a house.md",
+    "ActiveDP.md",
     "Discret Log.md",
     "Pedersen_VSS.md",
-    "Useful Stack overflow.md",
-    "Random Self Reducibility.md",
-    "Seminal Crypto.md"
+    "Useful Stack overflow.md"
   ]
 }

@@ -31,6 +31,7 @@ I am pleased to confirm your agreement in principle has been accepted. We are no
 - [ ]  **FLATS –** Number of floors in the block and the floor the flat is located on.
 - [ ] **Please confirm contact number for Vicky.**
 - [ ] **Please confirm if anyone else over the age of 17 will be living in the property with you. If so, please confirm full name, date of birth and relationship to you.**
+- [ ] 
 
 
 ## The solicitor 
