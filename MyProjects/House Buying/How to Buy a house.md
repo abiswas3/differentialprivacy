@@ -39,3 +39,8 @@ I spoke with the legal team and they need to draw up a
 
 1) Will for me. 
 2)  fixed-fee conveyancing quote
+
+
+
+## THINGS TO DO 
+- [ ] Get all council tax 
