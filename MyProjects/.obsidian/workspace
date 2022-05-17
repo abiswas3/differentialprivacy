@@ -4,11 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "416674df11a387e2",
+        "id": "890adba009c27cde",
         "type": "leaf",
         "state": {
-          "type": "graph",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "CryptoClassics/Pedersen_VSS.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -65,6 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "CryptoClassics/Pedersen_VSS.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -82,17 +87,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "416674df11a387e2",
+  "active": "890adba009c27cde",
   "lastOpenFiles": [
-    "Rust-Language/Rust Notes.md",
-    "Open Problems.md",
-    "JOBS/Interesting Companies.md",
-    "Differential Privacy/One bound to rule them all.md",
-    "TEMP.md",
-    "House Buying/How to Buy a house.md",
-    "ActiveDP.md",
+    "CryptoClassics/Pedersen_VSS.md",
+    "Feldman VSS.md",
+    "Dwork_distributed_noise.md",
     "Discret Log.md",
-    "Pedersen_VSS.md",
-    "Useful Stack overflow.md"
+    "Definitions_summary.md",
+    "Completeness Theorems for Non-Cryptographic Fault-Tolerant Distributed Computation.md",
+    "CheuShuffleRR_summary.md",
+    "Useful Stack overflow.md",
+    "VSS.md",
+    "Seminal Crypto.md"
   ]
 }
