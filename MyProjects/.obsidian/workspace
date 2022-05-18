@@ -11,7 +11,7 @@
           "state": {
             "file": "Open Problems.md",
             "mode": "source",
-            "source": false
+            "source": true
           }
         }
       }
@@ -41,9 +41,9 @@
               "type": "search",
               "state": {
                 "query": "",
-                "matchingCase": false,
+                "matchingCase": true,
                 "explainSearch": false,
-                "collapseAll": false,
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
               }
@@ -90,14 +90,14 @@
   "active": "890adba009c27cde",
   "lastOpenFiles": [
     "Open Problems.md",
+    "Intro for my paper.md",
+    "CryptoClassics/Optimus Primes.md",
     "CryptoClassics/How to Simulate it.md",
     "Rust-Language/Rust Notes.md",
     "JOBS/Interesting Companies.md",
     "CryptoClassics/VSS.md",
     "CryptoClassics/What does it mean to be secure.md",
     "CryptoClassics/Completeness Theorems for Non-Cryptographic Fault-Tolerant Distributed Computation.md",
-    "CryptoClassics/Diffie Hellman.md",
-    "CryptoClassics/Feldman's VSS.md",
-    "CryptoClassics/Forward Secrecy.md"
+    "CryptoClassics/Diffie Hellman.md"
   ]
 }
