@@ -1,1 +1,0 @@
-- [ ] [DropoutLabs](https://capeprivacy.com/about): Advised by Nigel Smart and chief scientist is  

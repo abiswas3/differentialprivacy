@@ -1,0 +1,3 @@
+[submodule "ObsidianToHtmlConverter"]
+	path = ObsidianToHtmlConverter
+	url = https://github.com/klalle/ObsidianToHtmlConverter.git
