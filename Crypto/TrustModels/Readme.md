@@ -4,7 +4,6 @@ title: Trust Models
 ...
 
 # Who should we trust and how: Counting in the real world
-[[Cryptography]] [[Differential Privacy]]
 
 Counting is probably the most fundamental and widely used mathematical primitive today. It allows us to answer questions such as "How many votes did the republican party receive?", "Do cycling fans prefer Primoz Roglic over Tadej Pogacar?", "How many users used the new Beta feature launched by Apple." or "How many people in a given neighbourhood have committed a felony". In theory, these questions can be answered by asking the $i$'th user to send in their response $x_i$ to an aggregator. After receiving all $n$ inputs, the aggregator outputs $\sum_{i=1}^n x_i$. Researchers have been dealing with this question: Who does the aggregating and how? One might ask, why does it matter? In this post, I hope to try and articulate why and when such a question matters. I picked the questions above intentionally, as they each describe a practical trust model between the client and the aggregator. 
 
