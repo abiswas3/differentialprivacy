@@ -44,6 +44,6 @@ The outcome of political elections could strongly affect an organisation's futur
 | LDP/Shuffle Privacy (semi honest) | Y                 | $O(1)$         | N                                        | N                 |
 | STAR                              | Y                 | $O(q)$         | Y (A is less powerful than ours)         | N                 |
 | PRIO                              | N                 | $O(q)$         | Y                                        | N                 |
-| Our Work                          | N                 | $O(q)$ + 1 com | N 1 bit leakage, but detectable (covert) | Y                 |
+| Our Work                          | N                 | $O(q)$  | N 1 bit leakage, but detectable (covert) | Y                 |
 
 <div>
