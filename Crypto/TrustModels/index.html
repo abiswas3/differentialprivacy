@@ -143,11 +143,11 @@ correctness.</li>
 <h2 id="guide-to-model-selection">Guide to Model selection</h2>
 <table>
 <colgroup>
-<col style="width: 34%" />
-<col style="width: 18%" />
-<col style="width: 15%" />
-<col style="width: 18%" />
-<col style="width: 11%" />
+<col style="width: 26%" />
+<col style="width: 14%" />
+<col style="width: 12%" />
+<col style="width: 32%" />
+<col style="width: 14%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -155,7 +155,7 @@ correctness.</li>
 <th>Single Server Agg</th>
 <th>Client burden</th>
 <th>Malicious privacy</th>
-<th>Verifiable</th>
+<th>Tamperpoof output</th>
 </tr>
 </thead>
 <tbody>
@@ -170,7 +170,7 @@ correctness.</li>
 <td>STAR</td>
 <td>Y</td>
 <td><span class="math inline">\(O(q)\)</span></td>
-<td>N</td>
+<td>Y (A is less powerful than ours)</td>
 <td>N</td>
 </tr>
 <tr class="odd">
@@ -183,8 +183,8 @@ correctness.</li>
 <tr class="even">
 <td>Our Work</td>
 <td>N</td>
-<td><span class="math inline">\(O(q)\)</span> + 2 exponentiations</td>
-<td>N</td>
+<td><span class="math inline">\(O(q)\)</span> + 1 com</td>
+<td>N 1 bit leakage, but detectable (covert)</td>
 <td>Y</td>
 </tr>
 </tbody>

@@ -39,14 +39,11 @@ The outcome of political elections could strongly affect an organisation's futur
 
 
 ## Guide to Model selection 
-
-| Work                              | Single Server Agg | Client burden  | Malicious privacy | Verifiable |
-|-----------------------------------|-------------------|----------------|-------------------|------------|
-| LDP/Shuffle Privacy (semi honest) | Y                 | $O(1)$         | N                 | N          |
-| STAR                              | Y                 | $O(q)$         | N                 | N          |
-| PRIO                              | N                 | $O(q)$         | Y                 | N          |
-| Our Work                          | N                 | $O(q)$ + 2 exponentiations | N                 | Y          |
-
-
+| Work                              | Single Server Agg | Client burden  | Malicious privacy                        | Tamperpoof output |
+|-----------------------------------|-------------------|----------------|------------------------------------------|-------------------|
+| LDP/Shuffle Privacy (semi honest) | Y                 | $O(1)$         | N                                        | N                 |
+| STAR                              | Y                 | $O(q)$         | Y (A is less powerful than ours)         | N                 |
+| PRIO                              | N                 | $O(q)$         | Y                                        | N                 |
+| Our Work                          | N                 | $O(q)$ + 1 com | N 1 bit leakage, but detectable (covert) | Y                 |
 
 <div>
