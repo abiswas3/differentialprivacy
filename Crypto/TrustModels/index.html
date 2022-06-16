@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Trust Models</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../crypto.css" />
+  <link rel="stylesheet" href="/code/bootstrap.min.css">
+  <script src="/code/jquery.min.js"></script>
+  <script src="/code/bootstrap.min.js"></script>
+
+
+  <ul class="bar">
+    <li class="barli"><a class="active" href="/">Home</a></li>
+    <li class="barli"><a href="/differentialprivacy/index.html">My Notes</a></li>  
+    <li class="barli"><a href="./..">Back</a></li>  
+    <!-- <li class="barli"><a href="https://abiswas3.github.io/differentialprivacy.github.io">Notes on Differential Privacy</a></li> -->
+  </ul>
+
+  <script src="../../code/es5/tex-chtml.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Trust Models</h1>
+</header>
+<div class="container">
+<h1 id="who-should-we-trust-and-how-counting-in-the-real-world">Who
+should we trust and how: Counting in the real world</h1>
+<p>Counting is probably the most fundamental and widely used
+mathematical primitive today. It allows us to answer questions such as
+“How many votes did the republican party receive?”, “Do cycling fans
+prefer Primoz Roglic over Tadej Pogacar?”, “How many users used the new
+Beta feature launched by Apple.” or “How many people in a given
+neighbourhood have committed a felony”. In theory, these questions can
+be answered by asking the <span class="math inline">\(i\)</span>’th user
+to send in their response <span class="math inline">\(x_i\)</span> to an
+aggregator. After receiving all <span class="math inline">\(n\)</span>
+inputs, the aggregator outputs <span class="math inline">\(\sum_{i=1}^n
+x_i\)</span>. Researchers have been dealing with this question: Who does
+the aggregating and how? One might ask, why does it matter? In this
+post, I hope to try and articulate why and when such a question matters.
+I picked the questions above intentionally, as they each describe a
+practical trust model between the client and the aggregator.</p>
+<h2 id="roglic-or-pogacar">Roglic or Pogacar ?</h2>
+<p><strong>Examples:</strong> “Do cycling fans prefer Primoz Roglic over
+Tadej Pogacar?”</p>
+<p>Global Cycling Network(GCN) wants to run a survey to decide on the
+more popular bike rider. Roglic and Pogacar are arguably the best grand
+tour cyclists globally and have partisan fan bases. A quick search on
+Twitter should convince the reader of this statement. These fans do not
+want their allegiances kept secret. In fact, they often go out of their
+way to get involved in <a
+href="https://twitter.com/janibrajkovic/status/1379449290104389634?ref_src=twsrc%5Etfw">Twitter
+arguments</a> over which rider is better. This observation is not
+restricted to cycling. The internet is riddled with fan debates on
+Messi-Ronaldo, Federer-Nadal-Djokovic, and Verstappen-Hamilton. Using an
+external service, such as Google or Survey Monkey, is an acceptable
+solution to aggregate fan votes. The fans don’t want their voice to
+remain secret, and Google has no incentive to bias the output towards a
+specific candidate (Roglic winning a fan poll is unlikely to affect
+Google’s stock prices, so they are unlikely to risk a scandal for such a
+cause). The figure below illustrates how we can find out who the more
+popular rider is.</p>
+<p><img src="pngs/ideal.png" width="90%"></img></p>
+<h2 id="new-feature-usage-estimates">New feature usage estimates</h2>
+<p><strong>Examples:</strong> How many users used the new Beta feature
+launched by Apple.” or “How many people in a given neighbourhood have
+committed a felony”</p>
+<p>Tech companies/Governments want to understand how users are using
+their services. For example, Google wanted to understand the flash
+adoption rate for chrome, Apple wanted to know which emoji’s were
+popular, and the US government wanted to understand census information
+about a population. A key defining factor in the examples used in this
+section is that it is not critical we get an exact answer. A close
+enough estimate is fine. Most importantly, these organisations want to
+ensure that no single user information is compromised because they chose
+to participate in this process. <a
+href="https://www.wikiwand.com/en/Local_differential_privacy#:~:text=Local%20differential%20privacy%20(LDP)%20is,about%20the%20user&#39;s%20personal%20data.">Local
+differential privacy</a> is an acceptable solution to this problem. No
+party - the aggregator nor the other clients can be sure of that user’s
+real input. Of course, this comes at the cost of some loss of accuracy.
+This accuracy can be further relaxed under the <a
+href="https://arxiv.org/abs/2107.11839">shuffle privacy</a> model, but
+we cannot expect the answers to be exact, but the actual social outcome
+did not require precision. <strong>Note:</strong> although we are not
+guaranteed correctness or even expected behaviour, there are enough use
+cases for this model to be helpful. While collecting information, these
+organisations usually use software written by them in the first place.
+So it is reasonable to assume that the clients will not deviate from
+their protocols.</p>
+<p><img src="pngs/LDP.png" width="90%"></img></p>
+<p>Another model for estimating user behaviour is only to consider
+events that occur at most <span class="math inline">\(\tau\)</span>
+times. For example, say Mozilla or Brave wanted to know which websites
+were popular amongst its clientele. Specifically, they only want to know
+of a website if it’s used by enough users. Otherwise, knowledge of a
+website might compromise the personal preferences of one of its users.
+Moreover, they wish to striker a commercial deal with popular websites
+(or boost their rank in their search features), so it is essential to
+know which website is most popular. Therefore, they cannot tolerate the
+error introduced by differential privacy. Additionally, like in the
+above two use cases, Mozilla or Brave have no incentive to tamper with
+the results. After all, they were the ones who wanted to conduct this
+survey. In this case, using Brave’s <a
+href="https://arxiv.org/abs/2109.10074">STAR</a> approach makes
+sense.</p>
+<p><code>Insert picture</code></p>
+<h2 id="did-trump-win">Did Trump win?</h2>
+<p>The outcome of political elections could strongly affect an
+organisation’s future. For example, a victory for a particular party
+might afford the aggregation party (say Google or Facebook or IBM) tax
+benefits for the upcoming years. Now we cannot trust that a single
+entity has not been compromised. In all the examples above, the
+aggregator is never incentivised to lie about the answer, but now it
+does. This brings us to the PRIO/Poplar model. Now we have <span
+class="math inline">\(K\)</span> aggregators who need to work together
+to get the correct answer. Furthermore, as long as only one party is
+honest, we can guarantee that all will be well. <span
+class="math inline">\(K\)</span> is can be seen as a social security
+parameter i.e. the greater <span class="math inline">\(K\)</span> is the
+harder it is for an adversary to bribe the outcome of the election.</p>
+<ul>
+<li>In PRIO/Poplar, “all well” ensure info theoretic privacy guarantees
+for every honest party. The focus is privacy.</li>
+<li>In our work, “all well” ensures that the correct answer is always
+output or exposing the cheater publicly and verifiably. The focus is
+correctness.</li>
+</ul>
+<p><img src="pngs/k.png" width="90%"></img></p>
+<h2 id="guide-to-model-selection">Guide to Model selection</h2>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 14%" />
+<col style="width: 12%" />
+<col style="width: 32%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Work</th>
+<th>Single Server Agg</th>
+<th>Client burden</th>
+<th>Malicious privacy</th>
+<th>Tamperpoof output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LDP/Shuffle Privacy (semi honest)</td>
+<td>Y</td>
+<td><span class="math inline">\(O(1)\)</span></td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr class="even">
+<td>STAR</td>
+<td>Y</td>
+<td><span class="math inline">\(O(q)\)</span></td>
+<td>Y (A is less powerful than ours)</td>
+<td>N</td>
+</tr>
+<tr class="odd">
+<td>PRIO</td>
+<td>N</td>
+<td><span class="math inline">\(O(q)\)</span></td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="even">
+<td>Our Work</td>
+<td>N</td>
+<td><span class="math inline">\(O(q)\)</span></td>
+<td>N 1 bit leakage, but detectable (covert)</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<div>
+
+<div id="footer">
+  “Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.”― Richard Feynmann
+</div>
+</body>
+</html>
