@@ -1,0 +1,82 @@
+.lemma{
+  display: block;
+  color: black;
+  border-radius: 10px;
+  background-color: rgb(222,222,231);
+  /*box-shadow: 5px 10px 8px #888888;*/
+}
+
+
+span.lemma{
+  background-color: orange;
+  color: black;
+  border-radius: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.lemma p{
+  padding: 15px 15px 15px 15px;
+}
+
+.definition {
+  display: block;
+  color: black;
+  border-radius: 10px;
+  background-color: rgb(222,222,231);
+
+}
+
+span.definition{
+  background-color: seagreen;
+  color: black;
+  border-radius: 0px;
+ }
+
+.definition p{
+  padding: 15px 15px 15px 15px;
+}
+
+.theorem{
+  display: block;
+  color: black;
+  border-radius: 10px;
+  background-color: rgb(222,222,231);
+  /*box-shadow: 5px 10px 8px #888888;*/
+}
+
+span.theorem{
+  background-color: rgb(38, 38, 134);
+  color: white;
+  border-radius: 0px;
+}
+
+.theorem p{
+  padding: 15px 15px 15px 15px;
+}
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+.todo{
+  border-color: orange;
+  border: 1px solid; 
+  -webkit-transition: all 1s linear;
+
+}
+.csl-entry:target {
+    border-color: orange;
+    border: 1px solid; 
+    -webkit-transition: all 1s linear;
+}
