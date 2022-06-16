@@ -1,0 +1,41 @@
+--- 
+title: "My Notes"
+author: "Ari"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+ss: styles.css
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: abiswas3/Humphrey/
+description: "This is a collection of my notes that I have written for self study. The output format for this example is bookdown::gitbook."
+---
+
+<!--- For HTML Only --->
+`r if (!knitr:::is_latex_output()) '
+$\\newcommand{\\AdvA}{\\mathcal{A}\\xspace}
+$
+$\\newcommand{\\eps}{\\varepsilon}
+$
+$\\newcommand{\\Z}{\\mathbb{Z}}
+$
+$\\newcommand{\\N}{\\mathbb{N}}
+$
+$\\newcommand{\\bvec}[1]{\\boldsymbol{\\vec{#1}}}
+$
+$\\newcommand{\\ABcomment}[1]{\\textcolor{red} \\textbf{Ari}: #1 \\textcolor{black}}
+$
+'`
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+# My notes
+
+This page is a repository of notes I've written to teach myself some mathematics

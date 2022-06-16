@@ -1,0 +1,5 @@
+# Shuffle Privacy
+
+`#differential_privacy`
+
+My notes on shuffle privacy.
