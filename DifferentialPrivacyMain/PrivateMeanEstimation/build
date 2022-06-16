@@ -1,2 +1,0 @@
-pandoc  --mathjax=../../code/es5/tex-chtml.js -s -c ../blog.css -A ../footer.html -H ../header.html main.md -o index.html
-pandoc  --mathjax=../../code/es5/tex-chtml.js -s -c ../blog.css -A ../footer.html -H ../header.html oldMain.md2 -o old.html

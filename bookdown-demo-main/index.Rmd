@@ -2,9 +2,8 @@
 title: "My Notes"
 author: "Ari"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
 output: bookdown::gitbook
-ss: styles.css
+css: styles.css
 documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
@@ -35,7 +34,6 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
-
 # My notes
 
 This page is a repository of notes I've written to teach myself some mathematics

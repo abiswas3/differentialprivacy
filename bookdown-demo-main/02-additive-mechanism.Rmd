@@ -3,9 +3,12 @@
 
 `#differential_privacy`
 
+We are interested in releasing counting queries $q$ that are $k$-incremental
+
 :::{.definition #k-incremental name='K-incremental functions'}
 [@ghazi2019power] A function $q: \mathcal{X}^n \rightarrow \Z^M$ is said to be $k$-incremental if for all neighbouring datasets $X \sim X^{\prime}$, $|| f(X) - f(X^{\prime})||_{\infty} \leq k$. 
 :::
+
 
 :::{.theorem #smooth-dp-thm name="Smooth Distributions guarantee DP"}
 Suppose $q: \mathcal{X}^n \rightarrow \Z^M$ is $k$-incremental i.e. for all neighbouring datasets $X \sim X^{\prime}$ we have $||q(X) - q(X^{\prime}) ||_{\infty} = k$ and $\Delta(q) = || q(X) - q(X^{\prime}) ||_1 = \Delta$. Let $\mathcal{D}$ be a $(\eps, \delta, k)$-smooth distribution. Then the mechanism $M$

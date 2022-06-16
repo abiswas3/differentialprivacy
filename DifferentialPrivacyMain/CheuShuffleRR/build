@@ -1,4 +1,0 @@
-#!/bin/bash
-pandoc  --mathjax=../../code/es5/tex-chtml.js -s -c ../blog.css -A ../footer.html -H ../header.html Readme.md -o index.html
-touch ${PWD##*/}_summary.md
-
