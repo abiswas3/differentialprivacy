@@ -1,8 +1,66 @@
-# Simulation 
+# Simulation for MPC
 
 `#cryptography` `#mpc`
 
-## Semi-honest OT
+
+Let's say we have $n$ parties indexed by $\{1, \dots, n \}$. Each party possesses private information $x_i \in \mathbb{Z}$ that they do not want anyone else to know. However, each person also wishes to compute some function over everyone's private values. For example, they might want to compute $f$ where $f$ is the sum of their values $f(x_1, \dots, x_n) = \sum_{i=1}^n x_i$. One way to compute such an $f$ is for everyone to send their private inputs to a trusted third party, which then outputs only the sum of the inputs to each party and nothing else.
+
+![Caption](bookdown-demo_files/figure-html/mpc.png)
+
+In reality, finding a third party we can trust with our data is difficult (how on earth can we manifest Mufasa ?). So instead, we must design a protocol $\pi_f$ which specifies messages each party must send each other to compute their desired function $f$. For this protocol $\pi_f$ to be helpful, it must satisfy some properties. Firstly, we must ensure that if every party followed the instructions by $\pi_f$, we would compute $f$ correctly. If $f$ is deterministic, then the output of $\pi_f(x_1, \dots, x_n$ must equal $f(x_1, \dots, x_n)$. If $f$ is random, the two protocols should be `similar` in distribution. Depending on the setting used, the definition of 'similar' changes, but let's not bother with it now.  Secondly, it must be secure. Intuitively we want the protocol to reflect our desire that no one else learns anything about our private values. However, learning anything is hard to define mathematically. We can try to exhaustively list everything we do not want an adversary $\AdvA$ to learn, but this is not very practical. We do not know what information $\AdvA$ will have when using the protocol. For example, the excerpt from [@lindell2017simulate] describes why the exhaustive listing is not a great idea.
+
+```If we say that an adversary receiving a ciphertext cannot output any information about the plaintext, what happens if the adversary already has information about the plaintext? For example, the adversary may know that it is an English text. Of course, this has nothing to do with the security of the scheme since the adversary knew this beforehand and independently of the ciphertext```
+
+So instead, we need a different approach to declare that $\pi_f$ is secure. We first define some limits on the adversarial behaviour we hope to secure against. Note that this definition differs from trying to list everything an adversary can do. It is more of a general description of restrictions we place on adversaries or the class of adversaries we want to defend against. For example, an adversary may be computationally unbounded or restricted to polynomial-time probabilistic computations. An adversary could be passive, i.e. they are forced to follow the instructions of a protocol and can only hope to learn side information by looking at the transcript of the protocol. The adversary could be active or malicious in that they arbitrarily deviate from the $\pi_f$'s specification. An adversary could be static, i.e. their plan of attack is fixed before executing $\pi_f$ or dynamic in which they adapt their strategy based on previous messages. 
+
+Once we define the class of adversaries we want to defend against; we return to our perfect world with Mufasa. Then we construct an algorithm (referred to as the simulator) that interacts with the ideal functionality and interacts with the adversary $\AdvA$ and outputs some information. Informally a  protocol $\pi_f$ is secure if $\AdvA$ can do as much harm in the real world as they are in this perfect world with Mufasa. Put another way; we would like to show that there is a simulator that can output any information that $\AdvA$ can learn in the real world. If this is the case, then $\AdvA$  did not do any real harm as whatever they were able to learn could be learned in our perfect protected world. This discussion is quite abstract, and it might be hard to understand how to construct a secure protocol in practice. To better understand the security of MPC protocols, we look at three protocols that help us compute the oblivious transfer function with the most common classes of adversaries. We choose oblivious transfer, as it is a fundamental MPC primitive that enables us to compute general arithmetic and boolean circuits securely.
+
+## Bit oblivious transfer
+
+We consider the bit oblivious transfer  functionality, defined by $f_{OT}\Big((b0,b1),\sigma \Big) = (\lambda,b_\sigma)$, where $b_0,b_1 ,\sigma ∈ \{0,1\}$.  In words, $P_1$ has a pair of input bits $(b_0,b_1)$ and P2 has a choice bit $\sigma$. The function is such that P1 receives no output (denoted by the empty string $\lambda$), and in particular learns nothing about $\sigma$. In contrast, P2 receives the bit of its choice $b_\sigma$ and learns nothing about the other bit $b_{1−\sigma}$.
+
+**SEE PICTURE**
+
+In this writeup, we only consider static adversaries that are computationally bounded, i.e., PPT. Additionally, as OT is a two-party protocol, we assume that the adversary $\AdvA$ controls one party and is responsible for sending messages.
+
+## Static Semi Honest PPT Adversaries
+These are the weakest class of adversaries we work with. Such adversaries cannot force a party to deviate from $\pi_f$. They can only do bad things with what they see while executing $\pi_f$. To define security we first have to describe some general notation. We write down the definition in terms of a 2 party protocol but it can be extended for $n$ party protocol.s
+
+Let $f = (f1,f2)$ be a probabilistic polynomial-time functionality and let $\pi$ be a two-party protocol for computing $f$.
+
++ The view of the $i$'th party $i \in \{1, 2\}$ during the execution of $\pi$ on inputs $(x,y)$ and security parameter $n$ is denoted by $view_i^\pi(x,y,n)=(w; r^i, m_1^i, \dots, m_t^i)$ where $w \in \{ x, y\}$ depending on the input value of the $i$'th party, $r^i$ is the contents of the internal random tape of the $i$'th party and $m_j^i$ represents the $j$'th message it received from the other party.
++ The output of the $i$'th party denoted by $output_i^\pi(x,y,n)$ is a PPT function of the view of the $i$'th party. The final output of the protcol is given by $output^\pi\big(1^n, x, y, n \big) = \Big(output_1^\pi\big(1^n, x, y, n \big), output_2^\pi\big(1^n, x, y, n \big)\Big)$
+
+![In the real world, the two parties execute the protocol by exchanging messages with each $\alpha$ other.](bookdown-demo_files/figure-html/mpc_real.png)
+
+
+
+![Caption](bookdown-demo_files/figure-html/mpc_sim.png)
+
+:::{.definition name="Security against static semi-honest adversaries"}
+We say that $\pi$ securely computes $f$ in presence of static semi-honest adversaries if there exists PPT algorithms $S_1$ and $S_2$ such that the **joint** distribution of the following probability ensembles are computationally indistinguishable
+
+\begin{align}
+\{ \Big(S_1 \big(1^n, x, f_1(x,y) \big), f(x,y)\Big) \}_{x, y, n} \overset{\mathsf{comp}}\equiv  \{ \Big(view_1^\pi\Big(1^n, x, y, n \Big), output^\pi\big(1^n, x, y, n \big)\Big)\}_{x, y, n} 
+\end{align}
+
+\begin{align}
+\{ \Big(S_2 \big(1^n, x, f_1(x,y) \big), f(x,y)\Big) \}_{x, y, n} \overset{\mathsf{comp}}\equiv  \{ \Big(view_2^\pi\Big(1^n, x, y, n \Big), output^\pi\big(1^n, x, y, n \big)\Big)\}_{x, y, n} 
+\end{align}
+
+where $x,y \in \bit^*$ such that $|x| = |y|$ and $n \in \N$
+::: 
+
+### Background
+
+### Protocol
+
+Next, we describe $\pi_{OT}$ for computing $f_{OT}$ and show that it is secure in the presence of semi-honest adversaries.
+
+![Semi Honest OT](bookdown-demo_files/figure-html/semi_honest_ot.png)
+
+To show that the above protocol is secure, we have to construct a simulator which is able to learn the same information as an adversary controlling party $P_1$ or $P_2$. The simulator lives in the perfect world shown below
+
 
 ## Malicious OT
 

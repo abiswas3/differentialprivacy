@@ -28,6 +28,8 @@ $\\newcommand{\\ABcomment}[1]{\\textcolor{red} \\textbf{Ari}: #1 \\textcolor{bla
 $
 $\\newcommand{\\BPP}{\\mathcal{BPP}}
 $
+$\\newcommand{\\bit}{\\{ 0, 1\\}}
+$
 '`
 
 ```{r include=FALSE}
