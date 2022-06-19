@@ -26,6 +26,8 @@ $\\newcommand{\\bvec}[1]{\\boldsymbol{\\vec{#1}}}
 $
 $\\newcommand{\\ABcomment}[1]{\\textcolor{red} \\textbf{Ari}: #1 \\textcolor{black}}
 $
+$\\newcommand{\\BPP}{\\mathcal{BPP}}
+$
 '`
 
 ```{r include=FALSE}

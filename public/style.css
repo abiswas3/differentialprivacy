@@ -6,6 +6,12 @@
   /*box-shadow: 5px 10px 8px #888888;*/
 }
 
+.proof::-webkit-details-marker {
+  color: blue;
+}
+.proof:focus {
+  outline-style: none;
+}
 
 span.lemma{
   background-color: orange;
@@ -75,6 +81,15 @@ pre code {
   -webkit-transition: all 1s linear;
 
 }
+
+.quote{
+  border-color: orange;
+  border: 1px solid;
+  font-style: italic;
+  color: seagreen; 
+
+}
+
 .csl-entry:target {
     border-color: orange;
     border: 1px solid; 
