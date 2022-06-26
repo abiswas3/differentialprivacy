@@ -53,6 +53,8 @@ where $x,y \in \bit^*$ such that $|x| = |y|$ and $n \in \N$
 
 ### Background
 
+Summary about one way permutations
+
 ### Protocol
 
 Next, we describe $\pi_{OT}$ for computing $f_{OT}$ and show that it is secure in the presence of semi-honest adversaries.
