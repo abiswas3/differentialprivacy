@@ -164,3 +164,10 @@ Next we consider more realistic adversaries that do abide by the rules set by a 
 
 
 ## Covert OT
+
+![Shown above is the protocol that is secure in presence of covert adversaries with explicit cheat (as described in [@aumann2010security]](bookdown-demo_files/figure-html/covert_OT.png)
+
+### Intuition
+
+### Formal proof of security
+
